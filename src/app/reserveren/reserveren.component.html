@@ -1,0 +1,159 @@
+<!--
+    example url:
+    www.super-cool-website.nl/?titel=Voorstelling Mejotos & Tovedem&datum=12-10-2024T18:00:00&datum=13-10-2024T19:00:00
+
+titel=voorstelling
+datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
+ -->
+
+<div class="container">
+    <div class="row">
+        <h1>Voorstelling reserveren voor Tovedem, Cloos en Mejoto's</h1>
+    </div>
+
+    <div class="row">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    <h2> Voorstelling: "{{voorstellingsNaam}}"</h2>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <h3>opgevoerd door: {{groepsNaam}}, locatie: <a href="https://maps.app.goo.gl/dd9fe7p2udocU298A"
+                            target="_blank">
+                            <span>De Schalm</span>
+                        </a>
+                    </h3>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div style="display: flex; gap: 2em;">
+                    <mat-form-field style="max-width: 20em;">
+                        <mat-label>Voornaam</mat-label>
+                        <input matInput type="text" [(ngModel)]="name">
+                    </mat-form-field>
+                    <mat-form-field style="max-width: 20em;">
+                        <mat-label>Achternaam</mat-label>
+                        <input matInput type="text" [(ngModel)]="surname">
+                    </mat-form-field>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <h2>Data</h2>
+                        <div class="col-md-6 col-12">
+                            <div class="flex" style="flex-direction:column; align-items: center;">
+                                <mat-card class="inline-calendar-card" style="flex: 1;">
+                                    <mat-calendar [startAt]="datum1" [selected]="datum1" disabled></mat-calendar>
+                                </mat-card>
+                                <h2>Datum: {{datum1 | date : 'YYYY-MM-dd'}} <br> Start tijd: 18:00</h2>
+                                <div style="display: flex; justify-content: center; align-items: baseline;">
+                                    <button mat-raised-button
+                                        (click)="amountOfPeopleDate1 = amountOfPeopleDate1-1">-</button>
+                                    <mat-form-field style="max-width: 20em; text-align: center;">
+                                        <mat-label>Hoeveel mensen?</mat-label>
+                                        <input matInput style="text-align: center;" type="number" min="0" max="20"
+                                            [(ngModel)]="amountOfPeopleDate1">
+                                    </mat-form-field>
+                                    <button mat-raised-button
+                                        (click)="amountOfPeopleDate1 = amountOfPeopleDate1+1">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="flex" style="flex-direction:column; align-items: center;">
+
+                                <mat-card class="inline-calendar-card">
+                                    <mat-calendar [startAt]="datum2" [selected]="datum2" disabled></mat-calendar>
+                                </mat-card>
+                                <h2>Datum: {{datum2 | date : 'YYYY-MM-dd'}} <br> Start tijd: 20:00</h2>
+                                <div style="display: flex; justify-content: center; align-items: baseline;">
+                                    <button mat-raised-button
+                                        (click)="amountOfPeopleDate2 = amountOfPeopleDate2-1">-</button>
+                                    <mat-form-field style="max-width: 20em;">
+                                        <mat-label style="text-align: center;">Hoeveel mensen?</mat-label>
+                                        <input style="text-align: center;" matInput type="number" min="0" max="20"
+                                            [(ngModel)]="amountOfPeopleDate2">
+                                    </mat-form-field>
+                                    <button mat-raised-button
+                                        (click)="amountOfPeopleDate2 = amountOfPeopleDate2+1">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row flex" style="justify-content: center; align-items: center;">
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <mat-checkbox [(ngModel)]="vriendVanTovedem">Ben je vriend van
+                                Tovedem?</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="lidVanTovedemMejotos">
+                                Ben je lid van Tovedem of
+                                Mejoto's?
+                            </mat-checkbox>
+                            <button mat-raised-button color="primary" (click)="saveReservering()"
+                                style="max-width: 20em;">Reserveer</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="flex" style="flex-direction: column;">
+                    <div style="display: flex; flex-direction: column;">
+                        <div style="display: flex; gap: 2em;">
+                            <mat-form-field style="max-width: 20em;">
+                                <mat-label>Voornaam</mat-label>
+                                <input matInput type="text" [(ngModel)]="name">
+                            </mat-form-field>
+                            <mat-form-field style="max-width: 20em;">
+                                <mat-label>Achternaam</mat-label>
+                                <input matInput type="text" [(ngModel)]="surname">
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-card class="inline-calendar-card">
+                                <mat-calendar [startAt]="datum1" [selected]="datum1" disabled></mat-calendar>
+                            </mat-card>
+                            <h2>Datum: {{datum1 | date : 'YYYY-MM-dd'}} <br> Start tijd: 18:00</h2>
+                            <div style="display: flex; justify-content: center; align-items: baseline;">
+                                <button mat-raised-button
+                                    (click)="amountOfPeopleDate1 = amountOfPeopleDate1-1">-</button>
+                                <mat-form-field style="max-width: 20em; text-align: center;">
+                                    <mat-label>Hoeveel mensen?</mat-label>
+                                    <input matInput style="text-align: center;" type="number" min="0" max="20"
+                                        [(ngModel)]="amountOfPeopleDate1">
+                                </mat-form-field>
+                                <button mat-raised-button
+                                    (click)="amountOfPeopleDate1 = amountOfPeopleDate1+1">+</button>
+                            </div>
+                            <h2>Datum: 02-01-2024 <br> Start tijd: 20:00</h2>
+
+                            <div style="display: flex; justify-content: center; align-items: baseline;">
+                                <button mat-raised-button
+                                    (click)="amountOfPeopleDate2 = amountOfPeopleDate2-1">-</button>
+                                <mat-form-field style="max-width: 20em;">
+                                    <mat-label style="text-align: center;">Hoeveel mensen?</mat-label>
+                                    <input style="text-align: center;" matInput type="number" min="0" max="20"
+                                        [(ngModel)]="amountOfPeopleDate2">
+                                </mat-form-field>
+                                <button mat-raised-button
+                                    (click)="amountOfPeopleDate2 = amountOfPeopleDate2+1">+</button>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; flex-direction: column; justify-content: center; align-items: baseline;">
+                            <mat-checkbox class="example-margin" [(ngModel)]="vriendVanTovedem">Ben je vriend van
+                                Tovedem?</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="lidVanTovedemMejotos">
+                                Ben je lid van Tovedem of
+                                Mejoto's?
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <button mat-raised-button color="primary" (click)="saveReservering()"
+                        style="max-width: 20em;">Reserveer</button>
+
+
+                    <a href="google.com">Log in om reserveringen in te zien</a>
+                </div> -->
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

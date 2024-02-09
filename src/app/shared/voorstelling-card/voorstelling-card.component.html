@@ -1,0 +1,25 @@
+<mat-card class="voorstelling-card">
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>{{voorstelling().titel}}</mat-card-title>
+            <mat-card-subtitle>
+                <span>
+                    {{voorstelling().datum_tijd_1 | date : 'dd/MM/YYYY HH:mm'}}
+                    <br />
+                    {{voorstelling().datum_tijd_2 | date : 'dd/MM/YYYY HH:mm'}}
+                </span></mat-card-subtitle>
+            <img mat-card-xl-image style="border-radius: 1em;"
+                [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
+                alt="voorstelling afbeelding">
+        </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            {{voorstelling().ondertitel}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-stroked-button>LEES MEER</button>
+        <button mat-raised-button color="primary">RESERVEREN</button>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,26 @@
+:host {
+  flex: 1;
+  display: flex;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+li {
+  margin: 0 1em;
+}
+
+a {
+  text-decoration: none;
+  color: white; /* Customize the text color */
+}

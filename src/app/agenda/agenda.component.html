@@ -1,0 +1,39 @@
+<!-- <div style="display: flex; flex-direction: column;">
+    @for (item of groepen(); track $index) {
+    <div>
+        <h1>{{item.naam}}</h1>
+        <div [innerHTML]="item.omschrijving"></div>
+    </div>
+    }
+</div> -->
+
+<!-- <h1>Agenda</h1>
+<h2>Aankomende voorstellingen</h2>
+<div class="flex" style="justify-content: space-around; gap: 2em; flex-flow: row wrap;">
+    @for (item of voorstellingen(); track $index) {
+    <app-voorstelling-card [voorstelling]="item">
+    </app-voorstelling-card>
+    }
+</div>
+
+<h2>Sponsoren</h2>
+<div class="flex" style="justify-content: space-around; gap: 2em;">
+    @for (item of voorstellingen(); track $index) {
+    <img mat-card-image style="width: 10em; height: 10em;"
+        [src]="getImageUrl(item.collectionId, item.id, item.afbeelding)" alt="voorstelling afbeelding">
+    }
+    @for (item of voorstellingen(); track $index) {
+    <img mat-card-image style="width: 10em; height: 10em;"
+        [src]="getImageUrl(item.collectionId, item.id, item.afbeelding)" alt="voorstelling afbeelding">
+    }
+</div> -->
+
+<div class="container">
+    <h1>Aankomende voorstellingen</h1>
+    <div class="row">
+        @for (item of voorstellingen(); track $index) {
+        <app-voorstelling-card [voorstelling]="item" class="col-md-4 col-12 mb-4 d-flex flex-column h-100">
+        </app-voorstelling-card>
+        }
+    </div>
+</div>

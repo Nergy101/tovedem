@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <h1>{{groep().naam}}</h1>
+    </div>
+    <div class="row">
+        <h3 [innerHTML]="groep().omschrijving"></h3>
+    </div>
+    <div class="row">
+        <h2>Aankomende voorstelling</h2>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @for (item of [aankomendeVoorstelling()]; track $index) {
+            <app-voorstelling-card [voorstelling]="item">
+            </app-voorstelling-card>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <h2>Afgelopen voorstellingen</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-12">
+            @for (item of afgelopenVoorstellingen(); track $index) {
+            <app-voorstelling-card [voorstelling]="item">
+            </app-voorstelling-card>
+            }
+        </div>
+    </div>
+</div>
