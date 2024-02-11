@@ -17,10 +17,31 @@ ul {
 }
 
 li {
+  list-style: none;
   margin: 0 1em;
 }
 
 a {
   text-decoration: none;
   color: white; /* Customize the text color */
+}
+
+mat-toolbar {
+  background-color: #c83858;
+  color: white;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.links {
+  margin-left: 5em;
+  display: flex;
+  gap: 1em;
+  justify-content: space-evenly;
+}
+
+.logo {
+  max-height: 2em;
 }
