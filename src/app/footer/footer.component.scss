@@ -40,9 +40,14 @@ img {
   display: flex;
   justify-content: space-evenly;
 }
+
 .sponsor-image {
   flex: 0;
   max-height: 10em;
   width: auto;
   margin: 0.5em;
+}
+
+.container {
+  padding-bottom: 0;
 }
