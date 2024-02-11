@@ -1,23 +1,15 @@
 <div class="container">
-    <div class="row">
-        <h2>Sponsoren</h2>
-        <div class="flex" style="flex-flow: row nowrap; justify-content: space-evenly; gap: 2em;">
-            <!-- @for (item of voorstellingen(); track $index) {
-    <img mat-card-image style="width: 10em; height: 10em;"
-        [src]="getImageUrl(item.collectionId, item.id, item.afbeelding)" alt="voorstelling afbeelding">
-    } -->
-            <img mat-card-image style="width: 10em; height: 10em;" src="assets/Cloos-vrije-vogel.jpg"
-                alt="voorstelling afbeelding"><img mat-card-image style="width: 10em; height: 10em;"
-                src="assets/Cloos-vrije-vogel.jpg" alt="voorstelling afbeelding"><img mat-card-image
-                style="width: 10em; height: 10em;" src="assets/Cloos-vrije-vogel.jpg" alt="voorstelling afbeelding"><img
-                mat-card-image style="width: 10em; height: 10em;" src="assets/Cloos-vrije-vogel.jpg"
-                alt="voorstelling afbeelding"><img mat-card-image style="width: 10em; height: 10em;"
-                src="assets/Cloos-vrije-vogel.jpg" alt="voorstelling afbeelding">
-        </div>
+    <h2>Sponsoren</h2>
+    <div class="row" style="justify-content: space-evenly;">
+        <img mat-card-image class="sponsor-image col-2" src="assets/Cloos-vrije-vogel.jpg">
+        <img mat-card-image class="sponsor-image col-2" src="assets/Cloos-vrije-vogel.jpg">
+        <img mat-card-image class="sponsor-image col-2" src="assets/Cloos-vrije-vogel.jpg">
+        <img mat-card-image class="sponsor-image col-2" src="assets/Cloos-vrije-vogel.jpg">
+        <img mat-card-image class="sponsor-image col-2" src="assets/Cloos-vrije-vogel.jpg">
     </div>
 </div>
 
-<div class="links" style="display:flex; flex-flow: row wrap; justify-content: space-evenly;">
+<div class="container-fluid links" style=" display:flex; flex-flow: row wrap; justify-content: space-evenly;">
     <div class="col-4 link-row">
         <h2>Adres</h2>
         <p>
@@ -43,6 +35,6 @@
     </div>
 </div>
 
-<div class="privacy">
+<div class="container-fluid privacy" style="">
     <a href="/PrivacyBeleid">Privacybeleid</a><span>&nbsp;/&nbsp;&#64;2024 Tovedem</span>
 </div>

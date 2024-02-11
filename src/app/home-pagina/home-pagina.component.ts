@@ -2,13 +2,14 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
 
 import PocketBase from 'pocketbase';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home-pagina',
   standalone: true,
   templateUrl: './home-pagina.component.html',
   styleUrl: './home-pagina.component.scss',
-  imports: [VoorstellingCardComponent],
+  imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
 })
 export class HomePaginaComponent {
   url = 'https://tovedem.pockethost.io/';

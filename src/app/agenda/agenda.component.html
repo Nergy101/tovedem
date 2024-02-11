@@ -30,10 +30,17 @@
 
 <div class="container">
     <h1>Aankomende voorstellingen</h1>
+    @defer (when voorstellingen().length > 0) {
     <div class="row">
         @for (item of voorstellingen(); track $index) {
-        <app-voorstelling-card [voorstelling]="item" class="col-md-4 col-12 mb-4 d-flex flex-column h-100">
+        <app-voorstelling-card [voorstelling]="item" class="col-xl-4 col-md-6 col-12 mb-4 d-flex align-items-stretch">
         </app-voorstelling-card>
         }
     </div>
+    }
+    @placeholder {
+    <div class="center">
+        <mat-spinner></mat-spinner>
+    </div>
+    }
 </div>

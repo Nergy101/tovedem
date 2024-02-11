@@ -1,17 +1,24 @@
-<mat-toolbar>
-    <img class="logo" src="/assets/tovedem_logo.png" />
-
-    <div class="links">
-        <a href="/Agenda">Agenda</a>
-        <a href="/Tovedem">Tovedem</a>
-        <a href="/Cloos">Cloos</a>
-        <a href="/Mejotos">Mejoto's</a>
-        <a href="/Reserveren">Reserveren</a>
-        <a href="/Lid-worden">Lid worden</a>
-        <a href="/Steunen">Steunen</a>
-        <a href="/Sinterklaas">Sinterklaas</a>
-        <a href="/Contact">Contact</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img class="logo" src="/assets/tovedem_logo.png" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="links navbar-nav nav-pills nav-fill">
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/" [routerLinkActiveOptions]="{exact:
+true}">Home</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Agenda">Agenda</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Tovedem">Tovedem</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Cloos">Cloos</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Mejotos">Mejoto's</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Reserveren">Reserveren</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Lid-worden">Lid worden</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Steunen">Steunen</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Sinterklaas">Sinterklaas</a></li>
+                <li> <a class="nav-link" routerLinkActive="active" routerLink="/Contact">Contact</a></li>
+            </ul>
+        </div>
     </div>
-    <div class="spacer"></div>
-
-</mat-toolbar>
+</nav>

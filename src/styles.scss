@@ -15,4 +15,8 @@ body {
   display: flex;
 }
 
-@import "bootstrap/dist/css/bootstrap-grid.min.css";
+.center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}

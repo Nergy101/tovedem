@@ -4,6 +4,7 @@
 }
 
 nav {
+  flex: 1;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -19,29 +20,37 @@ ul {
 li {
   list-style: none;
   margin: 0 1em;
+
+  .active {
+    color: white;
+    background-color: #da3c5e;
+  }
+}
+
+.navbar-collapse {
+  li {
+    .active {
+      padding: 1em;
+      color: white;
+      background-color: #da3c5e;
+    }
+  }
 }
 
 a {
   text-decoration: none;
-  color: white; /* Customize the text color */
-}
-
-mat-toolbar {
-  background-color: #c83858;
-  color: white;
-}
-
-.spacer {
-  flex: 1 1 auto;
+  color: black;
 }
 
 .links {
-  margin-left: 5em;
   display: flex;
   gap: 1em;
+  align-items: center;
   justify-content: space-evenly;
 }
 
 .logo {
+  justify-self: flex-start;
+  align-self: center;
   max-height: 2em;
 }

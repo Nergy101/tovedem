@@ -1,16 +1,14 @@
 import { Component, WritableSignal, effect, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 
 import PocketBase from 'pocketbase';
-import { CommonModule } from '@angular/common';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-groep-pagina',
   standalone: true,
-  imports: [VoorstellingCardComponent],
+  imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
   templateUrl: './groep-pagina.component.html',
   styleUrl: './groep-pagina.component.scss',
 })
@@ -20,9 +18,9 @@ export class GroepPaginaComponent {
 
   client: PocketBase;
 
-  groep: WritableSignal<any> = signal({});
+  groep: WritableSignal<any | null> = signal(null);
+  aankomendeVoorstelling: WritableSignal<any | null> = signal(null);
   voorstellingen: WritableSignal<any[]> = signal([]);
-  aankomendeVoorstelling: WritableSignal<any> = signal({});
   afgelopenVoorstellingen: WritableSignal<any[]> = signal([]);
 
   constructor(private router: Router) {

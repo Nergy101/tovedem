@@ -4,6 +4,7 @@ import PocketBase from 'pocketbase';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-agenda',
@@ -15,6 +16,7 @@ import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstell
     MatCardModule,
     MatButtonModule,
     VoorstellingCardComponent,
+    MatProgressSpinnerModule,
   ],
 })
 export class AgendaComponent implements OnInit {
