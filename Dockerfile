@@ -17,4 +17,4 @@ EXPOSE 80
 # docker push nergy101/tovedem:latest
 # on VM:
 # docker pull nergy101/tovedem:latest
-# docker run --restart unless-stopped -p 4001:80 -d --name portfolio nergy101/tovedem:latest
+# docker run --restart unless-stopped -p 4001:80 -d --name tovedem nergy101/tovedem:latest
