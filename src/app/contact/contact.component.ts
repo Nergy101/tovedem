@@ -28,7 +28,6 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class ContactComponent {
   name: string | null = null;
-  surname: string | null = null;
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
