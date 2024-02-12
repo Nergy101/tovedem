@@ -4,6 +4,10 @@ import { AgendaComponent } from './agenda/agenda.component';
 import { ReserverenComponent } from './reserveren/reserveren.component';
 import { PrivacyBeleidPaginaComponent } from './privacy-beleid-pagina/privacy-beleid-pagina.component';
 import { HomePaginaComponent } from './home-pagina/home-pagina.component';
+import { VriendWordenComponent } from './vriend-worden/vriend-worden.component';
+import { LidWordenComponent } from './lid-worden/lid-worden.component';
+import { ContactComponent } from './contact/contact.component';
+import { SinterklaasComponent } from './sinterklaas/sinterklaas.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +33,26 @@ export const routes: Routes = [
   {
     path: 'Reserveren',
     component: ReserverenComponent,
+  },
+  {
+    path: 'Vriend-Worden',
+    component: VriendWordenComponent,
+  },
+  {
+    path: 'Steunen',
+    component: VriendWordenComponent,
+  },
+  {
+    path: 'Lid-Worden',
+    component: LidWordenComponent,
+  },
+  {
+    path: 'Sinterklaas',
+    component: SinterklaasComponent,
+  },
+  {
+    path: 'Contact',
+    component: ContactComponent,
   },
   {
     path: 'PrivacyBeleid',

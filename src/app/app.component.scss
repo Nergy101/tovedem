@@ -10,6 +10,10 @@ header {
   z-index: 1000;
 }
 
+footer {
+  margin-top: auto;
+}
+
 router-outlet {
-  margin-top: 4em;
+  margin-top: 10em;
 }

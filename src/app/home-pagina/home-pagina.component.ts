@@ -28,10 +28,6 @@ export class HomePaginaComponent {
         sort: '-created',
       });
 
-    const groepen = await this.client.collection('groepen').getFullList({
-      sort: '-created',
-    });
-
     this.voorstellingen.set(voorstellingen as any);
   }
 }

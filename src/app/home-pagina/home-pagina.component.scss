@@ -4,9 +4,9 @@
   flex-direction: column;
 }
 
-.section {
+.section :not(:last-child) {
   display: block;
-  margin-bottom: 3em;
+  margin-bottom: 2em;
 }
 
 .splash-image {
