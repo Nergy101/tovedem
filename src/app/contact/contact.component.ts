@@ -31,4 +31,8 @@ export class ContactComponent {
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
+
+  verstuurContactMail() {
+    console.log('hoi');
+  }
 }

@@ -6,7 +6,6 @@
         <h1 class="text-center">Welkom op de website van Tovedem!</h1>
         <div class="section">
             <h2 class="mat-elevation-z2 text-center">Aankomende voorstellingen</h2>
-
             @defer (when voorstellingen().length > 0) {
             <div class="row">
                 @for (item of voorstellingen(); track $index) {

@@ -100,7 +100,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                 Ben je lid van Tovedem, Cloos of
                                 Mejoto's?
                             </mat-checkbox>
-                            <button mat-raised-button color="primary" (click)="saveReservering()"
+                            <button mat-raised-button [disabled]="saving" (click)="saveReservering()"
                                 style="max-width: 20em;">Reserveer</button>
                         </div>
                     </div>

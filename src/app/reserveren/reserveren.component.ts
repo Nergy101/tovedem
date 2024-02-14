@@ -7,11 +7,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 
 import PocketBase from 'pocketbase';
+
 @Component({
   selector: 'app-reserveren',
   standalone: true,
@@ -25,6 +27,9 @@ import PocketBase from 'pocketbase';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './reserveren.component.html',
@@ -44,13 +49,15 @@ export class ReserverenComponent implements OnInit {
   surname = '';
   vriendVanTovedem = false;
   lidVanTovedemMejotos = false;
-  amountOfPeopleDate1 = 1;
-  amountOfPeopleDate2 = 1;
+  amountOfPeopleDate1 = 0;
+  amountOfPeopleDate2 = 0;
 
   @Input('voorstelling')
   voorstellingId: string | null = null;
 
-  constructor() {
+  saving: boolean = false;
+
+  constructor(private readonly _snackBar: MatSnackBar) {
     this.client = new PocketBase(this.url);
   }
 
@@ -71,11 +78,33 @@ export class ReserverenComponent implements OnInit {
         .getOne(voorstelling.groep)) as any;
 
       console.log(groep);
-      this.groepsNaam = groep.naam; // get real groepsnaam by doing request
+      this.groepsNaam = groep.naam;
     }
   }
 
   saveReservering(): void {
-    throw new Error('Method not implemented.');
+    this.saving = true;
+
+    this.client.collection('reserveringen').create({
+      voornaam: this.name,
+      achternaam: this.surname,
+      is_vriend_van_tovedem: this.vriendVanTovedem,
+      is_lid_van_vereniging: this.lidVanTovedemMejotos,
+      voorstelling: this.voorstellingId,
+      datum_tijd_1_aantal: this.amountOfPeopleDate1,
+      datum_tijd_2_aantal: this.amountOfPeopleDate2,
+    });
+
+    this.name = '';
+    this.surname = '';
+    this.vriendVanTovedem = false;
+    this.lidVanTovedemMejotos = false;
+    this.amountOfPeopleDate1 = 0;
+    this.amountOfPeopleDate2 = 0;
+
+    this.saving = false;
+    this._snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
+      duration: 5000,
+    });
   }
 }
