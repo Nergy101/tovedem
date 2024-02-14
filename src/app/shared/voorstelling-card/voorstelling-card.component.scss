@@ -21,5 +21,6 @@ mat-card-actions {
 }
 
 .card-image {
-  border-radius: 1em;
+  border-radius: 1em !important;
+  object-fit: cover;
 }
