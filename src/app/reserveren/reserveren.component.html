@@ -8,7 +8,9 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
 
 <div class="container">
     <div class="row">
-        <h1 class="mat-elevation-z2">Voorstelling reserveren voor Tovedem, Cloos en Mejoto's</h1>
+        <h1 class="mat-elevation-z2 text-center">
+            Reserveren voor voorstelling "{{voorstellingsNaam}}" door
+            {{groepsNaam}}</h1>
     </div>
 
     <div class="row">
@@ -39,12 +41,16 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                 <div class="container">
                     <div class="row">
                         <h2>Data</h2>
+                        @if(!!datum1 && datum1 > today)
+                        {
                         <div class="col-md-6 col-12">
                             <div class="flex" style="flex-direction:column; align-items: center;">
                                 <mat-card class="inline-calendar-card" style="flex: 1;">
                                     <mat-calendar [startAt]="datum1" [selected]="datum1" disabled></mat-calendar>
                                 </mat-card>
-                                <h2>Datum: {{datum1 | date : 'YYYY-MM-dd'}} <br> Start tijd: 18:00</h2>
+                                <h2>Datum: {{datum1 | date : 'YYYY-MM-dd'}}
+                                    <br> Start tijd: {{datum1 | date : 'HH:mm'}}
+                                </h2>
                                 <div style="display: flex; justify-content: center; align-items: baseline;">
                                     <button mat-raised-button
                                         (click)="amountOfPeopleDate1 = amountOfPeopleDate1-1">-</button>
@@ -58,13 +64,18 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                 </div>
                             </div>
                         </div>
+                        }
+                        @if(!!datum2 && datum2 > today)
+                        {
                         <div class="col-md-6 col-12">
                             <div class="flex" style="flex-direction:column; align-items: center;">
 
                                 <mat-card class="inline-calendar-card">
                                     <mat-calendar [startAt]="datum2" [selected]="datum2" disabled></mat-calendar>
                                 </mat-card>
-                                <h2>Datum: {{datum2 | date : 'YYYY-MM-dd'}} <br> Start tijd: 20:00</h2>
+                                <h2>Datum: {{datum2 | date : 'YYYY-MM-dd'}}
+                                    <br> Start tijd: {{datum2 | date : 'HH:mm'}}
+                                </h2>
                                 <div style="display: flex; justify-content: center; align-items: baseline;">
                                     <button mat-raised-button
                                         (click)="amountOfPeopleDate2 = amountOfPeopleDate2-1">-</button>
@@ -78,6 +89,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                 </div>
                             </div>
                         </div>
+                        }
                     </div>
 
                     <div class="row flex" style="justify-content: center; align-items: center;">
@@ -85,7 +97,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                             <mat-checkbox [(ngModel)]="vriendVanTovedem">Ben je vriend van
                                 Tovedem?</mat-checkbox>
                             <mat-checkbox [(ngModel)]="lidVanTovedemMejotos">
-                                Ben je lid van Tovedem of
+                                Ben je lid van Tovedem, Cloos of
                                 Mejoto's?
                             </mat-checkbox>
                             <button mat-raised-button color="primary" (click)="saveReservering()"

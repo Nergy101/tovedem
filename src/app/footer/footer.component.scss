@@ -1,8 +1,3 @@
-.row {
-  margin-bottom: 2em;
-  padding-bottom: 2em;
-}
-
 .links {
   padding-top: 2em;
   background-color: black;
@@ -37,8 +32,10 @@ img {
 }
 
 .sponsors {
-  display: flex;
-  justify-content: space-evenly;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .sponsor-image {
@@ -46,8 +43,6 @@ img {
   max-height: 10em;
   width: auto;
   margin: 0.5em;
-  // width: 200px;
-  // height: 200px;
 }
 
 .container {
