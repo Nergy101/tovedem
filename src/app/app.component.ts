@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,7 @@ import { FooterComponent } from './footer/footer.component';
   styleUrl: './app.component.scss',
   imports: [
     RouterOutlet,
+    RouterModule,
     MatButtonModule,
     MatInputModule,
     MatIconModule,

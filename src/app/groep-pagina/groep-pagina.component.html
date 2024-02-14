@@ -1,14 +1,14 @@
 <div class="container">
     @defer (when !!groep() && !!aankomendeVoorstelling() && afgelopenVoorstellingen().length > 0) {
     <div class="row mat-elevation-z2">
-        <h1>{{groep().naam}}</h1>
+        <h1 class="text-center">{{groep().naam}}</h1>
         <h3 [innerHTML]="groep().omschrijving"></h3>
     </div>
     <div class="row">
-        <h2 class="mat-elevation-z2">Aankomende voorstelling</h2>
+        <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-6 col-12 flex justify-content-center">
             @for (item of [aankomendeVoorstelling()]; track $index) {
             <app-voorstelling-card [voorstelling]="item">
             </app-voorstelling-card>
@@ -16,15 +16,13 @@
         </div>
     </div>
     <div class="row">
-        <h2 class="mat-elevation-z2">Afgelopen voorstellingen</h2>
+        <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
     </div>
     <div class="row">
-        <div class="col-md-6 col-12">
-            @for (item of afgelopenVoorstellingen(); track $index) {
-            <app-voorstelling-card [voorstelling]="item">
-            </app-voorstelling-card>
-            }
-        </div>
+        @for (item of afgelopenVoorstellingen(); track $index) {
+        <app-voorstelling-card [voorstelling]="item" class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1">
+        </app-voorstelling-card>
+        }
     </div>
     } @placeholder {
     <div class="center">

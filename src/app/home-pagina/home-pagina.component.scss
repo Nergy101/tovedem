@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+h1 {
+  font-weight: bold;
+}
+
 .section :not(:last-child) {
   display: block;
   margin-bottom: 2em;
