@@ -3,11 +3,18 @@
         <mat-card-title-group>
             <mat-card-title>{{voorstelling().titel}}</mat-card-title>
             <mat-card-subtitle>
+                @if(!!voorstelling().datum_tijd_1){
                 <span>
-                    {{voorstelling().datum_tijd_1 | date : 'dd/MM/YYYY HH:mm'}}
-                    <br />
-                    {{voorstelling().datum_tijd_2 | date : 'dd/MM/YYYY HH:mm'}}
-                </span></mat-card-subtitle>
+                    {{voorstelling().datum_tijd_1 | date : 'd LLLL YYYY'}}
+                </span>
+                <br>
+                }
+                @if(!!voorstelling().datum_tijd_2){
+                <span>
+                    {{voorstelling().datum_tijd_2 | date : 'd LLLL YYYY'}}
+                </span>
+                }
+            </mat-card-subtitle>
             <img mat-card-xl-image class="card-image"
                 [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
                 alt="voorstelling afbeelding">
@@ -19,7 +26,6 @@
         </p>
     </mat-card-content>
     <mat-card-actions>
-        <!-- <button mat-stroked-button>LEES MEER</button> -->
         <div></div>
         @if(inToekomst()) {
         <button mat-raised-button (click)="goToReserveren()">RESERVEREN</button>

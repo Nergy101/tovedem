@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-voorstelling-card',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   templateUrl: './voorstelling-card.component.html',
   styleUrl: './voorstelling-card.component.scss',

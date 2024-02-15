@@ -13,6 +13,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 
 import PocketBase from 'pocketbase';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-reserveren',
@@ -30,6 +31,7 @@ import PocketBase from 'pocketbase';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './reserveren.component.html',
@@ -39,6 +41,9 @@ export class ReserverenComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
   client: PocketBase;
 
+  saving: boolean = false;
+  loaded: boolean = false;
+
   voorstellingsNaam = '';
   groepsNaam = '';
   datum1: Date | null = null;
@@ -47,6 +52,7 @@ export class ReserverenComponent implements OnInit {
 
   name = '';
   surname = '';
+  email = '';
   vriendVanTovedem = false;
   lidVanTovedemMejotos = false;
   amountOfPeopleDate1 = 0;
@@ -55,20 +61,21 @@ export class ReserverenComponent implements OnInit {
   @Input('voorstelling')
   voorstellingId: string | null = null;
 
-  saving: boolean = false;
-
   constructor(private readonly _snackBar: MatSnackBar) {
     this.client = new PocketBase(this.url);
   }
 
   async ngOnInit(): Promise<void> {
-    console.log('voorstellingId', this.voorstellingId);
+    await this.loadData();
+    this.loaded = true;
+  }
+
+  async loadData(): Promise<void> {
     if (!!this.voorstellingId) {
       const voorstelling = (await this.client
         .collection('voorstellingen')
         .getOne(this.voorstellingId)) as any;
 
-      console.log(voorstelling);
       this.voorstellingsNaam = voorstelling.titel;
       this.datum1 = new Date(voorstelling.datum_tijd_1);
       this.datum2 = new Date(voorstelling.datum_tijd_2);
@@ -77,7 +84,6 @@ export class ReserverenComponent implements OnInit {
         .collection('groepen')
         .getOne(voorstelling.groep)) as any;
 
-      console.log(groep);
       this.groepsNaam = groep.naam;
     }
   }
@@ -88,6 +94,7 @@ export class ReserverenComponent implements OnInit {
     this.client.collection('reserveringen').create({
       voornaam: this.name,
       achternaam: this.surname,
+      email: this.email,
       is_vriend_van_tovedem: this.vriendVanTovedem,
       is_lid_van_vereniging: this.lidVanTovedemMejotos,
       voorstelling: this.voorstellingId,
