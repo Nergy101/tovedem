@@ -1,7 +1,12 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-import PocketBase from 'pocketbase';
+import { PocketbaseService } from '../services/pocketbase.service';
 
 @Component({
   selector: 'app-lid-worden',
@@ -11,16 +16,11 @@ import PocketBase from 'pocketbase';
   styleUrl: './lid-worden.component.scss',
 })
 export class LidWordenComponent implements OnInit {
-  url = 'https://tovedem.pockethost.io/';
-  client: PocketBase;
+  client = inject(PocketbaseService).client;
 
   content1: WritableSignal<string | null> = signal(null);
   content2: WritableSignal<string | null> = signal(null);
   content3: WritableSignal<string | null> = signal(null);
-
-  constructor() {
-    this.client = new PocketBase(this.url);
-  }
 
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('lid_worden').getList(1, 1))

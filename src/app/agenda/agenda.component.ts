@@ -1,10 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
-import PocketBase from 'pocketbase';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PocketbaseService } from '../services/pocketbase.service';
 
 @Component({
   selector: 'app-agenda',
@@ -21,14 +27,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class AgendaComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
-  client: PocketBase;
+  client = inject(PocketbaseService).client;
 
   voorstellingen: WritableSignal<any[]> = signal([]);
   groepen: WritableSignal<any[]> = signal([]);
-
-  constructor() {
-    this.client = new PocketBase(this.url);
-  }
 
   async ngOnInit(): Promise<void> {
     const voorstellingen = await this.client

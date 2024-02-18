@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 
 import PocketBase from 'pocketbase';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PocketbaseService } from '../services/pocketbase.service';
 
 @Component({
   selector: 'app-reserveren',
@@ -38,8 +39,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './reserveren.component.scss',
 })
 export class ReserverenComponent implements OnInit {
-  url = 'https://tovedem.pockethost.io/';
-  client: PocketBase;
+  client = inject(PocketbaseService).client;
+  snackBar = inject(MatSnackBar);
 
   saving: boolean = false;
   loaded: boolean = false;
@@ -60,10 +61,6 @@ export class ReserverenComponent implements OnInit {
 
   @Input('voorstelling')
   voorstellingId: string | null = null;
-
-  constructor(private readonly _snackBar: MatSnackBar) {
-    this.client = new PocketBase(this.url);
-  }
 
   async ngOnInit(): Promise<void> {
     await this.loadData();
@@ -110,7 +107,7 @@ export class ReserverenComponent implements OnInit {
     this.amountOfPeopleDate2 = 0;
 
     this.saving = false;
-    this._snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
+    this.snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
       duration: 5000,
     });
   }

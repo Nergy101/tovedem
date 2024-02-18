@@ -1,9 +1,14 @@
-import { Component, WritableSignal, effect, signal } from '@angular/core';
+import {
+  Component,
+  WritableSignal,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
-
-import PocketBase from 'pocketbase';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PocketbaseService } from '../services/pocketbase.service';
 
 @Component({
   selector: 'app-groep-pagina',
@@ -16,7 +21,7 @@ export class GroepPaginaComponent {
   groepsNaam: string;
   url = 'https://tovedem.pockethost.io/';
 
-  client: PocketBase;
+  client = inject(PocketbaseService).client;
 
   groep: WritableSignal<any | null> = signal(null);
   aankomendeVoorstelling: WritableSignal<any | null> = signal(null);
@@ -25,8 +30,6 @@ export class GroepPaginaComponent {
 
   constructor(private router: Router) {
     this.groepsNaam = this.router.url.substring(1);
-
-    this.client = new PocketBase(this.url);
 
     effect(() => {
       console.log(this.voorstellingen());

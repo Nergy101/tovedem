@@ -1,8 +1,7 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
-
-import PocketBase from 'pocketbase';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PocketbaseService } from '../services/pocketbase.service';
 
 @Component({
   selector: 'app-home-pagina',
@@ -12,14 +11,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
 })
 export class HomePaginaComponent {
-  url = 'https://tovedem.pockethost.io/';
-  client: PocketBase;
+  client = inject(PocketbaseService).client;
 
   voorstellingen: WritableSignal<any[]> = signal([]);
-
-  constructor() {
-    this.client = new PocketBase(this.url);
-  }
 
   async ngOnInit(): Promise<void> {
     const voorstellingen = await this.client

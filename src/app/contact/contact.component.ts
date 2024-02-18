@@ -32,7 +32,5 @@ export class ContactComponent {
   subject: string | null = null;
   message: string | null = null;
 
-  verstuurContactMail() {
-    console.log('hoi');
-  }
+  verstuurContactMail() {}
 }
