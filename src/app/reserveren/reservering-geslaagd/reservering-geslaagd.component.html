@@ -1,0 +1,21 @@
+<div class="container mat-elevation-z2">
+    @defer (when !!content()) {
+    <div class="row">
+        <h1 class="text-center" style="text-decoration: underline;"> Dank voor uw Reservering</h1>
+        <div class="text-center">Uw reservering is geslaagd! U ontvangt een bevestiging per mail.
+            Wij hebben er alvast heel veel zin in.
+        </div>
+        <h2 class="text-center">Tot snel!!</h2>
+    </div>
+    <mat-card-actions class="custom-buttons">
+        <div class="text-end">
+            <button   mat-raised-button (click)="goToHome()">Terug naar Home</button>
+        </div>
+    </mat-card-actions>
+    
+    } @placeholder (minimum 1s) {
+    <div class="center">
+        <mat-spinner></mat-spinner>
+    </div>
+    }
+</div>

@@ -1,0 +1,19 @@
+<div class="voorstelling-line mat-elevation-z4">
+<h2>{{voorstelling().titel}}</h2>
+    <div>
+    @if(!!voorstelling().datum_tijd_1){
+        <span>
+            {{voorstelling().datum_tijd_1 | date : 'd LLLL YYYY'}}
+        </span>
+        <br>
+        }
+        @if(!!voorstelling().datum_tijd_2){
+        <span>
+            {{voorstelling().datum_tijd_2 | date : 'd LLLL YYYY'}}
+        </span>
+        }  
+    </div>
+    @if(inToekomst()) {
+    <button mat-raised-button (click)="goToReserveren()">RESERVEREN</button>
+    }
+</div>

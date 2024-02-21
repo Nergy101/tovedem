@@ -1,15 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@import '../src/variable.scss';
+
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$indigo-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$custom-light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: (
+        default: #ae1545
+      ),
+      accent: (
+        default: #424242
+      ),
+    ),
+  )
+);
+
+// Include the custom light theme in your application
+@include mat.core-theme($custom-light-theme);
+@include mat.all-component-themes($custom-light-theme);
 
 :root {
   --mdc-elevated-card-container-elevation: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-
-  --mdc-circular-progress-active-indicator-color: #da3c5e;
-  --mat-datepicker-calendar-date-selected-state-background-color: #da3c5e;
-  --mdc-protected-button-container-color: #da3c5e;
-  --mdc-protected-button-label-text-color: white;
-  --mat-protected-button-state-layer-color: white;
-  --mat-protected-button-ripple-color: rgba(255, 255, 255, 0.1);
 }
 
 html,
@@ -23,9 +40,9 @@ body {
 }
 
 a {
-  color: #da3c5e;
+  color: $primary-color;
   :visited {
-    color: #982b43;
+    color: $primary-color;
   }
 }
 

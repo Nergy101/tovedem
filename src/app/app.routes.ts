@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { GroepPaginaComponent } from './groep-pagina/groep-pagina.component';
 import { AgendaComponent } from './agenda/agenda.component';
-import { ReserverenComponent } from './reserveren/reserveren.component';
+import { ReserverenComponent } from './reserveren/reserveer-formulier/reserveren.component';
+import { ReserveringGeslaagdComponent } from './reserveren/reservering-geslaagd/reservering-geslaagd.component';
 import { PrivacyBeleidPaginaComponent } from './privacy-beleid-pagina/privacy-beleid-pagina.component';
 import { HomePaginaComponent } from './home-pagina/home-pagina.component';
 import { VriendWordenComponent } from './vriend-worden/vriend-worden.component';
@@ -33,6 +34,10 @@ export const routes: Routes = [
   {
     path: 'Reserveren',
     component: ReserverenComponent,
+  },
+  {
+    path: 'Reservering-geslaagd',
+    component: ReserveringGeslaagdComponent,
   },
   {
     path: 'Vriend-Worden',

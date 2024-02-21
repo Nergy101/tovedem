@@ -1,4 +1,17 @@
 <div class="container">
+    <h1 class= "mat-elevation-z2 text-center">Agenda</h1>
+    
+    @defer (when voorstellingen().length > 0) {
+    <div class="row">
+        @for (item of voorstellingen(); track $index) {
+            <div class="col-12 mb-4 row justify-content-center">
+                <app-voorstelling-line [voorstelling]="item" class="line col-6"></app-voorstelling-line>
+            </div>
+            }
+    </div>
+    }
+
+    
     <h1 class="mat-elevation-z2 text-center">Aankomende voorstellingen</h1>
     @defer (when voorstellingen().length > 0) {
     <div class="row">
