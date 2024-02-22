@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
-@import '../src/variable.scss';
+@import "variables.scss";
 
 @include mat.core();
 
@@ -11,10 +11,10 @@ $custom-light-theme: mat.define-light-theme(
   (
     color: (
       primary: (
-        default: #ae1545
+        default: #ae1545,
       ),
       accent: (
-        default: #424242
+        default: #424242,
       ),
     ),
   )

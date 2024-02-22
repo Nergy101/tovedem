@@ -6,18 +6,18 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
+import { VoorstellingCardComponent } from '../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../services/pocketbase.service';
+import { PocketbaseService } from '../../shared/services/pocketbase.service';
 
 @Component({
-  selector: 'app-groep-pagina',
+  selector: 'app-groep',
   standalone: true,
   imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
-  templateUrl: './groep-pagina.component.html',
-  styleUrl: './groep-pagina.component.scss',
+  templateUrl: './groep.component.html',
+  styleUrl: './groep.component.scss',
 })
-export class GroepPaginaComponent {
+export class GroepComponent {
   groepsNaam: string;
   url = 'https://tovedem.pockethost.io/';
 

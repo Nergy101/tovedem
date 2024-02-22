@@ -1,13 +1,13 @@
 import { Component, WritableSignal, inject, signal } from '@angular/core';
-import { VoorstellingCardComponent } from '../shared/voorstelling-card/voorstelling-card.component';
+import { VoorstellingCardComponent } from '../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../services/pocketbase.service';
+import { PocketbaseService } from '../../shared/services/pocketbase.service';
 
 @Component({
-  selector: 'app-home-pagina',
+  selector: 'app-home',
   standalone: true,
-  templateUrl: './home-pagina.component.html',
-  styleUrl: './home-pagina.component.scss',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
   imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
 })
 export class HomePaginaComponent {

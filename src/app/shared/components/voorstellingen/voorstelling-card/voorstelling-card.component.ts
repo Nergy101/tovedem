@@ -5,21 +5,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
+import { NavButtonComponent } from '../../nav-button/nav-button.component';
 
 @Component({
-  selector: 'app-voorstelling-line',
+  selector: 'app-voorstelling-card',
   standalone: true,
+  templateUrl: './voorstelling-card.component.html',
+  styleUrl: './voorstelling-card.component.scss',
   imports: [
     CommonModule,
     MatCardModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    NavButtonComponent,
   ],
-  templateUrl: './voorstelling-line.component.html',
-  styleUrl: './voorstelling-line.component.scss',
 })
-export class VoorstellingLineComponent {
+export class VoorstellingCardComponent {
   voorstelling = input.required<any>();
 
   router = inject(Router);
@@ -33,13 +35,5 @@ export class VoorstellingLineComponent {
       new Date(this.voorstelling().datum_tijd_1) > new Date() ||
       new Date(this.voorstelling().datum_tijd_2) > new Date()
     );
-  }
-
-  goToReserveren(): void {
-    this.router.navigate(['/Reserveren'], {
-      queryParams: {
-        voorstelling: this.voorstelling().id,
-      },
-    });
   }
 }

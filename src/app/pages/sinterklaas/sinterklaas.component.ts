@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../services/pocketbase.service';
+import { PocketbaseService } from '../../shared/services/pocketbase.service';
 
 @Component({
   selector: 'app-sinterklaas',

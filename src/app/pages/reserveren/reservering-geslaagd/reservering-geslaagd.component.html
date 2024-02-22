@@ -9,10 +9,12 @@
     </div>
     <mat-card-actions class="custom-buttons">
         <div class="text-end">
-            <button   mat-raised-button (click)="goToHome()">Terug naar Home</button>
+            <app-nav-button [navigationParts]="['/']">
+                Terug naar Home
+            </app-nav-button>
         </div>
     </mat-card-actions>
-    
+
     } @placeholder (minimum 1s) {
     <div class="center">
         <mat-spinner></mat-spinner>

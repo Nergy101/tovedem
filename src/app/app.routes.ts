@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { GroepPaginaComponent } from './groep-pagina/groep-pagina.component';
-import { AgendaComponent } from './agenda/agenda.component';
-import { ReserverenComponent } from './reserveren/reserveer-formulier/reserveren.component';
-import { ReserveringGeslaagdComponent } from './reserveren/reservering-geslaagd/reservering-geslaagd.component';
-import { PrivacyBeleidPaginaComponent } from './privacy-beleid-pagina/privacy-beleid-pagina.component';
-import { HomePaginaComponent } from './home-pagina/home-pagina.component';
-import { VriendWordenComponent } from './vriend-worden/vriend-worden.component';
-import { LidWordenComponent } from './lid-worden/lid-worden.component';
-import { ContactComponent } from './contact/contact.component';
-import { SinterklaasComponent } from './sinterklaas/sinterklaas.component';
+import { GroepComponent } from './pages/groep/groep.component';
+import { AgendaComponent } from './pages/agenda/agenda.component';
+import { PrivacyBeleidComponent } from './pages/privacy-beleid/privacy-beleid.component';
+import { HomePaginaComponent } from './pages/home/home.component';
+import { VriendWordenComponent } from './pages/vriend-worden/vriend-worden.component';
+import { LidWordenComponent } from './pages/lid-worden/lid-worden.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { SinterklaasComponent } from './pages/sinterklaas/sinterklaas.component';
+import { ReserverenComponent } from './pages/reserveren/reserveer-formulier/reserveren.component';
+import { ReserveringGeslaagdComponent } from './pages/reserveren/reservering-geslaagd/reservering-geslaagd.component';
 
 export const routes: Routes = [
   {
@@ -21,15 +21,15 @@ export const routes: Routes = [
   },
   {
     path: 'Tovedem',
-    component: GroepPaginaComponent,
+    component: GroepComponent,
   },
   {
     path: 'Cloos',
-    component: GroepPaginaComponent,
+    component: GroepComponent,
   },
   {
     path: 'Mejotos',
-    component: GroepPaginaComponent,
+    component: GroepComponent,
   },
   {
     path: 'Reserveren',
@@ -61,6 +61,6 @@ export const routes: Routes = [
   },
   {
     path: 'PrivacyBeleid',
-    component: PrivacyBeleidPaginaComponent,
+    component: PrivacyBeleidComponent,
   },
 ];

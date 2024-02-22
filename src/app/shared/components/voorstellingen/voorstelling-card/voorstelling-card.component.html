@@ -28,7 +28,9 @@
     <mat-card-actions>
         <div></div>
         @if(inToekomst()) {
-        <button mat-raised-button color='primary' (click)="goToReserveren()">RESERVEREN</button>
+        <app-nav-button [navigationParts]="['/Reserveren']" [queryParams]="{voorstelling: this.voorstelling().id}">
+            RESERVEREN
+        </app-nav-button>
         }
     </mat-card-actions>
 </mat-card>
