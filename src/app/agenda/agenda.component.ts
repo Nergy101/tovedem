@@ -29,21 +29,24 @@ export class AgendaComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
   client = inject(PocketbaseService).client;
 
+  today = new Date().toISOString();
+
   voorstellingen: WritableSignal<any[]> = signal([]);
   groepen: WritableSignal<any[]> = signal([]);
 
   async ngOnInit(): Promise<void> {
-    const voorstellingen = await this.client
-      .collection('voorstellingen')
-      .getFullList({
+    const voorstellingenInDeToekomstEnMaxVan6 = (
+      await this.client.collection('voorstellingen').getFullList({
         sort: '-created',
-      });
+        filter: `datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}"`,
+      })
+    ).slice(0, 6);
 
     const groepen = await this.client.collection('groepen').getFullList({
       sort: '-created',
     });
 
-    this.voorstellingen.set(voorstellingen as any);
+    this.voorstellingen.set(voorstellingenInDeToekomstEnMaxVan6 as any);
     this.groepen.set(groepen as any);
   }
 }
