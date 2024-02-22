@@ -23,23 +23,24 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                 </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <div class="row">
-                    <mat-form-field class="col-lg-4 col-md-6 col-12">
-                        <mat-label>Voornaam</mat-label>
-                        <input matInput type="text" [(ngModel)]="name">
-                    </mat-form-field>
-                    <mat-form-field class="col-lg-4 col-md-6 col-12">
-                        <mat-label>Achternaam</mat-label>
-                        <input matInput type="text" [(ngModel)]="surname">
-                    </mat-form-field>
-                    <mat-form-field class="col-lg-4 col-12">
-                        <mat-label>E-mail</mat-label>
-                        <input matInput type="email" [(ngModel)]="email">
-                    </mat-form-field>
+                <div class="container">
+                    <div class="row">
+                        <mat-form-field class="col-md-4 col-12">
+                            <mat-label>E-mail</mat-label>
+                            <input matInput type="email" [(ngModel)]="email">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-4 col-12">
+                            <mat-label>Voornaam</mat-label>
+                            <input matInput type="text" [(ngModel)]="name">
+                        </mat-form-field>
+                        <mat-form-field class="col-md-4 col-12">
+                            <mat-label>Achternaam</mat-label>
+                            <input matInput type="text" [(ngModel)]="surname">
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div class="container">
                     <div class="row justify-content-evenly">
-                        <h2>Data</h2>
                         @if(!!datum1 && datum1 > today)
                         {
                         <div class="col-md-6 col-12">
