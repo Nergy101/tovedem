@@ -58,8 +58,8 @@ export class ReserverenComponent implements OnInit {
   email = '';
   vriendVanTovedem = false;
   lidVanTovedemMejotos = false;
-  amountOfPeopleDate1 = 0;
-  amountOfPeopleDate2 = 0;
+  amountOfPeopleDate1: number | null = null;
+  amountOfPeopleDate2: number | null = null;
 
   @Input('voorstelling')
   voorstellingId: string | null = null;
@@ -94,30 +94,31 @@ export class ReserverenComponent implements OnInit {
   async saveReservering(): Promise<void> {
     this.saving = true;
 
-    const nieuweReservering = await this.client.collection('reserveringen').create({
-      voornaam: this.name,
-      achternaam: this.surname,
-      email: this.email,
-      is_vriend_van_tovedem: this.vriendVanTovedem,
-      is_lid_van_vereniging: this.lidVanTovedemMejotos,
-      voorstelling: this.voorstellingId,
-      datum_tijd_1_aantal: this.amountOfPeopleDate1,
-      datum_tijd_2_aantal: this.amountOfPeopleDate2,
-    });
-        
+    const nieuweReservering = await this.client
+      .collection('reserveringen')
+      .create({
+        voornaam: this.name,
+        achternaam: this.surname,
+        email: this.email,
+        is_vriend_van_tovedem: this.vriendVanTovedem,
+        is_lid_van_vereniging: this.lidVanTovedemMejotos,
+        voorstelling: this.voorstellingId,
+        datum_tijd_1_aantal: this.amountOfPeopleDate1 ?? 0,
+        datum_tijd_2_aantal: this.amountOfPeopleDate2 ?? 0,
+      });
+
     //TO DO: pagina met reservering geslaagd. nog een maal alle gegevens op een rijtje ga terug naar hoofdscherm
     //Datum, aantal stoelen, welke naam, of ze gereserverde plekken gaan krijgen of niet, betalen aan de kassa melding (Pin en cash) kaart met route??
 
     this.router.navigate(['/Reservering-geslaagd'], {
       queryParams: {
         voorstelling: this.voorstellingId,
-        reservering: nieuweReservering.id
+        reservering: nieuweReservering.id,
       },
-    }); 
+    });
 
     this._snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
       duration: 5000,
     });
-    
   }
 }
