@@ -1,5 +1,22 @@
 # TovedemReserveringen
 
+This repository contains an Angular project.
+<https://github.com/Nergy101/tovedem>
+
+## Requirements
+
+Before you begin, ensure you have met the following requirements:
+
+- Node.js and npm: Make sure you have Node.js and npm installed on your machine. You can download them from [https://nodejs.org/](https://nodejs.org/).
+
+## Installing Angular CLI
+
+To run and build the Angular project, you need to install Angular CLI. Open your terminal and run the following command:
+
+```bash
+npm install -g @angular/cli
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
 
 ## Development server
@@ -13,14 +30,6 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ## Further help
 
