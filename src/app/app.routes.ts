@@ -9,6 +9,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { SinterklaasComponent } from './pages/sinterklaas/sinterklaas.component';
 import { ReserverenComponent } from './pages/reserveren/reserveer-formulier/reserveren.component';
 import { ReserveringGeslaagdComponent } from './pages/reserveren/reservering-geslaagd/reservering-geslaagd.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: 'Agenda',
     component: AgendaComponent,
+  },
+  {
+    path: 'Login',
+    component: LoginComponent,
   },
   {
     path: 'Tovedem',

@@ -6,7 +6,7 @@ import PocketBase from 'pocketbase';
   providedIn: 'root',
 })
 export class PocketbaseService {
-  url = 'https://tovedem.pockethost.io/';
+  private url = 'https://tovedem.pockethost.io/';
   client: PocketBase;
 
   constructor() {
