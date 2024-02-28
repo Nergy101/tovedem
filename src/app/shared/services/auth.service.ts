@@ -5,7 +5,7 @@ import { RecordAuthResponse, RecordModel } from 'pocketbase';
   providedIn: 'root',
 })
 export class AuthService {
-  userData: WritableSignal<RecordAuthResponse<RecordModel> | undefined> =
+  public userData: WritableSignal<RecordAuthResponse<RecordModel> | undefined> =
     signal<RecordAuthResponse<RecordModel> | undefined>(undefined);
 
   constructor() {

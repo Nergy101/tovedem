@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-login',
   standalone: true,
   imports: [
+    CommonModule,
     MatInputModule,
     FormsModule,
     MatCardModule,
