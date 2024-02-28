@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { MatCardModule } from '@angular/material/card';
@@ -33,13 +33,23 @@ export class LoginComponent {
     return !!this.usernameOrEmail && !!this.password;
   }
 
+  loading = signal(false);
+
+  logout(): void {
+    this.authService.unregisterUser();
+  }
+
   async login(): Promise<void> {
     if (this.formIsValid) {
+      this.loading.set(true);
+
       const authData = await this.pocketbase
         .collection('users')
         .authWithPassword(this.usernameOrEmail!, this.password!);
 
       this.authService.registerUser(authData);
     }
+
+    this.loading.set(false);
   }
 }

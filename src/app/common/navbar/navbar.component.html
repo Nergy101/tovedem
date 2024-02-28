@@ -108,6 +108,7 @@
           >
         </li>
 
+        @if (!authService.isLoggedIn()){
         <li>
           <a
             class="nav-link"
@@ -122,6 +123,22 @@
             </span>
           </a>
         </li>
+        } @else {
+        <li>
+          <a
+            class="nav-link"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/Login"
+          >
+            <span class="d-flex justify-content-center align-baseline">
+              Log uit
+              <mat-icon>logout</mat-icon>
+            </span>
+          </a>
+        </li>
+        }
       </ul>
     </div>
   </div>

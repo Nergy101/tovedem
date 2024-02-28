@@ -21,10 +21,11 @@
             /> </mat-form-field
           ><mat-card-actions>
             <button
+              type="submit"
               color="primary"
               style="flex: 1"
               mat-raised-button
-              [disabled]="!formIsValid"
+              [disabled]="!formIsValid || loading()"
               (click)="login()"
             >
               Login
@@ -36,6 +37,12 @@
   </div>
 </div>
 
+@if (authService.isLoggedIn()) {
+
+<span>Logged in as: {{ (authService.userData()?.record)!["name"] }} </span>
+
 <pre>
     {{ authService.userData() | json }}
 </pre>
+<button mat-flat-button color="primary" (click)="logout()">Log uit</button>
+}
