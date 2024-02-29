@@ -27,10 +27,10 @@ li {
     background-color: #ae1545;
   }
 
-  // :hover {
-  //   color: white;
-  //   background-color: #ae1545;
-  // }
+  :hover {
+    color: white;
+    background-color: #ae1545;
+  }
 }
 
 .navbar-collapse {
@@ -61,7 +61,11 @@ a {
   max-height: 2em;
 }
 
-.in-menu {
-  width: auto;
-  padding: 0 1em;
+mat-icon {
+  transform: scale(1.5);
+}
+
+.groepsnaam {
+  margin: 0.5rem;
+  pointer-events: none;
 }

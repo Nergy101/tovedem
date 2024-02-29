@@ -1,32 +1,60 @@
 <div class="container">
-    @defer (when !!groep() && !!aankomendeVoorstelling() && afgelopenVoorstellingen().length > 0) {
-    <div class="row mat-elevation-z2">
-        <h1 class="text-center">{{groep().naam}}</h1>
-        <h3 [innerHTML]="groep().omschrijving"></h3>
-    </div>
-    <div class="row">
-        <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
-    </div>
-    <div class="row">
-        <div class=" flex justify-content-center">
-            @for (item of [aankomendeVoorstelling()]; track $index) {
-            <app-voorstelling-card [voorstelling]="item" class="col-md-6 col-12">
-            </app-voorstelling-card>
-            }
-        </div>
-    </div>
-    <div class="row">
-        <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
-    </div>
-    <div class="row">
-        @for (item of afgelopenVoorstellingen(); track $index) {
-        <app-voorstelling-card [voorstelling]="item" class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1">
-        </app-voorstelling-card>
-        }
-    </div>
-    } @placeholder {
-    <div class="center">
-        <mat-spinner></mat-spinner>
-    </div>
+  @defer (when !!groep() && aankomendeVoorstelling() != undefined &&
+  !!afgelopenVoorstellingen()) {
+  <div class="row mat-elevation-z2">
+    <span class="text-center display-1">{{ groep().naam }}</span>
+    <h3 [innerHTML]="groep().omschrijving"></h3>
+
+    @if(!!spelers()){
+    <p>Spelers</p>
+    <ul>
+      @for(speler of spelers(); track speler){
+      <li>
+        {{ speler.naam }}
+      </li>
+      }
+    </ul>
     }
+  </div>
+
+  <div class="row">
+    <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
+  </div>
+  @if(aankomendeVoorstelling() != null){
+  <div class="row">
+    <div class="flex justify-content-center">
+      <app-voorstelling-card
+        [voorstelling]="aankomendeVoorstelling()"
+        class="col-md-6 col-12"
+      >
+      </app-voorstelling-card>
+    </div>
+  </div>
+
+  } @else {
+  <div class="center">
+    <span>Geen aankomende voorstelling om te tonen</span>
+  </div>
+  }
+
+  <div class="row">
+    <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
+  </div>
+  @for (item of afgelopenVoorstellingen(); track $index) {
+  <div class="row">
+    <app-voorstelling-card
+      [voorstelling]="item"
+      class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1"
+    >
+    </app-voorstelling-card>
+  </div>
+  } @empty {
+  <div class="center">
+    <span>Geen afgelopen voorstellingen om te tonen</span>
+  </div>
+  } } @placeholder {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
 </div>

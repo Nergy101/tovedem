@@ -23,40 +23,11 @@ import { NavButtonComponent } from '../../nav-button/nav-button.component';
 })
 export class VoorstellingLineComponent {
   voorstelling = input.required<any>();
-
   router = inject(Router);
 
-  //objDate: Date = new Date();
-  
-  //dayDate1 = this.objDate.getDay();
-  //dayDate2 = this.voorstelling().datum_tijd_2;
-  //monthDate = this.voorstelling().datum_tijd_1.getMonth();
-  //yearDate = this.voorstelling().datum_tijd_1.getFullYear();
-  //day:  number = this.voorstelling().datum_tijd_1.slice(0,3);
-  getDay1Format():number{
-    return(
-      new Date(this.voorstelling().datum_tijd_1).getDay()
-    );
+  getYearFormat(): number {
+    return new Date(this.voorstelling().datum_tijd_1).getFullYear();
   }
-
-  getDay2Format():number{
-    return(
-      new Date(this.voorstelling().datum_tijd_2).getDay()
-    );
-  }
-
-  getMonthFormat():string{
-    return(
-      new Date(this.voorstelling().datum_tijd_1).toString().slice(4,7)
-    );
-  }
-
-  getYearFormat():number{
-    return(
-      new Date(this.voorstelling().datum_tijd_1).getFullYear()
-    );
-  }
-
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
     return `https://tovedem.pockethost.io/api/files/${collectionId}/${recordId}/${imageId}`;
@@ -76,6 +47,4 @@ export class VoorstellingLineComponent {
       },
     });
   }
-
-
 }
