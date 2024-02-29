@@ -57,7 +57,17 @@ a {
   justify-content: center;
 }
 
+.mat-elevation-z3 {
+  padding: 0.5em;
+  border-radius: 1em;
+}
+
 .mat-elevation-z2 {
   padding: 1em;
+  border-radius: 1em;
+}
+
+.mat-elevation-z1 {
+  padding: 0.5em;
   border-radius: 1em;
 }

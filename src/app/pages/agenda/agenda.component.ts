@@ -34,6 +34,8 @@ export class AgendaComponent implements OnInit {
 
   today = new Date().toISOString();
 
+  huidigJaar = new Date().getFullYear();
+
   voorstellingen: WritableSignal<any[]> = signal([]);
   groepen: WritableSignal<any[]> = signal([]);
 

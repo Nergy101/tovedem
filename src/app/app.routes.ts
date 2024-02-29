@@ -25,15 +25,15 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'Tovedem',
+    path: 'Groep/Tovedem',
     component: GroepComponent,
   },
   {
-    path: 'Cloos',
+    path: 'Groep/Cloos',
     component: GroepComponent,
   },
   {
-    path: 'Mejotos',
+    path: 'Groep/Mejotos',
     component: GroepComponent,
   },
   {

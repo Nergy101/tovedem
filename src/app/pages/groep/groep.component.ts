@@ -29,7 +29,7 @@ export class GroepComponent {
   afgelopenVoorstellingen: WritableSignal<any[]> = signal([]);
 
   constructor(private router: Router) {
-    this.groepsNaam = this.router.url.substring(1);
+    this.groepsNaam = this.router.url.substring(7);
 
     effect(() => {
       console.log(this.voorstellingen());

@@ -4,16 +4,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [
+    RouterModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-
   authService = inject(AuthService);
-
 }
