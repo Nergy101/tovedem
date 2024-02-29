@@ -1,18 +1,21 @@
-<div class="voorstelling-line mat-elevation-z4">
-    <h2>{{voorstelling().titel}}</h2>
-    <div>
-        @if(!!voorstelling().datum_tijd_1){
-        <span>
-            {{voorstelling().datum_tijd_1 | date : 'd LLLL YYYY'}}
-        </span>
-        <br>
-        }
-        @if(!!voorstelling().datum_tijd_2){
-        <span>
-            {{voorstelling().datum_tijd_2 | date : 'd LLLL YYYY'}}
-        </span>
-        }
+<div class="voorstelling-line mat-elevation-z4" >
+    @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
+    <div class="dateFormat" >
+    <div style="font-size:large;">
+    <span >
+        {{getDay1Format()}}
+    </span>
+    <br>
+    <span>
+        {{getDay2Format()}}
+    </span>
     </div>
+    <span style = "font-size:xx-large;" marign="2em" >
+        {{getMonthFormat()}}
+    </span>
+    </div>
+    }
+    <h2 align-self="flex-center" >{{voorstelling().titel}}</h2>
     @if(inToekomst()) {
     <app-nav-button [navigationParts]="['/Reserveren']" [queryParams]="{voorstelling: this.voorstelling().id}">
         RESERVEREN

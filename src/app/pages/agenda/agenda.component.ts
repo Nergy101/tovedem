@@ -34,24 +34,25 @@ export class AgendaComponent implements OnInit {
 
   today = new Date().toISOString();
 
-  huidigJaar = new Date().getFullYear();
-
-  voorstellingen: WritableSignal<any[]> = signal([]);
+  voorstellingenShort: WritableSignal<any[]> = signal([]);
+  voorstellingenLong: WritableSignal<any[]> = signal([]);
   groepen: WritableSignal<any[]> = signal([]);
 
   async ngOnInit(): Promise<void> {
-    const voorstellingenInDeToekomstEnMaxVan6 = (
-      await this.client.collection('voorstellingen').getFullList({
+    const voorstellingenInDeToekomst = await this.client
+      .collection('voorstellingen')
+      .getFullList({
         sort: '-created',
         filter: `datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}"`,
-      })
-    ).slice(0, 6);
-
+      });
+    const voorstellingenInDeToekomstEnMaxVan6 =
+      voorstellingenInDeToekomst.slice(0, 6);
     const groepen = await this.client.collection('groepen').getFullList({
       sort: '-created',
     });
 
-    this.voorstellingen.set(voorstellingenInDeToekomstEnMaxVan6 as any);
+    this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6 as any);
+    this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6 as any);
     this.groepen.set(groepen as any);
   }
 }
