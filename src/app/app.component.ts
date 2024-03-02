@@ -1,4 +1,4 @@
-import { Component, LOCALE_ID } from '@angular/core';
+import { Component, LOCALE_ID, ViewChild, effect, inject } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +10,11 @@ import { AgendaComponent } from './pages/agenda/agenda.component';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { registerLocaleData } from '@angular/common';
-
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import localeNL from '@angular/common/locales/nl';
+import { AuthService } from './shared/services/auth.service';
+import { SideDrawerService } from './shared/services/side-drawer.service';
+import { MatListModule } from '@angular/material/list';
 registerLocaleData(localeNL);
 
 @Component({
@@ -23,6 +26,7 @@ registerLocaleData(localeNL);
     RouterOutlet,
     RouterModule,
     MatButtonModule,
+    MatSidenavModule,
     MatInputModule,
     MatIconModule,
     FormsModule,
@@ -31,9 +35,32 @@ registerLocaleData(localeNL);
     AgendaComponent,
     NavbarComponent,
     FooterComponent,
+    MatListModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
 })
 export class AppComponent {
-  title = 'TovedemReserveringen';
+  authService = inject(AuthService);
+  sideDrawerService = inject(SideDrawerService);
+
+  @ViewChild(MatDrawer) drawer!: MatDrawer;
+
+  constructor() {
+    effect(() => {
+      if (this.sideDrawerService.isOpen()) {
+        this.drawer.open();
+      } else {
+        this.drawer.close();
+      }
+    });
+
+    if (this.authService.isLoggedIn()) {
+      this.sideDrawerService.open();
+    }
+  }
+
+  toggle() {
+    // this.drawer.toggle();
+    this.sideDrawerService.toggle();
+  }
 }

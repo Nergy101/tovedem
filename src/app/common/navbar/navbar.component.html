@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"
-      ><img class="logo" src="/assets/tovedem_logo.png"
-    /></a>
+    <a class="navbar-brand" href="#"><img class="logo"
+        src="/assets/tovedem_logo.png" /></a>
     <button
       class="navbar-toggler"
       type="button"
@@ -10,158 +9,148 @@
       data-bs-target="#navbarNav"
       aria-controls="navbarNav"
       aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="links navbar-nav nav-pills nav-fill">
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            Home <mat-icon>home</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Agenda"
-          >
-            Agenda <mat-icon>calendar_month</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button mat-button [matMenuTriggerFor]="menu">
-            Groepen<mat-icon>groups</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <ul class="links navbar-nav nav-pills nav-fill">
-              <li>
-                <a
-                  class="nav-link in-menu"
-                  data-bs-toggle="collapse"
-                  data-bs-target=".navbar-collapse.show"
-                  routerLinkActive="active"
-                  routerLink="/Groep/Tovedem"
-                >
-                  <span class="groepsnaam">Tovedem</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="nav-link in-menu"
-                  data-bs-toggle="collapse"
-                  data-bs-target=".navbar-collapse.show"
-                  routerLinkActive="active"
-                  routerLink="/Groep/Cloos"
-                >
-                  <span class="groepsnaam">Cloos</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="nav-link in-menu"
-                  data-bs-toggle="collapse"
-                  data-bs-target=".navbar-collapse.show"
-                  routerLinkActive="active"
-                  routerLink="/Groep/Mejotos"
-                >
-                  <span class="groepsnaam">Mejoto's</span>
-                </a>
-              </li>
-            </ul>
-          </mat-menu>
-        </li>
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Lid-Worden"
-          >
-            Lid worden <mat-icon>person_add</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Steunen"
-          >
-            Steunen <mat-icon>volunteer_activism</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Sinterklaas"
-          >
-            Sinterklaas <mat-icon>redeem</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Contact"
-          >
-            Contact <mat-icon>mail</mat-icon>
-          </button>
-        </li>
+      <div class="links-container">
+        <ul class="links navbar-nav nav-pills nav-fill">
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/"
+              [routerLinkActiveOptions]="{ exact: true }">
+              Home <mat-icon>home</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Agenda">
+              Agenda <mat-icon>calendar_month</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button mat-button [matMenuTriggerFor]="menu">
+              Groepen<mat-icon>groups</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <ul class="links navbar-nav nav-pills nav-fill">
+                <li>
+                  <a
+                    class="nav-link in-menu"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
+                    routerLinkActive="active"
+                    routerLink="/Groep/Tovedem">
+                    <span class="groepsnaam">Tovedem</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="nav-link in-menu"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
+                    routerLinkActive="active"
+                    routerLink="/Groep/Cloos">
+                    <span class="groepsnaam">Cloos</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="nav-link in-menu"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
+                    routerLinkActive="active"
+                    routerLink="/Groep/Mejotos">
+                    <span class="groepsnaam">Mejoto's</span>
+                  </a>
+                </li>
+              </ul>
+            </mat-menu>
+          </li>
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Lid-Worden">
+              Lid worden <mat-icon>person_add</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Steunen">
+              Steunen <mat-icon>volunteer_activism</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Sinterklaas">
+              Sinterklaas <mat-icon>redeem</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Contact">
+              Contact <mat-icon>mail</mat-icon>
+            </button>
+          </li>
 
-        @if (!authService.isLoggedIn()){
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Login"
-          >
-            Login
-            <mat-icon>login</mat-icon>
-          </button>
-        </li>
-        } @else {
-        <li>
-          <button
-            mat-button
-            class="nav-link"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/Profiel"
-          >
-            Profiel
-            <mat-icon>account_circle</mat-icon>
-          </button>
-        </li>
-        }
-      </ul>
+          @if (!authService.isLoggedIn()){
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Login">
+              Login
+              <mat-icon>login</mat-icon>
+            </button>
+          </li>
+          } @else {
+          <li>
+            <button
+              mat-button
+              class="nav-link"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/Profiel">
+              {{authService.userData().name}}
+              <mat-icon>account_circle</mat-icon>
+            </button>
+          </li>
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </nav>

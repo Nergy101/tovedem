@@ -4,14 +4,18 @@ import {
   WritableSignal,
   computed,
   effect,
+  inject,
   signal,
 } from '@angular/core';
 import { RecordAuthResponse, RecordModel } from 'pocketbase';
+import { SideDrawerService } from './side-drawer.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  sideDrawerService = inject(SideDrawerService);
+
   public userRecord: WritableSignal<
     RecordAuthResponse<RecordModel> | null | undefined
   > = signal<RecordAuthResponse<RecordModel> | null | undefined>(undefined);
@@ -54,9 +58,11 @@ export class AuthService {
 
   registerUser(userRecord: RecordAuthResponse<RecordModel>): void {
     this.userRecord.set(userRecord);
+    this.sideDrawerService.open();
   }
 
   unregisterUser() {
+    this.sideDrawerService.close();
     localStorage.removeItem('user_data');
     this.userRecord.set(null);
   }

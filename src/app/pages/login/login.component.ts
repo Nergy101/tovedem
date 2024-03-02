@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { MatCardModule } from '@angular/material/card';

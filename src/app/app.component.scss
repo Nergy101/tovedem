@@ -1,6 +1,25 @@
 :host {
   display: flex;
   flex-direction: column;
+
+  ::ng-deep {
+    mat-drawer-container {
+      flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+
+    .mat-drawer-content {
+      flex: 1;
+      display: flex;
+    }
+  }
+}
+
+.router-content {
+  display: block;
+  margin-bottom: 5em;
+  margin-top: 5em;
 }
 
 header {
@@ -12,8 +31,60 @@ header {
 
 footer {
   margin-top: auto;
+  align-self: flex-end;
+
+  &.container-fluid {
+    padding: 0;
+  }
 }
 
-router-outlet {
+.sidenav {
   margin-top: 5em;
+  padding: 0.1rem;
+}
+
+.drawer-content {
+  flex: 1;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+mat-icon {
+  transform: scale(1.5);
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+li {
+  list-style: none;
+  margin: 0 1em;
+
+  .active {
+    color: white;
+    background-color: #ae1545;
+  }
+
+  :hover {
+    color: white;
+    background-color: #ae1545;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.links {
+  display: flex;
+  gap: 0.5em;
+  // align-items: center;
+  justify-content: space-evenly;
 }

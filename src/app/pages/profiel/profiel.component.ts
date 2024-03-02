@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
+import { SideDrawerService } from '../../shared/services/side-drawer.service';
 
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
@@ -29,6 +30,7 @@ import { Router } from '@angular/router';
 export class ProfielComponent implements OnInit {
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
+  sideDrawerService = inject(SideDrawerService);
 
   user = this.authService.userData;
 
@@ -36,6 +38,10 @@ export class ProfielComponent implements OnInit {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/']);
     }
+  }
+
+  openDrawer() {
+    this.sideDrawerService.open();
   }
 
   logout(): void {

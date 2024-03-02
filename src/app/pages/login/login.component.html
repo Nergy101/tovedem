@@ -7,30 +7,35 @@
             <mat-card-title> Login </mat-card-title>
           </mat-card-title-group>
         </mat-card-header>
-        <mat-card-content class="row gap-4">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>E-mail of Gebruikersnaam</mat-label>
-            <input matInput type="email" [(ngModel)]="usernameOrEmail" />
-          </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Wachtwoord</mat-label>
-            <input
-              matInput
-              type="password"
-              [(ngModel)]="password"
-            /> </mat-form-field
-          ><mat-card-actions>
-            <button
-              type="submit"
-              color="primary"
-              style="flex: 1"
-              mat-raised-button
-              [disabled]="!formIsValid || loading()"
-              (click)="login()"
-            >
-              Login
-            </button>
-          </mat-card-actions>
+        <mat-card-content class="mt-2 row gap-4">
+          <form (ngSubmit)="login()"
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2">
+            <mat-form-field>
+              <mat-label>E-mail of Gebruikersnaam</mat-label>
+              <input matInput required type="text"
+                [(ngModel)]="usernameOrEmail"
+                name="usernameOrEmail" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Wachtwoord</mat-label>
+              <input
+                matInput
+                required
+                type="password"
+                name="password"
+                [(ngModel)]="password" />
+
+            </mat-form-field><mat-card-actions>
+              <button class="flex-grow-1"
+                type="submit"
+                color="primary"
+                mat-raised-button
+                [disabled]="!formIsValid || loading()"
+                (click)="login()">
+                Login
+              </button>
+            </mat-card-actions>
+          </form>
         </mat-card-content>
       </mat-card>
     </div>

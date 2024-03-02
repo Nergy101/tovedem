@@ -1,9 +1,115 @@
+
 <header>
     <app-navbar></app-navbar>
 </header>
 
-<router-outlet />
+<mat-drawer-container autosize [hasBackdrop]="false">
+    <mat-drawer #drawer class="sidenav bg-light" mode="side">
+        <div class="drawer-content">
 
-<footer>
-    <app-footer></app-footer>
-</footer>
+            <div class="links-container">
+                <ul class="links navbar-nav nav-pills nav-fill">
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
+                            routerLink="/Leden"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Leden <mat-icon align>diversity_3</mat-icon>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
+                            routerLink="/Spelers"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Spelers <mat-icon align>groups_3</mat-icon>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
+                            routerLink="/Voorstellingen"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Voorstellingen <mat-icon align>curtains</mat-icon>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
+                            routerLink="/Reserveringen"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Reserveringen <mat-icon>payments</mat-icon>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Ook mooi, maar anders dan de main nav -->
+            <!-- <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <button mat-flat-button
+                        class="w-100 d-flex justify-content-around">
+                        Leden <mat-icon align>diversity_3</mat-icon>
+                    </button>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <button mat-flat-button
+                        class="w-100 d-flex justify-content-around">
+                        Spelers <mat-icon align>groups_3</mat-icon>
+                    </button>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <button mat-flat-button
+                        class="w-100 d-flex justify-content-around">
+                        Voorstellingen <mat-icon>curtains</mat-icon>
+                    </button>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <button mat-flat-button
+                        class="w-100 d-flex justify-content-around">
+                        Reserveringen <mat-icon>payments</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-list> -->
+        </div>
+    </mat-drawer>
+
+    <div class="drawer-content">
+        <div class="router-content">
+
+            @if (authService.isLoggedIn())
+            {
+            @if (sideDrawerService.isOpen()) {
+            <button mat-button (click)="toggle()">
+                <mat-icon>chevron_left</mat-icon> Sluit leden paneel
+            </button>
+            } @else {
+            <button mat-button (click)="toggle()">
+                <mat-icon>chevron_right</mat-icon> Open leden paneel
+            </button>
+            }
+            }
+            <router-outlet />
+        </div>
+
+        <footer class="container-fluid">
+            <app-footer></app-footer>
+        </footer>
+    </div>
+</mat-drawer-container>
