@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -43,6 +44,11 @@ export class LoginComponent {
   }
 
   loading = signal(false);
+
+  titleService = inject(Title);
+  constructor() {
+    this.titleService.setTitle('Tovedem - Login');
+  }
 
   async login(): Promise<void> {
     if (this.formIsValid) {

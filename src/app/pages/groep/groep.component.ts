@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { VoorstellingCardComponent } from '../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-groep',
@@ -31,8 +32,16 @@ export class GroepComponent {
 
   spelers: WritableSignal<any[] | null> = signal(null);
 
+  titleService = inject(Title);
+
   constructor(private router: Router) {
     this.groepsNaam = this.router.url.substring(7);
+
+    effect(() => {
+      if (!!this.groep()?.naam) {
+        this.titleService.setTitle(`Tovedem - Groep - ${this.groep().naam} `);
+      }
+    });
   }
 
   async ngOnInit(): Promise<void> {

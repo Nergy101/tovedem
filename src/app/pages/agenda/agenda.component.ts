@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VoorstellingLineComponent } from '../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-agenda',
@@ -33,6 +34,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class AgendaComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
   client = inject(PocketbaseService).client;
+  titleService = inject(Title);
 
   today = new Date().toISOString();
 
@@ -42,6 +44,10 @@ export class AgendaComponent implements OnInit {
 
   voorstellingenPerJaar: WritableSignal<{ year: number; items: any[] }[]> =
     signal([]);
+
+  constructor() {
+    this.titleService.setTitle('Tovedem - Agenda');
+  }
 
   async ngOnInit(): Promise<void> {
     const voorstellingenInDeToekomst = await this.client

@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profiel',
@@ -34,6 +35,14 @@ export class ProfielComponent implements OnInit {
 
   user = this.authService.userData;
 
+  titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle(
+      `Tovedem - Profiel - ${this.authService.userData().username} `
+    );
+  }
+
   ngOnInit(): void {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/']);
@@ -46,6 +55,6 @@ export class ProfielComponent implements OnInit {
 
   logout(): void {
     this.authService.unregisterUser();
-    this.router.navigate(['/']);
+    this.router.navigate(['/Login']);
   }
 }

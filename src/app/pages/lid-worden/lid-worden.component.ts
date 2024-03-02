@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lid-worden',
@@ -22,6 +23,10 @@ export class LidWordenComponent implements OnInit {
   content2: WritableSignal<string | null> = signal(null);
   content3: WritableSignal<string | null> = signal(null);
 
+  titleService = inject(Title);
+  constructor() {
+    this.titleService.setTitle('Tovedem - Lid Worden');
+  }
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('lid_worden').getList(1, 1))
       .items[0];
