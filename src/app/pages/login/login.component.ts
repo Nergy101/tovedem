@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -28,16 +29,13 @@ export class LoginComponent {
 
   pocketbase = inject(PocketbaseService).client;
   authService = inject(AuthService);
+  router = inject(Router);
 
   get formIsValid(): boolean {
     return !!this.usernameOrEmail && !!this.password;
   }
 
   loading = signal(false);
-
-  logout(): void {
-    this.authService.unregisterUser();
-  }
 
   async login(): Promise<void> {
     if (this.formIsValid) {
@@ -48,6 +46,7 @@ export class LoginComponent {
         .authWithPassword(this.usernameOrEmail!, this.password!);
 
       this.authService.registerUser(authData);
+      this.router.navigate(['Profiel']);
     }
 
     this.loading.set(false);

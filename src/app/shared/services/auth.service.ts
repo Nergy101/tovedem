@@ -12,9 +12,13 @@ import { RecordAuthResponse, RecordModel } from 'pocketbase';
   providedIn: 'root',
 })
 export class AuthService {
-  public userData: WritableSignal<
+  public userRecord: WritableSignal<
     RecordAuthResponse<RecordModel> | null | undefined
   > = signal<RecordAuthResponse<RecordModel> | null | undefined>(undefined);
+
+  public userData: Signal<any | null> = computed(
+    () => this.userRecord()?.record ?? null
+  );
 
   public isLoggedIn: Signal<boolean>;
 
@@ -22,24 +26,24 @@ export class AuthService {
     // check the localstorage for userData
     const existingUserData = localStorage.getItem('user_data');
     if (!!existingUserData) {
-      this.userData.set(JSON.parse(existingUserData)); // triggers isLoggedIn-computed
+      this.userRecord.set(JSON.parse(existingUserData)); // triggers isLoggedIn-computed
     }
 
-    // check when new userData was set
+    // check when new userRecord was set
     this.isLoggedIn = computed(() => {
-      const userData = this.userData();
+      const userRecord = this.userRecord();
       let isLoggedIn = false;
 
-      if (!!userData) {
+      if (!!userRecord) {
         isLoggedIn = true;
       }
 
       return isLoggedIn;
     });
 
-    // save new userData to localstorage
+    // save new userRecord to localstorage
     effect(() => {
-      const newValue = this.userData();
+      const newValue = this.userRecord();
 
       if (newValue != undefined) {
         console.log(newValue);
@@ -48,12 +52,12 @@ export class AuthService {
     });
   }
 
-  registerUser(userData: RecordAuthResponse<RecordModel>): void {
-    this.userData.set(userData);
+  registerUser(userRecord: RecordAuthResponse<RecordModel>): void {
+    this.userRecord.set(userRecord);
   }
 
   unregisterUser() {
     localStorage.removeItem('user_data');
-    this.userData.set(null);
+    this.userRecord.set(null);
   }
 }

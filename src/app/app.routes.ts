@@ -10,6 +10,7 @@ import { SinterklaasComponent } from './pages/sinterklaas/sinterklaas.component'
 import { ReserverenComponent } from './pages/reserveren/reserveer-formulier/reserveren.component';
 import { ReserveringGeslaagdComponent } from './pages/reserveren/reservering-geslaagd/reservering-geslaagd.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ProfielComponent } from './pages/profiel/profiel.component';
 
 export const routes: Routes = [
   {
@@ -63,6 +64,10 @@ export const routes: Routes = [
   {
     path: 'Contact',
     component: ContactComponent,
+  },
+  {
+    path: 'Profiel',
+    component: ProfielComponent,
   },
   {
     path: 'PrivacyBeleid',

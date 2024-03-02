@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <div class="display-3">Welkom, {{ user()?.name }}</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <div class="display-6">Wat wil je doen?</div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-6">
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Gegevens inzien </mat-panel-title>
+                    <mat-panel-description>
+                        van {{ user()?.name }}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list role="list">
+
+                    <mat-list-item role="listitem">
+                        <b>Echte naam:</b> {{ user()?.name }}
+                    </mat-list-item>
+
+                    <mat-list-item role="listitem">
+                        <b>Account naam:</b> {{ user()?.username }}
+                    </mat-list-item>
+
+                    <mat-list-item role="listitem">
+                        <b>Uniek ID:</b> {{ user()?.id }}
+                    </mat-list-item>
+
+                    <mat-list-item role="listitem">
+                        <b>Aangemaakt op:</b>
+                        {{ user()?.created | date : "dd LLLL YYYY" }}
+                    </mat-list-item>
+
+                    <mat-list-item role="listitem">
+                        <b>Laatst aangepast:</b>
+                        {{ user()?.updated | date : "dd LLLL YYYY" }}
+                    </mat-list-item>
+                </mat-list>
+
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Rauwe gegevens inzien</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <pre>
+                        {{ user() | json }}
+                    </pre>
+                </mat-expansion-panel>
+            </mat-expansion-panel>
+        </div>
+    </div>
+
+    <div class="row d-flex mt-4">
+        <div class="d-flex justify-content-center">
+            <button mat-flat-button color="primary" (click)="logout()">
+                Log uit
+            </button>
+        </div>
+    </div>
+</div>

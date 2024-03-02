@@ -36,13 +36,3 @@
     </div>
   </div>
 </div>
-
-@if (authService.isLoggedIn()) {
-
-<span>Logged in as: {{ (authService.userData()?.record)!["name"] }} </span>
-
-<pre>
-    {{ authService.userData() | json }}
-</pre>
-<button mat-flat-button color="primary" (click)="logout()">Log uit</button>
-}
