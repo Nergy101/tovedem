@@ -64,18 +64,13 @@ export class GroepComponent {
       (await this.client.collection('voorstellingen').getFullList()) as any[]
     ).sort((x, y) => (new Date(x.created) < new Date(y.created) ? 1 : -1))[0];
 
-    console.log('1', eerstVolgendeVoorstelling);
-
     const eerstVolgendeVoorstellingMetSpelers = (await this.client
       .collection('voorstellingen')
       .getOne(eerstVolgendeVoorstelling.id, {
         expand: 'spelers',
       })) as any;
 
-    console.log('2', eerstVolgendeVoorstellingMetSpelers);
-
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
-
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling as any);
     this.afgelopenVoorstellingen.set(voorstellingen as any);
   }

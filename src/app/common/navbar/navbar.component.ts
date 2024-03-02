@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -21,4 +21,9 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class NavbarComponent {
   authService = inject(AuthService);
+  router = inject(Router);
+
+  get groepenClass() {
+    return this.router.url.includes('Groep') ? 'active' : '';
+  }
 }

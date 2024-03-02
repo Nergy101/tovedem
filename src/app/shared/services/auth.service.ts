@@ -50,7 +50,6 @@ export class AuthService {
       const newValue = this.userRecord();
 
       if (newValue != undefined) {
-        console.log(newValue);
         localStorage.setItem('user_data', JSON.stringify(newValue));
       }
     });
