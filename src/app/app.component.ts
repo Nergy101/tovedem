@@ -1,5 +1,5 @@
 import { Component, LOCALE_ID, ViewChild, effect, inject } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -56,7 +56,10 @@ export class AppComponent {
   }
 
   toggle() {
-    // this.drawer.toggle();
     this.sideDrawerService.toggle();
+  }
+
+  navigate(url: string) {
+    window.location.assign(url);
   }
 }

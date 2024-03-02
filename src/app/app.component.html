@@ -15,6 +15,35 @@
                             data-bs-toggle="collapse"
                             data-bs-target=".navbar-collapse.show"
                             routerLinkActive="active"
+                            routerLink="/Reserveringen"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Reserveringen <mat-icon>payments</mat-icon>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link flex-grow-1"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
+                            routerLink="/Voorstellingen"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            Voorstellingen <mat-icon align>curtains</mat-icon>
+                        </button>
+                    </li>
+                    <li>
+                        <div style="width: 100%;">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link flex-grow-1"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            routerLinkActive="active"
                             routerLink="/Leden"
                             [routerLinkActiveOptions]="{ exact: true }">
                             Leden <mat-icon align>diversity_3</mat-icon>
@@ -33,16 +62,9 @@
                         </button>
                     </li>
                     <li>
-                        <button
-                            mat-button
-                            class="nav-link flex-grow-1"
-                            data-bs-toggle="collapse"
-                            data-bs-target=".navbar-collapse.show"
-                            routerLinkActive="active"
-                            routerLink="/Voorstellingen"
-                            [routerLinkActiveOptions]="{ exact: true }">
-                            Voorstellingen <mat-icon align>curtains</mat-icon>
-                        </button>
+                        <div style="width: 100%;">
+                            <mat-divider></mat-divider>
+                        </div>
                     </li>
                     <li>
                         <button
@@ -51,11 +73,27 @@
                             data-bs-toggle="collapse"
                             data-bs-target=".navbar-collapse.show"
                             routerLinkActive="active"
-                            routerLink="/Reserveringen"
+                            routerLink="/Fotos"
                             [routerLinkActiveOptions]="{ exact: true }">
-                            Reserveringen <mat-icon>payments</mat-icon>
+                            Foto's <mat-icon>photo_library</mat-icon>
                         </button>
                     </li>
+                    <li>
+                        <div style="width: 100%;">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </li>
+                    <li>
+                        <button
+                            mat-button
+                            class="nav-link flex-grow-1"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".navbar-collapse.show"
+                            (click)="navigate('https://tovedem.pockethost.io/_/#/collections')">
+                            Admin <mat-icon>admin_panel_settings</mat-icon>
+                        </button>
+                    </li>
+
                 </ul>
             </div>
 
