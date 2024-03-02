@@ -53,10 +53,6 @@ export class AppComponent {
         this.drawer.close();
       }
     });
-
-    if (this.authService.isLoggedIn()) {
-      this.sideDrawerService.open();
-    }
   }
 
   toggle() {
