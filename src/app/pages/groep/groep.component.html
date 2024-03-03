@@ -2,10 +2,38 @@
   @defer (when !!groep() && aankomendeVoorstelling() != undefined &&
   !!afgelopenVoorstellingen()) {
   <div class="row mat-elevation-z2">
-    <span class="text-center display-1">{{ groep().naam }}</span>
-    <h3 [innerHTML]="groep().omschrijving"></h3>
 
-    @if(!!spelers()){
+    <span class="text-center display-1">{{ groep().naam }}</span>
+
+    <div class="row">
+      <div class="col-3">
+        <img src="/assets/Cloos-vrije-vogel.jpg"
+          style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
+      </div>
+      <div class="col-9">
+        <h3 [innerHTML]="groep().omschrijving"></h3>
+      </div>
+    </div>
+
+    @if (!!slides() && (slides()?.length ?? 0) > 0) {
+    <div class="row justify-content-center bg-body w-100 m-0 p-0"
+      style="max-height: 20%; border-radius: 1em; ">
+      <div class="col-12">
+        <owl-carousel-o [options]="owlOptions">
+          @for (slide of slides(); track $index) {
+          <ng-container>
+            <ng-template carouselSlide [id]="slide.id">
+              <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title"
+                style="object-fit: cover; border-radius: 1em; max-width: 20em; max-height: 20em;">
+            </ng-template>
+          </ng-container>
+          }
+        </owl-carousel-o>
+      </div>
+    </div>
+    }
+
+    <!-- @if(!!spelers()){
     <p>Spelers</p>
     <ul>
       @for(speler of spelers(); track speler){
@@ -14,7 +42,7 @@
       </li>
       }
     </ul>
-    }
+    } -->
   </div>
 
   <div class="row">
@@ -25,8 +53,7 @@
     <div class="flex justify-content-center">
       <app-voorstelling-card
         [voorstelling]="aankomendeVoorstelling()"
-        class="col-md-6 col-12"
-      >
+        class="col-md-6 col-12">
       </app-voorstelling-card>
     </div>
   </div>
@@ -44,8 +71,7 @@
   <div class="row">
     <app-voorstelling-card
       [voorstelling]="item"
-      class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1"
-    >
+      class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1">
     </app-voorstelling-card>
   </div>
   } @empty {

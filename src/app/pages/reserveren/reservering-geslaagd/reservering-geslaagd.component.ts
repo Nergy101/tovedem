@@ -61,8 +61,6 @@ export class ReserveringGeslaagdComponent implements OnInit {
   }
 
   celebrate() {
-    const duration = 3000; // in milliseconds
-
     confetti({
       particleCount: 200,
       spread: 300,
@@ -70,6 +68,6 @@ export class ReserveringGeslaagdComponent implements OnInit {
     });
 
     // Clear confetti after a certain duration
-    setTimeout(() => confetti.reset(), duration);
+    setTimeout(() => confetti.reset(), 3000);
   }
 }

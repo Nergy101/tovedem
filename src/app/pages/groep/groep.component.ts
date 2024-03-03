@@ -5,16 +5,23 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { VoorstellingCardComponent } from '../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
-import { Title } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
+
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-groep',
   standalone: true,
-  imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
+  imports: [
+    VoorstellingCardComponent,
+    MatProgressSpinnerModule,
+    CarouselModule,
+    RouterModule,
+  ],
   templateUrl: './groep.component.html',
   styleUrl: './groep.component.scss',
 })
@@ -31,8 +38,28 @@ export class GroepComponent {
   afgelopenVoorstellingen: WritableSignal<any[] | null> = signal(null);
 
   spelers: WritableSignal<any[] | null> = signal(null);
+  slides: WritableSignal<any[] | null> = signal(null);
 
   titleService = inject(Title);
+
+  owlOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: true,
+    navSpeed: 400,
+    // navText: ['👈', '👉'],
+    // nav: true,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    center: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+    },
+  };
 
   constructor(private router: Router) {
     this.groepsNaam = this.router.url.substring(7);
@@ -82,5 +109,20 @@ export class GroepComponent {
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling as any);
     this.afgelopenVoorstellingen.set(voorstellingen as any);
+
+    this.slides.set([
+      {
+        id: 1,
+        src: '/assets/jalozien.jpg',
+        title: 'Foto 1',
+      },
+      {
+        id: 2,
+        src: '/assets/Cloos-vrije-vogel.jpg',
+        title: 'Foto 2',
+      },
+    ]);
+
+    console.log(this.slides());
   }
 }
