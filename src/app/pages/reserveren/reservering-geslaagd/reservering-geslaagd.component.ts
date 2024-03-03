@@ -6,6 +6,7 @@ import {
   inject,
   Input,
   input,
+  effect,
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { NavButtonComponent } from '../../../shared/components/nav-button/nav-button.component';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-reservering-geslaagd',
@@ -44,9 +46,30 @@ export class ReserveringGeslaagdComponent implements OnInit {
   @Input({ required: true, alias: 'reservering' })
   reserveringsId!: string;
 
+  constructor() {
+    effect(() => {
+      if (!!this.content()) {
+        this.celebrate();
+      }
+    });
+  }
+
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
     this.content.set((record as any).tekst_1);
+  }
+
+  celebrate() {
+    const duration = 3000; // in milliseconds
+
+    confetti({
+      particleCount: 200,
+      spread: 300,
+      origin: { y: 0.1 },
+    });
+
+    // Clear confetti after a certain duration
+    setTimeout(() => confetti.reset(), duration);
   }
 }
