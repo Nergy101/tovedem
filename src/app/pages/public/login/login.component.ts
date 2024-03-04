@@ -59,7 +59,7 @@ export class LoginComponent {
         .authWithPassword(this.usernameOrEmail!, this.password!);
 
       this.authService.registerUser(authData);
-      this.router.navigate(['Profiel']);
+      this.router.navigate(['profiel']);
     }
 
     this.loading.set(false);

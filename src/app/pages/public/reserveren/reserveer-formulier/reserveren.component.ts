@@ -110,7 +110,7 @@ export class ReserverenComponent implements OnInit {
     //TO DO: pagina met reservering geslaagd. nog een maal alle gegevens op een rijtje ga terug naar hoofdscherm
     //Datum, aantal stoelen, welke naam, of ze gereserverde plekken gaan krijgen of niet, betalen aan de kassa melding (Pin en cash) kaart met route??
 
-    this.router.navigate(['/Reservering-geslaagd'], {
+    this.router.navigate(['/reservering-geslaagd'], {
       queryParams: {
         voorstelling: this.voorstellingId,
         reservering: nieuweReservering.id,

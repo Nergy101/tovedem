@@ -41,7 +41,7 @@ export class VoorstellingLineComponent {
   }
 
   goToReserveren(): void {
-    this.router.navigate(['/Reserveren'], {
+    this.router.navigate(['/reserveren'], {
       queryParams: {
         voorstelling: this.voorstelling().id,
       },

@@ -55,6 +55,6 @@ export class ProfielComponent implements OnInit {
 
   logout(): void {
     this.authService.unregisterUser();
-    this.router.navigate(['/Login']);
+    this.router.navigate(['/login']);
   }
 }
