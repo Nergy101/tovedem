@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AgendaComponent } from './pages/agenda/agenda.component';
+import { AgendaComponent } from './pages/public/agenda/agenda.component';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { registerLocaleData } from '@angular/common';

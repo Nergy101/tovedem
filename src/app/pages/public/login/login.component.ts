@@ -6,8 +6,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { PocketbaseService } from '../../shared/services/pocketbase.service';
-import { AuthService } from '../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
