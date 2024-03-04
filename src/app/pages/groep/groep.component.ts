@@ -9,9 +9,10 @@ import { Router, RouterModule } from '@angular/router';
 import { VoorstellingCardComponent } from '../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 
-import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-groep',
@@ -19,8 +20,9 @@ import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
   imports: [
     VoorstellingCardComponent,
     MatProgressSpinnerModule,
-    CarouselModule,
     RouterModule,
+    MdbCarouselModule,
+    MatListModule,
   ],
   templateUrl: './groep.component.html',
   styleUrl: './groep.component.scss',
@@ -41,25 +43,6 @@ export class GroepComponent {
   slides: WritableSignal<any[] | null> = signal(null);
 
   titleService = inject(Title);
-
-  owlOptions: OwlOptions = {
-    loop: true,
-    mouseDrag: true,
-    touchDrag: true,
-    pullDrag: true,
-    dots: true,
-    navSpeed: 400,
-    // navText: ['👈', '👉'],
-    // nav: true,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    center: true,
-    responsive: {
-      0: {
-        items: 1,
-      },
-    },
-  };
 
   constructor(private router: Router) {
     this.groepsNaam = this.router.url.substring(7);
@@ -114,12 +97,14 @@ export class GroepComponent {
       {
         id: 1,
         src: '/assets/jalozien.jpg',
-        title: 'Foto 1',
+        title: 'Jalozien',
+        description: 'Door Tovedem',
       },
       {
         id: 2,
         src: '/assets/Cloos-vrije-vogel.jpg',
-        title: 'Foto 2',
+        title: 'De Vrije Vogel',
+        description: 'Door Cloos',
       },
     ]);
 

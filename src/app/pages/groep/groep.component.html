@@ -6,46 +6,49 @@
     <span class="text-center display-1">{{ groep().naam }}</span>
 
     <div class="row">
-      <div class="col-3">
+      <div class="col-lg-3 col-12">
         <img src="/assets/Cloos-vrije-vogel.jpg"
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
       </div>
-      <div class="col-9">
+      <div class="col-lg-9 col-12">
         <h3 [innerHTML]="groep().omschrijving"></h3>
       </div>
     </div>
 
-    @if (!!slides() && (slides()?.length ?? 0) > 0) {
-    <div class="row justify-content-center bg-body w-100 m-0 p-0"
-      style="max-height: 20%; border-radius: 1em; ">
-      <div class="col-12">
-        <owl-carousel-o [options]="owlOptions">
-          @for (slide of slides(); track $index) {
-          <ng-container>
-            <ng-template carouselSlide [id]="slide.id">
-              <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title"
-                style="object-fit: cover; border-radius: 1em; max-width: 20em; max-height: 20em;">
-            </ng-template>
-          </ng-container>
-          }
-        </owl-carousel-o>
-      </div>
-    </div>
-    }
-
-    <!-- @if(!!spelers()){
-    <p>Spelers</p>
-    <ul>
-      @for(speler of spelers(); track speler){
-      <li>
-        {{ speler.naam }}
-      </li>
+    @if (!!spelers()) {
+    <p class="display-6">Spelers</p>
+    <mat-list>
+      @for (speler of spelers(); track $index) {
+      <mat-list-item>
+        <span matListItemTitle>{{speler.naam}}</span>
+        <span matListItemLine>speler-omschrijving-als-ze-dat-willen</span>
+      </mat-list-item>
       }
-    </ul>
-    } -->
+    </mat-list>
+    }
   </div>
 
-  <div class="row">
+  <div class="row p-4 mat-elevation-z2">
+    <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
+      [interval]="2000" [ride]="true" [wrap]="true"
+      class="col-12">
+      @for (slide of slides(); track $index) {
+      <mdb-carousel-item style="height: 30em;">
+        <img
+          [src]="slide.src"
+          [alt]="slide.title"
+          class="d-block w-100"
+          style="max-height: 100%; object-fit: cover;" />
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{slide.title}}</h5>
+          <p>{{slide.description}}</p>
+        </div>
+      </mdb-carousel-item>
+      }
+    </mdb-carousel>
+  </div>
+
+  <div class="row pt-4">
     <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
   </div>
   @if(aankomendeVoorstelling() != null){
