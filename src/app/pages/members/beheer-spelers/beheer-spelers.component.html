@@ -1,1 +1,35 @@
-<p>beheer-spelers works!</p>
+<div class="container">
+    <div class="row">
+        <p class="display-1">Spelers</p>
+    </div>
+
+    <div class="row">
+        <table mat-table
+            [dataSource]="!!spelers() && spelers()!.length > 0 ? spelers() : []"
+            class="mat-elevation-z8">
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Uniek ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="naam">
+                <th mat-header-cell *matHeaderCellDef> Naam </th>
+                <td mat-cell *matCellDef="let element"> {{element.naam}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="delete(element)">
+                        <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+</div>
