@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { GroepComponent } from './pages/profiel/groep/groep.component';
+import { GroepComponent } from './pages/public/groep/groep.component';
 import { AgendaComponent } from './pages/public/agenda/agenda.component';
 import { PrivacyBeleidComponent } from './pages/public/privacy-beleid/privacy-beleid.component';
 import { HomePaginaComponent } from './pages/public/home/home.component';
@@ -10,7 +10,7 @@ import { SinterklaasComponent } from './pages/public/sinterklaas/sinterklaas.com
 import { ReserverenComponent } from './pages/reserveren/reserveer-formulier/reserveren.component';
 import { ReserveringGeslaagdComponent } from './pages/reserveren/reservering-geslaagd/reservering-geslaagd.component';
 import { LoginComponent } from './pages/public/login/login.component';
-import { ProfielComponent } from './pages/profiel/profiel.component';
+import { ProfielComponent } from './pages/members/profiel/profiel.component';
 
 export const routes: Routes = [
   {

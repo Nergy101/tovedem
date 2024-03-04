@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
-import { SideDrawerService } from '../../shared/services/side-drawer.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
