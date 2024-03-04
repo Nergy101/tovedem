@@ -11,6 +11,10 @@ import { ReserverenComponent } from './pages/public/reserveren/reserveer-formuli
 import { ReserveringGeslaagdComponent } from './pages/public/reserveren/reservering-geslaagd/reservering-geslaagd.component';
 import { LoginComponent } from './pages/public/login/login.component';
 import { ProfielComponent } from './pages/members/profiel/profiel.component';
+import { BeheerReserveringenComponent } from './pages/members/beheer-reserveringen/beheer-reserveringen.component';
+import { BeheerVoorstellingenComponent } from './pages/members/beheer-voorstellingen/beheer-voorstellingen.component';
+import { BeheerLedenComponent } from './pages/members/beheer-leden/beheer-leden.component';
+import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-spelers.component';
 
 export const routes: Routes = [
   {
@@ -18,59 +22,75 @@ export const routes: Routes = [
     component: HomePaginaComponent,
   },
   {
-    path: 'Agenda',
+    path: 'agenda',
     component: AgendaComponent,
   },
   {
-    path: 'Login',
+    path: 'login',
     component: LoginComponent,
   },
   {
-    path: 'Groep/Tovedem',
+    path: 'groep/Tovedem',
     component: GroepComponent,
   },
   {
-    path: 'Groep/Cloos',
+    path: 'groep/Cloos',
     component: GroepComponent,
   },
   {
-    path: 'Groep/Mejotos',
+    path: 'groep/Mejotos',
     component: GroepComponent,
   },
   {
-    path: 'Reserveren',
+    path: 'reserveren',
     component: ReserverenComponent,
   },
   {
-    path: 'Reservering-geslaagd',
+    path: 'reservering-geslaagd',
     component: ReserveringGeslaagdComponent,
   },
   {
-    path: 'Vriend-Worden',
+    path: 'vriend-worden',
     component: VriendWordenComponent,
   },
   {
-    path: 'Steunen',
+    path: 'steunen',
     component: VriendWordenComponent,
   },
   {
-    path: 'Lid-Worden',
+    path: 'lid-worden',
     component: LidWordenComponent,
   },
   {
-    path: 'Sinterklaas',
+    path: 'sinterklaas',
     component: SinterklaasComponent,
   },
   {
-    path: 'Contact',
+    path: 'contact',
     component: ContactComponent,
   },
   {
-    path: 'Profiel',
+    path: 'profiel',
     component: ProfielComponent,
   },
   {
-    path: 'PrivacyBeleid',
+    path: 'privacy-beleid',
     component: PrivacyBeleidComponent,
+  },
+  {
+    path: 'beheer-reserveringen',
+    component: BeheerReserveringenComponent,
+  },
+  {
+    path: 'beheer-voorstellingen',
+    component: BeheerVoorstellingenComponent,
+  },
+  {
+    path: 'beheer-leden',
+    component: BeheerLedenComponent,
+  },
+  {
+    path: 'beheer-spelers',
+    component: BeheerSpelersComponent,
   },
 ];

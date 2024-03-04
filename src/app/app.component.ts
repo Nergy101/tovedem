@@ -15,6 +15,7 @@ import localeNL from '@angular/common/locales/nl';
 import { AuthService } from './shared/services/auth.service';
 import { SideDrawerService } from './shared/services/side-drawer.service';
 import { MatListModule } from '@angular/material/list';
+import { SidenavComponent } from './common/sidenav/sidenav.component';
 registerLocaleData(localeNL);
 
 @Component({
@@ -22,6 +23,7 @@ registerLocaleData(localeNL);
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
   imports: [
     RouterOutlet,
     RouterModule,
@@ -36,8 +38,8 @@ registerLocaleData(localeNL);
     NavbarComponent,
     FooterComponent,
     MatListModule,
+    SidenavComponent,
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
 })
 export class AppComponent {
   authService = inject(AuthService);
@@ -57,9 +59,5 @@ export class AppComponent {
 
   toggle() {
     this.sideDrawerService.toggle();
-  }
-
-  navigate(url: string) {
-    window.location.assign(url);
   }
 }
