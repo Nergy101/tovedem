@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-beheer-spelers',
   standalone: true,
-  imports: [MatTableModule, MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './beheer-spelers.component.html',
   styleUrl: './beheer-spelers.component.scss',
 })
