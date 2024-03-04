@@ -14,8 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { NavButtonComponent } from '../../../shared/components/nav-button/nav-button.component';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { NavButtonComponent } from '../../../../shared/components/nav-button/nav-button.component';
 import confetti from 'canvas-confetti';
 
 @Component({

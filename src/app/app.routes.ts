@@ -7,8 +7,8 @@ import { VriendWordenComponent } from './pages/public/vriend-worden/vriend-worde
 import { LidWordenComponent } from './pages/public/lid-worden/lid-worden.component';
 import { ContactComponent } from './pages/public/contact/contact.component';
 import { SinterklaasComponent } from './pages/public/sinterklaas/sinterklaas.component';
-import { ReserverenComponent } from './pages/reserveren/reserveer-formulier/reserveren.component';
-import { ReserveringGeslaagdComponent } from './pages/reserveren/reservering-geslaagd/reservering-geslaagd.component';
+import { ReserverenComponent } from './pages/public/reserveren/reserveer-formulier/reserveren.component';
+import { ReserveringGeslaagdComponent } from './pages/public/reserveren/reservering-geslaagd/reservering-geslaagd.component';
 import { LoginComponent } from './pages/public/login/login.component';
 import { ProfielComponent } from './pages/members/profiel/profiel.component';
 
