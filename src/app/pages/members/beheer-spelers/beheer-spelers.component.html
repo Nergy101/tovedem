@@ -3,12 +3,36 @@
         <p class="display-1">Spelers</p>
     </div>
 
+    <div
+        class="row align-content-center align-items-center justify-content-center">
+        <h2>Aanmaken</h2>
+        <form (ngSubmit)="createSpeler()">
+
+            <div style="display: flex; justify-content: center;">
+                <mat-form-field class="col-10">
+                    <mat-label>Speler Naam</mat-label>
+                    <input placeholder="Speler naam" matInput type="text"
+                        name="spelerNaam"
+                        [(ngModel)]="spelerNaam">
+                </mat-form-field>
+                <button class="col-2" style="height: 4em;" mat-raised-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="loading()">
+                    <span>Voeg toe</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+
     <div class="row">
         <table class="table mat-elevation-z2">
             <thead>
                 <tr>
                     <th scope="col">Uniek ID</th>
                     <th scope="col">Naam</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -19,7 +43,8 @@
                     <td>{{speler.id}}</td>
                     <td>{{speler.naam}}</td>
                     <td>
-                        <button mat-icon-button (click)="delete(speler)">
+                        <button mat-icon-button (click)="delete(speler)"
+                            [disabled]="loading()">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     </td>
@@ -27,6 +52,5 @@
                 }
             </tbody>
         </table>
-
     </div>
 </div>

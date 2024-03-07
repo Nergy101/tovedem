@@ -4,6 +4,52 @@
     </div>
 
     <div class="row">
-        <p>WIP table</p>
+        <table class="table mat-elevation-z2">
+            <thead>
+                <tr>
+                    <th scope="col">Uniek ID</th>
+                    <th scope="col">Voorstelling</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Datum 1 Aantal</th>
+                    <th scope="col">Datum 2 Aantal</th>
+                    <th scope="col">Voornaam</th>
+                    <th scope="col">Achternaam</th>
+                    <th scope="col">Vriend</th>
+                    <th scope="col">Lid</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (item of items(); track $index)
+                {
+                <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.expand.voorstelling.titel}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.datum_tijd_1_aantal}}</td>
+                    <td>{{item.datum_tijd_2_aantal}}</td>
+                    <td>{{item.voornaam}}</td>
+                    <td>{{item.achternaam}}</td>
+
+                    <td>
+                        <mat-checkbox
+                            [checked]="item.is_vriend_van_tovedem" disabled>
+                        </mat-checkbox>
+                    </td>
+                    <td>
+                        <mat-checkbox
+                            [checked]="item.is_lid_van_vereniging" disabled>
+                        </mat-checkbox>
+                    </td>
+
+                    <td> <button mat-icon-button (click)="delete(item)"
+                            [disabled]="loading()">
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button></td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

@@ -4,6 +4,61 @@
     </div>
 
     <div class="row">
-        <p>WIP table</p>
+        <table class="table mat-elevation-z2">
+            <thead>
+                <tr>
+                    <th scope="col">Uniek ID</th>
+                    <th scope="col">Titel</th>
+                    <th scope="col">Datum Tijd 1 </th>
+                    <th scope="col">Datum Tijd 2 </th>
+                    <th scope="col">Spelers</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (item of items(); track $index)
+                {
+                <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.titel}}</td>
+                    <td>{{item.datum_tijd_1}}</td>
+                    <td>{{item.datum_tijd_2}}</td>
+                    <td>
+                        @if ((item.expand?.spelers?.length || 0) >
+                        0) {
+                        <button mat-button
+                            [matMenuTriggerFor]="menu">
+                            <span>
+                                {{item.expand?.spelers?.length}} Spelers
+                            </span>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            @for (speler of item.expand.spelers; track
+                            $index)
+                            {
+                            <p style="margin: 1em">
+                                {{speler.naam}}
+                            </p>
+                            }
+                        </mat-menu>
+                        } @else {
+                        <span>
+                            Geen Spelers
+                        </span>
+                        }
+                    </td>
+
+                    <td>
+                        <button mat-icon-button (click)="delete(item)"
+                            [disabled]="loading()">
+                            <mat-icon color="warn">delete</mat-icon>
+
+                        </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
