@@ -17,23 +17,23 @@
     </div>
     }
 
-    <span class="col-lg-4 col-md-6 col-12 display-6">{{
+    <span class="col-lg-5 col-md-5 col-4 display-6">{{
       voorstelling().expand.groep.naam
       }}</span>
 
     @if(inToekomst()) {
     <app-nav-button
-      class="col-lg-3 col-12"
+      class="col-lg-2 col-md-2 col-6"
       [navigationParts]="['/reserveren']"
       [queryParams]="{ voorstelling: this.voorstelling().id }">
-      RESERVEREN
+      Reserveren
     </app-nav-button>
     }
-    <!-- voorbeeld van image als je dat wilde gebruiken -->
+    <!-- voorbeeld van image als je dat wilde gebruiken 
     <div class="col-lg-2 col-md-12 col-12">
       <img class="card-image"
         [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
         alt="voorstelling afbeelding">
-    </div>
+    </div>-->
   </div>
 </div>
