@@ -12,19 +12,6 @@
 
     <div class="drawer-content">
         <div class="router-content">
-
-            @if (authService.isLoggedIn())
-            {
-            @if (sideDrawerService.isOpen()) {
-            <button mat-button (click)="toggle()">
-                <mat-icon>chevron_left</mat-icon> Sluit leden paneel
-            </button>
-            } @else {
-            <button mat-button (click)="toggle()">
-                <mat-icon>chevron_right</mat-icon> Open leden paneel
-            </button>
-            }
-            }
             <router-outlet />
         </div>
 

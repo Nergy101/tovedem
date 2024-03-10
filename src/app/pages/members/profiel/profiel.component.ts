@@ -49,8 +49,8 @@ export class ProfielComponent implements OnInit {
     }
   }
 
-  openDrawer() {
-    this.sideDrawerService.open();
+  toggle() {
+    this.sideDrawerService.toggle();
   }
 
   logout(): void {

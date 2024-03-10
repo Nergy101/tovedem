@@ -47,6 +47,7 @@ export class ReserverenComponent implements OnInit {
   saving: boolean = false;
   loaded: boolean = false;
 
+  voorstellingOmschrijving = '';
   voorstellingsNaam = '';
   groepsNaam = '';
   datum1: Date | null = null;

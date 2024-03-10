@@ -3,6 +3,7 @@
 @use "@angular/material" as mat;
 
 @import "variables.scss";
+@import "~quill/dist/quill.snow.css";
 
 @include mat.core();
 
@@ -72,4 +73,4 @@ a {
   padding: 0.5em;
   border-radius: 1em;
 }
-@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
+@import "mdb-angular-ui-kit/assets/scss/mdb.scss";

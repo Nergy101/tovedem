@@ -56,8 +56,4 @@ export class AppComponent {
       }
     });
   }
-
-  toggle() {
-    this.sideDrawerService.toggle();
-  }
 }
