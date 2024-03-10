@@ -2,6 +2,7 @@
     <mat-card-header>
         <mat-card-title-group>
             <mat-card-title>{{voorstelling().titel}}</mat-card-title>
+            <mat-card-subtitle>Gespeeld door: {{voorstelling().groepsNaam}}</mat-card-subtitle>
             <mat-card-subtitle>
                 @if(!!voorstelling().datum_tijd_1){
                 <span>

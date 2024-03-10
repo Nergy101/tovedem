@@ -16,6 +16,13 @@ h2 {
   background-color: white;
 }
 
+.homepage{
+  display: flex; 
+  flex-direction: column; 
+  height: 100%;
+  margin-top: -5em;
+}
+
 .section :not(:last-child) {
   display: block;
   margin-bottom: 2em;
@@ -23,12 +30,12 @@ h2 {
 
 .splash-image {
   background-color: $primary-color;
-  background: url("/assets/splash.jpg") no-repeat center center;
+  background: url("/assets/Tovedem_achtergrond.jpg") no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  min-height: 40em;
+  min-height: 18em;
   min-width: 100%;
 }
 
