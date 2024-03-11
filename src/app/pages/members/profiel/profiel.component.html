@@ -1,13 +1,26 @@
 <div class="container">
     <div class="row">
         <div class="d-flex justify-content-center">
-            <div class="display-3">Welkom, {{ user()?.name }}</div>
+            <div class="display-3 mt-4">Welkom,</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div
+            class="d-flex flex-column align-items-center justify-content-center">
+            <div class="display-6">
+                {{ user()?.name }}
+            </div>
+            <img
+                style="max-height: 10em; border-radius: 1em;"
+                [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+user()?.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
+                alt="avatar">
         </div>
     </div>
 
     <div class="row">
         <div class="d-flex justify-content-center">
-            <div class="display-6">Wat wil je doen?</div>
+            <div class="display-5">Wat wil je doen?</div>
         </div>
     </div>
 

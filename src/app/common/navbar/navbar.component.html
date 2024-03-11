@@ -137,7 +137,7 @@
             </button>
           </li>
           } @else {
-          <li>
+          <li class="profile">
             <button
               mat-button
               class="nav-link"
@@ -145,8 +145,13 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/profiel">
-              {{authService.userData().name}}
-              <mat-icon>account_circle</mat-icon>
+              <div class="d-flex">
+                <img
+                  style="max-height: 2em; border-radius: .2em; align-self: center;"
+                  [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+authService.userData().name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
+                  alt="avatar" />
+                {{authService.userData().name}}
+              </div>
             </button>
           </li>
           }
