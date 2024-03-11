@@ -137,20 +137,21 @@
             </button>
           </li>
           } @else {
-          <li class="profile">
+          <li>
             <button
               mat-button
-              class="nav-link"
+              class="nav-link w-100"
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/profiel">
-              <div class="d-flex">
+              <div
+                class="d-flex justify-content-center align-items-center gap-2">
                 <img
-                  style="max-height: 2em; border-radius: .2em; align-self: center;"
+                  style="max-height: 2em; border-radius: .2em;"
                   [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+authService.userData().name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
                   alt="avatar" />
-                {{authService.userData().name}}
+                Profiel
               </div>
             </button>
           </li>
