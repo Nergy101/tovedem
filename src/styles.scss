@@ -3,6 +3,7 @@
 @use "@angular/material" as mat;
 
 @import "variables.scss";
+@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
 
 @include mat.core();
 
@@ -72,4 +73,25 @@ a {
   padding: 0.5em;
   border-radius: 1em;
 }
-@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+
+.timepicker-overlay {
+  z-index: 10000000 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 10000000 !important;
+}
+
+body > ngx-material-timepicker-container {
+  --dial-background-color: #ae1545 !important;
+  --button-color: #ae1545 !important;
+  --dial-editable-active-color: #ae1545 !important;
+  --clock-hand-color: #ae1545 !important;
+}
+
+.timepicker__header {
+  --dial-background-color: #ae1545 !important;
+  --button-color: #ae1545 !important;
+  --dial-editable-active-color: #ae1545 !important;
+  --clock-hand-color: #ae1545 !important;
+}
