@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -21,6 +22,7 @@ export class BeheerVoorstellingenComponent {
 
   client = inject(PocketbaseService).client;
   dialog = inject(MatDialog);
+  toastr = inject(ToastrService);
 
   displayedColumns = ['id', 'naam', 'actions'];
 
@@ -39,14 +41,15 @@ export class BeheerVoorstellingenComponent {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
       minHeight: '80vh',
-      minWidth: '80vh',
+      minWidth: '80vw',
       maxHeight: '80vh',
-      maxWidth: '80vh',
+      maxWidth: '80vw',
       closeOnNavigation: false,
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe(async (_) => {
+    dialogRef.afterClosed().subscribe(async (created) => {
+      this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
       await this.ngOnInit();
     });
   }

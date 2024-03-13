@@ -107,7 +107,5 @@ export class GroepComponent {
         description: 'Door Cloos',
       },
     ]);
-
-    console.log(this.slides());
   }
 }

@@ -53,6 +53,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   ondertitel?: string;
   regie?: string;
   omschrijving?: string;
+  afbeelding?: FilePreviewModel;
+  loading = signal(false);
 
   datum1?: Date;
   datum2?: Date;
@@ -93,62 +95,68 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     this.groepen.set(await this.client.collection('groepen').getFullList());
   }
 
-  toTime(timeString?: string): Time {
-    const timeTokens = timeString?.split(':');
-
-    if (timeTokens && timeTokens.length >= 2) {
-      const timeAndAmOrPm = timeTokens[1].split(' ');
-
-      const minutes = timeAndAmOrPm[0];
-      const isPM = timeAndAmOrPm[1] == 'PM';
-      const hours = Number.parseInt(timeTokens[0]) + (isPM ? 12 : 0);
-      return {
-        hours: hours as any as number,
-        minutes: minutes as any as number,
-      } as Time;
-    }
-
-    return {} as Time;
-  }
-
   async submit(): Promise<void> {
-    let datum1 = this.datePipe.transform(this.datum1, 'YYY-MM-dd')!;
-    let datum2 = this.datePipe.transform(this.datum2, 'YYY-MM-dd')!;
+    this.loading.set(true);
+    // Parse time-picker string to Luxon.DateTimes
+    const tijd1 = DateTime.fromFormat(this.tijd1!, 'h:mm a');
+    const tijd2 = DateTime.fromFormat(this.tijd2!, 'h:mm a');
 
-    const tijd1 = this.toTime(this.tijd1);
-    const tijd2 = this.toTime(this.tijd2);
+    // Convert JavaScript DateTimes to Luxon.DateTimes
+    let date1 = DateTime.fromISO(this.datum1!.toISOString());
+    let date2 = DateTime.fromISO(this.datum2!.toISOString());
 
-    datum1 += ' ' + tijd1.hours + ':' + tijd1.minutes + ':00';
-    datum2 += ' ' + tijd2.hours + ':' + tijd2.minutes + ':00';
-
-    var moment1 = DateTime.fromSQL(datum1);
-    var moment2 = DateTime.fromSQL(datum2);
+    // update the time-components on Luxon.DateTimes
+    date1 = date1.set({ hour: tijd1.hour, minute: tijd1.minute });
+    date2 = date2.set({ hour: tijd2.hour, minute: tijd2.minute });
 
     const voorstelling = {
       titel: this.titel,
       ondertitel: this.ondertitel,
       regie: this.regie,
       omschrijving: this.omschrijving,
-      spelers: this.selectedSpelers?.map((s) => s.id),
       groep: this.selectedGroep?.id,
-      datum_tijd_1: moment1.toISO(),
-      datum_tijd_2: moment2.toISO(),
+      datum_tijd_1: date1.toISO(),
+      datum_tijd_2: date2.toISO(),
+      // spelers added through form-data
+      // afbeelding added through form-data
     };
 
-    //! construct form and create voorstelling with afbeelding in 1 go.
-    // const formData = new FormData();
-    // formData.append('afbeelding', fileItem.file);
+    const formData = this.objectToFormData(voorstelling);
+
+    this.selectedSpelers?.forEach((s) => {
+      formData.append('spelers', s.id);
+    });
+
+    if (!!this.afbeelding?.file) {
+      formData.append('afbeelding', this.afbeelding?.file);
+    }
 
     const created = await this.client
       .collection('voorstellingen')
-      .create(voorstelling);
+      .create(formData);
 
     this.dialogRef.close(created);
+    this.loading.set(false);
   }
 
   onFileUploaded(filePreviewModel: FilePreviewModel) {
-    console.log(filePreviewModel);
-    console.log(filePreviewModel.uploadResponse);
-    console.log(filePreviewModel.uploadResponse.id);
+    this.afbeelding = filePreviewModel;
+  }
+
+  private objectToFormData(obj: { [key: string]: any }): FormData {
+    const formData = new FormData();
+    Object.entries(obj).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        // If the value is an array, append each item individually
+        value.forEach((item) => formData.append(key + '[]', item));
+      } else if (typeof value === 'object' && value instanceof File) {
+        // If the value is a File object, append it directly
+        formData.append(key, value, value.name);
+      } else {
+        // For other types, append the value directly
+        formData.append(key, value);
+      }
+    });
+    return formData;
   }
 }

@@ -103,6 +103,7 @@
 
             <div class="row d-flex justify-content-center">
                 <button mat-raised-button color="primary" type="submit"
+                    [disabled]="loading()"
                     (click)="submit()">
                     Aanmaken
                 </button>
