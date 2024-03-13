@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,6 +11,7 @@ import { AgendaComponent } from '../../pages/public/agenda/agenda.component';
 import { FooterComponent } from '../footer/footer.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { SideDrawerService } from '../../shared/services/side-drawer.service';
 
 @Component({
   selector: 'sidenav',
@@ -33,6 +34,12 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent {
+  sideDrawerService = inject(SideDrawerService);
+
+  toggle() {
+    this.sideDrawerService.toggle();
+  }
+
   navigate(url: string): void {
     window.open(url, '_blank');
   }
