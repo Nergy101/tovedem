@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +20,9 @@ import { QuillModule } from 'ngx-quill';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { DatePipe, Time } from '@angular/common';
-import { timestamp } from 'rxjs';
+import { DateTime } from 'luxon';
+import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { FilePreviewModel } from 'ngx-awesome-uploader';
 
 @Component({
   selector: 'app-voorstelling-create-edit-dialog',
@@ -40,6 +42,7 @@ import { timestamp } from 'rxjs';
     MatSelectModule,
     QuillModule,
     NgxMaterialTimepickerModule,
+    TovedemFilePickerComponent,
   ],
   providers: [provideNativeDateAdapter(), DatePipe],
   templateUrl: './voorstelling-create-edit-dialog.component.html',
@@ -83,6 +86,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
 
   client = inject(PocketbaseService).client;
   datePipe = inject(DatePipe);
+  dialogRef = inject(MatDialogRef<VoorstellingCreateEditDialogComponent>);
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.collection('spelers').getFullList());
@@ -108,17 +112,17 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   }
 
   async submit(): Promise<void> {
-    let datum1 = this.datePipe.transform(this.datum1, 'YYY-MM-dd');
-    let datum2 = this.datePipe.transform(this.datum2, 'YYY-MM-dd');
+    let datum1 = this.datePipe.transform(this.datum1, 'YYY-MM-dd')!;
+    let datum2 = this.datePipe.transform(this.datum2, 'YYY-MM-dd')!;
 
     const tijd1 = this.toTime(this.tijd1);
     const tijd2 = this.toTime(this.tijd2);
 
-    datum1 += 'T' + tijd1.hours + ':' + tijd1.minutes;
-    datum2 += 'T' + tijd2.hours + ':' + tijd2.minutes;
+    datum1 += ' ' + tijd1.hours + ':' + tijd1.minutes + ':00';
+    datum2 += ' ' + tijd2.hours + ':' + tijd2.minutes + ':00';
 
-    console.log('datum1', datum1);
-    console.log('datum2', datum2);
+    var moment1 = DateTime.fromSQL(datum1);
+    var moment2 = DateTime.fromSQL(datum2);
 
     const voorstelling = {
       titel: this.titel,
@@ -127,16 +131,24 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       omschrijving: this.omschrijving,
       spelers: this.selectedSpelers?.map((s) => s.id),
       groep: this.selectedGroep?.id,
-      datum_tijd_1: datum1,
-      datum_tijd_2: datum2,
+      datum_tijd_1: moment1.toISO(),
+      datum_tijd_2: moment2.toISO(),
     };
 
-    console.log(voorstelling);
+    //! construct form and create voorstelling with afbeelding in 1 go.
+    // const formData = new FormData();
+    // formData.append('afbeelding', fileItem.file);
 
     const created = await this.client
       .collection('voorstellingen')
       .create(voorstelling);
 
-    console.log(created);
+    this.dialogRef.close(created);
+  }
+
+  onFileUploaded(filePreviewModel: FilePreviewModel) {
+    console.log(filePreviewModel);
+    console.log(filePreviewModel.uploadResponse);
+    console.log(filePreviewModel.uploadResponse.id);
   }
 }

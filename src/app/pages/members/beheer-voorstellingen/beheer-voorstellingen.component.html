@@ -41,7 +41,7 @@
                             </span>
                         </button>
                         <mat-menu #menu="matMenu">
-                            @for (speler of item.expand.spelers; track
+                            @for (speler of item?.expand?.spelers ?? []; track
                             $index)
                             {
                             <p style="margin: 1em">

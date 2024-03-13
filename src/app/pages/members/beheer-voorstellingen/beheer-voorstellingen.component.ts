@@ -17,7 +17,7 @@ import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edi
 export class BeheerVoorstellingenComponent {
   loading = signal(false);
 
-  items: WritableSignal<any[] | null> = signal(null);
+  items: WritableSignal<any[]> = signal([]);
 
   client = inject(PocketbaseService).client;
   dialog = inject(MatDialog);
@@ -31,7 +31,6 @@ export class BeheerVoorstellingenComponent {
         .getList(0, 30, { expand: 'groep,spelers' })
     ).items as any[];
 
-    console.log(items);
     this.items.set(items);
   }
 
@@ -41,26 +40,14 @@ export class BeheerVoorstellingenComponent {
       hasBackdrop: true,
       minHeight: '80vh',
       minWidth: '80vh',
+      maxHeight: '80vh',
+      maxWidth: '80vh',
       closeOnNavigation: false,
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      // const formData = new FormData();
-
-      // const fileInput = document.getElementById('fileInput');
-
-      // // listen to file input changes and add the selected files to the form data
-      // fileInput.addEventListener('change', function () {
-      //   for (let file of fileInput.files) {
-      //     formData.append('documents', file);
-      //   }
-      // });
-
-      // // set some other regular text field value
-      // formData.append('title', 'Hello world!');
-      // this.client.collection('voorstellingen').create(result);
+    dialogRef.afterClosed().subscribe(async (_) => {
+      await this.ngOnInit();
     });
   }
 
