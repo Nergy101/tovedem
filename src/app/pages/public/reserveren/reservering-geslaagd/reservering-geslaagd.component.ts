@@ -5,7 +5,6 @@ import {
   signal,
   inject,
   Input,
-  input,
   effect,
 } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

@@ -6,8 +6,8 @@
   <div class="row mat-elevation-z2">
 
     <span class="text-center display-1">{{ groep().naam }}</span>
-    <mat-divider style="padding: 1%;"></mat-divider>
-    <div class="row">
+    <mat-divider></mat-divider>
+    <div class="row pt-4">
       <div class="col-lg-3 col-12">
         @if(!!groep().img){
           <img src={{groep().img}}
@@ -22,12 +22,21 @@
       </div>
     </div>
 
-    
+    @if (!!spelers()) {
+    <p class="display-6">Spelers</p>
+    <mat-list>
+      @for (speler of spelers(); track $index) {
+      <mat-list-item>
+        <span matListItemTitle><i>{{speler.naam}}</i></span>
+      </mat-list-item>
+      }
+    </mat-list>
+    }
   </div>
 
   <div class="row p-4 mat-elevation-z2">
     <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
-      [interval]="2000" [ride]="true" [wrap]="true"
+      [interval]="5000" [ride]="true" [wrap]="true"
       class="col-12">
       @for (slide of slides(); track $index) {
       <mdb-carousel-item style="height: 30em;">

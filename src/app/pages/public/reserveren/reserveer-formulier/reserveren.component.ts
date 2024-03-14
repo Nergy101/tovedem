@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -43,8 +50,24 @@ export class ReserverenComponent implements OnInit {
   client: PocketBase;
 
   router = inject(Router);
+  name = signal('');
+  surname = signal('');
+  email = signal('');
+  vriendVanTovedem = signal(false);
+  lidVanTovedemMejotos = signal(false);
+  amountOfPeopleDate1 = signal(0);
+  amountOfPeopleDate2 = signal(0);
+  saving = signal(false);
 
-  saving: boolean = false;
+  formIsValid = computed(() => {
+    return (
+      !!this.name() &&
+      !!this.email &&
+      !!this.surname &&
+      (this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0)
+    );
+  });
+
   loaded: boolean = false;
 
   voorstellingOmschrijving = '';
@@ -53,14 +76,6 @@ export class ReserverenComponent implements OnInit {
   datum1: Date | null = null;
   datum2: Date | null = null;
   today = new Date();
-
-  name = '';
-  surname = '';
-  email = '';
-  vriendVanTovedem = false;
-  lidVanTovedemMejotos = false;
-  amountOfPeopleDate1: number | null = null;
-  amountOfPeopleDate2: number | null = null;
 
   @Input('voorstelling')
   voorstellingId: string | null = null;
@@ -93,7 +108,7 @@ export class ReserverenComponent implements OnInit {
   }
 
   async saveReservering(): Promise<void> {
-    this.saving = true;
+    this.saving.set(true);
 
     const nieuweReservering = await this.client
       .collection('reserveringen')
@@ -121,5 +136,33 @@ export class ReserverenComponent implements OnInit {
     this._snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
       duration: 5000,
     });
+  }
+
+  onEmailChanged(newValue: string) {
+    this.email.set(newValue);
+  }
+
+  onNameChanged(newValue: string) {
+    this.name.set(newValue);
+  }
+
+  onSurnameChanged(newValue: string) {
+    this.surname.set(newValue);
+  }
+
+  vriendVanTovedemChanged(newValue: boolean) {
+    this.vriendVanTovedem.set(newValue);
+  }
+
+  lidVanTovedemMejotosChanged(newValue: boolean) {
+    this.lidVanTovedemMejotos.set(newValue);
+  }
+
+  amountOfPeopleDate1Changed(newValue: number) {
+    this.amountOfPeopleDate1.set(newValue);
+  }
+
+  amountOfPeopleDate2Changed(newValue: number) {
+    this.amountOfPeopleDate2.set(newValue);
   }
 }

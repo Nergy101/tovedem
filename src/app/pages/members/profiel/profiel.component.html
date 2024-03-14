@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container col-lg-6 col-md-8 col-12 mat-elevation-z2">
     <div class="row">
         <div class="d-flex justify-content-center">
             <div class="display-3 mt-4">Welkom,</div>
@@ -25,18 +25,18 @@
     </div>
 
     <div class="row justify-content-center mt-4">
-        <div class="col-6 d-flex">
-
+        <div class="col-xl-6 col-12 d-flex">
             @if (authService.isLoggedIn())
             {
             @if (sideDrawerService.isOpen()) {
             <button class="flex-grow-1" mat-raised-button
                 (click)="toggle()">
+                <mat-icon>menu_open</mat-icon>
                 Sluit leden paneel</button>
             } @else {
             <button class="flex-grow-1" mat-raised-button
                 (click)="toggle()">
-                <mat-icon>menu_open</mat-icon>
+                <mat-icon>menu</mat-icon>
                 Open leden paneel</button>
             }
             }
@@ -44,7 +44,7 @@
     </div>
 
     <div class="row justify-content-center mt-4">
-        <div class="col-lg-6 col-md-8 col-12">
+        <div class="col-xl-6 col-12">
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title> Gegevens inzien </mat-panel-title>
@@ -92,7 +92,8 @@
 
     <div class="row d-flex flex-grow-1 mt-4">
         <div class="d-flex justify-content-center">
-            <button mat-flat-button color="primary" (click)="logout()">
+            <button mat-flat-button color="primary" (click)="logout()"
+                class="col-xl-6 col-12">
                 Log uit
             </button>
         </div>

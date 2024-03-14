@@ -1,5 +1,8 @@
  <div class="links-container">
     <ul class="links navbar-nav nav-pills nav-fill">
+        <div class="d-flex w-100 justify-content-center fw-bold pt-3">
+            Voorstellingen Beheer
+        </div>
         <li>
             <button
                 mat-button
@@ -29,6 +32,9 @@
                 <mat-divider></mat-divider>
             </div>
         </li>
+        <div class="d-flex w-100 justify-content-center fw-bold">
+            Leden Beheer
+        </div>
         <li>
             <button
                 mat-button
@@ -68,7 +74,18 @@
                 Admin <mat-icon>admin_panel_settings</mat-icon>
             </button>
         </li>
-
+        <li>
+            <div style="width: 100%;">
+                <mat-divider></mat-divider>
+            </div>
+        </li>
+        <li>
+            <button mat-button
+                class="nav-link flex-grow-1" (click)="toggle()">
+                Sluit Paneel
+                <mat-icon>menu_open</mat-icon>
+            </button>
+        </li>
     </ul>
 </div>
 

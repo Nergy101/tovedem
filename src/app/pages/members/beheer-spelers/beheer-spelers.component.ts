@@ -53,8 +53,6 @@ export class BeheerSpelersComponent implements OnInit {
       .collection('spelers')
       .create({ naam: this.spelerNaam });
 
-    console.log(result);
-
     this.spelers.update((x) => [...x, result]);
 
     this.spelerNaam = '';

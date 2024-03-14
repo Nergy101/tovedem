@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -17,10 +18,11 @@ import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edi
 export class BeheerVoorstellingenComponent {
   loading = signal(false);
 
-  items: WritableSignal<any[] | null> = signal(null);
+  items: WritableSignal<any[]> = signal([]);
 
   client = inject(PocketbaseService).client;
   dialog = inject(MatDialog);
+  toastr = inject(ToastrService);
 
   displayedColumns = ['id', 'naam', 'actions'];
 
@@ -31,7 +33,6 @@ export class BeheerVoorstellingenComponent {
         .getList(0, 30, { expand: 'groep,spelers' })
     ).items as any[];
 
-    console.log(items);
     this.items.set(items);
   }
 
@@ -40,27 +41,16 @@ export class BeheerVoorstellingenComponent {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
       minHeight: '80vh',
-      minWidth: '80vh',
+      minWidth: '80vw',
+      maxHeight: '80vh',
+      maxWidth: '80vw',
       closeOnNavigation: false,
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      // const formData = new FormData();
-
-      // const fileInput = document.getElementById('fileInput');
-
-      // // listen to file input changes and add the selected files to the form data
-      // fileInput.addEventListener('change', function () {
-      //   for (let file of fileInput.files) {
-      //     formData.append('documents', file);
-      //   }
-      // });
-
-      // // set some other regular text field value
-      // formData.append('title', 'Hello world!');
-      // this.client.collection('voorstellingen').create(result);
+    dialogRef.afterClosed().subscribe(async (created) => {
+      this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
+      await this.ngOnInit();
     });
   }
 

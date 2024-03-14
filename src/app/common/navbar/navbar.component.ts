@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { SideDrawerService } from '../../shared/services/side-drawer.service';
 
 @Component({
   selector: 'app-navbar',
