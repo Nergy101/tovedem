@@ -5,7 +5,7 @@
 
     <span class="text-center display-1">{{ groep().naam }}</span>
     <mat-divider></mat-divider>
-    <div class="row">
+    <div class="row pt-4">
       <div class="col-lg-3 col-12">
         <img src="/assets/Cloos-vrije-vogel.jpg"
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
@@ -20,8 +20,7 @@
     <mat-list>
       @for (speler of spelers(); track $index) {
       <mat-list-item>
-        <span matListItemTitle>{{speler.naam}}</span>
-        <span matListItemLine>speler-omschrijving-als-ze-dat-willen</span>
+        <span matListItemTitle><i>{{speler.naam}}</i></span>
       </mat-list-item>
       }
     </mat-list>
@@ -30,7 +29,7 @@
 
   <div class="row p-4 mat-elevation-z2">
     <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
-      [interval]="2000" [ride]="true" [wrap]="true"
+      [interval]="5000" [ride]="true" [wrap]="true"
       class="col-12">
       @for (slide of slides(); track $index) {
       <mdb-carousel-item style="height: 30em;">
