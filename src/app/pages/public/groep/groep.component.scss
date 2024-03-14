@@ -6,3 +6,13 @@
   margin-top: 4em;
 }
 
+.splash-image {
+  background: url("/assets/Tovedem_achtergrond.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 10em;
+  min-width: 100%;
+  margin-bottom: 2em;
+}
