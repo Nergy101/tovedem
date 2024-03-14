@@ -1,48 +1,54 @@
 <mat-card class="voorstelling-card mat-elevation-z4">
-    <mat-card-header>
-        <mat-card-title-group>
-            <mat-card-title style="font-size: x-large;">{{voorstelling().titel}}</mat-card-title>
-            <mat-card-subtitle>Gespeeld door: {{voorstelling().expand.groep.naam}}</mat-card-subtitle>
-            <mat-divider style="padding: 1%;"></mat-divider>
-            <mat-card-subtitle>
-                @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
-                    <div>
-                    <mat-divider style="margin-top: 1em; margin-bottom: 0.5em;"></mat-divider>
-                      <div style="font-size: x-large; text-align: center;">
-                          {{ voorstelling().datum_tijd_1 | date : "dd" }} & {{ voorstelling().datum_tijd_2 | date : "dd" }} 
-                      </div>
-                    </div>
-                    <div style="text-align: center; font-size: large;">
-                        {{ voorstelling().datum_tijd_1 | date : "LLLL" }}
-                        {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
-                    </div>
-                    }
-                <mat-divider style="padding: 1%;"></mat-divider>
-            </mat-card-subtitle>
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <mat-card-header style="width: 100%;">
+                <div style="width: 100%;">
+                    <mat-card-title style="font-size: x-large;">{{voorstelling().titel}}</mat-card-title>
+                    <mat-card-subtitle>Gespeeld door: {{voorstelling().expand.groep.naam}}</mat-card-subtitle>
+                    <mat-card-subtitle class="d-flex flex-column">
+                        @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
+                        <div style="flex: 1; width: 100%;">
+                            <mat-divider style="margin-top: 1em; margin-bottom: 0.5em;;"></mat-divider>
+                            <div style="font-size: x-large; text-align: center;">
+                                {{ voorstelling().datum_tijd_1 | date : "dd" }} & {{ voorstelling().datum_tijd_2 | date
+                                : "dd" }}
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: large;">
+                            {{ voorstelling().datum_tijd_1 | date : "LLL" }}
+                            {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
+                        </div>
+                        }
+                        <mat-divider></mat-divider>
+                    </mat-card-subtitle>
+
+
+
+                </div>
+            </mat-card-header>
+        </div>
+        <div class="col-md-8 col-12 p-4">
             @if(!!voorstelling().afbeelding){
-            <img mat-card-xl-image class="card-image"
+            <img class="card-image"
                 [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
-                    style="object-fit: contain; max-width: 100%; max-height: 80%; border-radius: 1em;" 
-                    />}        
+                style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content:end;" />}
             @else {
-                    <img class="card-image" 
-                    src="/assets/Place-Holder-Image.jpg"
-                    style="object-fit: contain; max-width: 60%; border-radius: 1em;" />
-                }
-                    
-                    
-        </mat-card-title-group>
-    </mat-card-header>
+            <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
+            }
+        </div>
+    </div>
     <mat-card-content>
+
         <p>
             {{voorstelling().ondertitel}}
         </p>
+
     </mat-card-content>
     <mat-card-actions>
         <div></div>
         @if(inToekomst()) {
-        <app-nav-button [navigationParts]="['/reserveren']"
-            [queryParams]="{voorstelling: this.voorstelling().id}">
+        <app-nav-button [navigationParts]="['/reserveren']" [queryParams]="{voorstelling: this.voorstelling().id}">
             RESERVEREN
         </app-nav-button>
         }
