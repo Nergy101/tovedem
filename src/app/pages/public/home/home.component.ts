@@ -20,6 +20,7 @@ export class HomePaginaComponent {
   constructor() {
     this.titleService.setTitle('Tovedem - Home');
   }
+
   async ngOnInit(): Promise<void> {
     const voorstellingen = await this.client
       .collection('voorstellingen')
