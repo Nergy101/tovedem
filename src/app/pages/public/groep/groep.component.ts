@@ -75,7 +75,7 @@ export class GroepComponent {
 
     //* Haal de eerste voorstelling uit de lijst.
     //* Dat is de voorstelling die het laatst is aangemaakt.
-    const laatstAangemaakteVoorstelling = voorstellingen.shift();
+    const laatstAangemaakteVoorstelling = voorstellingen.shift() ?? null;
 
     const eerstVolgendeVoorstelling = (
       await this.client.getAll<Voorstelling>('voorstellingen')
@@ -91,8 +91,9 @@ export class GroepComponent {
       );
 
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
-    this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling as any);
-    this.afgelopenVoorstellingen.set(voorstellingen as any);
+    this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling ?? null);
+
+    this.afgelopenVoorstellingen.set(voorstellingen);
 
     this.slides.set([
       {

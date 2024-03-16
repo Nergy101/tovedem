@@ -1,8 +1,8 @@
 <div class="splash-image">
 </div>
 <div class="container">
-  @defer (when !!groep() && aankomendeVoorstelling() != undefined &&
-  !!afgelopenVoorstellingen()) {
+  @defer (when !!groep() && !!afgelopenVoorstellingen() &&
+  aankomendeVoorstelling() !== undefined ) {
   <div class="row mat-elevation-z2">
 
     <span class="text-center display-1">{{ groep()?.naam }}</span>
@@ -22,16 +22,6 @@
       </div>
     </div>
 
-    @if (!!spelers()) {
-    <p class="display-6">Spelers</p>
-    <mat-list>
-      @for (speler of spelers(); track $index) {
-      <mat-list-item>
-        <span matListItemTitle><i>{{speler.naam}}</i></span>
-      </mat-list-item>
-      }
-    </mat-list>
-    }
   </div>
 
   <div class="row p-4 mat-elevation-z2">
@@ -60,8 +50,7 @@
     <mat-list>
       @for (speler of spelers(); track $index) {
       <mat-list-item>
-        <span matListItemTitle>{{speler.naam}}</span>
-        <span matListItemLine>speler-omschrijving-als-ze-dat-willen</span>
+        <span matListItemTitle><i>{{speler.naam}}</i></span>
       </mat-list-item>
       }
     </mat-list>
@@ -86,7 +75,6 @@
     <span>Geen aankomende voorstelling om te tonen</span>
   </div>
   }
-
   <div class="row">
     <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
   </div>
@@ -101,7 +89,9 @@
   <div class="center">
     <span>Geen afgelopen voorstellingen om te tonen</span>
   </div>
-  } } @placeholder {
+  }
+  } @placeholder
+  {
   <div class="center">
     <mat-spinner></mat-spinner>
   </div>
