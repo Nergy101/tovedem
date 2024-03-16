@@ -2,21 +2,21 @@
     <div class="row">
         <p class="display-1">Reserveringen</p>
     </div>
+</div>
 
-    <div class="row">
-
-        @defer(when items()){
-
-        <mat-tab-group>
+<div class="container">
+    <div class>
+        @defer(when items())
+        {
+        <mat-tab-group class="flex-grow-1 mat-elevation-z2">
             <mat-tab label="Beheren">
-                <table class="table mat-elevation-z2">
+                <table class="table ">
                     <thead>
                         <tr>
                             <th scope="col">Voorstelling</th>
                             <th scope="col">Email</th>
                             <th scope="col">Datum 1 Aantal</th>
                             <th scope="col">Datum 2 Aantal</th>
-                            <th scope="col">Voornaam</th>
                             <th scope="col">Achternaam</th>
                             <th scope="col">Vriend</th>
                             <th scope="col">Lid</th>
@@ -32,7 +32,6 @@
                             <td>{{item.email}}</td>
                             <td>{{item.datum_tijd_1_aantal}}</td>
                             <td>{{item.datum_tijd_2_aantal}}</td>
-                            <td>{{item.voornaam}}</td>
                             <td>{{item.achternaam}}</td>
 
                             <td>
@@ -58,13 +57,12 @@
                 </table>
             </mat-tab>
             <mat-tab label="Kassa">
-                <table class="table mat-elevation-z2">
+                <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">Voorstelling</th>
                             <th scope="col">Datum 1 Aantal</th>
                             <th scope="col">Datum 2 Aantal</th>
-                            <th scope="col">Voornaam</th>
                             <th scope="col">Achternaam</th>
                             <th scope="col">Vriend</th>
                             <th scope="col">Lid</th>
@@ -78,7 +76,6 @@
                             <td>{{item.expand.voorstelling.titel}}</td>
                             <td>{{item.datum_tijd_1_aantal}}</td>
                             <td>{{item.datum_tijd_2_aantal}}</td>
-                            <td>{{item.voornaam}}</td>
                             <td>{{item.achternaam}}</td>
 
                             <td>
@@ -100,7 +97,6 @@
                 </table>
             </mat-tab>
         </mat-tab-group>
-
         } @placeholder {
         <div class="center">
             <mat-spinner></mat-spinner>

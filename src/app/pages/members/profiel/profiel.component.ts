@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
@@ -32,6 +32,11 @@ export class ProfielComponent implements OnInit {
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
   sideDrawerService = inject(SideDrawerService);
+
+  userRoles = computed(() => {
+    const rollen = this.user().expand.rollen.map((r: any) => r.rol) as any[];
+    return rollen.join(', ');
+  });
 
   user = this.authService.userData;
 

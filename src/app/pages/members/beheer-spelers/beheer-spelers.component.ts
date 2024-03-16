@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Speler from '../../../models/domain/speler.model';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -36,26 +37,25 @@ export class BeheerSpelersComponent implements OnInit {
 
   spelerNaam?: string;
 
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
 
   displayedColumns = ['id', 'naam', 'actions'];
 
   async ngOnInit(): Promise<void> {
-    const spelers = (await this.client
-      .collection('spelers')
-      .getFullList()) as any[];
-
-    this.spelers.set(spelers);
+    this.spelers.set(await this.client.getAll<Speler>('spelers'));
   }
 
   async createSpeler() {
     this.loading.set(true);
 
-    const result = await this.client
-      .collection('spelers')
-      .create({ naam: this.spelerNaam });
+    const nieuweSpeler = await this.client.create<Speler>('spelers', {
+      naam: this.spelerNaam,
+    });
 
-    this.spelers.update((x) => [...x, result]);
+    this.spelers.update((bestaandeSpelers) => [
+      ...bestaandeSpelers,
+      nieuweSpeler,
+    ]);
 
     this.spelerNaam = '';
     this.loading.set(false);
@@ -63,9 +63,11 @@ export class BeheerSpelersComponent implements OnInit {
 
   async delete(element: any) {
     this.loading.set(true);
-    await this.client.collection('spelers').delete(element.id);
 
-    this.spelers.update((x) => x.filter((y: any) => y.id != element.id));
+    if (await this.client.delete('spelers', element.id)) {
+      this.spelers.update((x) => x.filter((y: any) => y.id != element.id));
+    }
+
     this.loading.set(false);
   }
 }

@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -37,6 +38,7 @@ export class BeheerLedenComponent implements OnInit {
   gebruikers: WritableSignal<any | null> = signal(null);
 
   client = inject(PocketbaseService).client;
+  authService = inject(AuthService);
 
   async ngOnInit(): Promise<void> {
     const users = (await this.client.collection('users').getFullList({
@@ -44,5 +46,9 @@ export class BeheerLedenComponent implements OnInit {
     })) as any[];
 
     this.gebruikers.set(users);
+  }
+
+  isHuidigeGebruiker(gebruikerId: string) {
+    return gebruikerId == this.authService.userData()?.id;
   }
 }

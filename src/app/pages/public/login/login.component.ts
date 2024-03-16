@@ -56,7 +56,9 @@ export class LoginComponent {
 
       const authData = await this.pocketbase
         .collection('users')
-        .authWithPassword(this.usernameOrEmail!, this.password!);
+        .authWithPassword(this.usernameOrEmail!, this.password!, {
+          expand: 'groep,rollen',
+        });
 
       this.authService.registerUser(authData);
       this.router.navigate(['profiel']);

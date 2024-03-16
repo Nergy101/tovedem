@@ -29,10 +29,10 @@
                 </tr>
             </thead>
             <tbody>
-
                 @for (gebruiker of gebruikers(); track $index)
                 {
-                <tr>
+                <tr
+                    [className]="isHuidigeGebruiker(gebruiker.id) ? 'active' : ''">
                     <td>{{gebruiker.username}}</td>
                     <td>{{gebruiker.email}}</td>
                     <td>{{gebruiker.name}}</td>
