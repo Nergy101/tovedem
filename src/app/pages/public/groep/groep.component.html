@@ -1,3 +1,5 @@
+<div class="splash-image">
+</div>
 <div class="container">
   @defer (when !!groep() && aankomendeVoorstelling() != undefined &&
   !!afgelopenVoorstellingen()) {
@@ -7,8 +9,13 @@
     <mat-divider></mat-divider>
     <div class="row pt-4">
       <div class="col-lg-3 col-12">
-        <img src="/assets/Cloos-vrije-vogel.jpg"
+        @if(!!groep().img){
+          <img src={{groep().img}}
+          style="object-fit: contain; max-width: 100%; border-radius: 1em;" />}
+        @else {
+          <img src="/assets/Place-Holder-Image.jpg"
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
+        }
       </div>
       <div class="col-lg-9 col-12">
         <h3 [innerHTML]="groep().omschrijving"></h3>
@@ -45,6 +52,21 @@
       </mdb-carousel-item>
       }
     </mdb-carousel>
+  </div>
+
+  
+  <div class="mat-elevation-z2">
+  @if (!!spelers()) {
+    <p class="display-6">Spelers</p>
+    <mat-list>
+      @for (speler of spelers(); track $index) {
+      <mat-list-item>
+        <span matListItemTitle>{{speler.naam}}</span>
+        <span matListItemLine>speler-omschrijving-als-ze-dat-willen</span>
+      </mat-list-item>
+      }
+    </mat-list>
+    }
   </div>
 
   <div class="row pt-4">

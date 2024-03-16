@@ -23,6 +23,7 @@ import { NavButtonComponent } from '../../nav-button/nav-button.component';
 })
 export class VoorstellingCardComponent {
   voorstelling = input.required<any>();
+  
 
   router = inject(Router);
 

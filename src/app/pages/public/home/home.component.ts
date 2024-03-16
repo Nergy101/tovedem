@@ -26,6 +26,7 @@ export class HomePaginaComponent {
       .collection('voorstellingen')
       .getFullList({
         sort: '-created',
+        expand: 'groep'
       });
 
     this.voorstellingen.set(voorstellingen as any);
