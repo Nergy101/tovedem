@@ -122,13 +122,23 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                         <div class="d-flex align-items-center flex-column">
                             <div class="d-flex flex-column">
                                 <mat-checkbox [ngModel]="vriendVanTovedem()"
-                                    (ngModelChange)="vriendVanTovedemChanged($event)">
-                                    Ben je vriend van Tovedem?
+                                    (ngModelChange)="vriendVanTovedemChanged($event)"
+                                    matTooltip="Je bent sponsor of donateur van Tovedem."
+                                    [matTooltipPosition]="'left'">
+                                    <span
+                                        style="text-decoration: underline dotted gray;">
+                                        Ben je vriend van Tovedem?
+                                    </span>
                                 </mat-checkbox>
                                 <mat-checkbox [ngModel]="lidVanTovedemMejotos()"
-                                    (ngModelChange)="lidVanTovedemMejotosChanged($event)">
-                                    Ben je lid van Tovedem, Cloos of
-                                    Mejoto's?
+                                    (ngModelChange)="lidVanTovedemMejotosChanged($event)"
+                                    matTooltip="Je bent lid van een van de groepen binnen Tovedem."
+                                    [matTooltipPosition]="'left'">
+                                    <span
+                                        style="text-decoration: underline dotted gray;">
+                                        Ben je lid van Tovedem, Cloos of
+                                        Mejoto's?
+                                    </span>
                                 </mat-checkbox>
                                 <button color="primary"
                                     style="flex: 1; min-height: 48px;"

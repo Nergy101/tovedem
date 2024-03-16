@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import PocketBase from 'pocketbase';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { lastValueFrom } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-reserveren',
@@ -40,6 +41,7 @@ import { lastValueFrom } from 'rxjs';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './reserveren.component.html',
