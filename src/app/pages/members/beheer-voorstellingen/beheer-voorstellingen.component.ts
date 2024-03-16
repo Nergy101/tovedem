@@ -40,11 +40,6 @@ export class BeheerVoorstellingenComponent {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
-      minHeight: '80vh',
-      minWidth: '80vw',
-      maxHeight: '80vh',
-      maxWidth: '80vw',
-      closeOnNavigation: false,
     });
 
     dialogRef.afterClosed().subscribe(async (created) => {

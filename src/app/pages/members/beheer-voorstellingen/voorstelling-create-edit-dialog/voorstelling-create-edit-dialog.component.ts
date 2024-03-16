@@ -98,34 +98,38 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
 
   async submit(): Promise<void> {
     this.loading.set(true);
-    // Parse time-picker string to Luxon.DateTimes
-    const tijd1 = DateTime.fromFormat(this.tijd1!, 'h:mm a');
-    const tijd2 = DateTime.fromFormat(this.tijd2!, 'h:mm a');
 
-    // Convert JavaScript DateTimes to Luxon.DateTimes
-    let date1 = DateTime.fromISO(this.datum1!.toISOString());
-    let date2 = DateTime.fromISO(this.datum2!.toISOString());
-
-    // update the time-components on Luxon.DateTimes
-    const date1ISO = date1
-      .set({ hour: tijd1.hour, minute: tijd1.minute })
-      .toISO();
-
-    const date2ISO = date2
-      .set({ hour: tijd2.hour, minute: tijd2.minute })
-      .toISO();
-
-    const voorstelling = {
+    let voorstelling = {
       titel: this.titel,
       ondertitel: this.ondertitel,
       regie: this.regie,
       omschrijving: this.omschrijving,
       groep: this.selectedGroep?.id,
-      datum_tijd_1: date1ISO,
-      datum_tijd_2: date2ISO,
+      datum_tijd_1: null,
+      datum_tijd_2: null,
       // spelers added through form-data
       // afbeelding added through form-data
-    };
+    } as any;
+
+    if (this.tijd1) {
+      const tijd1 = DateTime.fromFormat(this.tijd1!, 'h:mm a');
+      let date1 = DateTime.fromISO(this.datum1!.toISOString());
+      const date1ISO = date1
+        .set({ hour: tijd1.hour, minute: tijd1.minute })
+        .toISO();
+
+      voorstelling.datum_tijd_1 = date1ISO;
+    }
+
+    if (this.tijd2) {
+      const tijd2 = DateTime.fromFormat(this.tijd2!, 'h:mm a');
+      let date2 = DateTime.fromISO(this.datum2!.toISOString());
+      const date2ISO = date2
+        .set({ hour: tijd2.hour, minute: tijd2.minute })
+        .toISO();
+
+      voorstelling.datum_tijd_2 = date2ISO;
+    }
 
     const formData = this.objectToFormData(voorstelling);
 

@@ -1,22 +1,13 @@
-<div class="container p-4">
-    <div class="row">
-        <div class="col-4">
-            <button mat-stroked-button mat-dialog-close>
-                <mat-icon>arrow_back</mat-icon>
-                Terug
-            </button>
-        </div>
-        <div class="col-8">
-            <h2>Voorstelling Aanmaken</h2>
-        </div>
-    </div>
 
+<h2 mat-dialog-title class="display-4">Voorstelling Aanmaken</h2>
+<div mat-dialog-content class="container p-4">
     <div class="row">
         <form (ngSubmit)="submit()">
             <div class="row">
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Titel</mat-label>
                     <input matInput type="text" name="titel" maxlength="30"
+                        tabindex="0"
                         required
                         [(ngModel)]="titel">
                 </mat-form-field>
@@ -102,12 +93,22 @@
                     (onFileUploaded)="onFileUploaded($event)"></app-tovedem-file-picker>
             </div>
 
-            <div class="row d-flex justify-content-center">
-                <button mat-raised-button color="primary" type="submit"
-                    [disabled]="loading() || !formIsValid()"
-                    (click)="submit()">
-                    Aanmaken
-                </button>
+            <div class="row">
+                <div class="col-md-6 col-12 d-flex justify-content-center">
+                    <button mat-stroked-button mat-dialog-close
+                        class="flex-grow-1">
+                        <mat-icon>arrow_back</mat-icon>
+                        Terug
+                    </button>
+                </div>
+                <div class="col-md-6 col-12 d-flex justify-content-center">
+                    <button mat-raised-button color="primary" type="submit"
+                        class="flex-grow-1"
+                        [disabled]="loading() || !formIsValid()"
+                        (click)="submit()">
+                        Aanmaken
+                    </button>
+                </div>
             </div>
         </form>
     </div>
