@@ -64,7 +64,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     style="display: flex; justify-content: center;">
                                     <button class="amount-button"
                                         mat-stroked-button
-                                        (click)="amountOfPeopleDate1.set((amountOfPeopleDate1() ?? 0)-1 < 0 ? 0 : (amountOfPeopleDate1() ?? 0)-1)">➖</button>
+                                        (click)="amountOfPeopleDate1.set((amountOfPeopleDate1())-1 < 0 ? 0 : (amountOfPeopleDate1())-1)">➖</button>
                                     <mat-form-field
                                         style="max-width: 20em; text-align: center;">
                                         <mat-label>Hoeveel mensen?</mat-label>
@@ -76,7 +76,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     </mat-form-field>
                                     <button class="amount-button"
                                         mat-stroked-button
-                                        (click)="amountOfPeopleDate1.set((amountOfPeopleDate1() ?? 0)+1)">➕</button>
+                                        (click)="amountOfPeopleDate1.set((amountOfPeopleDate1())+1)">➕</button>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     style="display: flex; justify-content: center;">
                                     <button class="amount-button"
                                         mat-stroked-button
-                                        (click)="amountOfPeopleDate2.set((amountOfPeopleDate2() ?? 0)-1 < 0 ? 0 : (amountOfPeopleDate2() ?? 0)-1)">➖</button>
+                                        (click)="amountOfPeopleDate2.set((amountOfPeopleDate2())-1 < 0 ? 0 : (amountOfPeopleDate2())-1)">➖</button>
                                     <mat-form-field style="max-width: 20em;">
                                         <mat-label
                                             style="text-align: center;">Hoeveel
@@ -112,7 +112,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     </mat-form-field>
                                     <button class="amount-button"
                                         mat-stroked-button
-                                        (click)="amountOfPeopleDate2.set((amountOfPeopleDate2() ?? 0)+1)">➕</button>
+                                        (click)="amountOfPeopleDate2.set((amountOfPeopleDate2()+1))">➕</button>
                                 </div>
                             </div>
                         </div>

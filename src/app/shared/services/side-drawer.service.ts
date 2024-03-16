@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class SideDrawerService {
-  isOpen = signal(false);
+  isOpen = signal(true);
 
   constructor() {}
 

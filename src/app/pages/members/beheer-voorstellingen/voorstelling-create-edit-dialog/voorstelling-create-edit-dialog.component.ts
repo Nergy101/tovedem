@@ -53,16 +53,17 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   ondertitel?: string;
   regie?: string;
   omschrijving?: string;
+  selectedSpelers: any[] = [];
+  selectedGroep?: any;
+
   afbeelding?: FilePreviewModel;
+
   loading = signal(false);
 
   datum1?: Date;
   datum2?: Date;
   tijd1?: string;
   tijd2?: string;
-
-  selectedSpelers: any[] = [];
-  selectedGroep?: any;
 
   modules = {
     toolbar: [
@@ -106,8 +107,13 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     let date2 = DateTime.fromISO(this.datum2!.toISOString());
 
     // update the time-components on Luxon.DateTimes
-    date1 = date1.set({ hour: tijd1.hour, minute: tijd1.minute });
-    date2 = date2.set({ hour: tijd2.hour, minute: tijd2.minute });
+    const date1ISO = date1
+      .set({ hour: tijd1.hour, minute: tijd1.minute })
+      .toISO();
+
+    const date2ISO = date2
+      .set({ hour: tijd2.hour, minute: tijd2.minute })
+      .toISO();
 
     const voorstelling = {
       titel: this.titel,
@@ -115,8 +121,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       regie: this.regie,
       omschrijving: this.omschrijving,
       groep: this.selectedGroep?.id,
-      datum_tijd_1: date1.toISO(),
-      datum_tijd_2: date2.toISO(),
+      datum_tijd_1: date1ISO,
+      datum_tijd_2: date2ISO,
       // spelers added through form-data
       // afbeelding added through form-data
     };
@@ -141,6 +147,23 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
 
   onFileUploaded(filePreviewModel: FilePreviewModel) {
     this.afbeelding = filePreviewModel;
+  }
+
+  formIsValid() {
+    return (
+      !!this.titel &&
+      this.titel != '' &&
+      !!this.ondertitel &&
+      this.ondertitel != '' &&
+      !!this.regie &&
+      this.regie != '' &&
+      this.regie != '<p></p>' &&
+      !!this.omschrijving &&
+      this.omschrijving != '' &&
+      this.omschrijving != '<p></p>' &&
+      !!this.selectedGroep &&
+      this.selectedSpelers?.length > 0
+    );
   }
 
   private objectToFormData(obj: { [key: string]: any }): FormData {

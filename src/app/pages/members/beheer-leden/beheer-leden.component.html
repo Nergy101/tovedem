@@ -4,8 +4,6 @@
     </div>
 
     <div class="row">
-        <p>WIP table</p>
-
         <ul>
             <li>Algemeen-lid (gekoppeld aan bepaalde 'speler')</li>
             <li>Bestuurs-lid</li>
@@ -13,5 +11,84 @@
             <li>Donateurs (Lid Van Tovedem)</li>
             <li>Sponsoren (Sponsoren van Tovedem)</li>
         </ul>
+    </div>
+
+    <div class="row">
+        <table class="table mat-elevation-z2">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">email</th>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Rollen</th>
+                    <th scope="col">Groep</th>
+                    <th scope="col">Speler</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (gebruiker of gebruikers(); track $index)
+                {
+                <tr>
+                    <td>{{gebruiker.username}}</td>
+                    <td>{{gebruiker.email}}</td>
+                    <td>{{gebruiker.name}}</td>
+                    <td>
+                        <img
+                            style="max-height: 10em; border-radius: 1em;"
+                            [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+gebruiker.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
+                            alt="avatar">
+                    </td>
+                    <td>
+                        @if (gebruiker.expand?.rollen?.length == 1){
+                        <p style="margin: 1em">
+                            {{gebruiker.expand.rollen[0].rol}}
+                        </p>
+                        }
+                        @else if ((gebruiker.expand?.rollen?.length || 0) >
+                        0) {
+                        <button mat-button
+                            [matMenuTriggerFor]="menu">
+                            <span>
+                                {{gebruiker.expand?.rollen?.length}} Rollen
+                            </span>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            @for (rol of gebruiker.expand?.rollen ?? [];
+                            track
+                            $index)
+                            {
+                            <p style="margin: 1em">
+                                {{rol.rol}}
+                            </p>
+                            }
+                        </mat-menu>
+                        }
+                        @else {
+                        <span>
+                            Geen Rollen
+                        </span>
+                        }
+                    </td>
+                    <td>
+                        {{gebruiker.expand?.groep?.naam}}
+                    </td>
+                    <td>
+                        {{gebruiker.expand?.speler?.naam}}
+                    </td>
+                    <td>
+                        @if(!!gebruiker.expand?.speler)
+                        {
+                        <button mat-stroked-button disabled>
+                            Voorstellingen
+                            inzien
+                        </button>
+                        }</td>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

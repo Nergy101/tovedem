@@ -30,7 +30,6 @@
         <table class="table mat-elevation-z2">
             <thead>
                 <tr>
-                    <th scope="col">Uniek ID</th>
                     <th scope="col">Naam</th>
                     <th></th>
                 </tr>
@@ -40,7 +39,6 @@
                 @for (speler of spelers(); track $index)
                 {
                 <tr>
-                    <td>{{speler.id}}</td>
                     <td>{{speler.naam}}</td>
                     <td>
                         <button mat-icon-button (click)="delete(speler)"

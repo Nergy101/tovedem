@@ -14,7 +14,6 @@
         <table class="table mat-elevation-z2">
             <thead>
                 <tr>
-                    <th scope="col">Uniek ID</th>
                     <th scope="col">Titel</th>
                     <th scope="col">Datum Tijd 1 </th>
                     <th scope="col">Datum Tijd 2 </th>
@@ -27,7 +26,6 @@
                 @for (item of items(); track $index)
                 {
                 <tr>
-                    <td>{{item.id}}</td>
                     <td>{{item.titel}}</td>
                     <td>{{item.datum_tijd_1}}</td>
                     <td>{{item.datum_tijd_2}}</td>

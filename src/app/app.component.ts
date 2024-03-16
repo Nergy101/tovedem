@@ -50,10 +50,12 @@ export class AppComponent {
   constructor() {
     effect(() => {
       if (this.sideDrawerService.isOpen()) {
-        this.drawer.open();
-      } else {
-        this.drawer.close();
+        if (this.authService.isLoggedIn()) {
+          this.drawer.open();
+          return;
+        }
       }
+      this.drawer.close();
     });
   }
 }

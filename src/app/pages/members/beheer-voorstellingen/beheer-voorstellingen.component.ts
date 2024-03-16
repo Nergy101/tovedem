@@ -49,8 +49,10 @@ export class BeheerVoorstellingenComponent {
     });
 
     dialogRef.afterClosed().subscribe(async (created) => {
-      this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
-      await this.ngOnInit();
+      if (!!created) {
+        this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
+        await this.ngOnInit();
+      }
     });
   }
 
