@@ -55,7 +55,9 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     style="flex: 1;">
                                     <mat-calendar [startAt]="datum1"
                                         [selected]="datum1"
-                                        disabled></mat-calendar>
+                                        [minDate]="datum1"
+                                        [maxDate]="datum1"
+                                        [startView]="'month'"></mat-calendar>
                                 </mat-card>
                                 <h2>Datum: {{datum1 | date : 'dd LLLL YYYY'}}
                                     <br> Start tijd: {{datum1 | date : 'HH:mm'}}
@@ -90,7 +92,9 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                 <mat-card class="inline-calendar-card">
                                     <mat-calendar [startAt]="datum2"
                                         [selected]="datum2"
-                                        disabled></mat-calendar>
+                                        [minDate]="datum2"
+                                        [maxDate]="datum2"
+                                        [startView]="'month'"></mat-calendar>
                                 </mat-card>
                                 <h2>Datum: {{datum2 | date : 'dd LLLL YYYY'}}
                                     <br> Start tijd: {{datum2 | date : 'HH:mm'}}
@@ -122,6 +126,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                         <div class="d-flex align-items-center flex-column">
                             <div class="d-flex flex-column">
                                 <mat-checkbox [ngModel]="vriendVanTovedem()"
+                                    color="primary"
                                     (ngModelChange)="vriendVanTovedemChanged($event)"
                                     matTooltip="Je bent sponsor of donateur van Tovedem."
                                     [matTooltipPosition]="'left'">
@@ -131,6 +136,7 @@ datum=[12-10-2024 18:00:00, 13-10-2024 19:00:00]
                                     </span>
                                 </mat-checkbox>
                                 <mat-checkbox [ngModel]="lidVanTovedemMejotos()"
+                                    color="primary"
                                     (ngModelChange)="lidVanTovedemMejotosChanged($event)"
                                     matTooltip="Je bent lid van een van de groepen binnen Tovedem."
                                     [matTooltipPosition]="'left'">

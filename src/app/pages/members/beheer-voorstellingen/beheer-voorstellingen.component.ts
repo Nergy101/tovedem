@@ -45,7 +45,6 @@ export class BeheerVoorstellingenComponent {
       maxHeight: '80vh',
       maxWidth: '80vw',
       closeOnNavigation: false,
-      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(async (created) => {
