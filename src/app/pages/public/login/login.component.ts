@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import Gebruiker from '../../../models/domain/gebruiker.model';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class LoginComponent {
   usernameOrEmail?: string;
   password?: string;
 
-  pocketbase = inject(PocketbaseService).client;
+  pocketbase = inject(PocketbaseService);
   authService = inject(AuthService);
   router = inject(Router);
 
@@ -54,11 +55,11 @@ export class LoginComponent {
     if (this.formIsValid) {
       this.loading.set(true);
 
-      const authData = await this.pocketbase
+      const authData = (await this.pocketbase.client
         .collection('users')
         .authWithPassword(this.usernameOrEmail!, this.password!, {
           expand: 'groep,rollen',
-        });
+        })) as any as Gebruiker;
 
       this.authService.registerUser(authData);
       this.router.navigate(['profiel']);

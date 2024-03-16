@@ -33,13 +33,11 @@ import Speler from '../../../models/domain/speler.model';
 export class BeheerSpelersComponent implements OnInit {
   loading = signal(false);
 
-  spelers: WritableSignal<any | null> = signal(null);
+  spelers: WritableSignal<Speler[] | null> = signal(null);
 
   spelerNaam?: string;
 
   client = inject(PocketbaseService);
-
-  displayedColumns = ['id', 'naam', 'actions'];
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
@@ -53,7 +51,7 @@ export class BeheerSpelersComponent implements OnInit {
     });
 
     this.spelers.update((bestaandeSpelers) => [
-      ...bestaandeSpelers,
+      ...(bestaandeSpelers ?? []),
       nieuweSpeler,
     ]);
 
@@ -61,11 +59,11 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(false);
   }
 
-  async delete(element: any) {
+  async delete({ id }: any) {
     this.loading.set(true);
 
-    if (await this.client.delete('spelers', element.id)) {
-      this.spelers.update((x) => x.filter((y: any) => y.id != element.id));
+    if (await this.client.delete('spelers', id)) {
+      this.spelers.update((x) => (x ?? []).filter((y: any) => y.id != id));
     }
 
     this.loading.set(false);

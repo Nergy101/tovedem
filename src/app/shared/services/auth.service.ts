@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { RecordAuthResponse, RecordModel } from 'pocketbase';
 import { SideDrawerService } from './side-drawer.service';
+import Gebruiker from '../../models/domain/gebruiker.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,9 @@ import { SideDrawerService } from './side-drawer.service';
 export class AuthService {
   sideDrawerService = inject(SideDrawerService);
 
-  public userRecord: WritableSignal<
-    RecordAuthResponse<RecordModel> | null | undefined
-  > = signal<RecordAuthResponse<RecordModel> | null | undefined>(undefined);
+  public userRecord: WritableSignal<Gebruiker | null | undefined> = signal<
+    Gebruiker | null | undefined
+  >(undefined);
 
   public userData: Signal<any | null> = computed(
     () => this.userRecord()?.record ?? null
@@ -48,14 +49,13 @@ export class AuthService {
     // save new userRecord to localstorage
     effect(() => {
       const newValue = this.userRecord();
-
       if (newValue != undefined) {
         localStorage.setItem('user_data', JSON.stringify(newValue));
       }
     });
   }
 
-  registerUser(userRecord: RecordAuthResponse<RecordModel>): void {
+  registerUser(userRecord: Gebruiker): void {
     this.userRecord.set(userRecord);
     this.sideDrawerService.open();
   }

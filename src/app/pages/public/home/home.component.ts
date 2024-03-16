@@ -3,6 +3,7 @@ import { VoorstellingCardComponent } from '../../../shared/components/voorstelli
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Title } from '@angular/platform-browser';
+import Voorstelling from '../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,9 @@ import { Title } from '@angular/platform-browser';
   imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
 })
 export class HomePaginaComponent {
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
 
-  voorstellingen: WritableSignal<any[]> = signal([]);
+  voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
 
   titleService = inject(Title);
   constructor() {
@@ -22,12 +23,10 @@ export class HomePaginaComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    const voorstellingen = await this.client
-      .collection('voorstellingen')
-      .getFullList({
-        sort: '-created',
-        expand: 'groep'
-      });
+    const voorstellingen = await this.client.getAll('voorstellingen', {
+      sort: '-created',
+      expand: 'groep',
+    });
 
     this.voorstellingen.set(voorstellingen as any);
   }

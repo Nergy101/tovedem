@@ -13,6 +13,8 @@ import { Title } from '@angular/platform-browser';
 
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
+import Voorstelling from '../../../models/domain/voorstelling.model';
+import Groep from '../../../models/domain/groep.model';
 
 @Component({
   selector: 'app-groep',
@@ -31,13 +33,13 @@ export class GroepComponent {
   groepsNaam: string;
   url = 'https://tovedem.pockethost.io/';
 
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
 
-  groep: WritableSignal<any | null> = signal(null);
-  aankomendeVoorstelling: WritableSignal<any | null | undefined> =
+  groep: WritableSignal<Groep | null> = signal(null);
+  aankomendeVoorstelling: WritableSignal<Voorstelling | null | undefined> =
     signal(undefined);
-  voorstellingen: WritableSignal<any[]> = signal([]);
-  afgelopenVoorstellingen: WritableSignal<any[] | null> = signal(null);
+  voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
+  afgelopenVoorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
   spelers: WritableSignal<any[] | null> = signal(null);
   slides: WritableSignal<any[] | null> = signal(null);
@@ -49,28 +51,24 @@ export class GroepComponent {
 
     effect(() => {
       if (!!this.groep()?.naam) {
-        this.titleService.setTitle(`Tovedem - Groep - ${this.groep().naam} `);
+        this.titleService.setTitle(`Tovedem - Groep - ${this.groep()?.naam} `);
       }
     });
   }
 
   async ngOnInit(): Promise<void> {
     const voorstellingen = (
-      await this.client.collection('voorstellingen').getFullList({
+      await this.client.getAll<Voorstelling>('voorstellingen', {
         sort: '-created',
         expand: 'groep',
       })
-    ).filter((x: any) =>
-      x.groep.includes(this.groepsNaam.substring(0, 3))
-    ) as any;
+    ).filter((x: any) => x.groep.includes(this.groepsNaam.substring(0, 3)));
 
     const groep = (
-      await this.client.collection('groepen').getFullList({
+      await this.client.getAll<Groep>('groepen', {
         sort: '-created',
       })
-    ).filter((x: any) =>
-      x.naam.includes(this.groepsNaam.substring(0, 2))
-    )[0] as any;
+    ).filter((x: any) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
 
     this.groep.set(groep);
     this.voorstellingen.set(voorstellingen);
@@ -80,14 +78,17 @@ export class GroepComponent {
     const laatstAangemaakteVoorstelling = voorstellingen.shift();
 
     const eerstVolgendeVoorstelling = (
-      (await this.client.collection('voorstellingen').getFullList()) as any[]
+      await this.client.getAll<Voorstelling>('voorstellingen')
     ).sort((x, y) => (new Date(x.created) < new Date(y.created) ? 1 : -1))[0];
 
-    const eerstVolgendeVoorstellingMetSpelers = (await this.client
-      .collection('voorstellingen')
-      .getOne(eerstVolgendeVoorstelling.id, {
-        expand: 'spelers',
-      })) as any;
+    const eerstVolgendeVoorstellingMetSpelers =
+      await this.client.getOne<Voorstelling>(
+        'voorstellingen',
+        eerstVolgendeVoorstelling.id,
+        {
+          expand: 'spelers',
+        }
+      );
 
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling as any);

@@ -5,20 +5,20 @@
   !!afgelopenVoorstellingen()) {
   <div class="row mat-elevation-z2">
 
-    <span class="text-center display-1">{{ groep().naam }}</span>
+    <span class="text-center display-1">{{ groep()?.naam }}</span>
     <mat-divider></mat-divider>
     <div class="row pt-4">
       <div class="col-lg-3 col-12">
-        @if(!!groep().img){
-          <img src={{groep().img}}
+        @if(!!groep()?.img){
+        <img src={{groep()?.img}}
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />}
         @else {
-          <img src="/assets/Place-Holder-Image.jpg"
+        <img src="/assets/Place-Holder-Image.jpg"
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
         }
       </div>
       <div class="col-lg-9 col-12">
-        <h3 [innerHTML]="groep().omschrijving"></h3>
+        <h3 [innerHTML]="groep()?.omschrijving"></h3>
       </div>
     </div>
 
@@ -54,9 +54,8 @@
     </mdb-carousel>
   </div>
 
-  
   <div class="mat-elevation-z2">
-  @if (!!spelers()) {
+    @if (!!spelers()) {
     <p class="display-6">Spelers</p>
     <mat-list>
       @for (speler of spelers(); track $index) {

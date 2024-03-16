@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../shared/services/auth.service';
+import Gebruiker from '../../../models/domain/gebruiker.model';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -35,17 +36,17 @@ import { AuthService } from '../../../shared/services/auth.service';
 export class BeheerLedenComponent implements OnInit {
   loading = signal(false);
 
-  gebruikers: WritableSignal<any | null> = signal(null);
+  gebruikers: WritableSignal<Gebruiker[] | null> = signal(null);
 
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
   authService = inject(AuthService);
 
   async ngOnInit(): Promise<void> {
-    const users = (await this.client.collection('users').getFullList({
-      expand: 'rollen,groep,speler',
-    })) as any[];
-
-    this.gebruikers.set(users);
+    this.gebruikers.set(
+      await this.client.getAll<Gebruiker>('users', {
+        expand: 'rollen,groep,speler',
+      })
+    );
   }
 
   isHuidigeGebruiker(gebruikerId: string) {

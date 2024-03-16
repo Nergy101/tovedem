@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Voorstelling from '../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -27,20 +28,16 @@ export class BeheerVoorstellingenComponent {
 
   items: WritableSignal<any[] | null> = signal(null);
 
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
 
-  displayedColumns = ['id', 'naam', 'actions'];
-
   async ngOnInit(): Promise<void> {
-    const items = (
-      await this.client
-        .collection('voorstellingen')
-        .getList(0, 30, { expand: 'groep,spelers' })
-    ).items as any[];
-
-    this.items.set(items);
+    this.items.set(
+      await this.client.getAll<Voorstelling>('voorstellingen', {
+        expand: 'groep,spelers',
+      })
+    );
   }
 
   async openCreateDialog() {
@@ -57,11 +54,13 @@ export class BeheerVoorstellingenComponent {
     });
   }
 
-  async delete(element: any) {
+  async delete({ id }: any) {
     this.loading.set(true);
-    await this.client.collection('voorstellingen').delete(element.id);
 
-    this.items.update((x) => x!.filter((y: any) => y.id != element.id));
+    if (await this.client.delete('voorstellingen', id)) {
+      this.items.update((x) => x!.filter((y: any) => y.id != id));
+    }
+
     this.loading.set(false);
   }
 }

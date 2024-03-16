@@ -23,6 +23,10 @@ import PocketBase from 'pocketbase';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { lastValueFrom } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import Voorstelling from '../../../../models/domain/voorstelling.model';
+import Groep from '../../../../models/domain/groep.model';
+import Reservering from '../../../../models/domain/resservering.model';
 
 @Component({
   selector: 'app-reserveren',
@@ -49,7 +53,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class ReserverenComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
-  client: PocketBase;
+  client = inject(PocketbaseService);
+  snackBar = inject(MatSnackBar);
 
   router = inject(Router);
   name = signal('');
@@ -82,10 +87,6 @@ export class ReserverenComponent implements OnInit {
   @Input('voorstelling')
   voorstellingId: string | null = null;
 
-  constructor(private readonly _snackBar: MatSnackBar) {
-    this.client = new PocketBase(this.url);
-  }
-
   async ngOnInit(): Promise<void> {
     await this.loadData();
     this.loaded = true;
@@ -93,17 +94,19 @@ export class ReserverenComponent implements OnInit {
 
   async loadData(): Promise<void> {
     if (!!this.voorstellingId) {
-      const voorstelling = (await this.client
-        .collection('voorstellingen')
-        .getOne(this.voorstellingId)) as any;
+      const voorstelling = await this.client.getOne<Voorstelling>(
+        'voorstellingen',
+        this.voorstellingId
+      );
 
       this.voorstellingsNaam = voorstelling.titel;
       this.datum1 = new Date(voorstelling.datum_tijd_1);
       this.datum2 = new Date(voorstelling.datum_tijd_2);
 
-      const groep = (await this.client
-        .collection('groepen')
-        .getOne(voorstelling.groep)) as any;
+      const groep = await this.client.getOne<Groep>(
+        'groepen',
+        voorstelling.groep
+      );
 
       this.groepsNaam = groep.naam;
     }
@@ -112,9 +115,9 @@ export class ReserverenComponent implements OnInit {
   async saveReservering(): Promise<void> {
     this.saving.set(true);
 
-    const nieuweReservering = await this.client
-      .collection('reserveringen')
-      .create({
+    const nieuweReservering = await this.client.create<Reservering>(
+      'reserveringen',
+      {
         voornaam: this.name,
         achternaam: this.surname,
         email: this.email,
@@ -123,7 +126,8 @@ export class ReserverenComponent implements OnInit {
         voorstelling: this.voorstellingId,
         datum_tijd_1_aantal: this.amountOfPeopleDate1 ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2 ?? 0,
-      });
+      }
+    );
 
     //TO DO: pagina met reservering geslaagd. nog een maal alle gegevens op een rijtje ga terug naar hoofdscherm
     //Datum, aantal stoelen, welke naam, of ze gereserverde plekken gaan krijgen of niet, betalen aan de kassa melding (Pin en cash) kaart met route??
@@ -135,7 +139,7 @@ export class ReserverenComponent implements OnInit {
       },
     });
 
-    this._snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
+    this.snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
       duration: 5000,
     });
   }

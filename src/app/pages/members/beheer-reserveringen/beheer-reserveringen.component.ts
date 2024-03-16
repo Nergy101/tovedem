@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Reservering from '../../../models/domain/resservering.model';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -24,23 +25,23 @@ export class BeheerReserveringenComponent {
 
   items: WritableSignal<any[] | null> = signal(null);
 
-  client = inject(PocketbaseService).client;
-
-  displayedColumns = ['id', 'naam', 'actions'];
+  client = inject(PocketbaseService);
 
   async ngOnInit(): Promise<void> {
-    const items = (await this.client
-      .collection('reserveringen')
-      .getFullList({ expand: 'voorstelling' })) as any[];
-
-    this.items.set(items);
+    this.items.set(
+      await this.client.getAll<Reservering>('reserveringen', {
+        expand: 'voorstelling',
+      })
+    );
   }
 
-  async delete(element: any) {
+  async delete({ id }: any) {
     this.loading.set(true);
-    await this.client.collection('reserveringen').delete(element.id);
 
-    this.items.update((x) => x!.filter((y: any) => y.id != element.id));
+    if (await this.client.delete('reserveringen', id)) {
+      this.items.update((x) => x!.filter((y: any) => y.id != id));
+    }
+
     this.loading.set(false);
   }
 }

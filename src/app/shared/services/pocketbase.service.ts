@@ -22,8 +22,27 @@ export class PocketbaseService {
     return await this.client.collection(collectionName).delete(id);
   }
 
-  async getAll<T>(collectionName: string, expand?: string): Promise<T[]> {
-    return await this.getCollection(collectionName).getFullList({ expand });
+  async getOne<T>(
+    collectionName: string,
+    id: string,
+    options?: {
+      expand?: string;
+      filter?: string;
+      sort?: string;
+    }
+  ) {
+    return await this.getCollection(collectionName).getOne(id, options);
+  }
+
+  async getAll<T>(
+    collectionName: string,
+    options?: {
+      expand?: string;
+      filter?: string;
+      sort?: string;
+    }
+  ): Promise<T[]> {
+    return await this.getCollection(collectionName).getFullList(options);
   }
 
   async getPage<T>(

@@ -15,6 +15,8 @@ import { VoorstellingLineComponent } from '../../../shared/components/voorstelli
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { Title } from '@angular/platform-browser';
+import Voorstelling from '../../../models/domain/voorstelling.model';
+import Groep from '../../../models/domain/groep.model';
 
 @Component({
   selector: 'app-agenda',
@@ -33,14 +35,14 @@ import { Title } from '@angular/platform-browser';
 })
 export class AgendaComponent implements OnInit {
   url = 'https://tovedem.pockethost.io/';
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
   titleService = inject(Title);
 
   today = new Date().toISOString();
 
-  voorstellingenShort: WritableSignal<any[]> = signal([]);
-  voorstellingenLong: WritableSignal<any[]> = signal([]);
-  groepen: WritableSignal<any[]> = signal([]);
+  voorstellingenShort: WritableSignal<Voorstelling[]> = signal([]);
+  voorstellingenLong: WritableSignal<Voorstelling[]> = signal([]);
+  groepen: WritableSignal<Groep[]> = signal([]);
 
   voorstellingenPerJaar: WritableSignal<{ year: number; items: any[] }[]> =
     signal([]);
@@ -50,18 +52,18 @@ export class AgendaComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const voorstellingenInDeToekomst = await this.client
-      .collection('voorstellingen')
-      .getFullList({
+    const voorstellingenInDeToekomst = await this.client.getAll<Voorstelling>(
+      'voorstellingen',
+      {
         sort: '-datum_tijd_1',
         filter: `datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}"`,
         expand: 'groep',
-      });
+      }
+    );
 
-    const groepen = await this.client.collection('groepen').getFullList({
+    const groepen = await this.client.getAll<Groep>('groepen', {
       sort: '-created',
     });
-
     this.groepen.set(groepen as any);
 
     const voorstellingenPerJaar = this.groupByYear(
