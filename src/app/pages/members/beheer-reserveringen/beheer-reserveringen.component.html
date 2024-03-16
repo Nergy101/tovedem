@@ -5,9 +5,10 @@
 
     <div class="row">
 
+        @defer(when items()){
+
         <mat-tab-group>
             <mat-tab label="Beheren">
-
                 <table class="table mat-elevation-z2">
                     <thead>
                         <tr>
@@ -100,5 +101,10 @@
             </mat-tab>
         </mat-tab-group>
 
+        } @placeholder {
+        <div class="center">
+            <mat-spinner></mat-spinner>
+        </div>
+        }
     </div>
 </div>

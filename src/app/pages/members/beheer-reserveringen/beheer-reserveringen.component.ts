@@ -3,12 +3,19 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-beheer-reserveringen',
   standalone: true,
-  imports: [MatCheckboxModule, MatIconModule, MatButtonModule, MatTabsModule],
+  imports: [
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
 })

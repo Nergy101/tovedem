@@ -7,18 +7,25 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatSelectModule, MatMenuModule],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
 })
 export class BeheerVoorstellingenComponent {
   loading = signal(false);
 
-  items: WritableSignal<any[]> = signal([]);
+  items: WritableSignal<any[] | null> = signal(null);
 
   client = inject(PocketbaseService).client;
   dialog = inject(MatDialog);
