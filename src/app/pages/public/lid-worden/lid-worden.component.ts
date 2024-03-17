@@ -23,10 +23,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatSelectModule } from '@angular/material/select';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatTooltipModule} from '@angular/material/tooltip';
-
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import Groep from '../../../models/domain/groep.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lid-worden',
@@ -34,7 +34,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   templateUrl: './lid-worden.component.html',
   styleUrl: './lid-worden.component.scss',
   imports: [
-    MatProgressSpinnerModule,    
+    MatProgressSpinnerModule,
     CommonModule,
     MatButtonModule,
     MatCardModule,
@@ -44,50 +44,52 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatSelect, MatSelectModule,MatDividerModule, MatTooltipModule,
+    MatSelect,
+    MatSelectModule,
+    MatDividerModule,
+    MatTooltipModule,
   ],
   providers: [provideNativeDateAdapter(), DatePipe],
 })
 export class LidWordenComponent implements OnInit {
-  client = inject(PocketbaseService).client;
+  client = inject(PocketbaseService);
   datePipe = inject(DatePipe);
+  toastr = inject(ToastrService);
+
   //dialogRef = inject(MatDialogRef<LidWordenComponent>);
 
-
   //info om lid te worden
-  recordId: string = "";
-  collectionId: string = "";
+  recordId: string = '';
+  collectionId: string = '';
   content1: WritableSignal<string | null> = signal(null);
   content2: WritableSignal<string | null> = signal(null);
   content3: WritableSignal<string | null> = signal(null);
-  img_1: string = "";
-  img_2: string = "";
-  img_3: string = "";
-
+  img_1: string = '';
+  img_2: string = '';
+  img_3: string = '';
 
   //formulier
   voornaam: string | null = null;
   achternaam: string | null = null;
   email: string | null = null;
   message: string | null = null;
-  geboorteDatum?: Date; 
+  geboorteDatum?: Date;
   selectedGroep?: any;
   groepen: WritableSignal<any[]> = signal([]);
-  
+
   loading = signal(false);
 
   titleService = inject(Title);
-
 
   constructor() {
     this.titleService.setTitle('Tovedem - Lid Worden');
   }
 
   async ngOnInit(): Promise<void> {
-    this.groepen.set(await this.client.collection('groepen').getFullList());
-    const record = (await this.client.collection('lid_worden').getList(1, 1))
+    this.groepen.set(await this.client.getAll<Groep>('groepen'));
+    const record = (await this.client.getPage<any>('lid_worden', 1, 1))
       .items[0];
-    
+
     this.recordId = record.id;
     this.collectionId = record.collectionId;
     this.img_1 = record.img_1;
@@ -102,25 +104,31 @@ export class LidWordenComponent implements OnInit {
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
     return `https://tovedem.pockethost.io/api/files/${collectionId}/${recordId}/${imageId}`;
   }
+
   async submit(): Promise<void> {
     this.loading.set(true);
 
     let aanmelding = {
+      reden: 'lid_worden',
       voornaam: this.voornaam,
       achternaam: this.achternaam,
       groep: this.selectedGroep,
       bericht: this.message,
-      geboorteDatum: this.geboorteDatum,
+      geboorte_datum: this.geboorteDatum,
       email: this.email,
-      aanmeldingsdatum: new Date,
-      // spelers added through form-data
-      // afbeelding added through form-data
     } as any;
+
+    await this.client.create('contact_verzoeken', aanmelding);
+
+    this.toastr.success(
+      `Bedankt voor de aanmelding, ${this.voornaam}.`,
+      'Aanvraag verzonden!'
+    );
+    this.loading.set(false);
   }
 
-
   formIsValid() {
-    return (true);/*
+    return (
       !!this.voornaam &&
       this.voornaam != '' &&
       !!this.achternaam &&
@@ -128,12 +136,7 @@ export class LidWordenComponent implements OnInit {
       !!this.selectedGroep &&
       this.selectedGroep != '' &&
       !!this.email &&
-      this.email != '' &&
-      this.email != '<p></p>' &&
-    );*/
+      this.email != ''
+    );
   }
-
-
-
-
 }
