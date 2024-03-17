@@ -1,17 +1,103 @@
 <div class="container mat-elevation-z2">
     @defer (when !!content1() && !!content2() && !!content3()) {
     <div class="row">
-        <div [innerHTML]="content1()"></div>
+        <div class="col-lg-3 col-12">
+            @if(!!img_1){
+                <img class="card-image"
+                    [src]="getImageUrl(collectionId, recordId, img_1)"
+                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+                @else {
+                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+                }
+        </div>
+        <div class="col-lg-8 col-12" [innerHTML]="content1()"></div>
+        <div class="col-lg-1 col-12">
+            <input type="button" onClick="document.getElementById('span').scrollIntoView();" />
+        </div>
     </div>
     <div class="row">
-        <div [innerHTML]="content2()"></div>
+        <div class="col-lg-9 col-12" [innerHTML]="content2()"></div>
+        <div class="col-lg-3 col-12">
+            @if(!!img_2){
+                <img class="card-image"
+                    [src]="getImageUrl(collectionId, recordId, img_2)"
+                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+                @else {
+                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+                }
+        </div>
+        
     </div>
     <div class="row">
-        <div [innerHTML]="content3()"></div>
+        <div class="col-lg-3 col-12">
+            @if(!!img_3){
+                <img class="card-image"
+                    [src]="getImageUrl(collectionId, recordId, img_3)"
+                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+                @else {
+                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+                }
+        </div>
+        <div class="col-lg-9 col-12" [innerHTML]="content3()"></div>
     </div>
     } @placeholder (minimum 1s) {
     <div class="center">
         <mat-spinner></mat-spinner>
     </div>
     }
+</div>
+
+<span></span>
+<div class="container mat-elevation-z2" style="margin-top: 2em;">
+    <div class="row">
+        <div class="col-12">
+            <div class="titel">
+                <h1> <mat-icon>person_add</mat-icon> Schrijf je nu in!</h1>
+            </div>
+            <mat-form-field class="col-4" style="margin-right: 1em;">
+                <mat-label>Voornaam</mat-label>
+                <input placeholder="Pieter" matInput type="text" [(ngModel)]="voornaam">
+            </mat-form-field>
+            <mat-form-field class="col-4">
+                <mat-label>Achternaam</mat-label>
+                <input placeholder="Post" matInput type="text" [(ngModel)]="achternaam">
+            </mat-form-field>
+            <mat-form-field class="col-12">
+                <mat-label>E-mail</mat-label>
+                <input placeholder="pieter-post@voorbeeld.nl" matInput type="email" [(ngModel)]="email">
+            </mat-form-field>
+            <div style="display: flex;">
+                <mat-form-field class="col-md-4 col-6">
+                    <mat-label>Geboortedatum</mat-label>
+                    <input matInput [matDatepicker]="picker1"
+                        [(ngModel)]="geboorteDatum"
+                        name="picker1">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix
+                        [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="col-md-4 col-6">
+                    <mat-label>Groep</mat-label>
+                    <mat-select [(value)]="selectedGroep" required>
+                        @for (groep of groepen(); track $index) {
+                        <mat-option [value]="groep">{{groep.naam}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div style="display: flex;">
+                <mat-form-field style="flex: 1;">
+                    <mat-label>Bericht</mat-label>
+                    <textarea [(ngModel)]="message" matInput rows="10" placeholder="Type hier je bericht"></textarea>
+                </mat-form-field>
+            </div>
+            <div style="display: flex;">
+                <button style="flex: 1;" mat-raised-button (click)="verstuurLidAanmeldenMail()">Verzenden</button>
+            </div>
+        </div>
+    </div>
 </div>
