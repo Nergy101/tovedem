@@ -12,8 +12,13 @@
                 }
         </div>
         <div class="col-lg-8 col-12" [innerHTML]="content1()"></div>
-        <div class="col-lg-1 col-12">
-            <input type="button" onClick="document.getElementById('span').scrollIntoView();" />
+        <div class="col-lg-1 col-12" style="align-items: center;">
+            <button mat-fab matTooltip="Scoll naar Formulier" 
+                            aria-label="Scroll naar Formulier"
+                            color="primary" 
+                            onClick="document.getElementById('scrollPoint').scrollIntoView();"> 
+            <mat-icon>keyboard_double_arrow_down</mat-icon>
+        </button>
         </div>
     </div>
     <div class="row">
@@ -50,45 +55,44 @@
     }
 </div>
 
-<span></span>
-<div class="container mat-elevation-z2" style="margin-top: 2em;">
+<div id="scrollPoint"><a href="scrollPoint"></a></div>
+
+<div class="container mat-elevation-z2" style="margin-top: 4em;">
     <div class="row">
         <div class="col-12">
             <div class="titel">
-                <h1> <mat-icon>person_add</mat-icon> Schrijf je nu in!</h1>
+                <h1> <mat-icon style="justify-content:  center;">person_add</mat-icon> Schrijf je nu in!</h1>
             </div>
-            <mat-form-field class="col-4" style="margin-right: 1em;">
+            <mat-form-field class="col-md-4 col-12" style="padding-right: 1em;">
                 <mat-label>Voornaam</mat-label>
                 <input placeholder="Pieter" matInput type="text" [(ngModel)]="voornaam">
             </mat-form-field>
-            <mat-form-field class="col-4">
+            <mat-form-field class="col-md-5 col-12">
                 <mat-label>Achternaam</mat-label>
                 <input placeholder="Post" matInput type="text" [(ngModel)]="achternaam">
             </mat-form-field>
-            <mat-form-field class="col-12">
+            <mat-form-field class="col-md-3 col-12" style="padding-left: 1em;">
+                <mat-label>Groep</mat-label>
+                <mat-select [(value)]="selectedGroep" required>
+                    @for (groep of groepen(); track $index) {
+                    <mat-option [value]="groep">{{groep.naam}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-8 col-12">
                 <mat-label>E-mail</mat-label>
                 <input placeholder="pieter-post@voorbeeld.nl" matInput type="email" [(ngModel)]="email">
             </mat-form-field>
-            <div style="display: flex;">
-                <mat-form-field class="col-md-4 col-6">
-                    <mat-label>Geboortedatum</mat-label>
-                    <input matInput [matDatepicker]="picker1"
-                        [(ngModel)]="geboorteDatum"
-                        name="picker1">
-                    <mat-hint>DD/MM/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix
-                        [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="col-md-4 col-6">
-                    <mat-label>Groep</mat-label>
-                    <mat-select [(value)]="selectedGroep" required>
-                        @for (groep of groepen(); track $index) {
-                        <mat-option [value]="groep">{{groep.naam}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
+            <mat-form-field class="col-md-4 col-12" style="padding-left: 1em;">
+                <mat-label>Geboortedatum</mat-label>
+                <input matInput [matDatepicker]="picker1"
+                    [(ngModel)]="geboorteDatum"
+                    name="picker1">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix
+                    [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
             <div style="display: flex;">
                 <mat-form-field style="flex: 1;">
                     <mat-label>Bericht</mat-label>

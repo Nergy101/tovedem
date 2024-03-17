@@ -21,6 +21,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe, Time } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 
@@ -40,13 +44,14 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatSelect, MatSelectModule,MatDividerModule, MatTooltipModule,
   ],
   providers: [provideNativeDateAdapter(), DatePipe],
 })
 export class LidWordenComponent implements OnInit {
   client = inject(PocketbaseService).client;
   datePipe = inject(DatePipe);
-  dialogRef = inject(MatDialogRef<LidWordenComponent>);
+  //dialogRef = inject(MatDialogRef<LidWordenComponent>);
 
 
   //info om lid te worden
