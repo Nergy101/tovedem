@@ -15,7 +15,11 @@ export class PocketbaseService {
   }
 
   async create<T>(collectionName: string, item: any): Promise<T> {
-    return this.client.collection(collectionName).create(item);
+    return this.getCollection(collectionName).create(item);
+  }
+
+  async update<T>(collectionName: string, item: any): Promise<T> {
+    return this.getCollection(collectionName).update(item);
   }
 
   async delete(collectionName: string, id: string): Promise<boolean> {

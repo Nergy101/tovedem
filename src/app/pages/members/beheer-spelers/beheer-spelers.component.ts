@@ -59,6 +59,14 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(false);
   }
 
+  async updateSpeler(aangepasteSpeler: Speler) {
+    this.loading.set(true);
+
+    await this.client.update<Speler>('spelers', aangepasteSpeler);
+
+    this.loading.set(false);
+  }
+
   async delete({ id }: any) {
     this.loading.set(true);
 
