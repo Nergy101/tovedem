@@ -100,7 +100,7 @@
                 </mat-form-field>
             </div>
             <div style="display: flex;">
-                <button style="flex: 1;" mat-raised-button (click)="verstuurLidAanmeldenMail()">Verzenden</button>
+                <button style="flex: 1;" mat-raised-button (click)="submit()" [disabled]="loading() || !formIsValid()">Verzenden</button>
             </div>
         </div>
     </div>

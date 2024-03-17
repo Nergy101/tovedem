@@ -74,8 +74,7 @@ export class LidWordenComponent implements OnInit {
   selectedGroep?: any;
   groepen: WritableSignal<any[]> = signal([]);
   
-
-  verstuurLidAanmeldenMail() {}
+  loading = signal(false);
 
   titleService = inject(Title);
 
@@ -103,4 +102,38 @@ export class LidWordenComponent implements OnInit {
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
     return `https://tovedem.pockethost.io/api/files/${collectionId}/${recordId}/${imageId}`;
   }
+  async submit(): Promise<void> {
+    this.loading.set(true);
+
+    let aanmelding = {
+      voornaam: this.voornaam,
+      achternaam: this.achternaam,
+      groep: this.selectedGroep,
+      bericht: this.message,
+      geboorteDatum: this.geboorteDatum,
+      email: this.email,
+      aanmeldingsdatum: new Date,
+      // spelers added through form-data
+      // afbeelding added through form-data
+    } as any;
+  }
+
+
+  formIsValid() {
+    return (true);/*
+      !!this.voornaam &&
+      this.voornaam != '' &&
+      !!this.achternaam &&
+      this.achternaam != '' &&
+      !!this.selectedGroep &&
+      this.selectedGroep != '' &&
+      !!this.email &&
+      this.email != '' &&
+      this.email != '<p></p>' &&
+    );*/
+  }
+
+
+
+
 }
