@@ -118,7 +118,7 @@ export class LidWordenComponent implements OnInit {
       email: this.email,
     } as any;
 
-    await this.client.create('contact_verzoeken', aanmelding);
+    await this.client.create('lid_aanmeldingen', aanmelding);
 
     this.toastr.success(
       `Bedankt voor de aanmelding, ${this.voornaam}.`,
