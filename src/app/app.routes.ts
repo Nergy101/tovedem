@@ -79,31 +79,31 @@ export const routes: Routes = [
   {
     path: 'profiel',
     component: ProfielComponent,
-    canActivate: [LoggedInGuard],
+    canActivate: [loggedInGuard],
   },
   {
     path: 'beheer-reserveringen',
     component: BeheerReserveringenComponent,
-    canActivate: [LoggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin'])],
   },
   {
     path: 'beheer-voorstellingen',
     component: BeheerVoorstellingenComponent,
-    canActivate: [LoggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin'])],
   },
   {
     path: 'beheer-leden',
     component: BeheerLedenComponent,
-    canActivate: [LoggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin'])],
   },
   {
     path: 'beheer-spelers',
     component: BeheerSpelersComponent,
-    canActivate: [LoggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin'])],
   },
 ];
 
-function LoggedInGuard(requiredRoles: string[] = []): CanActivateFn {
+function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
   return () => {
     const router = inject(Router);
     const authService = inject(AuthService);
