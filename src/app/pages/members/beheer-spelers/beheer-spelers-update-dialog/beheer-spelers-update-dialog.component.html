@@ -1,0 +1,18 @@
+<h2 mat-dialog-title class="display-4">Speler Aanpassen</h2>
+<div mat-dialog-content class="container p-4">
+    <div class="row">
+        <form (ngSubmit)="return()">
+            <mat-form-field class="col-12">
+                <mat-label>Speler Naam</mat-label>
+                <input placeholder="Speler naam" matInput type="text"
+                    name="spelerNaam"
+                    [(ngModel)]="speler.naam">
+            </mat-form-field>
+            <button class="col-12" style="height: 4em;" mat-raised-button
+                color="primary"
+                type="submit">
+                <span>Aanpassen</span>
+            </button>
+        </form>
+    </div>
+</div>

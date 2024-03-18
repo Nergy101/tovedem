@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import PocketBase from 'pocketbase';
+import PocketBase, { BaseModel } from 'pocketbase';
 import Page from '../../models/pocketbase/page.model';
 
 @Injectable({
@@ -18,8 +18,11 @@ export class PocketbaseService {
     return this.getCollection(collectionName).create(item);
   }
 
-  async update<T>(collectionName: string, item: any): Promise<T> {
-    return this.getCollection(collectionName).update(item);
+  async update<T extends BaseModel>(
+    collectionName: string,
+    item: T
+  ): Promise<T> {
+    return this.getCollection(collectionName).update(item.id, item);
   }
 
   async delete(collectionName: string, id: string): Promise<boolean> {

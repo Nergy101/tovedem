@@ -43,6 +43,10 @@
                 <tr>
                     <td>{{speler.naam}}</td>
                     <td>
+                        <button mat-icon-button (click)="updateSpeler(speler)"
+                            [disabled]="loading()">
+                            <mat-icon>edit</mat-icon>
+                        </button>
                         <button mat-icon-button (click)="delete(speler)"
                             [disabled]="loading()">
                             <mat-icon color="warn">delete</mat-icon>

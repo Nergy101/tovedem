@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core';
 
-import { MatTableModule } from '@angular/material/table';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +14,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Speler from '../../../models/domain/speler.model';
+import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -32,6 +34,9 @@ import Speler from '../../../models/domain/speler.model';
 })
 export class BeheerSpelersComponent implements OnInit {
   loading = signal(false);
+
+  dialog = inject(MatDialog);
+  toastr = inject(ToastrService);
 
   spelers: WritableSignal<Speler[] | null> = signal(null);
 
@@ -59,12 +64,20 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(false);
   }
 
-  async updateSpeler(aangepasteSpeler: Speler) {
+  async updateSpeler(spelerOmAanTePassen: Speler) {
     this.loading.set(true);
 
-    await this.client.update<Speler>('spelers', aangepasteSpeler);
+    const dialogRef = this.dialog.open(BeheerSpelersUpdateDialogComponent, {
+      data: spelerOmAanTePassen,
+    });
 
-    this.loading.set(false);
+    dialogRef.afterClosed().subscribe(async (updatedSpeler: Speler) => {
+      if (!!updatedSpeler) {
+        await this.client.update<Speler>('spelers', updatedSpeler);
+        this.toastr.success(`Speler aangepast.`);
+        this.loading.set(false);
+      }
+    });
   }
 
   async delete({ id }: any) {
