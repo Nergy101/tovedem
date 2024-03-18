@@ -67,7 +67,8 @@
                     </mat-list-item>
 
                     <mat-list-item role="listitem">
-                        <b>Groep:</b> {{user().expand?.groep?.naam ?? "n.v.t."}}
+                        <b>Groep:</b> {{user()?.expand?.groep?.naam ??
+                        "n.v.t."}}
                     </mat-list-item>
 
                     <mat-list-item role="listitem">

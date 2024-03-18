@@ -21,7 +21,7 @@ export class AuthService {
     Gebruiker | null | undefined
   >(undefined);
 
-  public userData: Signal<any | null> = computed(
+  public userData: Signal<Gebruiker | null> = computed(
     () => this.userRecord()?.record ?? null
   );
 

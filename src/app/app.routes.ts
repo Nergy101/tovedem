@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { CanActivateFn, Router, Routes } from '@angular/router';
 import { GroepComponent } from './pages/public/groep/groep.component';
 import { AgendaComponent } from './pages/public/agenda/agenda.component';
 import { PrivacyBeleidComponent } from './pages/public/privacy-beleid/privacy-beleid.component';
@@ -15,6 +15,9 @@ import { BeheerReserveringenComponent } from './pages/members/beheer-reservering
 import { BeheerVoorstellingenComponent } from './pages/members/beheer-voorstellingen/beheer-voorstellingen.component';
 import { BeheerLedenComponent } from './pages/members/beheer-leden/beheer-leden.component';
 import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-spelers.component';
+import { inject } from '@angular/core';
+import { AuthService } from './shared/services/auth.service';
+import Rol from './models/domain/rol.model';
 
 export const routes: Routes = [
   {
@@ -70,27 +73,53 @@ export const routes: Routes = [
     component: ContactComponent,
   },
   {
-    path: 'profiel',
-    component: ProfielComponent,
-  },
-  {
     path: 'privacy-beleid',
     component: PrivacyBeleidComponent,
   },
   {
+    path: 'profiel',
+    component: ProfielComponent,
+    canActivate: [LoggedInGuard],
+  },
+  {
     path: 'beheer-reserveringen',
     component: BeheerReserveringenComponent,
+    canActivate: [LoggedInGuard(['admin'])],
   },
   {
     path: 'beheer-voorstellingen',
     component: BeheerVoorstellingenComponent,
+    canActivate: [LoggedInGuard(['admin'])],
   },
   {
     path: 'beheer-leden',
     component: BeheerLedenComponent,
+    canActivate: [LoggedInGuard(['admin'])],
   },
   {
     path: 'beheer-spelers',
     component: BeheerSpelersComponent,
+    canActivate: [LoggedInGuard(['admin'])],
   },
 ];
+
+function LoggedInGuard(requiredRoles: string[] = []): CanActivateFn {
+  return () => {
+    const router = inject(Router);
+    const authService = inject(AuthService);
+
+    if (requiredRoles.length == 0 && authService.isLoggedIn()) {
+      return true;
+    } else if (requiredRoles.length > 0 && authService.isLoggedIn()) {
+      const rollenVanGebruiker = authService
+        .userData()
+        ?.expand.rollen.map((r: Rol) => r.rol);
+
+      if (requiredRoles.every((role) => rollenVanGebruiker.includes(role))) {
+        return true;
+      }
+    }
+
+    return router.createUrlTree(['/home']);
+  };
+}

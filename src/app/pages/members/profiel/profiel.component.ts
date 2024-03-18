@@ -34,7 +34,7 @@ export class ProfielComponent implements OnInit {
   sideDrawerService = inject(SideDrawerService);
 
   userRoles = computed(() => {
-    const rollen = this.user().expand.rollen.map((r: any) => r.rol) as any[];
+    const rollen = this.user()?.expand.rollen.map((r: any) => r.rol) as any[];
     return rollen.join(', ');
   });
 
@@ -44,7 +44,7 @@ export class ProfielComponent implements OnInit {
 
   constructor() {
     this.titleService.setTitle(
-      `Tovedem - Profiel - ${this.authService.userData().username} `
+      `Tovedem - Profiel - ${this.authService.userData()?.username} `
     );
   }
 
