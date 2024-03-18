@@ -17,6 +17,7 @@ import Speler from '../../../models/domain/speler.model';
 import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -71,13 +72,13 @@ export class BeheerSpelersComponent implements OnInit {
       data: spelerOmAanTePassen,
     });
 
-    dialogRef.afterClosed().subscribe(async (updatedSpeler: Speler) => {
-      if (!!updatedSpeler) {
-        await this.client.update<Speler>('spelers', updatedSpeler);
-        this.toastr.success(`Speler aangepast.`);
-        this.loading.set(false);
-      }
-    });
+    const updatedSpeler: Speler = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!updatedSpeler) {
+      await this.client.update<Speler>('spelers', updatedSpeler);
+      this.toastr.success(`Speler aangepast.`);
+      this.loading.set(false);
+    }
   }
 
   async delete({ id }: any) {

@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, ErrorHandler } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -8,6 +8,7 @@ import {
   provideNoopAnimations,
 } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideNoopAnimations(),
     provideAnimations(),
     provideToastr(),
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandlerService,
+    },
   ],
 };

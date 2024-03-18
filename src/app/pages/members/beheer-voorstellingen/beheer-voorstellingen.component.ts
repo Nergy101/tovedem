@@ -9,6 +9,7 @@ import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edi
 import { ToastrService } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Voorstelling from '../../../models/domain/voorstelling.model';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -46,12 +47,12 @@ export class BeheerVoorstellingenComponent {
       hasBackdrop: true,
     });
 
-    dialogRef.afterClosed().subscribe(async (created) => {
-      if (!!created) {
-        this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
-        await this.ngOnInit();
-      }
-    });
+    const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!created) {
+      this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
+      await this.ngOnInit();
+    }
   }
 
   async delete({ id }: any) {
