@@ -16,6 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../shared/services/auth.service';
 import Gebruiker from '../../../models/domain/gebruiker.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { lastValueFrom } from 'rxjs';
+import Voorstelling from '../../../models/domain/voorstelling.model';
+import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -40,6 +45,8 @@ export class BeheerLedenComponent implements OnInit {
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
+  dialog = inject(MatDialog);
+  toastr = inject(ToastrService);
 
   async ngOnInit(): Promise<void> {
     this.gebruikers.set(
@@ -53,28 +60,26 @@ export class BeheerLedenComponent implements OnInit {
     return gebruikerId == this.authService.userData()?.id;
   }
 
-  async createGebruiker(): Promise<void> {
-    const newUser = await this.client.create<Gebruiker>('users', {
-      username: '',
-      email: '',
-      password: '',
-      password_confirm: '',
-      name: '',
-      // not sure if this avatar 'file' can also be a url like this
-      // only one way to find out!
-      avatar:
-        'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
-        'name' +
-        '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49',
-      rollen: [], //ids
-      groep: '', //id
-      speler: '', // id
+  async openCreateDialog() {
+    const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
+      data: { existingGebruiker: null },
+      hasBackdrop: true,
+      minWidth: '50vw',
     });
 
-    this.gebruikers.update((x) => {
-      if (!!x) {
-        return [newUser, ...x];
-      } else return [newUser];
-    });
+    const created: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!created) {
+      this.toastr.success(`Gebruiker ${created.naam} aangemaakt.`);
+
+      this.gebruikers.update((x) => {
+        if (!!x) {
+          return [created, ...x];
+        }
+        return [created];
+      });
+
+      await this.ngOnInit();
+    }
   }
 }

@@ -1,0 +1,102 @@
+
+<h2 mat-dialog-title class="display-4">Gebruiker Aanmaken</h2>
+<div mat-dialog-content class="container p-4">
+    <div class="row">
+        <form (ngSubmit)="submit()">
+            <div class="row">
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" name="username" maxlength="30"
+                        tabindex="0"
+                        required
+                        [(ngModel)]="username">
+                </mat-form-field>
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" name="email" required
+                        [(ngModel)]="email">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Wachtwoord</mat-label>
+                    <input matInput type="password" name="password"
+                        maxlength="30"
+                        tabindex="0"
+                        required
+                        [(ngModel)]="password">
+                </mat-form-field>
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Bevestig Wachtwoord</mat-label>
+                    <input matInput type="password"
+                        name="passwordConfirm" maxlength="30"
+                        tabindex="0"
+                        required
+                        [(ngModel)]="passwordConfirm">
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Naam</mat-label>
+                    <input matInput type="name" name="name"
+                        maxlength="30"
+                        tabindex="0"
+                        required
+                        [(ngModel)]="name">
+                </mat-form-field>
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Rollen</mat-label>
+                    <mat-select multiple [(value)]="selectedRollen" required>
+                        @for (rol of rollen(); track $index) {
+                        <mat-option
+                            [value]="rol">{{rol.rol}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Groep</mat-label>
+                    <mat-select [(value)]="groep" required>
+                        @for (groep of groepen(); track $index) {
+                        <mat-option
+                            [value]="groep.id">{{groep.naam}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-6 col-12">
+                    <mat-label>Speler</mat-label>
+                    <mat-select [(value)]="speler" required>
+                        @for (speler of spelers(); track $index) {
+                        <mat-option
+                            [value]="speler.id">{{speler.naam}}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-12 d-flex justify-content-center">
+                    <button mat-stroked-button mat-dialog-close
+                        class="flex-grow-1">
+                        <mat-icon>arrow_back</mat-icon>
+                        Terug
+                    </button>
+                </div>
+                <div class="col-md-6 col-12 d-flex justify-content-center">
+                    <button mat-raised-button color="primary" type="submit"
+                        class="flex-grow-1"
+                        [disabled]="loading() || !formIsValid()"
+                        (click)="submit()">
+                        Aanmaken
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
