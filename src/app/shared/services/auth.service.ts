@@ -10,12 +10,14 @@ import {
 import { RecordAuthResponse, RecordModel } from 'pocketbase';
 import { SideDrawerService } from './side-drawer.service';
 import Gebruiker from '../../models/domain/gebruiker.model';
+import { PocketbaseService } from './pocketbase.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   sideDrawerService = inject(SideDrawerService);
+  client = inject(PocketbaseService).client;
 
   public userRecord: WritableSignal<Gebruiker | null | undefined> = signal<
     Gebruiker | null | undefined
@@ -64,5 +66,6 @@ export class AuthService {
     this.sideDrawerService.close();
     localStorage.removeItem('user_data');
     this.userRecord.set(null);
+    this.client.authStore.clear();
   }
 }

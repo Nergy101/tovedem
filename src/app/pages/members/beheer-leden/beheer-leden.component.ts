@@ -52,4 +52,29 @@ export class BeheerLedenComponent implements OnInit {
   isHuidigeGebruiker(gebruikerId: string) {
     return gebruikerId == this.authService.userData()?.id;
   }
+
+  async createGebruiker(): Promise<void> {
+    const newUser = await this.client.create<Gebruiker>('users', {
+      username: '',
+      email: '',
+      password: '',
+      password_confirm: '',
+      name: '',
+      // not sure if this avatar 'file' can also be a url like this
+      // only one way to find out!
+      avatar:
+        'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
+        'name' +
+        '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49',
+      rollen: [], //ids
+      groep: '', //id
+      speler: '', // id
+    });
+
+    this.gebruikers.update((x) => {
+      if (!!x) {
+        return [newUser, ...x];
+      } else return [newUser];
+    });
+  }
 }
