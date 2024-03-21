@@ -1,6 +1,7 @@
  <div class="links-container">
     <ul class="links navbar-nav nav-pills nav-fill">
-        @if (authService.userHasAllRoles(['admin']))
+        @if (authService.userHasAllRoles(['admin']) ||
+        authService.isGlobalAdmin)
         {
         <div class="d-flex w-100 justify-content-center fw-bold pt-3">
             Voorstellingen Beheer
