@@ -56,14 +56,14 @@ export class LoginComponent {
       this.loading.set(true);
 
       try {
-        const authData = (await this.pocketbase.client
+        const authData = await this.pocketbase.client
           .collection('users')
           .authWithPassword(this.usernameOrEmail!, this.password!, {
             expand: 'groep,rollen',
-          })) as any as Gebruiker;
+          });
 
         if (!!authData) {
-          this.authService.registerUser(authData);
+          this.authService.registerUser(authData.record as any as Gebruiker);
           this.router.navigate(['profiel']);
         }
       } catch {

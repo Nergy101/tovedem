@@ -39,19 +39,21 @@ export class AuthService {
   constructor() {
     // check the localstorage for userData
     const existingUserData = this.client.authStore.model as Gebruiker;
-    console.log('test1', existingUserData);
 
     if (!!existingUserData) {
       this.userRecord.set(existingUserData); // triggers isLoggedIn-computed
     }
   }
 
-  userHasAllRoles(roles: string[]) {
-    const rollenVanGebruiker = this.userData()?.expand.rollen.map(
-      (r: Rol) => r.rol
-    );
+  userHasAllRoles(roles: string[]): boolean {
+    if (!!this.userData()?.expand?.rollen) {
+      const rollenVanGebruiker = this.userData()?.expand?.rollen?.map(
+        (r: Rol) => r.rol
+      );
 
-    return roles.every((role) => rollenVanGebruiker.includes(role));
+      return roles.every((role) => rollenVanGebruiker.includes(role));
+    }
+    return false;
   }
 
   registerUser(userRecord: Gebruiker | AdminModel): void {
