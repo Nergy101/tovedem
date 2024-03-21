@@ -51,8 +51,9 @@ export class AppComponent {
 
   constructor() {
     effect(() => {
-      if (this.sideDrawerService.isOpen()) {
-        if (this.authService.isLoggedIn()) {
+      if (this.authService.isLoggedIn()) {
+        console.log('open', this.sideDrawerService.isOpen());
+        if (this.sideDrawerService.isOpen()) {
           this.drawer.open();
           return;
         }

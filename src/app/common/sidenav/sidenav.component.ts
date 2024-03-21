@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -13,6 +13,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { BreakpointService } from '../../shared/services/breakpoint.service';
 
 @Component({
   selector: 'sidenav',
@@ -37,9 +38,21 @@ import { AuthService } from '../../shared/services/auth.service';
 export class SidenavComponent {
   sideDrawerService = inject(SideDrawerService);
   authService = inject(AuthService);
+  breakpointService = inject(BreakpointService);
+
+  @HostListener('click', ['$event.target'])
+  onClick() {
+    if (!this.breakpointService.isDesktopScreen()) {
+      this.toggle();
+    }
+  }
 
   toggle() {
     this.sideDrawerService.toggle();
+  }
+
+  close() {
+    this.sideDrawerService.close();
   }
 
   navigate(url: string): void {

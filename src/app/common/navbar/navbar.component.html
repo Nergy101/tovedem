@@ -9,7 +9,18 @@
         type="button"
         aria-label="Toggle side navigation"
         (click)="sideDrawerService.toggle()">
-        <span class="navbar-toggler-icon"><mat-icon>menu_open</mat-icon></span>
+        <div class="d-flex flex-column">
+          <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
+
+          <span
+            class="navbar-toggler-icon">
+            @if(sideDrawerService.isOpen()){
+            <mat-icon>chevron_right</mat-icon>
+            } @else {
+            <mat-icon>chevron_left </mat-icon>
+            }
+          </span>
+        </div>
       </button>
       }
       <button
@@ -20,7 +31,11 @@
         aria-controls="navbarNav"
         aria-expanded="false"
         aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
+        <div class="d-flex flex-column">
+          <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
+          <span
+            class="navbar-toggler-icon"><mat-icon>expand_more</mat-icon></span>
+        </div>
       </button>
     </div>
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
