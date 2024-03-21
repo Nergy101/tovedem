@@ -34,11 +34,12 @@ export class ProfielComponent implements OnInit {
   sideDrawerService = inject(SideDrawerService);
 
   userRoles = computed(() => {
-    const rollen = this.user()?.expand.rollen.map((r: any) => r.rol) as any[];
+    const rollen = this.user()?.expand?.rollen?.map((r: any) => r.rol) as any[];
     return rollen.join(', ');
   });
 
-  user = this.authService.userData;
+  user = this.authService?.userData;
+  userRecord = this.authService?.userRecord;
 
   titleService = inject(Title);
 

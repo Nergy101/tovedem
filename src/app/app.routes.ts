@@ -108,6 +108,12 @@ function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
     const router = inject(Router);
     const authService = inject(AuthService);
 
+    // Allow Admins
+    if (authService.isGlobalAdmin) {
+      return true;
+    }
+
+    // Check normal users
     if (requiredRoles.length == 0 && authService.isLoggedIn()) {
       return true;
     } else if (requiredRoles.length > 0 && authService.isLoggedIn()) {

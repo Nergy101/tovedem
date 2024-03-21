@@ -39,6 +39,7 @@ export class LoginComponent {
   pocketbase = inject(PocketbaseService);
   authService = inject(AuthService);
   router = inject(Router);
+  titleService = inject(Title);
 
   get formIsValid(): boolean {
     return !!this.usernameOrEmail && !!this.password;
@@ -46,7 +47,6 @@ export class LoginComponent {
 
   loading = signal(false);
 
-  titleService = inject(Title);
   constructor() {
     this.titleService.setTitle('Tovedem - Login');
   }
@@ -55,16 +55,30 @@ export class LoginComponent {
     if (this.formIsValid) {
       this.loading.set(true);
 
-      const authData = (await this.pocketbase.client
-        .collection('users')
-        .authWithPassword(this.usernameOrEmail!, this.password!, {
-          expand: 'groep,rollen',
-        })) as any as Gebruiker;
+      try {
+        const authData = (await this.pocketbase.client
+          .collection('users')
+          .authWithPassword(this.usernameOrEmail!, this.password!, {
+            expand: 'groep,rollen',
+          })) as any as Gebruiker;
 
-      this.authService.registerUser(authData);
-      this.router.navigate(['profiel']);
+        if (!!authData) {
+          this.authService.registerUser(authData);
+          this.router.navigate(['profiel']);
+        }
+      } catch {
+        const authData = await this.pocketbase.client.admins.authWithPassword(
+          this.usernameOrEmail!,
+          this.password!
+        );
+
+        if (!!authData?.admin) {
+          this.authService.registerUser(authData.admin);
+          this.router.navigate(['profiel']);
+        }
+      } finally {
+        this.loading.set(false);
+      }
     }
-
-    this.loading.set(false);
   }
 }

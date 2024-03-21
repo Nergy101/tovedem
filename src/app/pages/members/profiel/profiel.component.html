@@ -9,7 +9,7 @@
         <div
             class="d-flex flex-column align-items-center justify-content-center">
             <div class="display-6">
-                {{ user()?.name }}
+                {{ user()?.name ?? user()?.email }}
             </div>
             <img
                 style="max-height: 10em; border-radius: 1em;"
@@ -49,10 +49,16 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title> Gegevens inzien </mat-panel-title>
                     <mat-panel-description>
-                        {{ user()?.name }}
+                        {{ user()?.name ?? user()?.email }}
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <mat-list role="list">
+                    @if (this.authService.isGlobalAdmin)
+                    {
+                    <mat-list-item role="listitem">
+                        Je bent een <b>Admin</b>.
+                    </mat-list-item>
+                    }@else{
 
                     <mat-list-item role="listitem">
                         <b>Echte naam:</b> {{ user()?.name }}
@@ -84,8 +90,8 @@
                         <b>Laatst aangepast:</b>
                         {{ user()?.updated | date : "dd LLLL YYYY" }}
                     </mat-list-item>
+                    }
                 </mat-list>
-
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>Rauwe gegevens
@@ -96,6 +102,7 @@
                     </pre>
                 </mat-expansion-panel>
             </mat-expansion-panel>
+
         </div>
     </div>
 

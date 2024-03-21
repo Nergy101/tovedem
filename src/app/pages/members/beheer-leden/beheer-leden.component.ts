@@ -82,4 +82,14 @@ export class BeheerLedenComponent implements OnInit {
       await this.ngOnInit();
     }
   }
+
+  async delete({ id }: any) {
+    this.loading.set(true);
+
+    if (await this.client.delete('users', id)) {
+      this.gebruikers.update((x) => x!.filter((y: any) => y.id != id));
+    }
+
+    this.loading.set(false);
+  }
 }

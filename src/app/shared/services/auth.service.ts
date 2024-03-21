@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { RecordAuthResponse, RecordModel } from 'pocketbase';
+import { AdminModel, RecordAuthResponse, RecordModel } from 'pocketbase';
 import { SideDrawerService } from './side-drawer.service';
 import Gebruiker from '../../models/domain/gebruiker.model';
 import { PocketbaseService } from './pocketbase.service';
@@ -19,52 +19,39 @@ export class AuthService {
   sideDrawerService = inject(SideDrawerService);
   client = inject(PocketbaseService).client;
 
-  public userRecord: WritableSignal<Gebruiker | null | undefined> = signal<
-    Gebruiker | null | undefined
-  >(undefined);
+  public userRecord: WritableSignal<Gebruiker | AdminModel | null | undefined> =
+    signal<Gebruiker | null | undefined>(undefined);
 
-  public userData: Signal<Gebruiker | null> = computed(
-    () => this.userRecord()?.record ?? null
-  );
+  public userData: Signal<Gebruiker | AdminModel | null> = computed(() => {
+    return this.userRecord() ?? null;
+  });
 
-  public isLoggedIn: Signal<boolean>;
+  get isGlobalAdmin(): boolean {
+    return this.client?.authStore?.isAdmin ?? false;
+  }
+
+  public isLoggedIn: Signal<boolean> = computed(() => {
+    const userRecord = this.userRecord();
+    return !!userRecord;
+  });
 
   constructor() {
     // check the localstorage for userData
-    const existingUserData = localStorage.getItem('user_data');
+    const existingUserData = this.client.authStore.model as Gebruiker;
+    console.log('test1', existingUserData);
+
     if (!!existingUserData) {
-      this.userRecord.set(JSON.parse(existingUserData)); // triggers isLoggedIn-computed
+      this.userRecord.set(existingUserData); // triggers isLoggedIn-computed
     }
-
-    // check when new userRecord was set
-    this.isLoggedIn = computed(() => {
-      const userRecord = this.userRecord();
-      let isLoggedIn = false;
-
-      if (!!userRecord) {
-        isLoggedIn = true;
-      }
-
-      return isLoggedIn;
-    });
-
-    // save new userRecord to localstorage
-    effect(() => {
-      const newValue = this.userRecord();
-      if (newValue != undefined) {
-        localStorage.setItem('user_data', JSON.stringify(newValue));
-      }
-    });
   }
 
-  registerUser(userRecord: Gebruiker): void {
+  registerUser(userRecord: Gebruiker | AdminModel): void {
     this.userRecord.set(userRecord);
     this.sideDrawerService.open();
   }
 
   unregisterUser() {
     this.sideDrawerService.close();
-    localStorage.removeItem('user_data');
     this.userRecord.set(null);
     this.client.authStore.clear();
   }

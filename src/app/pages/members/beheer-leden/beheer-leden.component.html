@@ -33,6 +33,10 @@
                     <th scope="col">Groep</th>
                     <th scope="col">Speler</th>
                     <th></th>
+                    @if (!!authService.isGlobalAdmin)
+                    {
+                    <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -93,7 +97,18 @@
                             Voorstellingen
                             inzien
                         </button>
-                        }</td>
+                        }
+                    </td>
+
+                    @if (!!authService.isGlobalAdmin)
+                    {
+                    <td>
+                        <button mat-icon-button (click)="delete(gebruiker)"
+                            [disabled]="loading()">
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+                    </td>
+                    }
                 </tr>
                 }
             </tbody>
