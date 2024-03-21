@@ -11,6 +11,7 @@ import { AdminModel, RecordAuthResponse, RecordModel } from 'pocketbase';
 import { SideDrawerService } from './side-drawer.service';
 import Gebruiker from '../../models/domain/gebruiker.model';
 import { PocketbaseService } from './pocketbase.service';
+import Rol from '../../models/domain/rol.model';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,14 @@ export class AuthService {
     if (!!existingUserData) {
       this.userRecord.set(existingUserData); // triggers isLoggedIn-computed
     }
+  }
+
+  userHasAllRoles(roles: string[]) {
+    const rollenVanGebruiker = this.userData()?.expand.rollen.map(
+      (r: Rol) => r.rol
+    );
+
+    return roles.every((role) => rollenVanGebruiker.includes(role));
   }
 
   registerUser(userRecord: Gebruiker | AdminModel): void {

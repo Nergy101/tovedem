@@ -18,6 +18,7 @@ import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-sp
 import { inject } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 import Rol from './models/domain/rol.model';
+import { ToastrService } from 'ngx-toastr';
 
 export const routes: Routes = [
   {
@@ -106,6 +107,7 @@ export const routes: Routes = [
 function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
   return () => {
     const router = inject(Router);
+    const toastr = inject(ToastrService);
     const authService = inject(AuthService);
 
     // Allow Admins
@@ -117,15 +119,12 @@ function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
     if (requiredRoles.length == 0 && authService.isLoggedIn()) {
       return true;
     } else if (requiredRoles.length > 0 && authService.isLoggedIn()) {
-      const rollenVanGebruiker = authService
-        .userData()
-        ?.expand.rollen.map((r: Rol) => r.rol);
-
-      if (requiredRoles.every((role) => rollenVanGebruiker.includes(role))) {
+      if (authService.userHasAllRoles(requiredRoles)) {
         return true;
       }
     }
 
-    return router.createUrlTree(['/home']);
+    toastr.error('Deze pagina bestaat niet');
+    return router.createUrlTree([]);
   };
 }

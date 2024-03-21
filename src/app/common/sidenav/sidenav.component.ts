@@ -12,6 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'sidenav',
@@ -35,6 +36,7 @@ import { SideDrawerService } from '../../shared/services/side-drawer.service';
 })
 export class SidenavComponent {
   sideDrawerService = inject(SideDrawerService);
+  authService = inject(AuthService);
 
   toggle() {
     this.sideDrawerService.toggle();

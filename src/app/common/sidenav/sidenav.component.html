@@ -1,5 +1,7 @@
  <div class="links-container">
     <ul class="links navbar-nav nav-pills nav-fill">
+        @if (authService.userHasAllRoles(['admin']))
+        {
         <div class="d-flex w-100 justify-content-center fw-bold pt-3">
             Voorstellingen Beheer
         </div>
@@ -64,6 +66,9 @@
                 <mat-divider></mat-divider>
             </div>
         </li>
+        }
+        @if (authService.isGlobalAdmin)
+        {
         <li>
             <button
                 mat-button
@@ -79,6 +84,7 @@
                 <mat-divider></mat-divider>
             </div>
         </li>
+        }
         <li>
             <button mat-button
                 class="nav-link flex-grow-1" (click)="toggle()">
@@ -88,31 +94,3 @@
         </li>
     </ul>
 </div>
-
-<!-- Ook mooi, maar anders dan de main nav -->
-<!-- <mat-list role="list">
-                <mat-list-item role="listitem">
-                    <button mat-flat-button
-                        class="w-100 d-flex justify-content-around">
-                        Leden <mat-icon align>diversity_3</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <button mat-flat-button
-                        class="w-100 d-flex justify-content-around">
-                        Spelers <mat-icon align>groups_3</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <button mat-flat-button
-                        class="w-100 d-flex justify-content-around">
-                        Voorstellingen <mat-icon>curtains</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <button mat-flat-button
-                        class="w-100 d-flex justify-content-around">
-                        Reserveringen <mat-icon>payments</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list> -->
