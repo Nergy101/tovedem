@@ -4,17 +4,27 @@
 </header>
 
 <mat-drawer-container autosize [hasBackdrop]="false">
+
+    @if (!breakpointService.isMobileScreen())
+    {
     <mat-drawer #drawer class="sidenav bg-light" mode="side">
         <div class="drawer-content">
             <sidenav></sidenav>
         </div>
     </mat-drawer>
+    }@else
+    {
+    <mat-drawer #drawer class="sidenav bg-light" mode="push">
+        <div class="drawer-content">
+            <sidenav></sidenav>
+        </div>
+    </mat-drawer>
+    }
 
     <div class="drawer-content">
         <div class="router-content">
             <router-outlet />
         </div>
-
         <footer class="container-fluid">
             <app-footer></app-footer>
         </footer>

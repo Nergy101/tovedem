@@ -16,7 +16,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 
 import PocketBase from 'pocketbase';
@@ -47,7 +50,10 @@ import Reservering from '../../../../models/domain/resservering.model';
     MatProgressSpinnerModule,
     MatTooltipModule,
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   templateUrl: './reserveren.component.html',
   styleUrl: './reserveren.component.scss',
 })

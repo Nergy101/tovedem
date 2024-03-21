@@ -17,7 +17,6 @@ import { BeheerLedenComponent } from './pages/members/beheer-leden/beheer-leden.
 import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-spelers.component';
 import { inject } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
-import Rol from './models/domain/rol.model';
 import { ToastrService } from 'ngx-toastr';
 
 export const routes: Routes = [

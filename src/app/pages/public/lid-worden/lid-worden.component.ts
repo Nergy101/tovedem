@@ -17,7 +17,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Title } from '@angular/platform-browser';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { DatePipe, Time } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -49,7 +52,11 @@ import { ToastrService } from 'ngx-toastr';
     MatDividerModule,
     MatTooltipModule,
   ],
-  providers: [provideNativeDateAdapter(), DatePipe],
+  providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
 })
 export class LidWordenComponent implements OnInit {
   client = inject(PocketbaseService);

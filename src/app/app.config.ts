@@ -1,5 +1,9 @@
 import { ApplicationConfig, ErrorHandler } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -12,7 +16,14 @@ import { CustomErrorHandlerService } from './shared/services/custom-error-handle
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled',
+      })
+    ),
     provideAnimationsAsync(),
     provideNoopAnimations(),
     provideAnimations(),

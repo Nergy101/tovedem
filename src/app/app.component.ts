@@ -16,6 +16,7 @@ import { AuthService } from './shared/services/auth.service';
 import { SideDrawerService } from './shared/services/side-drawer.service';
 import { MatListModule } from '@angular/material/list';
 import { SidenavComponent } from './common/sidenav/sidenav.component';
+import { BreakpointService } from './shared/services/breakpoint.service';
 registerLocaleData(localeNL);
 
 @Component({
@@ -44,6 +45,7 @@ registerLocaleData(localeNL);
 export class AppComponent {
   authService = inject(AuthService);
   sideDrawerService = inject(SideDrawerService);
+  breakpointService = inject(BreakpointService);
 
   @ViewChild(MatDrawer) drawer!: MatDrawer;
 

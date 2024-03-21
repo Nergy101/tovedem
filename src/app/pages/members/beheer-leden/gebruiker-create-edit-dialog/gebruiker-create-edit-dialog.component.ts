@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-gebruiker-create-edit-dialog',
@@ -44,6 +45,7 @@ import { TovedemFilePickerComponent } from '../../../../shared/components/tovede
     NgxMaterialTimepickerModule,
     TovedemFilePickerComponent,
   ],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
   templateUrl: './gebruiker-create-edit-dialog.component.html',
   styleUrl: './gebruiker-create-edit-dialog.component.scss',
 })

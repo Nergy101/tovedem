@@ -23,11 +23,14 @@ export class HomePaginaComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    const voorstellingen = await this.client.getAll('voorstellingen', {
-      sort: '-created',
-      expand: 'groep',
-    });
+    const voorstellingen = await this.client.getAll<Voorstelling>(
+      'voorstellingen',
+      {
+        sort: '-created',
+        expand: 'groep',
+      }
+    );
 
-    this.voorstellingen.set(voorstellingen as any);
+    this.voorstellingen.set(voorstellingen);
   }
 }

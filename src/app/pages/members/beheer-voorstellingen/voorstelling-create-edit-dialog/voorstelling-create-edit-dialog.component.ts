@@ -8,7 +8,10 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -44,7 +47,11 @@ import { FilePreviewModel } from 'ngx-awesome-uploader';
     NgxMaterialTimepickerModule,
     TovedemFilePickerComponent,
   ],
-  providers: [provideNativeDateAdapter(), DatePipe],
+  providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   templateUrl: './voorstelling-create-edit-dialog.component.html',
   styleUrl: './voorstelling-create-edit-dialog.component.scss',
 })

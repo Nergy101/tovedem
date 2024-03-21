@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,6 +25,7 @@ import { Title } from '@angular/platform-browser';
     MatCheckboxModule,
     MatDatepickerModule,
   ],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
 })
