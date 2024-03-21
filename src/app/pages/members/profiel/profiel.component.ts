@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Signal,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
@@ -11,6 +18,9 @@ import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-profiel',
@@ -32,6 +42,9 @@ export class ProfielComponent implements OnInit {
   authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
   sideDrawerService = inject(SideDrawerService);
+  breakpointObserver = inject(BreakpointObserver);
+
+  isMobileScreen: Signal<boolean | undefined>;
 
   userRoles = computed(() => {
     const rollen = this.user()?.expand?.rollen;
@@ -51,6 +64,12 @@ export class ProfielComponent implements OnInit {
   constructor() {
     this.titleService.setTitle(
       `Tovedem - Profiel - ${this.authService.userData()?.username} `
+    );
+
+    this.isMobileScreen = toSignal(
+      this.breakpointObserver
+        .observe('(max-width: 425px)')
+        .pipe(map((x) => x.matches))
     );
   }
 

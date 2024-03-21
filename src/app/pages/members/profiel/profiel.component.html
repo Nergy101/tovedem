@@ -45,64 +45,16 @@
 
     <div class="row justify-content-center mt-4">
         <div class="col-xl-6 col-12">
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title> Gegevens inzien </mat-panel-title>
-                    <mat-panel-description>
-                        {{ user()?.name ?? user()?.email }}
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-list role="list">
-                    @if (this.authService.isGlobalAdmin)
-                    {
-                    <mat-list-item role="listitem">
-                        Je bent een <b>Admin</b>.
-                    </mat-list-item>
-                    }@else{
-
-                    <mat-list-item role="listitem">
-                        <b>Echte naam:</b> {{ user()?.name }}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Account naam:</b> {{ user()?.username }}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Rollen:</b> {{userRoles()}}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Groep:</b> {{user()?.expand?.groep?.naam ??
-                        "n.v.t."}}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Uniek ID:</b> {{ user()?.id }}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Aangemaakt op:</b>
-                        {{ user()?.created | date : "dd LLLL YYYY" }}
-                    </mat-list-item>
-
-                    <mat-list-item role="listitem">
-                        <b>Laatst aangepast:</b>
-                        {{ user()?.updated | date : "dd LLLL YYYY" }}
-                    </mat-list-item>
-                    }
-                </mat-list>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>Rauwe gegevens
-                            inzien</mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <pre>
-                        {{ user() | json }}
-                    </pre>
-                </mat-expansion-panel>
-            </mat-expansion-panel>
-
+            @if (!isMobileScreen())
+            {
+            <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
+            }@else
+            {
+            <div style="max-width: 400px">
+                <ng-container *ngTemplateOutlet="expansionPanel">
+                </ng-container>
+            </div>
+            }
         </div>
     </div>
 
@@ -115,3 +67,63 @@
         </div>
     </div>
 </div>
+
+<ng-template #expansionPanel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> Gegevens inzien </mat-panel-title>
+            <mat-panel-description>
+                {{ user()?.name ?? user()?.email }}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+            @if (this.authService.isGlobalAdmin)
+            {
+            <mat-list-item role="listitem">
+                Je bent een <b>Admin</b>.
+            </mat-list-item>
+            }@else{
+
+            <mat-list-item role="listitem">
+                <b>Echte naam:</b> {{ user()?.name }}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Account naam:</b> {{ user()?.username }}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Rollen:</b> {{userRoles()}}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Groep:</b> {{user()?.expand?.groep?.naam ??
+                "n.v.t."}}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Uniek ID:</b> {{ user()?.id }}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Aangemaakt op:</b>
+                {{ user()?.created | date : "dd LLLL YYYY" }}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                <b>Laatst aangepast:</b>
+                {{ user()?.updated | date : "dd LLLL YYYY" }}
+            </mat-list-item>
+            }
+        </mat-list>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Rauwe gegevens
+                    inzien</mat-panel-title>
+            </mat-expansion-panel-header>
+            <pre>
+                        {{ user() | json }}
+                    </pre>
+        </mat-expansion-panel>
+    </mat-expansion-panel>
+</ng-template>

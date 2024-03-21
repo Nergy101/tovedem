@@ -9,7 +9,7 @@ nav {
   justify-content: space-around;
   align-items: center;
   min-height: 5em;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .links-container {
@@ -27,7 +27,7 @@ ul {
 
 li {
   list-style: none;
-  margin: 0 1em;
+  // margin: 0 1em;
 
   .active {
     color: white;
@@ -42,8 +42,9 @@ li {
 
 .navbar-collapse {
   li {
+    width: 100%;
+
     .active {
-      padding: 1em;
       color: white;
       background-color: #ae1545;
     }
@@ -58,7 +59,6 @@ a {
 .links {
   display: flex;
   gap: 0.5em;
-  // align-items: center;
   justify-content: space-evenly;
 }
 

@@ -3,48 +3,48 @@
     <div class="row">
         <div class="col-lg-3 col-12">
             @if(!!img_1){
-                <img class="card-image"
-                    [src]="getImageUrl(collectionId, recordId, img_1)"
-                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
-                @else {
-                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
-                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
-                }
+            <img class="card-image"
+                [src]="getImageUrl(collectionId, recordId, img_1)"
+                style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+            @else {
+            <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+            }
         </div>
         <div class="col-lg-8 col-12" [innerHTML]="content1()"></div>
         <div class="col-lg-1 col-12" style="align-items: center;">
-            <button mat-fab matTooltip="Scoll naar Formulier" 
-                            aria-label="Scroll naar Formulier"
-                            color="primary" 
-                            onClick="document.getElementById('scrollPoint').scrollIntoView();"> 
-            <mat-icon>keyboard_double_arrow_down</mat-icon>
-        </button>
+            <button mat-fab matTooltip="Scoll naar Formulier"
+                aria-label="Scroll naar Formulier"
+                color="primary"
+                onClick="document.getElementById('scrollPoint').scrollIntoView({ block: 'end',  behavior: 'smooth' });">
+                <mat-icon>keyboard_double_arrow_down</mat-icon>
+            </button>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-9 col-12" [innerHTML]="content2()"></div>
         <div class="col-lg-3 col-12">
             @if(!!img_2){
-                <img class="card-image"
-                    [src]="getImageUrl(collectionId, recordId, img_2)"
-                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
-                @else {
-                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
-                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
-                }
+            <img class="card-image"
+                [src]="getImageUrl(collectionId, recordId, img_2)"
+                style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+            @else {
+            <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+            }
         </div>
-        
+
     </div>
     <div class="row">
         <div class="col-lg-3 col-12">
             @if(!!img_3){
-                <img class="card-image"
-                    [src]="getImageUrl(collectionId, recordId, img_3)"
-                    style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
-                @else {
-                <img class="card-image" src="/assets/Place-Holder-Image.jpg"
-                    style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
-                }
+            <img class="card-image"
+                [src]="getImageUrl(collectionId, recordId, img_3)"
+                style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content: center; " />}
+            @else {
+            <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+                style="object-fit: contain; max-width: 100%; border-radius: 1em; align-content: center;" />
+            }
         </div>
         <div class="col-lg-9 col-12" [innerHTML]="content3()"></div>
     </div>
@@ -55,21 +55,24 @@
     }
 </div>
 
-<div id="scrollPoint"><a href="scrollPoint"></a></div>
-
-<div class="container mat-elevation-z2" style="margin-top: 4em;">
+<div id="scrollPoint" class="container mat-elevation-z2"
+    style="margin-top: 4em;">
     <div class="row">
         <div class="col-12">
             <div class="titel">
-                <h1> <mat-icon style="justify-content:  center;">person_add</mat-icon> Schrijf je nu in!</h1>
+                <h1> <mat-icon
+                        style="justify-content:  center;">person_add</mat-icon>
+                    Schrijf je nu in!</h1>
             </div>
             <mat-form-field class="col-md-4 col-12" style="padding-right: 1em;">
                 <mat-label>Voornaam</mat-label>
-                <input placeholder="Pieter" matInput type="text" [(ngModel)]="voornaam">
+                <input placeholder="Pieter" matInput type="text"
+                    [(ngModel)]="voornaam">
             </mat-form-field>
             <mat-form-field class="col-md-5 col-12">
                 <mat-label>Achternaam</mat-label>
-                <input placeholder="Post" matInput type="text" [(ngModel)]="achternaam">
+                <input placeholder="Post" matInput type="text"
+                    [(ngModel)]="achternaam">
             </mat-form-field>
             <mat-form-field class="col-md-3 col-12" style="padding-left: 1em;">
                 <mat-label>Groep</mat-label>
@@ -81,7 +84,8 @@
             </mat-form-field>
             <mat-form-field class="col-md-8 col-12">
                 <mat-label>E-mail</mat-label>
-                <input placeholder="pieter-post@voorbeeld.nl" matInput type="email" [(ngModel)]="email">
+                <input placeholder="pieter-post@voorbeeld.nl" matInput
+                    type="email" [(ngModel)]="email">
             </mat-form-field>
             <mat-form-field class="col-md-4 col-12" style="padding-left: 1em;">
                 <mat-label>Geboortedatum</mat-label>
@@ -96,11 +100,13 @@
             <div style="display: flex;">
                 <mat-form-field style="flex: 1;">
                     <mat-label>Bericht</mat-label>
-                    <textarea [(ngModel)]="message" matInput rows="10" placeholder="Type hier je bericht"></textarea>
+                    <textarea [(ngModel)]="message" matInput rows="10"
+                        placeholder="Type hier je bericht"></textarea>
                 </mat-form-field>
             </div>
             <div style="display: flex;">
-                <button style="flex: 1;" mat-raised-button (click)="submit()" [disabled]="loading() || !formIsValid()">Verzenden</button>
+                <button style="flex: 1;" mat-raised-button (click)="submit()"
+                    [disabled]="loading() || !formIsValid()">Verzenden</button>
             </div>
         </div>
     </div>
