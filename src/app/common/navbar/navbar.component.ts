@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
+import { BreakpointService } from '../../shared/services/breakpoint.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,8 @@ import { SideDrawerService } from '../../shared/services/side-drawer.service';
 export class NavbarComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  breakpointService = inject(BreakpointService);
+  sideDrawerService = inject(SideDrawerService);
 
   get groepenClass() {
     return this.router.url.includes('Groep') ? 'active' : '';

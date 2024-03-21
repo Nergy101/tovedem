@@ -2,16 +2,25 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><img class="logo"
         src="/assets/tovedem_logo.png" /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
-    </button>
+    <div>
+      <button
+        class="navbar-toggler justify-self-end"
+        type="button"
+        aria-label="Toggle side navigation"
+        (click)="sideDrawerService.toggle()">
+        <span class="navbar-toggler-icon"><mat-icon>menu_open</mat-icon></span>
+      </button>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
+      </button>
+    </div>
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
       <div class="links-container">
         <ul class="links navbar-nav nav-pills nav-fill">

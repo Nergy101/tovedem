@@ -10,11 +10,18 @@ export class BreakpointService {
   breakpointObserver = inject(BreakpointObserver);
 
   isMobileScreen: Signal<boolean | undefined>;
+  isDesktopScreen: Signal<boolean | undefined>;
 
   constructor() {
     this.isMobileScreen = toSignal(
       this.breakpointObserver
         .observe('(max-width: 425px)')
+        .pipe(map((x) => x.matches))
+    );
+
+    this.isDesktopScreen = toSignal(
+      this.breakpointObserver
+        .observe('(min-width: 1440px)')
         .pipe(map((x) => x.matches))
     );
   }
