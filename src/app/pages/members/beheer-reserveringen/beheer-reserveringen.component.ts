@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, tap } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -42,7 +43,10 @@ export class BeheerReserveringenComponent {
 
   searchTerm$ = toObservable(this.searchTerm);
 
+  titleService = inject(Title);
+
   constructor() {
+    this.titleService.setTitle('Tovedem - Beheer - Reserveringen');
     this.searchTerm$
       .pipe(
         tap(() => this.loading.set(true)),

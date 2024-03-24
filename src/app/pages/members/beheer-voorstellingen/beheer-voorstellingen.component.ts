@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Voorstelling from '../../../models/domain/voorstelling.model';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -34,6 +35,12 @@ export class BeheerVoorstellingenComponent {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
+
+  titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Tovedem - Beheer - Voorstellingen');
+  }
 
   async ngOnInit(): Promise<void> {
     this.items.set(

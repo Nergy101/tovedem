@@ -51,9 +51,7 @@ export class ProfielComponent implements OnInit {
   titleService = inject(Title);
 
   constructor() {
-    this.titleService.setTitle(
-      `Tovedem - Profiel - ${this.authService.userData()?.username} `
-    );
+    this.titleService.setTitle('Tovedem - Profiel');
   }
 
   ngOnInit(): void {

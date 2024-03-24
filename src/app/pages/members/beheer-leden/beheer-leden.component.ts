@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import Voorstelling from '../../../models/domain/voorstelling.model';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -47,6 +48,12 @@ export class BeheerLedenComponent implements OnInit {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
+
+  titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Tovedem - Beheer - Leden');
+  }
 
   async ngOnInit(): Promise<void> {
     this.gebruikers.set(

@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -46,6 +47,12 @@ export class BeheerSpelersComponent implements OnInit {
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
+
+  titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Tovedem - Beheer - Spelers');
+  }
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
