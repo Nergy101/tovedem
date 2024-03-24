@@ -18,6 +18,7 @@ import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dial
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -44,6 +45,7 @@ export class BeheerSpelersComponent implements OnInit {
   spelerNaam?: string;
 
   client = inject(PocketbaseService);
+  authService = inject(AuthService);
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));

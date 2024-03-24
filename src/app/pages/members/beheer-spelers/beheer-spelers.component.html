@@ -3,6 +3,8 @@
         <p class="display-1">Spelers</p>
     </div>
 
+    @if (!!authService.isGlobalAdmin)
+    {
     <div
         class="row align-content-center align-items-center justify-content-center">
         <h2>Aanmaken</h2>
@@ -25,6 +27,7 @@
 
         </form>
     </div>
+    }
 
     <div class="row">
         @defer(when !!spelers())
@@ -33,7 +36,10 @@
             <thead>
                 <tr>
                     <th scope="col">Naam</th>
+                    @if (!!authService.isGlobalAdmin)
+                    {
                     <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +48,8 @@
                 {
                 <tr>
                     <td>{{speler.naam}}</td>
+                    @if (!!authService.isGlobalAdmin)
+                    {
                     <td>
                         <button mat-icon-button (click)="updateSpeler(speler)"
                             [disabled]="loading()">
@@ -52,6 +60,7 @@
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     </td>
+                    }
                 </tr>
                 }
             </tbody>

@@ -12,7 +12,7 @@
                 {{ user()?.name ?? user()?.email }}
             </div>
             <img
-                style="max-height: 10em; border-radius: 1em;"
+                style="max-height: 10em; border-radius: 1em; margin: 1em;"
                 [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+user()?.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
                 alt="avatar">
         </div>

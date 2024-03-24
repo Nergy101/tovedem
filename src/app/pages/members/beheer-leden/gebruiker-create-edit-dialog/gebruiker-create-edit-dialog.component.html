@@ -1,6 +1,14 @@
 
-<h2 mat-dialog-title class="display-4">Gebruiker Aanmaken</h2>
+<h2 mat-dialog-title class="display-4">
+    {{
+    isUpdate ?
+    'Gebruiker Aanpassen' :
+    'Gebruiker Aanmaken'
+    }}
+</h2>
 <div mat-dialog-content class="container p-4">
+
+    @defer (when rollen() && spelers() && groepen()) {
     <div class="row">
         <form (ngSubmit)="submit()">
             <div class="row">
@@ -9,12 +17,12 @@
                     <input matInput type="text" name="username" maxlength="30"
                         tabindex="0"
                         required
-                        [(ngModel)]="username">
+                        [(ngModel)]="gebruiker.username">
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Email</mat-label>
                     <input matInput type="email" name="email" required
-                        [(ngModel)]="email">
+                        [(ngModel)]="gebruiker.email">
                 </mat-form-field>
             </div>
 
@@ -25,7 +33,7 @@
                         maxlength="30"
                         tabindex="0"
                         required
-                        [(ngModel)]="password">
+                        [(ngModel)]="gebruiker.password">
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Bevestig Wachtwoord</mat-label>
@@ -33,7 +41,7 @@
                         name="passwordConfirm" maxlength="30"
                         tabindex="0"
                         required
-                        [(ngModel)]="passwordConfirm">
+                        [(ngModel)]="gebruiker.passwordConfirm">
                 </mat-form-field>
             </div>
 
@@ -44,14 +52,14 @@
                         maxlength="30"
                         tabindex="0"
                         required
-                        [(ngModel)]="name">
+                        [(ngModel)]="gebruiker.name">
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Rollen</mat-label>
-                    <mat-select multiple [(value)]="selectedRollen" required>
+                    <mat-select multiple [(value)]="gebruiker.rollen" required>
                         @for (rol of rollen(); track $index) {
                         <mat-option
-                            [value]="rol">{{rol.rol}}</mat-option>
+                            [value]="rol.id">{{rol.rol}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -60,7 +68,7 @@
             <div class="row">
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Groep</mat-label>
-                    <mat-select [(value)]="groep" required>
+                    <mat-select [(value)]="gebruiker.groep" required>
                         @for (groep of groepen(); track $index) {
                         <mat-option
                             [value]="groep.id">{{groep.naam}}</mat-option>
@@ -69,7 +77,7 @@
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Speler</mat-label>
-                    <mat-select [(value)]="speler" required>
+                    <mat-select [(value)]="gebruiker.speler" required>
                         @for (speler of spelers(); track $index) {
                         <mat-option
                             [value]="speler.id">{{speler.naam}}
@@ -92,11 +100,15 @@
                         class="flex-grow-1"
                         [disabled]="loading() || !formIsValid()"
                         (click)="submit()">
-                        Aanmaken
+                        {{ isUpdate ? 'Aanpassen' : 'Aanmaken'}}
                     </button>
                 </div>
             </div>
         </form>
     </div>
-
-</div>
+    }
+    @placeholder {
+    <div class="center">
+        <mat-spinner></mat-spinner>
+    </div>
+    }

@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Voorstelling from '../../../models/domain/voorstelling.model';
 import { lastValueFrom } from 'rxjs';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -30,6 +31,7 @@ export class BeheerVoorstellingenComponent {
   items: WritableSignal<any[] | null> = signal(null);
 
   client = inject(PocketbaseService);
+  authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
 

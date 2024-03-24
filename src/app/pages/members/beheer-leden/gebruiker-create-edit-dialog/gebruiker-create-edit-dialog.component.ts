@@ -5,7 +5,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import Gebruiker from '../../../../models/domain/gebruiker.model';
 import Speler from '../../../../models/domain/speler.model';
@@ -50,30 +54,48 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
   styleUrl: './gebruiker-create-edit-dialog.component.scss',
 })
 export class GebruikerCreateEditDialogComponent implements OnInit {
-  username?: string;
-  email?: string;
-  password?: string;
-  passwordConfirm?: string;
-  name?: string;
+  gebruiker: Gebruiker = {
+    id: '',
+    created: '',
+    updated: '',
+    username: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    name: '',
+    rollen: [],
+    groep: undefined,
+    speler: undefined,
+    emailVisibility: true,
+  };
+
   // not sure if this avatar 'file' can also be a url like this
   // only one way to find out!
   avatar =
     'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
-    this.name +
+    this.gebruiker.name +
     '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49';
-  selectedRollen: Rol[] = []; //ids
-  groep?: string; //id
-  speler?: string; // id
 
   loading = signal(false);
-  groepen: WritableSignal<Groep[]> = signal([]);
-  spelers: WritableSignal<Speler[]> = signal([]);
-  rollen: WritableSignal<Rol[]> = signal([]);
+  groepen: WritableSignal<Groep[] | null> = signal(null);
+  spelers: WritableSignal<Speler[] | null> = signal(null);
+  rollen: WritableSignal<Rol[] | null> = signal(null);
 
   client = inject(PocketbaseService);
   dialogRef = inject(MatDialogRef<GebruikerCreateEditDialogComponent>);
+  data = inject(MAT_DIALOG_DATA);
+
+  get isUpdate() {
+    return !!this.data?.existingGebruiker;
+  }
 
   async ngOnInit(): Promise<void> {
+    if (!!this.data?.existingGebruiker) {
+      const existing = this.data.existingGebruiker;
+      this.gebruiker = existing;
+      console.log('this.gebruiker', this.gebruiker);
+    }
+
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
     this.groepen.set(await this.client.getAll<Groep>('groepen'));
     this.rollen.set(await this.client.getAll<Rol>('rollen'));
@@ -82,49 +104,51 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
   async submit(): Promise<void> {
     this.loading.set(true);
 
-    const gebruiker = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      passwordConfirm: this.passwordConfirm,
-      name: this.name,
-      // avatar: this.avatar,
-      rollen: this.selectedRollen?.map((r) => r.id),
-      groep: this.groep,
-      speler: this.speler,
-      emailVisibility: true,
-    };
-
-    const created = await this.client.create<Gebruiker>('users', gebruiker);
-
-    this.dialogRef.close(created);
+    if (this.isUpdate) {
+      const gebruiker = this.gebruiker;
+      const updated = await this.client.update<Gebruiker>('users', gebruiker);
+      this.dialogRef.close(updated);
+    } else {
+      const gebruiker = {
+        username: this.gebruiker.username,
+        email: this.gebruiker.email,
+        password: this.gebruiker.password,
+        passwordConfirm: this.gebruiker.passwordConfirm,
+        name: this.gebruiker.name,
+        rollen: this.gebruiker.rollen,
+        groep: this.gebruiker.groep,
+        speler: this.gebruiker.speler,
+        emailVisibility: true,
+      };
+      const created = await this.client.create<Gebruiker>('users', gebruiker);
+      this.dialogRef.close(created);
+    }
     this.loading.set(false);
   }
 
   formIsValid() {
-    return (
-      !!this.username &&
-      this.username != '' &&
-      !!this.email &&
-      this.email != '' &&
-      !!this.password &&
-      this.password != '' &&
-      !!this.passwordConfirm &&
-      this.passwordConfirm != '' &&
-      !!this.name &&
-      this.name != ''
-      // !!this.avatar &&
-      // this.avatar != ''
-
-      // allow having 0 roles?
-      // !!this.selectedRollen &&
-      // this.selectedRollen?.length > 0 &&
-
-      // based on role(s)?
-      // !!this.groep &&
-      // this.groep != '' &&
-      // !!this.speler &&
-      // this.speler != ''
-    );
+    if (this.isUpdate) {
+      return (
+        !!this.gebruiker.username &&
+        this.gebruiker.username != '' &&
+        !!this.gebruiker.email &&
+        this.gebruiker.email != '' &&
+        !!this.gebruiker.name &&
+        this.gebruiker.name != ''
+      );
+    } else {
+      return (
+        !!this.gebruiker.username &&
+        this.gebruiker.username != '' &&
+        !!this.gebruiker.email &&
+        this.gebruiker.email != '' &&
+        !!this.gebruiker.password &&
+        this.gebruiker.password != '' &&
+        !!this.gebruiker.name &&
+        this.gebruiker.name != '' &&
+        !!this.gebruiker.passwordConfirm &&
+        this.gebruiker.passwordConfirm != ''
+      );
+    }
   }
 }

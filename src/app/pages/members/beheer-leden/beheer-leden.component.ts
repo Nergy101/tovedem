@@ -71,14 +71,21 @@ export class BeheerLedenComponent implements OnInit {
 
     if (!!created) {
       this.toastr.success(`Gebruiker ${created.naam} aangemaakt.`);
+      await this.ngOnInit();
+    }
+  }
 
-      this.gebruikers.update((x) => {
-        if (!!x) {
-          return [created, ...x];
-        }
-        return [created];
-      });
+  async openEditDialog(gebruiker: Gebruiker) {
+    const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
+      data: { existingGebruiker: gebruiker },
+      hasBackdrop: true,
+      minWidth: '50vw',
+    });
 
+    const edited: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!edited) {
+      this.toastr.success(`Gebruiker ${edited.naam} aangepast.`);
       await this.ngOnInit();
     }
   }

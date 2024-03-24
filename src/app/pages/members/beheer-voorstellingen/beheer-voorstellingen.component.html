@@ -20,7 +20,11 @@
                     <th scope="col">Datum Tijd 1 </th>
                     <th scope="col">Datum Tijd 2 </th>
                     <th scope="col">Spelers</th>
+
+                    @if (!!authService.isGlobalAdmin)
+                    {
                     <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -57,12 +61,15 @@
                         }
                     </td>
 
+                    @if (!!authService.isGlobalAdmin)
+                    {
                     <td>
                         <button mat-icon-button (click)="delete(item)"
                             [disabled]="loading()">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     </td>
+                    }
                 </tr>
                 }
             </tbody>
