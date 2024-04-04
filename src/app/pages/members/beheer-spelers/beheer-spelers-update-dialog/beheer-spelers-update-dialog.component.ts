@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -16,13 +16,14 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './beheer-spelers-update-dialog.component.html',
   styleUrl: './beheer-spelers-update-dialog.component.scss',
 })
-export class BeheerSpelersUpdateDialogComponent {
+export class BeheerSpelersUpdateDialogComponent implements OnInit {
   dialogRef = inject(MatDialogRef<BeheerSpelersUpdateDialogComponent>);
+  dialogData: Speler = inject(MAT_DIALOG_DATA);
 
-  speler: Speler;
+  speler!: Speler;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Speler) {
-    this.speler = data;
+  ngOnInit(): void {
+    this.speler = this.dialogData;
   }
 
   return(): void {

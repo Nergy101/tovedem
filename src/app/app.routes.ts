@@ -18,6 +18,7 @@ import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-sp
 import { inject } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { BeheerMailsComponent } from './pages/members/beheer-mails/beheer-mails.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,11 @@ export const routes: Routes = [
   {
     path: 'beheer-spelers',
     component: BeheerSpelersComponent,
+    canActivate: [loggedInGuard(['admin'])],
+  },
+  {
+    path: 'beheer-mails',
+    component: BeheerMailsComponent,
     canActivate: [loggedInGuard(['admin'])],
   },
 ];

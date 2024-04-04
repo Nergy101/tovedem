@@ -93,7 +93,6 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
     if (!!this.data?.existingGebruiker) {
       const existing = this.data.existingGebruiker;
       this.gebruiker = existing;
-      console.log('this.gebruiker', this.gebruiker);
     }
 
     this.spelers.set(await this.client.getAll<Speler>('spelers'));

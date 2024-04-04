@@ -86,8 +86,8 @@ export class BeheerSpelersComponent implements OnInit {
     if (!!updatedSpeler) {
       await this.client.update<Speler>('spelers', updatedSpeler);
       this.toastr.success(`Speler aangepast.`);
-      this.loading.set(false);
     }
+    this.loading.set(false);
   }
 
   async delete({ id }: any) {

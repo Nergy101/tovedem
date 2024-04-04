@@ -22,7 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { QuillModule } from 'ngx-quill';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { DatePipe, Time } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { FilePreviewModel } from 'ngx-awesome-uploader';

@@ -27,7 +27,7 @@
                 routerLinkActive="active"
                 routerLink="/beheer-voorstellingen"
                 [routerLinkActiveOptions]="{ exact: true }">
-                Voorstellingen <mat-icon align>curtains</mat-icon>
+                Voorstellingen <mat-icon>curtains</mat-icon>
             </button>
         </li>
         <li>
@@ -47,7 +47,7 @@
                 routerLinkActive="active"
                 routerLink="/beheer-leden"
                 [routerLinkActiveOptions]="{ exact: true }">
-                Leden <mat-icon align>diversity_3</mat-icon>
+                Leden <mat-icon>diversity_3</mat-icon>
             </button>
         </li>
         <li>
@@ -59,13 +59,25 @@
                 routerLinkActive="active"
                 routerLink="/beheer-spelers"
                 [routerLinkActiveOptions]="{ exact: true }">
-                Spelers <mat-icon align>groups_3</mat-icon>
+                Spelers <mat-icon>groups_3</mat-icon>
             </button>
         </li>
         <li>
             <div style="width: 100%;">
                 <mat-divider></mat-divider>
             </div>
+        </li>
+        <li>
+            <button
+                mat-button
+                class="nav-link flex-grow-1"
+                data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show"
+                routerLinkActive="active"
+                routerLink="/beheer-mails"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Emails <mat-icon>mail</mat-icon>
+            </button>
         </li>
         }
         @if (authService.isGlobalAdmin)
