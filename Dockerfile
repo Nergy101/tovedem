@@ -12,7 +12,8 @@ COPY --from=build /usr/src/app/dist/tovedem-reserveringen/browser /usr/share/ngi
 EXPOSE 80
 
 # local:
-# docker build -t nergy101/tovedem:latest .
+# docker auth
+# docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nergy101/tovedem:latest --push .
 # docker login
 # docker push nergy101/tovedem:latest
 # on VM:
