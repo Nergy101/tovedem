@@ -38,7 +38,7 @@ jobs:
           context: .
           push: true
           tags: nergy101/tovedem:latest
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
 
       - name: Get Known Hosts value
         run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST }})" >> $GITHUB_ENV
