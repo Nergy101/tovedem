@@ -1,19 +1,20 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img class="logo"
-        src="/assets/tovedem_logo.png" /></a>
+    <a class="navbar-brand" href="#"
+      ><img class="logo" src="/assets/tovedem_logo.png"
+    /></a>
     <div>
       @if (authService.isLoggedIn()){
       <button
         class="navbar-toggler justify-self-end"
         type="button"
         aria-label="Toggle side navigation"
-        (click)="sideDrawerService.toggle()">
+        (click)="sideDrawerService.toggle()"
+      >
         <div class="d-flex flex-column">
           <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
 
-          <span
-            class="navbar-toggler-icon">
+          <span class="navbar-toggler-icon">
             @if(sideDrawerService.isOpen()){
             <mat-icon>chevron_right</mat-icon>
             } @else {
@@ -30,11 +31,13 @@
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
         aria-expanded="false"
-        aria-label="Toggle navigation">
+        aria-label="Toggle navigation"
+      >
         <div class="d-flex flex-column">
           <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
-          <span
-            class="navbar-toggler-icon"><mat-icon>expand_more</mat-icon></span>
+          <span class="navbar-toggler-icon"
+            ><mat-icon>expand_more</mat-icon></span
+          >
         </div>
       </button>
     </div>
@@ -49,8 +52,9 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Home <mat-icon>home</mat-icon>
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Home <mat-icon>cottage</mat-icon>
             </button>
           </li>
           <li>
@@ -60,13 +64,17 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/agenda">
+              routerLink="/agenda"
+            >
               Agenda <mat-icon>calendar_month</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button [matMenuTriggerFor]="menu"
-              class="nav-link w-100 {{groepenClass}}">
+            <button
+              mat-button
+              [matMenuTriggerFor]="menu"
+              class="nav-link w-100 {{ groepenClass }}"
+            >
               Groepen<mat-icon>groups</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
@@ -78,9 +86,11 @@
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
                     routerLinkActive="active"
-                    routerLink="/groep/Tovedem">
-                    <span class="groepsnaam text-center"
-                      style="margin: 0">Tovedem</span>
+                    routerLink="/groep/Tovedem"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Tovedem</span
+                    >
                   </a>
                 </li>
                 <li>
@@ -90,9 +100,11 @@
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
                     routerLinkActive="active"
-                    routerLink="/groep/Cloos">
-                    <span class="groepsnaam text-center"
-                      style="margin: 0">Cloos</span>
+                    routerLink="/groep/Cloos"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Cloos</span
+                    >
                   </a>
                 </li>
                 <li>
@@ -102,9 +114,11 @@
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
                     routerLinkActive="active"
-                    routerLink="/groep/Mejotos">
-                    <span class="groepsnaam text-center"
-                      style="margin: 0">Mejoto's</span>
+                    routerLink="/groep/Mejotos"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Mejoto's</span
+                    >
                   </a>
                 </li>
               </ul>
@@ -117,7 +131,8 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/lid-worden">
+              routerLink="/lid-worden"
+            >
               Lid worden <mat-icon>person_add</mat-icon>
             </button>
           </li>
@@ -128,7 +143,8 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/steunen">
+              routerLink="/steunen"
+            >
               Steunen <mat-icon>volunteer_activism</mat-icon>
             </button>
           </li>
@@ -139,7 +155,8 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/sinterklaas">
+              routerLink="/sinterklaas"
+            >
               Sinterklaas <mat-icon>redeem</mat-icon>
             </button>
           </li>
@@ -150,7 +167,8 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/contact">
+              routerLink="/contact"
+            >
               Contact <mat-icon>mail</mat-icon>
             </button>
           </li>
@@ -163,7 +181,8 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/login">
+              routerLink="/login"
+            >
               Login
               <mat-icon>login</mat-icon>
             </button>
@@ -176,13 +195,20 @@
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
-              routerLink="/profiel">
+              routerLink="/profiel"
+            >
               <div
-                class="d-flex justify-content-center align-items-center gap-2">
+                class="d-flex justify-content-center align-items-center gap-2"
+              >
                 <img
-                  style="max-height: 2em; border-radius: .2em;"
-                  [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+authService.userData()?.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
-                  alt="avatar" />
+                  style="max-height: 2em; border-radius: 0.2em"
+                  [src]="
+                    'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
+                    authService.userData()?.name +
+                    '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
+                  "
+                  alt="avatar"
+                />
                 Profiel
               </div>
             </button>
