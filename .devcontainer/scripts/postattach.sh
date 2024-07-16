@@ -4,11 +4,22 @@ YELLOW='\033[0;33m'
 BLUE='\033[34m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}Configuring Git...${NC}"
-gh auth login
+echo -e "${BLUE}Configuring Git User...${NC}"
 
-echo -e "${BLUE}npm install...${NC}"
-npm install
+# Check GitHub authentication status
+auth_status=$(gh auth status -t)
 
+# Check if the auth status command failed
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Git authentication status is negative. Performing login...${NC}"
+    gh auth login
+else
+    echo -e "${GREEN}Git authentication status is positive. No need to login.${NC}"
+fi
+
+echo "run 'gh auth status' to see more details."
+echo ''
+
+# run npm run start:devcontainer
 echo -e "${BLUE}npm run start:devcontainer...${NC}"
 npm run start:devcontainer
