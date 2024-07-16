@@ -5,15 +5,7 @@ BLUE='\033[34m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}Configuring Git...${NC}"
-
-echo -e "${BLUE}Type Git Email:${NC}"
-read git_email
-
-echo -e "${BLUE}Type Git Username:${NC}"
-read git_username
-
-git config --global user.email $git_email
-git config --global user.name $git_username
+gh auth login
 
 echo -e "${BLUE}npm install...${NC}"
 npm install
