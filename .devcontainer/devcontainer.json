@@ -15,7 +15,7 @@
   //"forwardPorts": [4200],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "bash .devcontainer/scripts/postcreate.sh",
+  "postAttachCommand": "bash .devcontainer/scripts/postattach.sh",
   // Configure tool-specific properties.
   "customizations": {
     "vscode": { "settings": {}, "extensions": ["Angular.ng-template"] }
