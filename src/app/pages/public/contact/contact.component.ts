@@ -10,12 +10,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Title } from '@angular/platform-browser';
+import { Router, RouterModule } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-contact',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
@@ -34,6 +38,7 @@ export class ContactComponent {
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
+  router = inject(Router);
 
   verstuurContactMail() {}
 

@@ -6,3 +6,17 @@
   display: flex;
   justify-content: center;
 }
+
+li {
+  list-style: none;
+
+  .active {
+    color: ae1545;
+    background-color: #ae1545;
+  }
+
+  :hover {
+    color: ae1545;
+    background-color: #ae1545;
+  }
+}
