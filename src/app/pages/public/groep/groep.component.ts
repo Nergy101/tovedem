@@ -31,7 +31,7 @@ import Groep from '../../../models/domain/groep.model';
 })
 export class GroepComponent {
   groepsNaam: string;
-  url = 'https://tovedem.pockethost.io/';
+  url = 'http://pocketbase.nergy.space/';
 
   client = inject(PocketbaseService);
 

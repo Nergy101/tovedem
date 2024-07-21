@@ -33,7 +33,7 @@ import confetti from 'canvas-confetti';
   ],
 })
 export class ReserveringGeslaagdComponent implements OnInit {
-  url = 'https://tovedem.pockethost.io/';
+  url = 'http://pocketbase.nergy.space/';
   client = inject(PocketbaseService).client;
   router = inject(Router);
 

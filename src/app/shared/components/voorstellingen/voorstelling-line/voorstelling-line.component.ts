@@ -30,7 +30,7 @@ export class VoorstellingLineComponent {
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
-    return `https://tovedem.pockethost.io/api/files/${collectionId}/${recordId}/${imageId}`;
+    return `http://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
   inToekomst(): boolean {
