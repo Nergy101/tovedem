@@ -29,7 +29,8 @@
         "dbaeumer.vscode-eslint",
         "mohd-akram.vscode-html-format",
         "ecmel.vscode-html-css",
-        "stateful.runme"
+        "stateful.runme",
+        "christian-kohler.npm-intellisense"
       ] }
   }
 
