@@ -1,4 +1,4 @@
-FROM node:19.3-alpine AS build
+FROM node:22.3-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm ci
