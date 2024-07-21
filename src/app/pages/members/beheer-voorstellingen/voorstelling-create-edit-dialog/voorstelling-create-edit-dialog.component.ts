@@ -1,6 +1,9 @@
 import {
   Component,
+  ImportProvidersSource,
+  Inject,
   OnInit,
+  Provider,
   WritableSignal,
   inject,
   signal,
@@ -26,6 +29,7 @@ import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
+import Voorstelling from '../../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-voorstelling-create-edit-dialog',
@@ -62,6 +66,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   omschrijving?: string;
   selectedSpelers: any[] = [];
   selectedGroep?: any;
+  voorstelling?: Voorstelling;
 
   afbeelding?: FilePreviewModel;
 
@@ -101,6 +106,17 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.collection('spelers').getFullList());
     this.groepen.set(await this.client.collection('groepen').getFullList());
+    this.voorstelling = Inject(this.dialogRef);
+
+    if(this.voorstelling != null){
+      this.titel = this.voorstelling.titel;
+      this.ondertitel = this.voorstelling.ondertitel;
+      this.regie = this.voorstelling.regie;
+      this.omschrijving =  this.voorstelling.omschrijving;
+      this.selectedGroep = this.voorstelling.groep;
+      //this.datum1 = this.voorstelling.datum_tijd_1;
+      //this.datum2 = this.voorstelling.datum_tijd_2;
+    }
   }
 
   async submit(): Promise<void> {

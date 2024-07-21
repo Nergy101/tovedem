@@ -20,6 +20,7 @@
                     <th scope="col">Datum Tijd 1 </th>
                     <th scope="col">Datum Tijd 2 </th>
                     <th scope="col">Spelers</th>
+                    <th scope="col">Edit</th>
 
                     @if (!!authService.isGlobalAdmin)
                     {
@@ -70,6 +71,9 @@
                         </button>
                     </td>
                     }
+                    <td> <button mat-fab (click)="openEditDialog(item)">
+                        <mat-icon color="gray">more_vert</mat-icon>
+                    </button></td>
                 </tr>
                 }
             </tbody>

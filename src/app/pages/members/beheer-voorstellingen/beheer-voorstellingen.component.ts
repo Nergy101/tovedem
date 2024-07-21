@@ -55,7 +55,7 @@ export class BeheerVoorstellingenComponent {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
     });
-
+  
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
 
     if (!!created) {
@@ -63,6 +63,21 @@ export class BeheerVoorstellingenComponent {
       await this.ngOnInit();
     }
   }
+
+  async openEditDialog(use_voorstelling : Voorstelling) {
+    const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
+      data: { existingVoorstelling: use_voorstelling },
+      hasBackdrop: true,
+    });
+  
+    const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!created) {
+      this.toastr.success(`Voorstelling ${created.titel} aangepast.`);
+      await this.ngOnInit();
+    }
+  }
+
 
   async delete({ id }: any) {
     this.loading.set(true);
