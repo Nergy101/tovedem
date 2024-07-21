@@ -13,15 +13,29 @@ Before you begin, ensure you have met the following requirements:
 
 To run and build the Angular project, you need to install Angular CLI. Open your terminal and run the following command:
 
-```bash
+```bash {"id":"01J3BG65M345AZFGQ95NX6V44F"}
 npm install -g @angular/cli
 ```
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
-
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run script below to install dependencies
+
+```bash {"id":"01J3BG7ANX08KQDHPBNJGVZ9YK"}
+npm i
+```
+
+Run `npm run start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+```bash {"id":"01J3BG7SH2TTBBRCTFZ0WS1DFZ"}
+npm run start
+```
+
+When in a devcontainer, run `npm run start:devcontainer`
+
+```bash {"id":"01J3BG85FMVRDFY37Y0VMVKXY3"}
+npm run start:devcontainer
+```
 
 ## Code scaffolding
 
