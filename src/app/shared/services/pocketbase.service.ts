@@ -7,7 +7,7 @@ import Page from '../../models/pocketbase/page.model';
   providedIn: 'root',
 })
 export class PocketbaseService {
-  private url = 'http://pocketbase.nergy.space/';
+  private url = 'https://pocketbase.nergy.space/';
   client: PocketBase;
 
   constructor() {

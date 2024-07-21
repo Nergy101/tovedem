@@ -58,7 +58,7 @@ import Reservering from '../../../../models/domain/resservering.model';
   styleUrl: './reserveren.component.scss',
 })
 export class ReserverenComponent implements OnInit {
-  url = 'http://pocketbase.nergy.space/';
+  url = 'https://pocketbase.nergy.space/';
   client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
 

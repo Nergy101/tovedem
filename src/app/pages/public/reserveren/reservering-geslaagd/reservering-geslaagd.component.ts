@@ -33,7 +33,7 @@ import confetti from 'canvas-confetti';
   ],
 })
 export class ReserveringGeslaagdComponent implements OnInit {
-  url = 'http://pocketbase.nergy.space/';
+  url = 'https://pocketbase.nergy.space/';
   client = inject(PocketbaseService).client;
   router = inject(Router);
 

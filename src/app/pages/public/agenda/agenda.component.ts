@@ -34,7 +34,7 @@ import Groep from '../../../models/domain/groep.model';
   ],
 })
 export class AgendaComponent implements OnInit {
-  url = 'http://pocketbase.nergy.space/';
+  url = 'https://pocketbase.nergy.space/';
   client = inject(PocketbaseService);
   titleService = inject(Title);
 

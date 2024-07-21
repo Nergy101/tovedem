@@ -109,7 +109,7 @@ export class LidWordenComponent implements OnInit {
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
-    return `http://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
+    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
   async submit(): Promise<void> {
