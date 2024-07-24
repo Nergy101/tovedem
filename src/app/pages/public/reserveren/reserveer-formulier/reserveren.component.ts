@@ -124,14 +124,14 @@ export class ReserverenComponent implements OnInit {
     const nieuweReservering = await this.client.create<Reservering>(
       'reserveringen',
       {
-        voornaam: this.name,
-        achternaam: this.surname,
-        email: this.email,
-        is_vriend_van_tovedem: this.vriendVanTovedem,
-        is_lid_van_vereniging: this.lidVanTovedemMejotos,
+        voornaam: this.name(),
+        achternaam: this.surname(),
+        email: this.email(),
+        is_vriend_van_tovedem: this.vriendVanTovedem(),
+        is_lid_van_vereniging: this.lidVanTovedemMejotos(),
         voorstelling: this.voorstellingId,
-        datum_tijd_1_aantal: this.amountOfPeopleDate1 ?? 0,
-        datum_tijd_2_aantal: this.amountOfPeopleDate2 ?? 0,
+        datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
+        datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
       }
     );
 
