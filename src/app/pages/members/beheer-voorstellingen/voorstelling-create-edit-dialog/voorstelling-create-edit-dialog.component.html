@@ -65,7 +65,7 @@
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Spelers</mat-label>
-                    <mat-select multiple [(value)]="selectedSpelers" required>
+                    <mat-select multiple [(value)]="selectedSpelers">
                         @for (speler of spelers(); track $index) {
                         <mat-option
                             [value]="speler">{{speler.naam}}

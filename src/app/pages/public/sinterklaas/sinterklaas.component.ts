@@ -28,7 +28,10 @@ import { Title } from '@angular/platform-browser';
     MatIconModule,
     CommonModule,
     RouterModule,
+    MatInputModule,
     FormsModule,
+    MatDatepickerModule,
+    MatButtonModule,
     RouterModule,
     MatCardModule,
     MatCheckboxModule,
@@ -48,7 +51,7 @@ export class SinterklaasComponent implements OnInit {
   subject: string | null = null;
   message: string | null = null;
   router = inject(Router);
-  verstuurContactMail() {}
+  verstuurSinterklaasMail() {}
 
   constructor() {
     this.titleService.setTitle('Tovedem - Sinterklaas');

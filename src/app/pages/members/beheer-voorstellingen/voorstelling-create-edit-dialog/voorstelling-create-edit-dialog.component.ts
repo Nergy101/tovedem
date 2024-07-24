@@ -16,7 +16,7 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -102,20 +102,31 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   client = inject(PocketbaseService).client;
   datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<VoorstellingCreateEditDialogComponent>);
+  existingVoorstellingData: any = inject(MAT_DIALOG_DATA)
+  existingVoorstelling?: Voorstelling;
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.collection('spelers').getFullList());
     this.groepen.set(await this.client.collection('groepen').getFullList());
-    this.voorstelling = Inject(this.dialogRef);
+    
 
-    if(this.voorstelling != null){
-      this.titel = this.voorstelling.titel;
-      this.ondertitel = this.voorstelling.ondertitel;
-      this.regie = this.voorstelling.regie;
-      this.omschrijving =  this.voorstelling.omschrijving;
-      this.selectedGroep = this.voorstelling.groep;
-      //this.datum1 = this.voorstelling.datum_tijd_1;
-      //this.datum2 = this.voorstelling.datum_tijd_2;
+this.existingVoorstelling = this.existingVoorstellingData?.existingVoorstelling
+
+console.log(this.existingVoorstellingData)
+console.log(this.existingVoorstelling)
+
+
+    if(!!this.existingVoorstelling){
+      this.titel = this.existingVoorstelling.titel;
+      this.ondertitel = this.existingVoorstelling.ondertitel;
+      this.regie = this.existingVoorstelling.regie;
+      this.omschrijving =  this.existingVoorstelling.omschrijving;
+      this.selectedGroep = this.groepen().find(g => g.id == this.existingVoorstelling?.expand?.groep?.id);
+      this.datum1 = new Date(this.existingVoorstelling.datum_tijd_1);
+      this.datum2 = !!this.existingVoorstelling.datum_tijd_2 ? new Date(this.existingVoorstelling.datum_tijd_2) : undefined;
+      //TODO fix
+      this.tijd1 = DateTime.fromFormat(this.existingVoorstelling.datum_tijd_1, "h:mm a").toString()
+      // this.tijd2 = !!this.existingVoorstelling.datum_tijd_2 ? new Date(this.existingVoorstelling.datum_tijd_2).getTime().toLocaleString() : undefined ;
     }
   }
 
@@ -188,8 +199,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       !!this.omschrijving &&
       this.omschrijving != '' &&
       this.omschrijving != '<p></p>' &&
-      !!this.selectedGroep &&
-      this.selectedSpelers?.length > 0
+      !!this.selectedGroep
     );
   }
 

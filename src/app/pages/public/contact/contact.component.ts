@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -28,6 +29,7 @@ import { Router, RouterModule } from '@angular/router';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatTooltipModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
   templateUrl: './contact.component.html',

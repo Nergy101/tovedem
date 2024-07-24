@@ -9,5 +9,5 @@ export default interface Voorstelling extends BaseModel {
   afbeelding?: string;
   datum_tijd_1: string;
   datum_tijd_2?: string;
-  spelers: string[];
+  spelers?: string[];
 }
