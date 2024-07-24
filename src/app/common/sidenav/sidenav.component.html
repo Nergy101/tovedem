@@ -1,4 +1,4 @@
- <div class="links-container">
+<div class="links-container">
     <ul class="links navbar-nav nav-pills nav-fill">
         @if (authService.userHasAllRoles(['admin']) ||
         authService.isGlobalAdmin)
@@ -7,25 +7,15 @@
             Voorstellingen Beheer
         </div>
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
-                routerLinkActive="active"
-                routerLink="/beheer-reserveringen"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-reserveringen"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Reserveringen <mat-icon>payments</mat-icon>
             </button>
         </li>
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
-                routerLinkActive="active"
-                routerLink="/beheer-voorstellingen"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-voorstellingen"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Voorstellingen <mat-icon>curtains</mat-icon>
             </button>
@@ -39,25 +29,15 @@
             Leden Beheer
         </div>
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
-                routerLinkActive="active"
-                routerLink="/beheer-leden"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-leden"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Leden <mat-icon>diversity_3</mat-icon>
             </button>
         </li>
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
-                routerLinkActive="active"
-                routerLink="/beheer-spelers"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Spelers <mat-icon>groups_3</mat-icon>
             </button>
@@ -68,13 +48,8 @@
             </div>
         </li>
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show"
-                routerLinkActive="active"
-                routerLink="/beheer-mails"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-mails"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Emails <mat-icon>mail</mat-icon>
             </button>
@@ -83,13 +58,22 @@
         @if (authService.isGlobalAdmin)
         {
         <li>
-            <button
-                mat-button
-                class="nav-link flex-grow-1"
-                data-bs-toggle="collapse"
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show"
                 (click)="navigate('https://pocketbase.nergy.space/_/#/collections')">
                 Admin <mat-icon>admin_panel_settings</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" (click)="navigate('https://app.mailjet.com')">
+                MailJet <mat-icon>contact_mail</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" (click)="navigate('https://www.zoho.com')">
+                ZoHo <mat-icon>mark_email_read</mat-icon>
             </button>
         </li>
         <li>

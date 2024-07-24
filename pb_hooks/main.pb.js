@@ -50,3 +50,52 @@ onRecordAfterCreateRequest((e) => {
     console.log("something went wrong", JSON.stringify(err));
   }
 }, "reserveringen");
+
+
+mailjetSendMail()
+{
+  /**
+ *
+ * This call sends a message to the given recipient with vars and custom vars.
+ *
+ */
+const mailjet = require ('node-mailjet')
+	.connect({"BASE_URL":"https://app.mailjet.com","NODE_ENV":"production","PREPROD":false}.MJ_APIKEY_PUBLIC, {"BASE_URL":"https://app.mailjet.com","NODE_ENV":"production","PREPROD":false}.MJ_APIKEY_PRIVATE)
+
+  const request = mailjet
+	.post("send", {'version': 'v3.1'})
+	.request({
+		"Messages":[
+			{
+				"From": {
+					"Email": "tovedem@nergy.space",
+					"Name": "Tovedem"
+				},
+				"To": [
+					{
+						"Email": "passenger1@example.com",
+						"Name": "passenger 1"
+					}
+				],
+				"TemplateID": 6164850,
+				"TemplateLanguage": true,
+				"Subject": "Welkom bij Tovedem",
+				"Variables": {
+          "voorstelling_1_datum": e.record.get("datum1"),
+          "voorstelling_1_tijd": e.record.get("datum1_tijd"),
+          "voorstelling_2_datum": e.record.get("datum2"),
+          "voorstelling_2_tijd": e.record.get("datum2_tijd"),
+          "voorstelling_1_aantal": e.record.get("datum1_aantal"),
+          "voorstelling_2_aantal": e.record.get("datum2_aantal"),
+        }
+			}
+		]
+	})
+request
+	.then((result) => {
+		console.log(result.body)
+	})
+	.catch((err) => {
+		console.log(err.statusCode)
+	})
+}
