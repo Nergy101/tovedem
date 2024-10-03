@@ -18,6 +18,11 @@ import { MatInputModule } from '@angular/material/input';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, tap } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import { AuthService } from '../../../shared/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { MatLine } from '@angular/material/core';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -31,6 +36,8 @@ import { Title } from '@angular/platform-browser';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
+    MatLine,
+    MatDivider,
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
@@ -40,9 +47,9 @@ export class BeheerReserveringenComponent {
   items: WritableSignal<any[] | null> = signal(null);
   client = inject(PocketbaseService);
   searchTerm = signal('');
-
   searchTerm$ = toObservable(this.searchTerm);
-
+  dialog = inject(MatDialog);
+  authService = inject(AuthService);
   titleService = inject(Title);
 
   constructor() {
@@ -97,6 +104,12 @@ export class BeheerReserveringenComponent {
 
     this.loading.set(false);
   }
+
+  async openEditDialog(use_reservering : Reservering) {
+    const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
+      data: { existingVoorstelling: use_reservering },
+      hasBackdrop: true,
+    });}
 
   onSearchTermChanged(newValue: string) {
     this.searchTerm.set(newValue);
