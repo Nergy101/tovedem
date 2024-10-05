@@ -30,6 +30,7 @@
     "ngx-material-timepicker": "^13.1.1",
     "ngx-quill": "^25.1.1",
     "ngx-toastr": "^18.0.0",
+    "node-mailjet": "^6.0.6",
     "pocketbase": "^0.21.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

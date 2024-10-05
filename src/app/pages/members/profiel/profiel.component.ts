@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { BreakpointService } from '../../../shared/services/breakpoint.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-profiel',
@@ -25,6 +26,7 @@ import { BreakpointService } from '../../../shared/services/breakpoint.service';
     MatIconModule,
     MatButtonModule,
     MatListModule,
+    MatCardModule
   ],
   templateUrl: './profiel.component.html',
   styleUrl: './profiel.component.scss',
