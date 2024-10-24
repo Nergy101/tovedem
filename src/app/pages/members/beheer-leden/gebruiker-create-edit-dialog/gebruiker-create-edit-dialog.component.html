@@ -54,7 +54,8 @@
             <div class="row">
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Groep</mat-label>
-                    <mat-select [(value)]="gebruiker.groep" required>
+                    <mat-select [(value)]="gebruiker.groep">
+                        <mat-option>Geen</mat-option>
                         @for (groep of groepen(); track $index) {
                         <mat-option [value]="groep.id">{{groep.naam}}</mat-option>
                         }
@@ -63,6 +64,7 @@
                 <mat-form-field class="col-md-6 col-12">
                     <mat-label>Speler</mat-label>
                     <mat-select [(value)]="gebruiker.speler">
+                        <mat-option>Geen</mat-option>
                         @for (speler of spelers(); track $index) {
                         <mat-option [value]="speler.id">{{speler.naam}}
                         </mat-option>
