@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import PocketBase, { BaseModel } from 'pocketbase';
 import Page from '../../models/pocketbase/page.model';
+import { Environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PocketbaseService {
-  private url = 'https://pocketbase.nergy.space/';
+  environment = inject(Environment);
   client: PocketBase;
 
   constructor() {
-    this.client = new PocketBase(this.url);
+    this.client = new PocketBase(this.environment.pocketbase.baseUrl);
   }
 
   async create<T>(collectionName: string, item: any): Promise<T> {

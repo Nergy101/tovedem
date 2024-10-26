@@ -1,43 +1,37 @@
 <div class="container-fluid mat-elevation-z5 sponsors">
     <h2 class="text-center">Sponsoren</h2>
-    <div class="row"
-        style="justify-content: space-around; flex-flow: row wrap;">
-        <img mat-card-image class="sponsor-image col-2"
-            src="assets/sponsors/Logo-kringkoop.jpg">
-        <img mat-card-image class="sponsor-image col-2"
-            src="assets/sponsors/crossmotion.png">
-        <img mat-card-image class="sponsor-image col-2"
-            src="assets/sponsors/digistate.png">
-        <img mat-card-image class="sponsor-image col-2"
-            src="assets/sponsors/hazenveld_camping.png">
-        <img mat-card-image class="sponsor-image col-2"
-            src="assets/sponsors/logo-wawollie.png">
+    <div class="row" style="justify-content: space-around; flex-flow: row wrap;">
+        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/Logo-kringkoop.jpg">
+        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/crossmotion.png">
+        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/digistate.png">
+        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/hazenveld_camping.png">
+        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/logo-wawollie.png">
     </div>
 </div>
 
-<div class="container-fluid links"
-    style="display:flex; flex-flow: row wrap; justify-content: space-evenly;">
+<div class="container-fluid links" style="display:flex; flex-flow: row wrap; justify-content: space-evenly;">
     <div class="col-4 link-row">
-        <h2>Adres</h2>
+        <h2> <mat-icon>pin_drop</mat-icon> Adres</h2>
         <p>
             De Schalm, Orangjelaan 10 <br>
             3454 BT, De Meern
         </p>
     </div>
     <div class="col-4 link-row">
-        <h2>Links</h2>
+        <h2><mat-icon>map</mat-icon> Links</h2>
         <ul>
-            <li>Reserveren</li>
-            <li>Lid worden</li>
-            <li>Contact</li>
+            <li (click)="navigateTo(['/'])">
+                Reserveren</li>
+            <li (click)="navigateTo(['/lid-worden'])">Lid worden</li>
+            <li (click)="navigateTo(['/contact'])">Contact</li>
             <li>Privacy beleid</li>
         </ul>
     </div>
     <div class="col-4 link-row">
-        <h2>Social Media</h2>
+        <h2><mat-icon>language</mat-icon> Social Media</h2>
         <ul>
-            <li>Facebook</li>
-            <li>X (Twitter)</li>
+            <li (click)="navigateToInstagram()"> Instagram </li>
+            <li (click)="navigateToFaceBook()">Facebook</li>
         </ul>
     </div>
 </div>
