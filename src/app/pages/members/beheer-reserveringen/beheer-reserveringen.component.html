@@ -5,30 +5,34 @@
 </div>
 
 <div class="container">
-    
+
 
     @defer(when items())
     {
     @if(!loading()){
     <mat-tab-group class="flex-grow-1 mat-elevation-z2">
         <mat-tab label="Beheren">
-            
+
             <div class="row" style="margin-top:  1em;">
-                <mat-label class="col-md-2 col-12" style="margin: 1em; font-size: large;"> Voorstelling/Reservering: </mat-label>
+                <mat-label class="col-md-2 col-12" style="margin: 1em; font-size: large;"> Voorstelling/Reservering:
+                </mat-label>
                 <mat-form-field class="col-md-6 col-12" appearance="outline">
                     <mat-label>Zoeken</mat-label>
-                    <input matInput
-                        type="text"
-                        [ngModel]="searchTerm()"
+                    <input matInput type="text" [ngModel]="searchTerm()"
                         (ngModelChange)="onSearchTermChanged($event)" />
                     <mat-icon matSuffix>search</mat-icon>
+
                 </mat-form-field>
+                @if(searching()){
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                }
             </div>
 
 
             <table class="table ">
                 <thead>
                     <tr>
+                        <th scope="col">Voorstelling</th>
                         <th scope="col">Voornaam</th>
                         <th scope="col">Achternaam</th>
                         <th scope="col">Email</th>
@@ -36,11 +40,7 @@
                         <th scope="col">Datum 2 Aantal</th>
                         <th scope="col">Vriend</th>
                         <th scope="col">Lid</th>
-                        @if (!!authService.isGlobalAdmin)
-                            {
-                                <th></th>
-                            }
-                                <th scope="col">Edit</th>
+                        <th scope="col">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,35 +48,31 @@
                     @for (item of items(); track $index)
                     {
                     <tr>
-                        <!--<td>{{item.expand.voorstelling.titel}}</td>-->
+                        <td>{{item.expand.voorstelling.titel}}</td>
                         <td>{{item.voornaam}}</td>
                         <td>{{item.achternaam}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.datum_tijd_1_aantal}}</td>
                         <td>{{item.datum_tijd_2_aantal}}</td>
-                        
+
 
                         <td>
-                            <mat-checkbox
-                                [checked]="item.is_vriend_van_tovedem"
-                                disabled>
+                            <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
                             </mat-checkbox>
                         </td>
                         <td>
-                            <mat-checkbox
-                                [checked]="item.is_lid_van_vereniging"
-                                disabled>
+                            <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
                             </mat-checkbox>
                         </td>
                         @if (!!authService.isGlobalAdmin)
-                            {
-                            <td>
-                                <button mat-fab (click)="openEditDialog(item)">
+                        {
+                        <td>
+                            <button mat-fab (click)="openEditDialog(item)">
                                 <mat-icon color="">more_vert</mat-icon>
-                                </button>
-                            </td>
-                            }
-                
+                            </button>
+                        </td>
+                        }
+
                         <!--<td> <button mat-icon-button (click)="delete(item)"
                                 [disabled]="loading()">
                                 <mat-icon color="warn">delete</mat-icon>
@@ -90,7 +86,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <!--<th scope="col">Voorstelling</th>-->
+                        <th scope="col">Voorstelling</th>
                         <th scope="col">Datum 1 Aantal</th>
                         <th scope="col">Datum 2 Aantal</th>
                         <th scope="col">Achternaam</th>
@@ -99,25 +95,20 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     @for (item of items(); track $index)
                     {
                     <tr>
-                        <td>{{item.expand.voorstelling.titel}}</td>
+                        <td>{{item.expand.voorstelling?.titel}}</td>
                         <td>{{item.datum_tijd_1_aantal}}</td>
                         <td>{{item.datum_tijd_2_aantal}}</td>
                         <td>{{item.achternaam}}</td>
 
                         <td>
-                            <mat-checkbox
-                                [checked]="item.is_vriend_van_tovedem"
-                                disabled>
+                            <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
                             </mat-checkbox>
                         </td>
                         <td>
-                            <mat-checkbox
-                                [checked]="item.is_lid_van_vereniging"
-                                disabled>
+                            <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
                             </mat-checkbox>
                         </td>
 

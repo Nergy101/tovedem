@@ -30,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import Groep from '../../../models/domain/groep.model';
 import { ToastrService } from 'ngx-toastr';
+import { Environment } from '../../../../environment';
 
 @Component({
   selector: 'app-lid-worden',
@@ -62,6 +63,7 @@ export class LidWordenComponent implements OnInit {
   client = inject(PocketbaseService);
   datePipe = inject(DatePipe);
   toastr = inject(ToastrService);
+  environment = inject(Environment);
 
   //dialogRef = inject(MatDialogRef<LidWordenComponent>);
 
@@ -109,7 +111,7 @@ export class LidWordenComponent implements OnInit {
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {
-    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
+    return `${this.environment.pocketbase.baseUrl}/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
   async submit(): Promise<void> {

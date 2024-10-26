@@ -12,6 +12,7 @@ import Voorstelling from '../../../models/domain/voorstelling.model';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Title } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -22,6 +23,7 @@ import { Title } from '@angular/platform-browser';
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    DatePipe
   ],
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
@@ -55,7 +57,7 @@ export class BeheerVoorstellingenComponent {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
     });
-  
+
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
 
     if (!!created) {
@@ -64,16 +66,16 @@ export class BeheerVoorstellingenComponent {
     }
   }
 
-  async openEditDialog(use_voorstelling : Voorstelling) {
+  async openEditDialog(use_voorstelling: Voorstelling) {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: use_voorstelling },
       hasBackdrop: true,
     });
-  
-    const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!created) {
-      this.toastr.success(`Voorstelling ${created.titel} aangepast.`);
+    const updated: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!!updated) {
+      this.toastr.success(`Voorstelling ${updated.titel} aangepast.`);
       await this.ngOnInit();
     }
   }
