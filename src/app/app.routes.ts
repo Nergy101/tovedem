@@ -19,6 +19,8 @@ import { inject } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { BeheerMailsComponent } from './pages/members/beheer-mails/beheer-mails.component';
+import { ReserveringEditDialogComponent } from './pages/members/beheer-reserveringen/reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { ReserveringAanpassenComponent } from './pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component';
 
 export const routes: Routes = [
   {
@@ -86,6 +88,10 @@ export const routes: Routes = [
     path: 'beheer-reserveringen',
     component: BeheerReserveringenComponent,
     canActivate: [loggedInGuard(['admin'])],
+  },
+  {
+    path: 'reservering-aanpassen/:id',
+    component: ReserveringAanpassenComponent,
   },
   {
     path: 'beheer-voorstellingen',
