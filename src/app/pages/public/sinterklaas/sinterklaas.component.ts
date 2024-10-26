@@ -58,7 +58,7 @@ export class SinterklaasComponent implements OnInit {
   images: any[] = [];
 
 
-  verstuurSinterklaasMail() {}
+  verstuurSinterklaasMail() { }
 
   constructor() {
     this.titleService.setTitle('Tovedem - Sinterklaas');
@@ -71,15 +71,17 @@ export class SinterklaasComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
-      
+
 
     this.content.set((record as any).tekst_1);
-    for(const img of record.afbeeldingen){
-      this.images.push(this.getImageUrl(record.collectionId, record.id, img));
-    }
-    console.log(this.images)
-    
 
+
+    this.images = record.afbeeldingen.map((img: string) => ({
+      id: img,
+      src: this.getImageUrl(record.collectionId, record.id, img),
+    }));
+
+    console.log(this.images)
   }
 
 
