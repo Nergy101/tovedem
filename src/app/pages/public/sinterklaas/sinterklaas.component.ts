@@ -19,6 +19,8 @@ import { Router, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Title } from '@angular/platform-browser';
+import { MatDividerModule } from '@angular/material/divider';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 
 @Component({
   selector: 'app-sinterklaas',
@@ -35,7 +37,8 @@ import { Title } from '@angular/platform-browser';
     RouterModule,
     MatCardModule,
     MatCheckboxModule,
-    
+    MatDividerModule,
+    MdbCarouselModule,
   ],
   templateUrl: './sinterklaas.component.html',
   styleUrl: './sinterklaas.component.scss',
@@ -51,15 +54,33 @@ export class SinterklaasComponent implements OnInit {
   subject: string | null = null;
   message: string | null = null;
   router = inject(Router);
+  img_src: WritableSignal<any[] | null> = signal(null);
+  images: any[] = [];
+
+
   verstuurSinterklaasMail() {}
 
   constructor() {
     this.titleService.setTitle('Tovedem - Sinterklaas');
   }
 
+  getImageUrl(collectionId: string, recordId: string, imageId: string): string {
+    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
+  }
+
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
+      
+
     this.content.set((record as any).tekst_1);
+    for(const img of record.afbeeldingen){
+      this.images.push(this.getImageUrl(record.collectionId, record.id, img));
+    }
+    console.log(this.images)
+    
+
   }
+
+
 }
