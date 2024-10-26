@@ -90,7 +90,7 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(['admin'])],
   },
   {
-    path: 'reservering-aanpassen/:id',
+    path: 'reservering-aanpassen/:id/:guid',
     component: ReserveringAanpassenComponent,
   },
   {

@@ -1,0 +1,17 @@
+:host {
+  margin-top: 4em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inline-calendar-card {
+  max-width: fit-content;
+  padding: 1em;
+  margin: 1em;
+}
+
+.amount-button {
+  min-height: auto;
+  height: 4em;
+}

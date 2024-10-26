@@ -1,1 +1,27 @@
-<p>reservering-aanpassen works!</p>
+@defer (when !!reservering()) {
+<div class="container">
+    <div class="row">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>
+                    <h2> Reserveren voor voorstelling "{{reservering().expand.voorstelling.titel}}"
+                        door {{reservering().expand.voorstelling.expand.groep.naam}}</h2>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <h3>opgevoerd door: {{reservering().expand.voorstelling.expand.groep.naam}}, locatie: <a
+                            href="https://maps.app.goo.gl/dd9fe7p2udocU298A" target="_blank">
+                            <span>De Schalm</span>
+                        </a>
+                    </h3>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+} @placeholder {
+<div class="center">
+    <mat-spinner></mat-spinner>
+</div>
+}
