@@ -5,14 +5,16 @@ import {
   withInMemoryScrolling,
 } from '@angular/router';
 
-import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideAnimations,
   provideNoopAnimations,
 } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideToastr } from 'ngx-toastr';
+import { routes } from './app.routes';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
+import { environment } from '../environment/environment.dev';
+import { Environment } from '../environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,10 +29,16 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideNoopAnimations(),
     provideAnimations(),
-    provideToastr(),
+    provideToastr({
+      preventDuplicates: true,
+    }),
     {
       provide: ErrorHandler,
       useClass: CustomErrorHandlerService,
     },
+    {
+      provide: Environment,
+      useValue: environment
+    }
   ],
 };

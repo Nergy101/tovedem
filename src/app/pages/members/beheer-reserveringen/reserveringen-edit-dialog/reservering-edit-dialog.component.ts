@@ -1,12 +1,9 @@
+import { DatePipe } from '@angular/common';
 import {
   Component,
-  ImportProvidersSource,
-  Inject,
   OnInit,
-  Provider,
-  WritableSignal,
   inject,
-  signal,
+  signal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,14 +19,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { QuillModule } from 'ngx-quill';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { DatePipe } from '@angular/common';
-import { DateTime } from 'luxon';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
-import { FilePreviewModel } from 'ngx-awesome-uploader';
+import { QuillModule } from 'ngx-quill';
 import Reservering from '../../../../models/domain/resservering.model';
+import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { MatCardModule } from '@angular/material/card';
+import Voorstelling from '../../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-Reservering-edit-dialog',
@@ -50,6 +46,8 @@ import Reservering from '../../../../models/domain/resservering.model';
     QuillModule,
     NgxMaterialTimepickerModule,
     TovedemFilePickerComponent,
+    MatCardModule,
+    DatePipe
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -100,59 +98,54 @@ export class ReserveringEditDialogComponent implements OnInit {
   datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<ReserveringEditDialogComponent>);
   existingReserveringData: any = inject(MAT_DIALOG_DATA)
-  existingReservering?: Reservering;
+  existingReservering!: Reservering;
+  existingVoorstelling!: Voorstelling;
 
   async ngOnInit(): Promise<void> {
-    
+    this.existingReservering = this.existingReserveringData.reservering
+    this.existingVoorstelling = this.existingReservering.expand.voorstelling
 
-this.existingReservering = this.existingReserveringData?.existingReservering
-
-console.log(this.existingReserveringData)
-console.log(this.existingReservering)
-
-
-    if(!!this.existingReservering){
+    if (!!this.existingReservering) {
       this.voornaam = this.existingReservering.voornaam;
       this.achternaam = this.existingReservering.achternaam;
       this.email = this.existingReservering.email;
       this.datum_tijd_1_aantal = this.existingReservering.datum_tijd_1_aantal;
-      this.datum_tijd_2_aantal =  this.existingReservering.datum_tijd_2_aantal;
+      this.datum_tijd_2_aantal = this.existingReservering.datum_tijd_2_aantal;
       this.is_lid_van_tovedem = this.existingReservering.is_vriend_van_tovedem;
       this.is_lid_van_vereniging = this.existingReservering.is_lid_van_vereniging;
       this.opmerking = this.existingReservering.opmerking;
-      this.datum1 = new Date(this.existingReservering.datum_tijd_1);
-      this.datum2 = !!this.existingReservering.datum_tijd_2 ? new Date(this.existingReservering.datum_tijd_2) : undefined;
+      this.datum1 = !!this.existingVoorstelling?.datum_tijd_1 ? new Date(this.existingVoorstelling?.datum_tijd_1) : undefined;
+      this.datum2 = !!this.existingVoorstelling?.datum_tijd_2 ? new Date(this.existingVoorstelling?.datum_tijd_2) : undefined;
     }
   }
 
   async submit(): Promise<void> {
     this.loading.set(true);
 
-    let reservering = {
+    const reservering = {
+      id: this.existingReservering?.id,
+      created: this.existingReservering?.created_at,
+      updated: this.existingReservering?.updated_at,
       voornaam: this.voornaam,
       achternaam: this.achternaam,
       email: this.email,
       datum_tijd_1_aantal: this.datum_tijd_1_aantal,
       datum_tijd_2_aantal: this.datum_tijd_2_aantal,
-      is_lid_van_tovedem: this.is_lid_van_tovedem,
+      is_vriend_van_tovedem: this.is_lid_van_tovedem,
       is_lid_van_vereniging: this.is_lid_van_vereniging,
       opmerking: this.opmerking,
-    } as any;
-
-    
+      voorstelling: this.existingVoorstelling?.id,
+    } as Reservering;
 
     const formData = this.objectToFormData(reservering);
 
-
     const created = await this.client
       .collection('reserveringen')
-      .create(formData);
+      .update(this.existingReservering!.id, formData);
 
     this.dialogRef.close(created);
     this.loading.set(false);
   }
-
-
 
   formIsValid() {
     return (
@@ -161,7 +154,7 @@ console.log(this.existingReservering)
       !!this.achternaam &&
       this.achternaam != '' &&
       !!this.email &&
-      this.email != '' 
+      this.email != ''
     );
   }
 

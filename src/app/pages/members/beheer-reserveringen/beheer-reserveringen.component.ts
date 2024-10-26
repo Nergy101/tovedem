@@ -1,28 +1,28 @@
 import {
   Component,
   WritableSignal,
-  effect,
   inject,
-  signal,
+  signal
 } from '@angular/core';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import Reservering from '../../../models/domain/resservering.model';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { debounceTime, tap } from 'rxjs';
-import { Title } from '@angular/platform-browser';
-import { AuthService } from '../../../shared/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatLine } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
+import { Title } from '@angular/platform-browser';
+import { debounceTime, lastValueFrom, tap } from 'rxjs';
+import Reservering from '../../../models/domain/resservering.model';
+import { AuthService } from '../../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -38,12 +38,14 @@ import { MatDivider } from '@angular/material/divider';
     FormsModule,
     MatLine,
     MatDivider,
+    MatProgressBarModule,
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
 })
 export class BeheerReserveringenComponent {
   loading = signal(false);
+  searching = signal(false)
   items: WritableSignal<any[] | null> = signal(null);
   client = inject(PocketbaseService);
   searchTerm = signal('');
@@ -56,7 +58,7 @@ export class BeheerReserveringenComponent {
     this.titleService.setTitle('Tovedem - Beheer - Reserveringen');
     this.searchTerm$
       .pipe(
-        tap(() => this.loading.set(true)),
+        tap(() => this.searching.set(true)),
         debounceTime(500),
         takeUntilDestroyed()
       )
@@ -72,7 +74,7 @@ export class BeheerReserveringenComponent {
             await this.client.getAll<Reservering>('reserveringen', {
               expand: 'voorstelling',
               filter: this.client.client.filter(
-                'email ~ {:search} || achternaam ~ {:search} || voorstelling.titel ~ {:search}',
+                'email ~ {:search} || voornaam ~ {:search} || achternaam ~ {:search} || voorstelling.titel ~ {:search}',
                 {
                   search: newSearchTerm,
                 }
@@ -81,18 +83,8 @@ export class BeheerReserveringenComponent {
           );
         }
 
-        this.loading.set(false);
+        this.searching.set(false);
       });
-  }
-
-  async ngOnInit(): Promise<void> {
-    // this.loading.set(true);
-    // this.items.set(
-    //   await this.client.getAll<Reservering>('reserveringen', {
-    //     expand: 'voorstelling',
-    //   })
-    // );
-    // this.loading.set(false);
   }
 
   async delete({ id }: any) {
@@ -105,11 +97,19 @@ export class BeheerReserveringenComponent {
     this.loading.set(false);
   }
 
-  async openEditDialog(use_reservering : Reservering) {
+  async openEditDialog(reservering: Reservering) {
     const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
-      data: { existingVoorstelling: use_reservering },
+      data: { reservering },
       hasBackdrop: true,
-    });}
+    });
+
+    await lastValueFrom(dialogRef.afterClosed());
+    this.items.set(
+      await this.client.getAll<Reservering>('reserveringen', {
+        expand: 'voorstelling',
+      })
+    );
+  }
 
   onSearchTermChanged(newValue: string) {
     this.searchTerm.set(newValue);

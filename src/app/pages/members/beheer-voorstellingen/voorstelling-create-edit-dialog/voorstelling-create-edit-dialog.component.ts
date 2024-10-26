@@ -108,25 +108,21 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.collection('spelers').getFullList());
     this.groepen.set(await this.client.collection('groepen').getFullList());
-    
 
-this.existingVoorstelling = this.existingVoorstellingData?.existingVoorstelling
+    this.existingVoorstelling = this.existingVoorstellingData?.existingVoorstelling
 
-console.log(this.existingVoorstellingData)
-console.log(this.existingVoorstelling)
-
-
-    if(!!this.existingVoorstelling){
+    if (!!this.existingVoorstelling) {
       this.titel = this.existingVoorstelling.titel;
       this.ondertitel = this.existingVoorstelling.ondertitel;
       this.regie = this.existingVoorstelling.regie;
-      this.omschrijving =  this.existingVoorstelling.omschrijving;
+      this.omschrijving = this.existingVoorstelling.omschrijving;
       this.selectedGroep = this.groepen().find(g => g.id == this.existingVoorstelling?.expand?.groep?.id);
       this.datum1 = new Date(this.existingVoorstelling.datum_tijd_1);
       this.datum2 = !!this.existingVoorstelling.datum_tijd_2 ? new Date(this.existingVoorstelling.datum_tijd_2) : undefined;
       //TODO fix
-      this.tijd1 = DateTime.fromFormat(this.existingVoorstelling.datum_tijd_1, "h:mm a").toString()
-      // this.tijd2 = !!this.existingVoorstelling.datum_tijd_2 ? new Date(this.existingVoorstelling.datum_tijd_2).getTime().toLocaleString() : undefined ;
+
+      this.tijd1 = this.formatDateTo12HourString(new Date(this.existingVoorstelling.datum_tijd_1))
+      this.tijd2 = !!this.existingVoorstelling.datum_tijd_2 ? this.formatDateTo12HourString(new Date(this.existingVoorstelling.datum_tijd_2)) : undefined;
     }
   }
 
@@ -139,27 +135,29 @@ console.log(this.existingVoorstelling)
       regie: this.regie,
       omschrijving: this.omschrijving,
       groep: this.selectedGroep?.id,
-      datum_tijd_1: null,
-      datum_tijd_2: null,
+      // tijden added below
+      datum_tijd_1: undefined,
+      datum_tijd_2: undefined
       // spelers added through form-data
       // afbeelding added through form-data
     } as any;
 
-    if (this.tijd1) {
-      const tijd1 = DateTime.fromFormat(this.tijd1!, 'h:mm a');
+    if (!!this.tijd1) {
+      const tijd1 = this.parseTimeToDate(this.tijd1);
+
       let date1 = DateTime.fromISO(this.datum1!.toISOString());
       const date1ISO = date1
-        .set({ hour: tijd1.hour, minute: tijd1.minute })
+        .set({ hour: tijd1.getHours(), minute: tijd1.getMinutes() })
         .toISO();
 
       voorstelling.datum_tijd_1 = date1ISO;
     }
 
-    if (this.tijd2) {
-      const tijd2 = DateTime.fromFormat(this.tijd2!, 'h:mm a');
+    if (!!this.tijd2) {
+      const tijd2 = this.parseTimeToDate(this.tijd2);
       let date2 = DateTime.fromISO(this.datum2!.toISOString());
       const date2ISO = date2
-        .set({ hour: tijd2.hour, minute: tijd2.minute })
+        .set({ hour: tijd2.getHours(), minute: tijd2.getMinutes() })
         .toISO();
 
       voorstelling.datum_tijd_2 = date2ISO;
@@ -173,6 +171,15 @@ console.log(this.existingVoorstelling)
 
     if (!!this.afbeelding?.file) {
       formData.append('afbeelding', this.afbeelding?.file);
+    }
+
+    if (!!this.existingVoorstelling) {
+      await this.client
+        .collection('voorstellingen')
+        .update(this.existingVoorstelling.id, formData);
+      this.dialogRef.close(this.existingVoorstelling);
+      this.loading.set(false);
+      return;
     }
 
     const created = await this.client
@@ -219,4 +226,48 @@ console.log(this.existingVoorstelling)
     });
     return formData;
   }
+
+  parseTimeToDate(time: string): Date {
+    // Create a new "blank" Date with today's date but time set to 00:00
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+
+    // Use a regular expression to parse the hours, minutes, and AM/PM
+    const timePattern = /^(\d+):(\d+)\s*(AM|PM)$/;
+    const match = time.match(timePattern);
+
+    if (match) {
+      let hours = parseInt(match[1], 10);
+      const minutes = parseInt(match[2], 10);
+      const period = match[3];
+
+      // Convert to 24-hour format if needed
+      if (period === "PM" && hours < 12) {
+        hours += 12;
+      } else if (period === "AM" && hours === 12) {
+        hours = 0;
+      }
+
+      // Set the parsed hours and minutes
+      date.setHours(hours, minutes);
+    }
+
+    return date;
+  }
+
+  formatDateTo12HourString(date: Date): string {
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const period = hours >= 12 ? "PM" : "AM";
+
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+
+    // Pad minutes with leading zero if needed
+    const minutesStr = minutes < 10 ? `0${minutes}` : minutes.toString();
+
+    return `${hours}:${minutesStr} ${period}`;
+  }
+
 }
