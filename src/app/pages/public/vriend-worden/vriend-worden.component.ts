@@ -19,6 +19,8 @@ import { Router, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Title } from '@angular/platform-browser';
+import { MatDividerModule } from '@angular/material/divider';
+
 
 @Component({
   selector: 'app-vriend-worden',
@@ -35,6 +37,7 @@ import { Title } from '@angular/platform-browser';
     RouterModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDividerModule,
   ],
   templateUrl: './vriend-worden.component.html',
   styleUrl: './vriend-worden.component.scss',

@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 
@@ -30,6 +31,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCheckboxModule,
     MatDatepickerModule,
     MatTooltipModule,
+    MatDividerModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
   templateUrl: './contact.component.html',

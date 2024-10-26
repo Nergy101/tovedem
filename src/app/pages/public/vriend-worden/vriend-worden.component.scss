@@ -1,3 +1,14 @@
-:host {
-  padding: 4em;
+:host{
+  margin-top: 4em;
+}
+
+.splash-image {
+  background: url("/assets/stoelen_banner.jpeg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 14em;
+  min-width: 100%;
+  margin-bottom: 2em;
 }

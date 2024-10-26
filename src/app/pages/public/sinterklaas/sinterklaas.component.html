@@ -4,15 +4,14 @@
     <div class="display-1 justify-content-center" style="text-align: center;">Sinterklaas</div>
     <mat-divider style="margin-bottom: 2em"></mat-divider>
 
-    <div class="row p-4 mat-elevation-z2">
-
+    <div class="row p-4 mat-elevation-z2" style="margin: 1em;">
         @if(images.length > 0) {
         <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'" [interval]="5000" [ride]="true"
             [wrap]="true" class="col-12">
             @for (slide of images; track $index) {
-            <mdb-carousel-item style="height: 30em;">
+            <mdb-carousel-item style="height:30em">
                 <img [src]="slide.src" [alt]="slide.title" class="d-block w-100"
-                    style="max-height: 100%; object-fit: cover;" />
+                    style="max-height: 100%; object-fit: cover; border-radius: 1em;" />
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{slide.title}}</h5>
                     <p>{{slide.description}}</p>
@@ -26,7 +25,7 @@
 
 
     @defer (when !!content()) {
-    <div class="row">
+    <div class="row" style="margin-top: 1em;">
         <div [innerHTML]="content()"></div>
     </div>
     } @placeholder (minimum 1s) {
