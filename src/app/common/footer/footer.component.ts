@@ -23,11 +23,11 @@ export class FooterComponent {
     location.reload()
   }
 
-  navigateToFaceBook() {
+  navigateToFaceBook(): void {
     window.open('https://www.facebook.com/tovedem', '_blank');
   }
 
-  navigateToInstagram() {
+  navigateToInstagram(): void {
     window.open('https://www.instagram.com/tovedem.demeern/', '_blank');
   }
 }
