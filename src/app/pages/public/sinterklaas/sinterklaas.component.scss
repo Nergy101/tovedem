@@ -1,7 +1,5 @@
 
-:host {
-  padding: 4em;
-}
+
 
 .titel {
   display: flex;
@@ -20,4 +18,15 @@ li {
     color: ae1545;
     background-color: #ae1545;
   }
+}
+
+.splash-image {
+  background: url("/assets/Sinterklaas_banner.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 10em;
+  min-width: 100%;
+  margin-bottom: 2%;
 }

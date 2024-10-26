@@ -1,4 +1,26 @@
+<div class="splash-image"></div>
+
 <div class="container mat-elevation-z2">
+    <div class="display-1 justify-content-center"style="text-align: center;">Sinterklaas</div>
+    <mat-divider style="margin-bottom: 2em"></mat-divider>
+    
+    <div class="row p-4 mat-elevation-z2">
+        <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
+          [interval]="5000" [ride]="true" [wrap]="true" 
+          class="col-12">
+          @for (slide of images; track $index) {
+          <mdb-carousel-item style="height: 30em;">
+            <img
+              [src]="slide" [alt]=""
+              class="d-block w-100 p-4"
+              style="max-height: 100%; object-fit: cover;" />
+          </mdb-carousel-item>
+          }
+        </mdb-carousel>
+      </div>
+    
+    
+    
     @defer (when !!content()) {
     <div class="row">
         <div [innerHTML]="content()"></div>
