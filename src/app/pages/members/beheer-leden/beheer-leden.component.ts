@@ -119,7 +119,7 @@ export class BeheerLedenComponent implements OnInit {
     const created: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
 
     if (!!created) {
-      this.toastr.success(`Gebruiker ${created.naam} aangemaakt.`);
+      this.toastr.success(`Gebruiker ${created.username} aangemaakt.`);
       await this.ngOnInit();
     }
   }
@@ -134,7 +134,7 @@ export class BeheerLedenComponent implements OnInit {
     const edited: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
 
     if (!!edited) {
-      this.toastr.success(`Gebruiker ${edited.naam} aangepast.`);
+      this.toastr.success(`Gebruiker ${edited.username} aangepast.`);
       await this.ngOnInit();
     }
   }
