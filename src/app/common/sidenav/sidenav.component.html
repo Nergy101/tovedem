@@ -4,7 +4,7 @@
         authService.isGlobalAdmin)
         {
         <div class="d-flex w-100 justify-content-center fw-bold pt-3">
-            Voorstellingen Beheer
+            Voorstellingen
         </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
@@ -20,13 +20,11 @@
                 Voorstellingen <mat-icon>curtains</mat-icon>
             </button>
         </li>
-        <li>
-            <div style="width: 100%;">
-                <mat-divider></mat-divider>
-            </div>
-        </li>
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
         <div class="d-flex w-100 justify-content-center fw-bold">
-            Leden Beheer
+            Leden
         </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
@@ -35,18 +33,19 @@
                 Leden <mat-icon>diversity_3</mat-icon>
             </button>
         </li>
-        <li>
+        <!-- <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Spelers <mat-icon>groups_3</mat-icon>
             </button>
-        </li>
-        <li>
-            <div style="width: 100%;">
-                <mat-divider></mat-divider>
-            </div>
-        </li>
+        </li> -->
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
+        <div class="d-flex w-100 justify-content-center fw-bold">
+            Mails
+        </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-mails"
@@ -57,6 +56,12 @@
         }
         @if (authService.isGlobalAdmin)
         {
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
+        <div class="d-flex w-100 justify-content-center fw-bold">
+            Admin
+        </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show"
@@ -76,11 +81,9 @@
                 ZoHo <mat-icon>mark_email_read</mat-icon>
             </button>
         </li>
-        <li>
-            <div style="width: 100%;">
-                <mat-divider></mat-divider>
-            </div>
-        </li>
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
         }
     </ul>
 </div>

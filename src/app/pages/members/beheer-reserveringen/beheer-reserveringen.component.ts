@@ -45,9 +45,9 @@ import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/rese
 })
 export class BeheerReserveringenComponent {
   loading = signal(false);
-  searching = signal(false)
   items: WritableSignal<any[] | null> = signal(null);
   client = inject(PocketbaseService);
+  searching = signal(false);
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
   dialog = inject(MatDialog);

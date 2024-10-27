@@ -48,6 +48,7 @@ export class BeheerVoorstellingenComponent {
     this.items.set(
       await this.client.getAll<Voorstelling>('voorstellingen', {
         expand: 'groep,spelers',
+        sort: '-created',
       })
     );
   }

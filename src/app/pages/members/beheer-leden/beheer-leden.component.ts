@@ -18,10 +18,13 @@ import { AuthService } from '../../../shared/services/auth.service';
 import Gebruiker from '../../../models/domain/gebruiker.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { lastValueFrom } from 'rxjs';
+import { debounceTime, lastValueFrom, tap } from 'rxjs';
 import Voorstelling from '../../../models/domain/voorstelling.model';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
 import { Title } from '@angular/platform-browser';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import Reservering from '../../../models/domain/resservering.model';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -35,6 +38,7 @@ import { Title } from '@angular/platform-browser';
     MatInputModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',
@@ -51,8 +55,42 @@ export class BeheerLedenComponent implements OnInit {
 
   titleService = inject(Title);
 
+  searching = signal(false);
+  searchTerm = signal('');
+  searchTerm$ = toObservable(this.searchTerm);
+
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Leden');
+
+    this.searchTerm$
+      .pipe(
+        tap(() => this.searching.set(true)),
+        debounceTime(500),
+        takeUntilDestroyed()
+      )
+      .subscribe(async (newSearchTerm: string) => {
+        if (!newSearchTerm || newSearchTerm == '') {
+          this.gebruikers.set(
+            await this.client.getAll<Gebruiker>('users', {
+              expand: 'rollen,groep,speler',
+            })
+          );
+        } else {
+          this.gebruikers.set(
+            await this.client.getAll<Gebruiker>('users', {
+              expand: 'rollen,groep,speler',
+              filter: this.client.client.filter(
+                'email ~ {:search} || username ~ {:search} || name ~ {:search}',
+                {
+                  search: newSearchTerm,
+                }
+              ),
+            })
+          );
+        }
+
+        this.searching.set(false);
+      });
   }
 
   async ngOnInit(): Promise<void> {
@@ -61,6 +99,10 @@ export class BeheerLedenComponent implements OnInit {
         expand: 'rollen,groep,speler',
       })
     );
+  }
+
+  onSearchTermChanged(newValue: string) {
+    this.searchTerm.set(newValue);
   }
 
   isHuidigeGebruiker(gebruikerId: string) {
