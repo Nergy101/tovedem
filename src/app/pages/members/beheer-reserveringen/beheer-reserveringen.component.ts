@@ -23,6 +23,7 @@ import Reservering from '../../../models/domain/resservering.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -39,6 +40,7 @@ import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/rese
     MatLine,
     MatDivider,
     MatProgressBarModule,
+    DatePipe
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',

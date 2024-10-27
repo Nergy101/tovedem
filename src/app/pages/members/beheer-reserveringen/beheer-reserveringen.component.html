@@ -26,6 +26,7 @@
             <table class="table ">
                 <thead>
                     <tr>
+                        <th scope="col">Aangemaakt</th>
                         <th scope="col">Voorstelling</th>
                         <th scope="col">Voornaam</th>
                         <th scope="col">Achternaam</th>
@@ -42,6 +43,7 @@
                     @for (item of items(); track $index)
                     {
                     <tr>
+                        <td>{{item.created | date : 'dd LLLL YYYY'}}</td>
                         <td>{{item.expand.voorstelling.titel}}</td>
                         <td>{{item.voornaam}}</td>
                         <td>{{item.achternaam}}</td>
