@@ -6,8 +6,6 @@ import { Injectable, signal } from '@angular/core';
 export class SideDrawerService {
   isOpen = signal(true);
 
-  constructor() {}
-
   open() {
     this.isOpen.set(true);
   }
