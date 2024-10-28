@@ -1,5 +1,6 @@
 import {
   Component,
+  Inject,
   WritableSignal,
   inject,
   signal
@@ -18,12 +19,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
-import { debounceTime, lastValueFrom, tap } from 'rxjs';
+import { debounceTime, lastValueFrom, pipe, tap } from 'rxjs';
 import Reservering from '../../../models/domain/resservering.model';
+import Voorstelling from '../../../models/domain/voorstelling.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
-import { DatePipe } from '@angular/common';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import {Subject} from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+
+
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -40,21 +47,37 @@ import { DatePipe } from '@angular/common';
     MatLine,
     MatDivider,
     MatProgressBarModule,
-    DatePipe
+    MatPaginatorModule,
+    MatSelect,
+    MatOption,
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
 })
 export class BeheerReserveringenComponent {
   loading = signal(false);
+  searching = signal(false)
   items: WritableSignal<any[] | null> = signal(null);
   client = inject(PocketbaseService);
-  searching = signal(false);
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
   dialog = inject(MatDialog);
   authService = inject(AuthService);
   titleService = inject(Title);
+  range = Array.from({ length: 5 }, (_, i) => i); // Creates [0, 1, 2, 3, 4]
+
+  printItems: WritableSignal<any[] | null> = signal(null);
+  voorstellingen: WritableSignal<any[] | null> = signal(null);
+  selectedVoorstelling: any;
+  selecting = signal(false);
+  selectTerm = signal('');
+  selectTerm$ = toObservable(this.selectTerm);
+  nothingSelected = true;
+
+  selectedDatum: any;
+
+  kidsLabels: number = 0; // Initial amount value
+
 
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Reserveringen');
@@ -87,6 +110,37 @@ export class BeheerReserveringenComponent {
 
         this.searching.set(false);
       });
+
+      this.selectTerm$
+      .pipe(
+        tap(() => this.selecting.set(true)),
+        debounceTime(500),
+        takeUntilDestroyed()
+      )
+      .subscribe(async (newSelectTerm: string) => {
+        if (!newSelectTerm || newSelectTerm == '') {
+          this.nothingSelected = true;
+        } else {
+          this.nothingSelected = false;
+          this.printItems.set(
+            await this.client.getAll<Reservering>('reserveringen', {
+              expand: 'voorstelling',
+              filter: this.client.client.filter(
+                'voorstelling.titel ~ {:select}',
+                {
+                  select: this.selectedVoorstelling.titel,
+                }
+              ),
+            })
+          );
+        }
+        this.selecting.set(false);
+      });
+
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.voorstellingen.set(await this.client.getAll<Voorstelling>('voorstellingen'));
   }
 
   async delete({ id }: any) {
@@ -115,5 +169,53 @@ export class BeheerReserveringenComponent {
 
   onSearchTermChanged(newValue: string) {
     this.searchTerm.set(newValue);
+  }
+  onSelectTermChanged(newValue: any) {
+    this.selectTerm.set(newValue);
+    this.selectedVoorstelling.set(newValue);
+  }
+
+
+
+
+
+  
+  increment() {
+    this.kidsLabels++;
+  }
+
+  decrement() {
+    if (this.kidsLabels > 0) { // Optional: prevent negative values
+      this.kidsLabels--;
+    }
+  }
+
+  onAmountChange() {
+    // Ensure amount is a valid number
+    if (isNaN(this.kidsLabels)) {
+      this.kidsLabels = 0;
+    }
+  }
+
+  printen(){
+       // Get the element by ID
+    const element = document.getElementById('printSection');
+    
+    // Check if the element exists
+    if (element) {
+      // Configure the PDF options
+      const options = {
+        margin: 1,
+        filename: 'Stoelreservering labels -datum voorstelling-.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },  // Increase scale for higher resolution
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+
+      // Generate the PDF
+      //html2pdf().from(element).set(options).save();
+    } else {
+      console.error("Element not found");
+    }
   }
 }

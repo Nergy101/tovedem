@@ -1,0 +1,22 @@
+.item-container {
+    margin-bottom: 1em;
+    padding: 1em;
+    border: 1px solid #ccc;
+  }
+  
+  .item {
+    background-color: #f9f9f9;
+    padding: 10px;
+  }
+
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
+
+  .amount-editor {
+    display: flex;
+    align-items: center;
+    width: 80%;
+  }
+  
+  
