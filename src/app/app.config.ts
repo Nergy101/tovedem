@@ -1,4 +1,4 @@
-import { ApplicationConfig, ErrorHandler } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, importProvidersFrom } from '@angular/core';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -15,6 +15,7 @@ import { routes } from './app.routes';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
 import { environment } from '../environment/environment.dev';
 import { Environment } from '../environment';
+import { RECAPTCHA_LOADER_OPTIONS, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY, RecaptchaModule, RecaptchaSettings, RecaptchaV3Module } from 'ng-recaptcha';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,6 +40,19 @@ export const appConfig: ApplicationConfig = {
     {
       provide: Environment,
       useValue: environment
-    }
+    },
+    importProvidersFrom(RecaptchaV3Module),
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useValue: environment.captchaSiteKey
+    },
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: { siteKey: environment.captchaSiteKey, } as RecaptchaSettings,
+    },
+    {
+      provide: RECAPTCHA_LOADER_OPTIONS,
+      useValue: { language: 'nl' },
+    },
   ],
 };

@@ -4,4 +4,5 @@ export class Environment {
     pocketbase!: {
         baseUrl: string;
     }
+    captchaSiteKey!: string;
 }
