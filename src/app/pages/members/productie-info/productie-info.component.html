@@ -1,0 +1,108 @@
+<div class="splash-image">
+</div>
+<div class="container">
+  @defer (when !!groep()) {
+  <div class="row mat-elevation-z2">
+
+    <span class="text-center display-1">{{ groep()?.naam }}</span>
+    <h1>Productie informatie</h1>
+    <mat-divider></mat-divider>
+    <div class="row pt-4">
+      <!--<div class="col-lg-3 col-12">
+        @if(!!groep()?.img){
+        <img src={{groep()?.img}}
+          style="object-fit: contain; max-width: 100%; border-radius: 1em;" />}
+        @else {
+        <img src="/assets/Place-Holder-Image.jpg"
+          style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
+        }
+      </div>-->
+      <div class="">
+        Tovedem draait verschillende producties te beginnen bij de 2 grootte producties, waarvan een in het voor jaar en een in het najaar. Dit zijn avond vullende stukken en worden door een groot varieerend aantal spelers geproduceerd.
+        Naast deze twee grote productie draait tovedem ook verschillende kleine projecten op een meer project basis. het gaat hierbij om eenakters. Dit zijn korte stukken die vaak minder spelers bevatten.
+        <!--<h3 [innerHTML]="groep()?.omschrijving"></h3>-->
+      </div>
+      <!--<mat-tree>
+        <mat-tree-node> parent node </mat-tree-node>
+        <mat-tree-node> -- child node1 </mat-tree-node>
+        <mat-tree-node> -- child node2 </mat-tree-node>
+      </mat-tree>-->
+      
+    </div>
+
+  </div>
+<!--
+  <div class="row p-4 mat-elevation-z2">
+    <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
+      [interval]="5000" [ride]="true" [wrap]="true"
+      class="col-12">
+      @for (slide of slides(); track $index) {
+      <mdb-carousel-item style="height: 30em;">
+        <img
+          [src]="slide.src"
+          [alt]="slide.title"
+          class="d-block w-100"
+          style="max-height: 100%; object-fit: cover;" />
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{slide.title}}</h5>
+          <p>{{slide.description}}</p>
+        </div>
+      </mdb-carousel-item>
+      }
+    </mdb-carousel>
+  </div>
+
+  <div class="mat-elevation-z2">
+    @if (!!spelers()) {
+    <p class="display-6">Spelers</p>
+    <mat-list>
+      @for (speler of spelers(); track $index) {
+      <mat-list-item>
+        <span matListItemTitle><i>{{speler.naam}}</i></span>
+      </mat-list-item>
+      }
+    </mat-list>
+    }
+  </div>
+
+  <div class="row pt-4">
+    <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
+  </div>
+  @if(aankomendeVoorstelling() != null){
+  <div class="row">
+    <div class="flex justify-content-center">
+      <app-voorstelling-card
+        [voorstelling]="aankomendeVoorstelling()"
+        class="col-md-6 col-12">
+      </app-voorstelling-card>
+    </div>
+  </div>
+
+  } @else {
+  <div class="center">
+    <span>Geen aankomende voorstelling om te tonen</span>
+  </div>
+  }
+  <div class="row">
+    <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
+  </div>
+  @for (item of afgelopenVoorstellingen(); track $index) {
+  <div class="row">
+    <app-voorstelling-card
+      [voorstelling]="item"
+      class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1">
+    </app-voorstelling-card>
+  </div>
+  } @empty {
+  <div class="center">
+    <span>Geen afgelopen voorstellingen om te tonen</span>
+  </div>
+  }
+  } @placeholder
+  {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+  -->
+  }
+</div>
