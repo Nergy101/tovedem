@@ -29,6 +29,7 @@ import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
 import {Subject} from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 
@@ -50,6 +51,7 @@ import { MatOption } from '@angular/material/core';
     MatPaginatorModule,
     MatSelect,
     MatOption,
+    MatMenuModule,
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
@@ -62,6 +64,7 @@ export class BeheerReserveringenComponent {
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
   dialog = inject(MatDialog);
+  
   authService = inject(AuthService);
   titleService = inject(Title);
   range = Array.from({ length: 5 }, (_, i) => i); // Creates [0, 1, 2, 3, 4]
