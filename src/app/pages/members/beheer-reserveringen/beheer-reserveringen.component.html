@@ -40,6 +40,7 @@
                         <th scope="col">Datum 2 Aantal</th>
                         <th scope="col">Vriend</th>
                         <th scope="col">Lid</th>
+                        <th scope="col">Notitie</th>
                         <th scope="col">Edit</th>
                     </tr>
                 </thead>
@@ -64,6 +65,25 @@
                             <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
                             </mat-checkbox>
                         </td>
+
+                        <td>
+                            @if(item.opmerking == null || item.opmerking == ""){
+                                <button mat-fab disabled>
+                                    <mat-icon >description</mat-icon>
+                                </button>
+                            }
+                            @else {
+                                <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
+                                    <mat-icon color="">description</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" xPosition="before">
+                                    <div style="margin: 5px;">
+                                        <h3><b>Opmerking: </b> </h3>
+                                        {{item.opmerking}}
+                                    </div>
+                                </mat-menu>
+                            }
+                        </td>
                         @if (!!authService.isGlobalAdmin)
                         {
                         <td>
@@ -72,7 +92,7 @@
                             </button>
                         </td>
                         }
-
+                        
                         <!--<td> <button mat-icon-button (click)="delete(item)"
                                 [disabled]="loading()">
                                 <mat-icon color="warn">delete</mat-icon>
