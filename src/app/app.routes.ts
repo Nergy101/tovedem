@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BeheerMailsComponent } from './pages/members/beheer-mails/beheer-mails.component';
 import { ReserveringEditDialogComponent } from './pages/members/beheer-reserveringen/reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ReserveringAanpassenComponent } from './pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component';
+import { ProductieInfoComponent } from './pages/members/productie-info/productie-info.component';
 
 export const routes: Routes = [
   {
@@ -112,6 +113,21 @@ export const routes: Routes = [
     path: 'beheer-mails',
     component: BeheerMailsComponent,
     canActivate: [loggedInGuard(['admin'])],
+  },
+  {
+    path: 'productie-info/Tovedem',
+    component: ProductieInfoComponent,
+    canActivate: [loggedInGuard]
+  },
+  {
+    path: 'productie-info/Cloos',
+    component: ProductieInfoComponent,
+    canActivate: [loggedInGuard]
+  },
+  {
+    path: 'productie-info/Mejotos',
+    component: ProductieInfoComponent,
+    canActivate: [loggedInGuard]
   },
 ];
 

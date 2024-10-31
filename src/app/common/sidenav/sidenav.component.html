@@ -3,8 +3,64 @@
         @if (authService.userHasAllRoles(['admin']) ||
         authService.isGlobalAdmin)
         {
-        <div class="d-flex w-100 justify-content-center fw-bold pt-3">
-            Voorstellingen
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
+        <div class="d-flex w-100 justify-content-center fw-bold">
+            Productie informatie
+        </div>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/productie-info/Tovedem"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Tovedem <mat-icon>diversity_1</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/productie-info/Cloos"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Cloos <mat-icon>diversity_2</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/productie-info/Mejotos"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Mejotro's <mat-icon>diversity_3</mat-icon>
+            </button>
+        </li>
+        
+            <div class="d-flex w-100 justify-content-center fw-bold pt-3">
+            Commissies
+        </div>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-reserveringen"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Sinterklaas <mat-icon>gift</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-voorstellingen"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Lees Commissie <mat-icon>auto-stories</mat-icon>
+            </button>
+        </li>
+        
+        <!-- <li>
+            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
+                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
+                [routerLinkActiveOptions]="{ exact: true }">
+                Spelers <mat-icon>groups_3</mat-icon>
+            </button>
+        </li> -->
+        <div style="width: 100%;">
+            <mat-divider></mat-divider>
+        </div>
+        <div class="d-flex w-100 justify-content-center fw-bold">
+            Beheer
         </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
@@ -20,12 +76,6 @@
                 Voorstellingen <mat-icon>curtains</mat-icon>
             </button>
         </li>
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
-        <div class="d-flex w-100 justify-content-center fw-bold">
-            Leden
-        </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-leden"
@@ -33,19 +83,6 @@
                 Leden <mat-icon>diversity_3</mat-icon>
             </button>
         </li>
-        <!-- <li>
-            <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
-                [routerLinkActiveOptions]="{ exact: true }">
-                Spelers <mat-icon>groups_3</mat-icon>
-            </button>
-        </li> -->
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
-        <div class="d-flex w-100 justify-content-center fw-bold">
-            Mails
-        </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-mails"
@@ -60,7 +97,7 @@
             <mat-divider></mat-divider>
         </div>
         <div class="d-flex w-100 justify-content-center fw-bold">
-            Admin
+            Developers
         </div>
         <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
