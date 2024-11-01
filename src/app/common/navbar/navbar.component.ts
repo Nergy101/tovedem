@@ -28,6 +28,6 @@ export class NavbarComponent {
   sideDrawerService = inject(SideDrawerService);
 
   get groepenClass() {
-    return this.router.url.includes('Groep') ? 'active' : '';
+    return this.router.url.includes('groep') ? 'active' : '';
   }
 }

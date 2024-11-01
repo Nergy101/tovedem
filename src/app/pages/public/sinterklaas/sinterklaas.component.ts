@@ -1,26 +1,29 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
+  OnDestroy,
   OnInit,
   WritableSignal,
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Title } from '@angular/platform-browser';
-import { MatDividerModule } from '@angular/material/divider';
+import { Router, RouterModule } from '@angular/router';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { ToastrService } from 'ngx-toastr';
+import { Environment } from '../../../../environment';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 
 @Component({
   selector: 'app-sinterklaas',
@@ -43,22 +46,64 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
   templateUrl: './sinterklaas.component.html',
   styleUrl: './sinterklaas.component.scss',
 })
-export class SinterklaasComponent implements OnInit {
-  client = inject(PocketbaseService).client;
-
+export class SinterklaasComponent implements OnInit, OnDestroy {
   content: WritableSignal<string | null> = signal(null);
+  img_src: WritableSignal<any[] | null> = signal(null);
 
-  titleService = inject(Title);
   name: string | null = null;
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
-  router = inject(Router);
-  img_src: WritableSignal<any[] | null> = signal(null);
   images: any[] = [];
 
+  toastr = inject(ToastrService);
+  router = inject(Router);
+  titleService = inject(Title);
+  client = inject(PocketbaseService).client;
+  environment = inject(Environment);
+  recaptchaV3Service = inject(ReCaptchaV3Service);
+  subscriptions: any[] = [];
 
-  verstuurSinterklaasMail() { }
+  verstuurSinterklaasMail() {
+    this.subscriptions.push(this.recaptchaV3Service.execute('sinterklaas')
+      .subscribe(
+        {
+          next: async (token) => {
+            const response = await fetch(`${this.environment.pocketbase.baseUrl}/recaptcha`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                token
+              })
+            });
+
+            const resultObj = await response.json();
+
+            if (resultObj.result.success) {
+              try {
+                await this.client.collection('sinterklaas_verzoeken').create({
+                  name: this.name,
+                  email: this.email,
+                  subject: this.subject,
+                  message: this.message
+                });
+
+                this.toastr.success('Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.');
+
+                this.name = null;
+                this.email = null;
+                this.subject = null;
+                this.message = null;
+              } catch (error) {
+                console.error(error);
+                this.toastr.error('Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.');
+              }
+            }
+          }
+        }));
+  }
 
   constructor() {
     this.titleService.setTitle('Tovedem - Sinterklaas');
@@ -84,5 +129,8 @@ export class SinterklaasComponent implements OnInit {
     console.log(this.images)
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
 
 }

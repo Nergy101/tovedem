@@ -22,7 +22,7 @@ routerAdd("POST", "/recaptcha", async (c) => {
         timeout: 120, // in seconds
     })
 
-    const allowedActions = ['login', 'contact', 'sinterklaas']
+    const allowedActions = ['login', 'contact', 'sinterklaas', 'vriend_worden', 'lid_worden']
 
     if (response.json.success === false) {
         return c.json(400, { "error": "Recaptcha failed 1" })

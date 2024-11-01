@@ -1,5 +1,6 @@
 import {
   Component,
+  OnDestroy,
   OnInit,
   WritableSignal,
   inject,
@@ -31,6 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import Groep from '../../../models/domain/groep.model';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-lid-worden',
@@ -59,14 +61,7 @@ import { Environment } from '../../../../environment';
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
 })
-export class LidWordenComponent implements OnInit {
-  client = inject(PocketbaseService);
-  datePipe = inject(DatePipe);
-  toastr = inject(ToastrService);
-  environment = inject(Environment);
-
-  //dialogRef = inject(MatDialogRef<LidWordenComponent>);
-
+export class LidWordenComponent implements OnInit, OnDestroy {
   //info om lid te worden
   recordId: string = '';
   collectionId: string = '';
@@ -89,6 +84,12 @@ export class LidWordenComponent implements OnInit {
   loading = signal(false);
 
   titleService = inject(Title);
+  client = inject(PocketbaseService);
+  datePipe = inject(DatePipe);
+  toastr = inject(ToastrService);
+  environment = inject(Environment);
+  recaptchaV3Service = inject(ReCaptchaV3Service);
+  subscriptions: any[] = [];
 
   constructor() {
     this.titleService.setTitle('Tovedem - Lid Worden');
@@ -117,22 +118,58 @@ export class LidWordenComponent implements OnInit {
   async submit(): Promise<void> {
     this.loading.set(true);
 
-    let aanmelding = {
-      reden: 'lid_worden',
-      voornaam: this.voornaam,
-      achternaam: this.achternaam,
-      groep: this.selectedGroep,
-      bericht: this.message,
-      geboorte_datum: this.geboorteDatum,
-      email: this.email,
-    } as any;
 
-    await this.client.create('lid_aanmeldingen', aanmelding);
+    this.subscriptions.push(this.recaptchaV3Service.execute('lid_worden')
+      .subscribe(
+        {
+          next: async (token) => {
+            const response = await fetch(`${this.environment.pocketbase.baseUrl}/recaptcha`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                token
+              })
+            });
 
-    this.toastr.success(
-      `Bedankt voor de aanmelding, ${this.voornaam}.`,
-      'Aanvraag verzonden!'
-    );
+            const resultObj = await response.json();
+
+            if (resultObj.result.success) {
+              try {
+
+                let aanmelding = {
+                  reden: 'lid_worden',
+                  voornaam: this.voornaam,
+                  achternaam: this.achternaam,
+                  groep: this.selectedGroep,
+                  bericht: this.message,
+                  geboorte_datum: this.geboorteDatum,
+                  email: this.email,
+                } as any;
+
+                await this.client.create('lid_aanmeldingen', aanmelding);
+
+                this.toastr.success(
+                  `Bedankt voor de aanmelding, ${this.voornaam}.`,
+                  'Aanvraag verzonden!'
+                );
+
+                this.voornaam = null;
+                this.achternaam = null;
+                this.email = null;
+                this.message = null;
+                this.geboorteDatum = undefined;
+                this.selectedGroep = null;
+
+              } catch (error) {
+                console.error(error);
+                this.toastr.error('Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.');
+              }
+            }
+          }
+        }));
+
     this.loading.set(false);
   }
 
@@ -147,5 +184,9 @@ export class LidWordenComponent implements OnInit {
       !!this.email &&
       this.email != ''
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }

@@ -10,12 +10,12 @@ import {
   provideNoopAnimations,
 } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { RECAPTCHA_LOADER_OPTIONS, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY, RecaptchaSettings, RecaptchaV3Module } from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
+import { Environment } from '../environment';
+import { environment } from '../environment/environment.dev';
 import { routes } from './app.routes';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
-import { environment } from '../environment/environment.dev';
-import { Environment } from '../environment';
-import { RECAPTCHA_LOADER_OPTIONS, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY, RecaptchaModule, RecaptchaSettings, RecaptchaV3Module } from 'ng-recaptcha';
 
 export const appConfig: ApplicationConfig = {
   providers: [
