@@ -1,107 +1,110 @@
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <p class="display-1">Leden</p>
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Leden</p>
+    </div>
+
+    <div class="row">
+      <ul>
+        <!-- <li>Algemeen-lid (gekoppeld aan bepaalde 'speler')</li> -->
+        <li>Bestuurs-lid</li>
+        <li>Ere-lid (gratis naar binnen)</li>
+        <li>Donateurs (Lid Van Tovedem)</li>
+        <li>Sponsoren (Sponsoren van Tovedem)</li>
+      </ul>
+    </div>
+
+    @if (!!authService.isGlobalAdmin) {
+      <div class="row">
+        <button mat-fab extended color="primary" (click)="openCreateDialog()">
+          <mat-icon>add_circle</mat-icon>
+          Aanmaken
+        </button>
+      </div>
+    }
+
+    <div class="row pt-4">
+      @defer (when gebruikers()) {
+        <div class="row" style="margin-top: 1em">
+          <mat-form-field class="col-12" appearance="outline">
+            <mat-label>Zoek op email, echte naam of username</mat-label>
+            <input
+              matInput
+              type="text"
+              [ngModel]="searchTerm()"
+              (ngModelChange)="onSearchTermChanged($event)"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+          @if (searching()) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          }
         </div>
 
-        <div class="row">
-            <ul>
-                <!-- <li>Algemeen-lid (gekoppeld aan bepaalde 'speler')</li> -->
-                <li>Bestuurs-lid</li>
-                <li>Ere-lid (gratis naar binnen)</li>
-                <li>Donateurs (Lid Van Tovedem)</li>
-                <li>Sponsoren (Sponsoren van Tovedem)</li>
-            </ul>
-        </div>
-
-        @if (!!authService.isGlobalAdmin)
-        {
-        <div class="row">
-            <button mat-fab extended color="primary" (click)="openCreateDialog()">
-                <mat-icon>add_circle</mat-icon>
-                Aanmaken
-            </button>
-        </div>
-        }
-
-        <div class="row pt-4">
-            @defer(when gebruikers()){
-
-            <div class="row" style="margin-top:  1em;">
-                <mat-form-field class="col-md-6 col-12" appearance="outline">
-                    <mat-label>Zoeken</mat-label>
-                    <input matInput type="text" [ngModel]="searchTerm()"
-                        (ngModelChange)="onSearchTermChanged($event)" />
-                    <mat-icon matSuffix>search</mat-icon>
-                </mat-form-field>
-                @if(searching()){
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                }
-            </div>
-
-            <table class="table mat-elevation-z2">
-                <thead>
-                    <tr>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">Avatar</th>
-                        <th scope="col">Rollen</th>
-                        <th scope="col">Groep</th>
-                        <!-- <th scope="col">Speler</th> -->
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th></th>
-                        <th></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (gebruiker of gebruikers(); track $index)
-                    {
-                    <tr [className]="isHuidigeGebruiker(gebruiker.id) ? 'active' : ''">
-                        <td>{{gebruiker.username}}</td>
-                        <td>{{gebruiker.email}}</td>
-                        <td>{{gebruiker.name}}</td>
-                        <td>
-                            <img style="max-height: 10em; border-radius: 1em;"
-                                [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+gebruiker.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
-                                alt="avatar">
-                        </td>
-                        <td>
-                            @if (gebruiker.expand?.rollen?.length == 1){
-                            <p style="margin: 1em">
-                                {{gebruiker.expand.rollen[0].rol}}
-                            </p>
-                            }
-                            @else if ((gebruiker.expand?.rollen?.length || 0) >
-                            0) {
-                            <button mat-button [matMenuTriggerFor]="menu">
-                                <span>
-                                    {{gebruiker.expand?.rollen?.length}} Rollen
-                                </span>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                @for (rol of gebruiker.expand?.rollen ?? [];
-                                track
-                                $index)
-                                {
-                                <p style="margin: 1em">
-                                    {{rol.rol}}
-                                </p>
-                                }
-                            </mat-menu>
-                            }
-                            @else {
-                            <span>
-                                Geen Rollen
-                            </span>
-                            }
-                        </td>
-                        <td>
-                            {{gebruiker.expand?.groep?.naam}}
-                        </td>
-                        <!-- <td>
+        <table class="table mat-elevation-z2">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Naam</th>
+              <th scope="col">Avatar</th>
+              <th scope="col">Rollen</th>
+              <th scope="col">Groep</th>
+              <!-- <th scope="col">Speler</th> -->
+              @if (!!authService.isGlobalAdmin) {
+                <th></th>
+                <th></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (gebruiker of gebruikers(); track $index) {
+              <tr
+                [className]="isHuidigeGebruiker(gebruiker.id) ? 'active' : ''"
+              >
+                <td>{{ gebruiker.username }}</td>
+                <td>{{ gebruiker.email }}</td>
+                <td>{{ gebruiker.name }}</td>
+                <td>
+                  <img
+                    style="max-height: 10em; border-radius: 1em"
+                    [src]="
+                      'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
+                      gebruiker.name +
+                      '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
+                    "
+                    alt="avatar"
+                  />
+                </td>
+                <td>
+                  @if (gebruiker.expand?.rollen?.length == 1) {
+                    <p style="margin: 1em">
+                      {{ gebruiker.expand.rollen[0].rol }}
+                    </p>
+                  } @else if ((gebruiker.expand?.rollen?.length || 0) > 0) {
+                    <button mat-button [matMenuTriggerFor]="menu">
+                      <span>
+                        {{ gebruiker.expand?.rollen?.length }} Rollen
+                      </span>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      @for (
+                        rol of gebruiker.expand?.rollen ?? [];
+                        track $index
+                      ) {
+                        <p style="margin: 1em">
+                          {{ rol.rol }}
+                        </p>
+                      }
+                    </mat-menu>
+                  } @else {
+                    <span> Geen Rollen </span>
+                  }
+                </td>
+                <td>
+                  {{ gebruiker.expand?.groep?.naam }}
+                </td>
+                <!-- <td>
                             {{gebruiker.expand?.speler?.naam}}
                         </td>
                         <td>
@@ -113,28 +116,35 @@
                             }
                         </td> -->
 
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <td>
-                            <button mat-icon-button (click)="openEditDialog(gebruiker)" [disabled]="loading()">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </td>
-                        <td>
-                            <button mat-icon-button (click)="delete(gebruiker)" [disabled]="loading()">
-                                <mat-icon color="warn">delete</mat-icon>
-                            </button>
-                        </td>
-                        }
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
+                @if (!!authService.isGlobalAdmin) {
+                  <td>
+                    <button
+                      mat-icon-button
+                      (click)="openEditDialog(gebruiker)"
+                      [disabled]="loading()"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      mat-icon-button
+                      (click)="delete(gebruiker)"
+                      [disabled]="loading()"
+                    >
+                      <mat-icon color="warn">delete</mat-icon>
+                    </button>
+                  </td>
+                }
+              </tr>
             }
+          </tbody>
+        </table>
+      } @placeholder {
+        <div class="center">
+          <mat-spinner></mat-spinner>
         </div>
+      }
     </div>
+  </div>
 </div>

@@ -1,39 +1,67 @@
-<h2 mat-dialog-title class="display-4">Mail Aanpassen</h2>
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">Mail Aanpassen</h2>
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    tabindex="-1"
+    mat-dialog-close
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
 
 <div mat-dialog-content class="container p-4">
-    <div class="row">
-        <form (ngSubmit)="return()">
-            <mat-form-field class="col-12">
-                <mat-label>Mail Naam</mat-label>
-                <input placeholder="Dit is een voorbeeld naam" matInput
-                    type="text"
-                    name="mailNaam"
-                    [(ngModel)]="mail.naam">
-            </mat-form-field>
+  <div class="row">
+    <p>
+      <b>
+        Gebruikte plaatshouders: <br />
+        {{ placeholders }}
+      </b>
+    </p>
+  </div>
+  <div class="row">
+    <form (ngSubmit)="return()">
+      <mat-form-field class="col-12">
+        <mat-label>Mail Naam</mat-label>
+        <input
+          placeholder="Dit is een voorbeeld naam"
+          matInput
+          type="text"
+          name="mailNaam"
+          [(ngModel)]="mail.naam"
+        />
+      </mat-form-field>
 
-            <mat-form-field class="col-12">
-                <mat-label>Mail Inhoud</mat-label>
-                <textarea placeholder="Dit is voorbeeld inhoud" matInput
-                    type="text"
-                    name="spelerNaam"
-                    [(ngModel)]="mail.inhoud"
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="20">
-                    </textarea>
-            </mat-form-field>
+      <mat-form-field class="col-12">
+        <mat-label>Mail Inhoud</mat-label>
+        <textarea
+          placeholder="Dit is voorbeeld inhoud"
+          matInput
+          type="text"
+          name="spelerNaam"
+          [(ngModel)]="mail.inhoud"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="20"
+        >
+        </textarea>
+      </mat-form-field>
 
-            <h2>Voorbeeld weergave</h2>
-            <mat-divider></mat-divider>
-            <div [innerHTML]="mail.inhoud"></div>
-            <mat-divider></mat-divider>
+      <h2>Voorbeeld weergave</h2>
+      <mat-divider></mat-divider>
+      <div [innerHTML]="mail.inhoud"></div>
+      <mat-divider></mat-divider>
 
-            <button class="col-12" style="height: 4em;" mat-raised-button
-                color="primary"
-                type="submit">
-                <span>Aanpassen</span>
-            </button>
-        </form>
-    </div>
+      <button
+        class="col-12"
+        style="height: 4em"
+        mat-raised-button
+        color="primary"
+        type="submit"
+      >
+        <span>Aanpassen</span>
+      </button>
+    </form>
+  </div>
 </div>

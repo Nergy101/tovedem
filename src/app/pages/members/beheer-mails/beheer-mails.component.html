@@ -1,41 +1,42 @@
 <div class="container">
-
-    <div class="container">
-
-        <div class="row">
-            <p class="display-1">Mails</p>
-        </div>
-
-        <div class="row">
-            <div class="row pt-4">
-                @defer(when mailTemplates())
-                {
-                <table class="table mat-elevation-z2">
-                    <thead>
-                        <tr>
-                            <th scope="col">Naam</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (mailTemplate of mailTemplates(); track $index)
-                        {
-                        <tr>
-                            <td>{{mailTemplate.naam}}</td>
-                            <td>
-                                <button mat-icon-button (click)="openEditDialog(mailTemplate)" [disabled]="loading()">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-                } @placeholder {
-                <div class="center">
-                    <mat-spinner></mat-spinner>
-                </div>
-                }
-            </div>
-        </div>
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Mails</p>
     </div>
+
+    <div class="row">
+      <div class="row pt-4">
+        @defer (when mailTemplates()) {
+          <table class="table mat-elevation-z2">
+            <thead>
+              <tr>
+                <th scope="col">Naam</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (mailTemplate of mailTemplates(); track $index) {
+                <tr>
+                  <td>{{ mailTemplate.naam }}</td>
+                  <td>
+                    <button
+                      mat-icon-button
+                      (click)="openEditDialog(mailTemplate)"
+                      [disabled]="loading()"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @placeholder {
+          <div class="center">
+            <mat-spinner></mat-spinner>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

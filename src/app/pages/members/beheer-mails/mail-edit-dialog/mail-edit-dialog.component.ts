@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-mail-edit-dialog',
@@ -19,6 +21,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatInputModule,
     MatButtonModule,
     MatDividerModule,
+    MatListModule,
+    MatIconModule
   ],
   templateUrl: './mail-edit-dialog.component.html',
   styleUrl: './mail-edit-dialog.component.scss',
@@ -28,6 +32,15 @@ export class MailEditDialogComponent {
   dialogData: Mail = inject(MAT_DIALOG_DATA);
 
   mail!: Mail;
+
+  get placeholders(): string {
+    const mailInhoud = this.mail.inhoud!;
+    const regex = /{([^}]+)}/g
+    const placeholders = mailInhoud.match(regex) || []
+    const distinctPlaceholders = placeholders.filter((value, index, self) => self.indexOf(value) === index)
+    return distinctPlaceholders.join(', ')
+  }
+
 
   ngOnInit(): void {
     this.mail = this.dialogData;

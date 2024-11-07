@@ -25,8 +25,8 @@ import Voorstelling from '../../../models/domain/voorstelling.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
-import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
-import {Subject} from 'rxjs';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
@@ -64,7 +64,7 @@ export class BeheerReserveringenComponent {
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
   dialog = inject(MatDialog);
-  
+
   authService = inject(AuthService);
   titleService = inject(Title);
   range = Array.from({ length: 5 }, (_, i) => i); // Creates [0, 1, 2, 3, 4]
@@ -114,7 +114,7 @@ export class BeheerReserveringenComponent {
         this.searching.set(false);
       });
 
-      this.selectTerm$
+    this.selectTerm$
       .pipe(
         tap(() => this.selecting.set(true)),
         debounceTime(500),
@@ -182,7 +182,7 @@ export class BeheerReserveringenComponent {
 
 
 
-  
+
   increment() {
     this.kidsLabels++;
   }
@@ -200,10 +200,10 @@ export class BeheerReserveringenComponent {
     }
   }
 
-  printen(){
-       // Get the element by ID
+  printen() {
+    // Get the element by ID
     const element = document.getElementById('printSection');
-    
+
     // Check if the element exists
     if (element) {
       // Configure the PDF options

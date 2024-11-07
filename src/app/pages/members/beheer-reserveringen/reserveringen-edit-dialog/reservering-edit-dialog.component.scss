@@ -1,3 +1,10 @@
 ::ng-deep .ql-editor {
   height: 20em;
 }
+
+.header {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

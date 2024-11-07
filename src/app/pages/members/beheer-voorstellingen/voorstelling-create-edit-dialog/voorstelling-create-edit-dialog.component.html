@@ -1,99 +1,172 @@
-<h2 mat-dialog-title class="display-4">Voorstelling Aanmaken</h2>
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">Voorstelling Aanmaken</h2>
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    tabindex="-1"
+    mat-dialog-close
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
 <div mat-dialog-content class="container p-4">
-    <div class="row">
-        <form (ngSubmit)="submit()">
-            <div class="row">
-                <mat-form-field class="col-md-6 col-12">
-                    <mat-label>Titel</mat-label>
-                    <input matInput type="text" name="titel" maxlength="30" tabindex="0" required [(ngModel)]="titel">
-                </mat-form-field>
-                <mat-form-field class="col-md-6 col-12">
-                    <mat-label>Ondertitel</mat-label>
-                    <input matInput type="text" name="ondertitel" required [(ngModel)]="ondertitel">
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <mat-form-field class="col-md-3 col-6">
-                    <mat-label>Datum 1</mat-label>
-                    <input matInput [matDatepicker]="picker1" [(ngModel)]="datum1" name="picker1">
-                    <mat-hint>DD/MM/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 col-6">
-                    <mat-label>Tijd 1</mat-label>
-                    {{tijd1}}
-                    <input matInput [ngxTimepicker]="timePicker1" [(ngModel)]="tijd1" name="timePicker1">
-                    <ngx-material-timepicker [minutesGap]="5" [lang]="'nl-NL'" #timePicker1></ngx-material-timepicker>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 col-6">
-                    <mat-label>Datum 2</mat-label>
-                    <input matInput [matDatepicker]="picker2" [(ngModel)]="datum2" name="picker2">
-                    <mat-hint>DD/MM/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 col-6">
-                    <mat-label>Tijd 2</mat-label>
-                    {{tijd2}}
-                    <input matInput [ngxTimepicker]="timePicker2" [(ngModel)]="tijd2" name="timePicker2">
-                    <ngx-material-timepicker [minutesGap]="5" [lang]="'nl-NL'" #timePicker2></ngx-material-timepicker>
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <mat-form-field class="col-md-6 col-12">
-                    <mat-label>Groep</mat-label>
-                    <mat-select [(value)]="selectedGroep" required>
-                        @for (groep of groepen(); track $index) {
-                        <mat-option [value]="groep">{{groep.naam}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="col-md-6 col-12">
-                    <mat-label>Spelers</mat-label>
-                    <mat-select multiple [(value)]="selectedSpelers">
-                        @for (speler of spelers(); track $index) {
-                        <mat-option [value]="speler">{{speler.naam}}
-                        </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <h3>Regie*</h3>
-                    <quill-editor [modules]="modules" name="regie" [(ngModel)]="regie"></quill-editor>
-                </div>
+  <div class="row">
+    <form (ngSubmit)="submit()">
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Titel</mat-label>
+          <input
+            matInput
+            type="text"
+            name="titel"
+            maxlength="30"
+            tabindex="0"
+            required
+            [(ngModel)]="titel"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Ondertitel</mat-label>
+          <input
+            matInput
+            type="text"
+            name="ondertitel"
+            required
+            [(ngModel)]="ondertitel"
+          />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-3 col-6">
+          <mat-label>Datum 1</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker1"
+            [(ngModel)]="datum1"
+            name="picker1"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3 col-6">
+          <mat-label>Tijd 1</mat-label>
+          {{ tijd1 }}
+          <input
+            matInput
+            [ngxTimepicker]="timePicker1"
+            [(ngModel)]="tijd1"
+            name="timePicker1"
+          />
+          <ngx-material-timepicker
+            [minutesGap]="5"
+            [lang]="'nl-NL'"
+            #timePicker1
+          ></ngx-material-timepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3 col-6">
+          <mat-label>Datum 2</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker2"
+            [(ngModel)]="datum2"
+            name="picker2"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3 col-6">
+          <mat-label>Tijd 2</mat-label>
+          {{ tijd2 }}
+          <input
+            matInput
+            [ngxTimepicker]="timePicker2"
+            [(ngModel)]="tijd2"
+            name="timePicker2"
+          />
+          <ngx-material-timepicker
+            [minutesGap]="5"
+            [lang]="'nl-NL'"
+            #timePicker2
+          ></ngx-material-timepicker>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Groep</mat-label>
+          <mat-select [(value)]="selectedGroep" required>
+            @for (groep of groepen(); track $index) {
+              <mat-option [value]="groep">{{ groep.naam }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Spelers</mat-label>
+          <mat-select multiple [(value)]="selectedSpelers">
+            @for (speler of spelers(); track $index) {
+              <mat-option [value]="speler">{{ speler.naam }} </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <h3>Regie*</h3>
+          <quill-editor
+            [modules]="modules"
+            name="regie"
+            [(ngModel)]="regie"
+          ></quill-editor>
+        </div>
 
-                <div class="col-md-6 col-12">
-                    <h3>Omschrijving*</h3>
-                    <quill-editor [modules]="modules" name="omschrijving" [(ngModel)]="omschrijving"></quill-editor>
-                </div>
-            </div>
-            <div class="row">
-                <h3>Afbeelding</h3>
-                <app-tovedem-file-picker (onFileUploaded)="onFileUploaded($event)"></app-tovedem-file-picker>
-            </div>
+        <div class="col-md-6 col-12">
+          <h3>Omschrijving*</h3>
+          <quill-editor
+            [modules]="modules"
+            name="omschrijving"
+            [(ngModel)]="omschrijving"
+          ></quill-editor>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Afbeelding</h3>
+        <app-tovedem-file-picker
+          (onFileUploaded)="onFileUploaded($event)"
+        ></app-tovedem-file-picker>
+      </div>
 
-            <div class="row">
-                <div class="col-md-6 col-12 d-flex justify-content-center">
-                    <button mat-stroked-button mat-dialog-close class="flex-grow-1">
-                        <mat-icon>arrow_back</mat-icon>
-                        Terug
-                    </button>
-                </div>
-                <div class="col-md-6 col-12 d-flex justify-content-center">
-                    <button mat-raised-button color="primary" type="submit" class="flex-grow-1"
-                        [disabled]="loading() || !formIsValid()" (click)="submit()">
-                        @if(!!existingVoorstelling){
-                        Opslaan
-                        }@else {
-                        Aanmaken
-                        }
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-
+      <div class="row">
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button mat-stroked-button mat-dialog-close class="flex-grow-1">
+            <mat-icon>arrow_back</mat-icon>
+            Terug
+          </button>
+        </div>
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="flex-grow-1"
+            [disabled]="loading() || !formIsValid()"
+            (click)="submit()"
+          >
+            @if (!!existingVoorstelling) {
+              Opslaan
+            } @else {
+              Aanmaken
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
