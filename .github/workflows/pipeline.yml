@@ -51,6 +51,22 @@ jobs:
           known_hosts: ${{ env.KNOWN_HOSTS }}
           if_key_exists: replace
 
+      - name: Replace pb_hooks folder
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "Re-clone tovedem repository from /tovedem folder"
+            cd /tovedem
+            rm -rf tovedem
+            git clone https://github.com/Nergy101/tovedem
+
+            echo "Replace pb_hooks folder"
+            rm -rf hooks
+            cp -r tovedem/pb_hooks hooks
+
       - name: Pull and start docker image on VM
         uses: appleboy/ssh-action@v1.0.3
         with:
