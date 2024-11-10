@@ -125,8 +125,6 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
       id: img,
       src: this.getImageUrl(record.collectionId, record.id, img),
     }));
-
-    console.log(this.images)
   }
 
   ngOnDestroy(): void {

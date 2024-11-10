@@ -7,11 +7,11 @@
     <div class="row p-4 mat-elevation-z2" style="margin: 1em;">
         @if(images.length > 0) {
         <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'" [interval]="5000" [ride]="true"
-            [wrap]="true" class="col-12">
+            [wrap]="true" class="col-12" style="align-content: center;">
             @for (slide of images; track $index) {
-            <mdb-carousel-item style="height:30em">
-                <img [src]="slide.src" [alt]="slide.title" class="d-block w-100"
-                    style="max-height: 100%; object-fit: cover; border-radius: 1em;" />
+            <mdb-carousel-item style="height:30em; align-content: center;">
+                <img [src]="slide.src" [alt]="slide.title"
+                    style="object-fit: cover; border-radius: 1em; height: 100%;" />
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{slide.title}}</h5>
                     <p>{{slide.description}}</p>

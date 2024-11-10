@@ -3,15 +3,14 @@ import {
   Signal,
   WritableSignal,
   computed,
-  effect,
   inject,
   signal,
 } from '@angular/core';
-import { AdminModel, RecordAuthResponse, RecordModel } from 'pocketbase';
+import { AdminModel } from 'pocketbase';
 import { SideDrawerService } from './side-drawer.service';
-import Gebruiker from '../../models/domain/gebruiker.model';
+import {Gebruiker} from '../../models/domain/gebruiker.model';
 import { PocketbaseService } from './pocketbase.service';
-import Rol from '../../models/domain/rol.model';
+import {Rol} from '../../models/domain/rol.model';
 
 @Injectable({
   providedIn: 'root',

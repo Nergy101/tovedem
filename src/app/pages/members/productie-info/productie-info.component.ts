@@ -14,8 +14,8 @@ import { MatTreeModule } from '@angular/material/tree';
 
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
-import Voorstelling from '../../../models/domain/voorstelling.model';
-import Groep from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { Groep } from '../../../models/domain/groep.model';
 
 
 @Component({
@@ -74,7 +74,6 @@ export class ProductieInfoComponent {
     ).filter((x: any) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
 
     this.groep.set(groep);
-    console.log(this.groepsNaam);
     this.voorstellingen.set(voorstellingen);
 
     //* Haal de eerste voorstelling uit de lijst.

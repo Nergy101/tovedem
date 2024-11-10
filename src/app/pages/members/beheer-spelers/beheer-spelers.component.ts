@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import Speler from '../../../models/domain/speler.model';
+import { Speler } from '../../../models/domain/speler.model';
 import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';

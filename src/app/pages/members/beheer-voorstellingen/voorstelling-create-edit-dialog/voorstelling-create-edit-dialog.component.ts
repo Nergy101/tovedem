@@ -29,7 +29,7 @@ import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
-import Voorstelling from '../../../../models/domain/voorstelling.model';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-voorstelling-create-edit-dialog',

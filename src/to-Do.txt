@@ -1,0 +1,25 @@
+Even een to do lijst in de code:
+Sorry Chris. anders zou ik ze naar je appen maar dan zit er meer druk achter
+
+
+Fase I
+- Mail overzetten (P&C)
+- Mails opbouwen  (P)
+- For loop in reserveerlabels printen fixen (P&C)
+- Kassa pagina afmaken  (P)
+- Peter leren over filters in .ts (C)
+- Goede foto's toevoegen aan database (P)
+- Aanpassingen van stukjes verwerken na ontvangen (P)
+
+
+Fase II
+- Aanmeldingen nieuw lid zichtbaar maken in portaal (P)
+- Aanmelding nieuwe Viend van tovedem zichtbaar maken in portaal (P)
+- Aanmelding sint verzoek zichtbaar maken in portaal (P)
+- Rollen/functies leden opzetten. (C)
+- Account aanmaken voor leden organiseren (C)
+
+Fase III
+- Info pagina voor tovedem in portaal (P)
+- Info pagina voor cloos in portaal (P)
+- Info pagina voor mejoto's in portaal (P)

@@ -12,9 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import Reservering from '../../../../models/domain/resservering.model';
+import { Reservering } from '../../../../models/domain/reservering.model';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
@@ -146,6 +146,8 @@ export class ReserveringAanpassenComponent {
         voorstelling: this.reservering().expand.voorstelling.id,
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
+        opmerking: this.reservering().opmerking,
+        guid: this.reservering().guid
       }
     );
 

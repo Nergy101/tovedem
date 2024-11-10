@@ -19,7 +19,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Title } from "@angular/platform-browser";
 import { ToastrService } from "ngx-toastr";
 import { debounceTime, lastValueFrom, tap } from "rxjs";
-import Gebruiker from "../../../models/domain/gebruiker.model";
+import { Gebruiker } from "../../../models/domain/gebruiker.model";
 import { AuthService } from "../../../shared/services/auth.service";
 import { PocketbaseService } from "../../../shared/services/pocketbase.service";
 import { GebruikerCreateEditDialogComponent } from "./gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component";

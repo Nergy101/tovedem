@@ -1,6 +1,6 @@
 import { BaseModel } from 'pocketbase';
 
-export default interface Reservering extends BaseModel {
+export interface Reservering extends BaseModel {
   email: string;
   voornaam: string;
   achternaam: string;
@@ -9,4 +9,6 @@ export default interface Reservering extends BaseModel {
   voorstelling: string;
   datum_tijd_1_aantal: number;
   datum_tijd_2_aantal: number;
+  opmerking: string;
+  guid: string;
 }

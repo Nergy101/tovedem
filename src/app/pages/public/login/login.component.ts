@@ -1,8 +1,5 @@
 import {
   Component,
-  OnInit,
-  Signal,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -16,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import Gebruiker from '../../../models/domain/gebruiker.model';
+import { Gebruiker } from '../../../models/domain/gebruiker.model';
 
 @Component({
   selector: 'app-login',
