@@ -6,7 +6,7 @@ on:
     branches: ["main"]
 
 jobs:
-  BuildAndPushAndDeployDockerImage:
+  ReplaceHooksFolderWithLatest:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,6 +35,7 @@ jobs:
             rm -rf tovedem
             git clone https://github.com/Nergy101/tovedem
 
-            # echo "Replace pb_hooks folder"
-            # rm -rf hooks
-            # cp -r tovedem/pb_hooks hooks
+            echo "Replacing pb_hooks folder"
+            rm -rf hooks
+            cp -r tovedem/pb_hooks hooks
+            echo "Replaced pb_hooks folder"
