@@ -13,8 +13,8 @@ import { Title } from '@angular/platform-browser';
 
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
-import Voorstelling from '../../../models/domain/voorstelling.model';
-import Groep from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { Groep } from '../../../models/domain/groep.model';
 
 @Component({
   selector: 'app-groep',

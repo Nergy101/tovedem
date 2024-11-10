@@ -21,11 +21,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
-import Reservering from '../../../../models/domain/resservering.model';
+import { Reservering } from '../../../../models/domain/reservering.model';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { MatCardModule } from '@angular/material/card';
-import Voorstelling from '../../../../models/domain/voorstelling.model';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-Reservering-edit-dialog',

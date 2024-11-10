@@ -1,6 +1,6 @@
 import { BaseModel } from 'pocketbase';
 
-export default interface Mail extends BaseModel {
+export interface Mail extends BaseModel {
   naam?: string;
   inhoud?: string;
 }

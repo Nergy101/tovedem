@@ -11,10 +11,10 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import Gebruiker from '../../../../models/domain/gebruiker.model';
-import Speler from '../../../../models/domain/speler.model';
-import Groep from '../../../../models/domain/groep.model';
-import Rol from '../../../../models/domain/rol.model';
+import { Gebruiker } from '../../../../models/domain/gebruiker.model';
+import { Speler } from '../../../../models/domain/speler.model';
+import { Groep } from '../../../../models/domain/groep.model';
+import { Rol } from '../../../../models/domain/rol.model';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';

@@ -3,7 +3,7 @@ import { VoorstellingCardComponent } from '../../../shared/components/voorstelli
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Title } from '@angular/platform-browser';
-import Voorstelling from '../../../models/domain/voorstelling.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 
 @Component({
   selector: 'app-home',

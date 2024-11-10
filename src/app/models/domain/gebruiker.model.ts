@@ -1,6 +1,6 @@
 import { BaseModel } from 'pocketbase';
 
-export default interface Gebruiker extends BaseModel {
+export interface Gebruiker extends BaseModel {
   username: string;
   email: string;
   name: string;

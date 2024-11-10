@@ -29,7 +29,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import Groep from '../../../models/domain/groep.model';
+import { Groep } from '../../../models/domain/groep.model';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
 import { ReCaptchaV3Service } from 'ng-recaptcha';

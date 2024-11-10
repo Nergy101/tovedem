@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import Voorstelling from '../../../models/domain/voorstelling.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Title } from '@angular/platform-browser';

@@ -6,7 +6,6 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import PocketBase from 'pocketbase';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
@@ -15,8 +14,8 @@ import { VoorstellingLineComponent } from '../../../shared/components/voorstelli
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { Title } from '@angular/platform-browser';
-import Voorstelling from '../../../models/domain/voorstelling.model';
-import Groep from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { Groep } from '../../../models/domain/groep.model';
 
 @Component({
   selector: 'app-agenda',

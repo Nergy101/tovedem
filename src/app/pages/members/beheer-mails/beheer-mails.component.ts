@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
-import Mail from '../../../models/domain/mail.model';
+import { Mail }  from '../../../models/domain/mail.model';
 import { lastValueFrom } from 'rxjs';
 
 @Component({

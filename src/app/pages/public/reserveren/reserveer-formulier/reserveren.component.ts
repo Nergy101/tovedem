@@ -27,9 +27,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { lastValueFrom } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import Voorstelling from '../../../../models/domain/voorstelling.model';
-import Groep from '../../../../models/domain/groep.model';
-import Reservering from '../../../../models/domain/resservering.model';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { Groep } from '../../../../models/domain/groep.model';
+import { Reservering } from '../../../../models/domain/reservering.model';
 
 @Component({
   selector: 'app-reserveren',
@@ -117,6 +117,12 @@ export class ReserverenComponent implements OnInit {
     }
   }
 
+  uuidv4() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
+  }
+
   async saveReservering(): Promise<void> {
     this.saving.set(true);
 
@@ -131,6 +137,8 @@ export class ReserverenComponent implements OnInit {
         voorstelling: this.voorstellingId,
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
+        guid: this.uuidv4(),
+        opmerking: ''
       }
     );
 
