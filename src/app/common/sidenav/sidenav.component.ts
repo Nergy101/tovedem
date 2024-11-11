@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'sidenav',
@@ -31,6 +32,7 @@ import { BreakpointService } from '../../shared/services/breakpoint.service';
     NavbarComponent,
     FooterComponent,
     MatListModule,
+    MatExpansionModule,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
