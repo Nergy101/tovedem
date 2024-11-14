@@ -9,8 +9,8 @@
     <mat-divider></mat-divider>
     <div class="row pt-4">
       <div class="col-lg-3 col-12">
-        @if(!!groep()?.img){
-        <img src={{groep()?.img}}
+        @if(!!firstImg){
+        <img src={{firstImg.src}}
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />}
         @else {
         <img src="/assets/Place-Holder-Image.jpg"
@@ -24,25 +24,24 @@
 
   </div>
 
-  <div class="row p-4 mat-elevation-z2">
-    <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"
-      [interval]="5000" [ride]="true" [wrap]="true"
-      class="col-12">
-      @for (slide of slides(); track $index) {
-      <mdb-carousel-item style="height: 30em;">
-        <img
-          [src]="slide.src"
-          [alt]="slide.title"
-          class="d-block w-100"
-          style="max-height: 100%; object-fit: cover;" />
-        <div class="carousel-caption d-none d-md-block">
-          <h5>{{slide.title}}</h5>
-          <p>{{slide.description}}</p>
-        </div>
-      </mdb-carousel-item>
-      }
+  <div class="row p-4 mat-elevation-z2" style="margin: 1em; align-items: center;">
+    @if(slides.length > 0) {
+    <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'" [interval]="5000" [ride]="true"
+        [wrap]="true" class="col-12" style="align-content: center;">
+        @for (slide of slides; track $index) {
+            
+        <mdb-carousel-item style="align-content: center; text-align: center; width: 100%; height: 40em;">  
+            <img [src]="slide.src" [alt]="slide.title"
+                style="object-fit:self ; border-radius: 1em; height: 100%; align-self: center;" />
+            <div class="carousel-caption d-none d-md-block">
+                <h5>{{slide.title}}</h5>
+                <p>{{slide.description}}</p>
+            </div>
+        </mdb-carousel-item>
+        }
     </mdb-carousel>
-  </div>
+    }
+</div>
 
   <div class="mat-elevation-z2">
     @if (!!spelers()) {
