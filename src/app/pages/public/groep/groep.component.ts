@@ -32,7 +32,7 @@ import { Groep } from '../../../models/domain/groep.model';
 export class GroepComponent {
   groepsNaam: string;
   url = 'https://pocketbase.nergy.space/';
-
+  firstImg: any = ''
   client = inject(PocketbaseService);
 
   groep: WritableSignal<Groep | null> = signal(null);
@@ -42,9 +42,9 @@ export class GroepComponent {
   afgelopenVoorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
   spelers: WritableSignal<any[] | null> = signal(null);
-  slides: WritableSignal<any[] | null> = signal(null);
-
+  slides: any[] | any = [];
   titleService = inject(Title);
+  
 
   constructor(private router: Router) {
     this.groepsNaam = this.router.url.substring(7);
@@ -94,20 +94,16 @@ export class GroepComponent {
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling ?? null);
 
     this.afgelopenVoorstellingen.set(voorstellingen);
+    
+    this.slides = groep.afbeeldingen?.map((img: string) => ({
+      id: img,
+      src: this.getImageUrl(groep.collectionId, groep.id, img),
+    }));
+    this.firstImg = this.slides[0];
+    console.log(this.firstImg)
+  }
 
-    this.slides.set([
-      {
-        id: 1,
-        src: '/assets/jalozien.jpg',
-        title: 'Jalozien',
-        description: 'Door Tovedem',
-      },
-      {
-        id: 2,
-        src: '/assets/Cloos-vrije-vogel.jpg',
-        title: 'De Vrije Vogel',
-        description: 'Door Cloos',
-      },
-    ]);
+  getImageUrl(collectionId: string, recordId: string, imageId: string): string {
+    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 }
