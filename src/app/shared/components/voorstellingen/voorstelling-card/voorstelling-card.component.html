@@ -3,18 +3,15 @@
         <div class="col-md-4 col-12">
             <mat-card-header style="width: 100%;">
                 <div style="width: 100%;">
-                    <mat-card-title
-                        style="font-size: x-large;">{{voorstelling().titel}}</mat-card-title>
+                    <mat-card-title style="font-size: x-large;">{{voorstelling().titel}}</mat-card-title>
                     <mat-card-subtitle>Gespeeld door:
                         {{voorstelling().expand.groep.naam}}</mat-card-subtitle>
                     <mat-card-subtitle class="d-flex flex-column">
                         @if(!!voorstelling().datum_tijd_1 &&
                         !!voorstelling().datum_tijd_2){
                         <div style="flex: 1; width: 100%;">
-                            <mat-divider
-                                style="margin-top: 1em; margin-bottom: 0.5em;;"></mat-divider>
-                            <div
-                                style="font-size: x-large; text-align: center;">
+                            <mat-divider style="margin-top: 1em; margin-bottom: 0.5em;;"></mat-divider>
+                            <div style="font-size: x-large; text-align: center;">
                                 {{ voorstelling().datum_tijd_1 | date : "dd" }}
                                 & {{ voorstelling().datum_tijd_2 | date
                                 : "dd" }}
@@ -33,11 +30,11 @@
         </div>
         <div class="col-md-8 col-12 p-4">
             @if(!!voorstelling().afbeelding){
-            <img class="card-image"
+            <img alt="voorstelling image" class="card-image"
                 [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
                 style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content:end;" />}
             @else {
-            <img class="card-image" src="/assets/Place-Holder-Image.jpg"
+            <img alt="voorstelling image" class="card-image" src="/assets/Place-Holder-Image.jpg"
                 style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
             }
         </div>
@@ -52,8 +49,7 @@
     <mat-card-actions>
         <div></div>
         @if(inToekomst()) {
-        <app-nav-button [navigationParts]="['/reserveren']"
-            [queryParams]="{voorstelling: this.voorstelling().id}">
+        <app-nav-button [navigationParts]="['/reserveren']" [queryParams]="{voorstelling: this.voorstelling().id}">
             RESERVEREN
         </app-nav-button>
         }

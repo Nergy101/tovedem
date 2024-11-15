@@ -1,0 +1,20 @@
+# Robots.txt for https://tovedem.nergy.space
+User-agent: *
+
+# Allow all public routes
+Allow: /
+
+# Disallow guarded and sensitive routes
+Disallow: /profiel
+Disallow: /beheer-reserveringen
+Disallow: /reservering-aanpassen/
+Disallow: /beheer-voorstellingen
+Disallow: /beheer-leden
+Disallow: /beheer-spelers
+Disallow: /beheer-mails
+Disallow: /productie-info/Tovedem
+Disallow: /productie-info/Cloos
+Disallow: /productie-info/Mejotos
+
+# Sitemap location
+Sitemap: https://tovedem.nergy.space/sitemap.xml

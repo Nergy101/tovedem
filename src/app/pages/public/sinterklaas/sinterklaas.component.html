@@ -9,9 +9,9 @@
         <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'" [interval]="5000" [ride]="true"
             [wrap]="true" class="col-12" style="align-content: center;">
             @for (slide of images; track $index) {
-                
-            <mdb-carousel-item style="align-content: center; text-align: center; width: 100%; height: 40em;">  
-                <img [src]="slide.src" [alt]="slide.title"
+
+            <mdb-carousel-item style="align-content: center; text-align: center; width: 100%; height: 40em;">
+                <img alt="sinterklaas image" [src]="slide.src" [alt]="slide.title"
                     style="object-fit:self ; border-radius: 1em; height: 100%; align-self: center;" />
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{slide.title}}</h5>

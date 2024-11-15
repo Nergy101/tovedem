@@ -12,11 +12,7 @@
       <div class="row" style="margin-top: 1em">
         <mat-form-field class="col-12" appearance="outline">
           <mat-label>Zoek op voorstelling, namen, emails, etc.</mat-label>
-          <input
-            matInput
-            type="text"
-            [ngModel]="searchTerm()"
-            (ngModelChange)="onSearchTermChanged($event)" />
+          <input matInput type="text" [ngModel]="searchTerm()" (ngModelChange)="onSearchTermChanged($event)" />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
         @if (searching()) {
@@ -50,15 +46,11 @@
             <td>{{ item.datum_tijd_2_aantal }}</td>
 
             <td>
-              <mat-checkbox
-                [checked]="item.is_vriend_van_tovedem"
-                disabled>
+              <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
               </mat-checkbox>
             </td>
             <td>
-              <mat-checkbox
-                [checked]="item.is_lid_van_vereniging"
-                disabled>
+              <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
               </mat-checkbox>
             </td>
 
@@ -68,10 +60,7 @@
                 <mat-icon>description</mat-icon>
               </button>
               } @else {
-              <button
-                mat-fab
-                [matMenuTriggerFor]="menu"
-                xPosition="before">
+              <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
                 <mat-icon color>description</mat-icon>
               </button>
               <mat-menu #menu="matMenu" xPosition="before">
@@ -120,15 +109,11 @@
             <td>{{ item.achternaam }}</td>
 
             <td>
-              <mat-checkbox
-                [checked]="item.is_vriend_van_tovedem"
-                disabled>
+              <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
               </mat-checkbox>
             </td>
             <td>
-              <mat-checkbox
-                [checked]="item.is_lid_van_vereniging"
-                disabled>
+              <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
               </mat-checkbox>
             </td>
           </tr>
@@ -142,8 +127,7 @@
           Voorstelling:</mat-label>
         <mat-form-field class="col-6">
           <mat-label>Voorstelling</mat-label>
-          <mat-select
-            (selectionChange)="onVoorstellingChanged($event)">
+          <mat-select (selectionChange)="onVoorstellingChanged($event)">
             @for (voorstelling of voorstellingen(); track $index) {
             <mat-option [value]="voorstelling">{{
               voorstelling.titel
@@ -153,8 +137,7 @@
         </mat-form-field>
         <mat-form-field class="col-3">
           <mat-label>Datum</mat-label>
-          <mat-select
-            (ngModelChange)="onSelectDatumChanged($event)">
+          <mat-select (ngModelChange)="onSelectDatumChanged($event)">
             @for (datum of beschikbareDatums; track $index) {
             <mat-option [value]="datum">{{datum}}</mat-option>
             }
@@ -166,26 +149,14 @@
           <button mat-mini-fab (click)="decrement()">
             <mat-icon>remove</mat-icon>
           </button>
-          <mat-form-field
-            class="col-1"
-            appearance="outline"
-            style="margin-inline: 1em; padding-top: 20px">
-            <input
-              matInput
-              type="number"
-              [ngModel]="kidsLabels"
-              (ngModelChange)="onAmountChange()" /></mat-form-field>
+          <mat-form-field class="col-1" appearance="outline" style="margin-inline: 1em; padding-top: 20px">
+            <input matInput type="number" [ngModel]="kidsLabels" (ngModelChange)="onAmountChange()" /></mat-form-field>
           <button mat-mini-fab (click)="increment()">
             <mat-icon>add</mat-icon>
           </button>
         </div>
         <div class="col-2">
-          <button
-            mat-fab
-            extended
-            [disabled]="!isPrintEnabled"
-            (click)="printHtml()"
-            color="primary"
+          <button mat-fab extended [disabled]="!isPrintEnabled" (click)="printHtml()" color="primary"
             style="align-self: flex-end">
             <mat-icon>print</mat-icon>
             Printen
@@ -201,11 +172,9 @@
           @for(reservering of reserveringenVanVoorstelling(); track $index){
           @for(ticketItem of createListOfAmountOfItems(amountOfItemsForReservation(reservering)); track $index){
           <div class="row">
-            <mat-divider
-              style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
+            <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
             <div class="col-3">
-              <img
-                src="/assets/tovedem_logo_klein.png"
+              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
                 style="margin-left: 3em; margin-right: 3em; height: 12em" />
             </div>
             <div class="col-6" style="align-items: center">
@@ -229,23 +198,19 @@
               </div>
             </div>
             <div class="col-3">
-              <img
-                src="/assets/tovedem_logo_klein.png"
+              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
                 style="margin-left: 3em; margin-right: 3em; height: 12em" />
             </div>
-            <mat-divider
-              style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
+            <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
           </div>
           }
           }
 
           @for (item of createListOfAmountOfItems(kidsLabels); track $index) {
           <div class="row">
-            <mat-divider
-              style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
+            <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
             <div class="col-3">
-              <img
-                src="/assets/tovedem_logo_klein.png"
+              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
                 style="margin-left: 3em; margin-right: 3em; height: 12em" />
             </div>
 
@@ -264,12 +229,10 @@
               </div>
             </div>
             <div class="col-3">
-              <img
-                src="/assets/tovedem_logo_klein.png"
+              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
                 style="margin-left: 3em; margin-right: 3em; height: 12em" />
             </div>
-            <mat-divider
-              style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
+            <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
 
           </div>
           }
