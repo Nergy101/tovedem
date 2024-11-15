@@ -17,12 +17,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Environment } from '../../../../environment';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-vriend-worden',
@@ -55,7 +55,6 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
 
   toastr = inject(ToastrService);
   client = inject(PocketbaseService).client;
-  titleService = inject(Title);
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
   environment = inject(Environment);
@@ -103,8 +102,9 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
         }));
   }
 
+  seoService = inject(SeoService);
   constructor() {
-    this.titleService.setTitle('Tovedem - Vriend van Tovedem worden!!');
+    this.seoService.update('Tovedem - Vriend van Tovedem worden');
   }
 
   async ngOnInit(): Promise<void> {

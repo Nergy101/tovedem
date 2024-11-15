@@ -11,13 +11,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Environment } from '../../../../environment';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SeoService } from '../../../shared/services/seo.service';
 
 
 
@@ -48,17 +48,17 @@ export class ContactComponent implements OnDestroy {
   subject: string | null = null;
   message: string | null = null;
 
-  titleService = inject(Title);
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
   environment = inject(Environment);
   pocketService = inject(PocketbaseService);
   toastr = inject(ToastrService);
 
+  seoService = inject(SeoService);
   subscriptions: Subscription[] = [];
 
   constructor() {
-    this.titleService.setTitle('Tovedem - Contact');
+    this.seoService.update('Tovedem - Contact');
   }
 
   verstuurContactMail() {

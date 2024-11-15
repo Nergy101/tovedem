@@ -17,13 +17,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-sinterklaas',
@@ -58,7 +58,6 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
   toastr = inject(ToastrService);
   router = inject(Router);
-  titleService = inject(Title);
   client = inject(PocketbaseService).client;
   environment = inject(Environment);
   recaptchaV3Service = inject(ReCaptchaV3Service);
@@ -105,8 +104,9 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
         }));
   }
 
+  seoService = inject(SeoService);
   constructor() {
-    this.titleService.setTitle('Tovedem - Sinterklaas');
+    this.seoService.update('Tovedem - Sinterklaas');
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {

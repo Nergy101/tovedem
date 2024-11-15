@@ -33,6 +33,7 @@ import { Groep } from '../../../models/domain/groep.model';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-lid-worden',
@@ -83,7 +84,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
 
   loading = signal(false);
 
-  titleService = inject(Title);
+  seoService = inject(SeoService);
   client = inject(PocketbaseService);
   datePipe = inject(DatePipe);
   toastr = inject(ToastrService);
@@ -92,7 +93,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   subscriptions: any[] = [];
 
   constructor() {
-    this.titleService.setTitle('Tovedem - Lid Worden');
+    this.seoService.update('Tovedem - Lid Worden');
   }
 
   async ngOnInit(): Promise<void> {

@@ -15,6 +15,7 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { Groep } from '../../../models/domain/groep.model';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-groep',
@@ -43,15 +44,16 @@ export class GroepComponent {
 
   spelers: WritableSignal<any[] | null> = signal(null);
   slides: any[] | any = [];
-  titleService = inject(Title);
-  
+
+  seoService = inject(SeoService);
 
   constructor(private router: Router) {
+
     this.groepsNaam = this.router.url.substring(7);
 
     effect(() => {
       if (!!this.groep()?.naam) {
-        this.titleService.setTitle(`Tovedem - Groep - ${this.groep()?.naam} `);
+        this.seoService.update(`Tovedem - Groep - ${this.groep()?.naam}`);
       }
     });
   }
@@ -94,7 +96,7 @@ export class GroepComponent {
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling ?? null);
 
     this.afgelopenVoorstellingen.set(voorstellingen);
-    
+
     this.slides = groep.afbeeldingen?.map((img: string) => ({
       id: img,
       src: this.getImageUrl(groep.collectionId, groep.id, img),

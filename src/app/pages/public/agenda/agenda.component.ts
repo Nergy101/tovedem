@@ -16,6 +16,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { Title } from '@angular/platform-browser';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { Groep } from '../../../models/domain/groep.model';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-agenda',
@@ -35,7 +36,7 @@ import { Groep } from '../../../models/domain/groep.model';
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
   client = inject(PocketbaseService);
-  titleService = inject(Title);
+  seoService = inject(SeoService);
 
   today = new Date().toISOString();
 
@@ -47,7 +48,7 @@ export class AgendaComponent implements OnInit {
     signal([]);
 
   constructor() {
-    this.titleService.setTitle('Tovedem - Agenda');
+    this.seoService.update('Tovedem - Agenda');
   }
 
   async ngOnInit(): Promise<void> {

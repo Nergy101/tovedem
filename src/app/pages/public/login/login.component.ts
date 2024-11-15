@@ -1,19 +1,19 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   inject,
   signal,
 } from '@angular/core';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { AuthService } from '../../../shared/services/auth.service';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
+import { AuthService } from '../../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-login',
@@ -33,10 +33,11 @@ export class LoginComponent {
   usernameOrEmail?: string;
   password?: string;
 
+  seoService = inject(SeoService);
+
   pocketbase = inject(PocketbaseService);
   authService = inject(AuthService);
   router = inject(Router);
-  titleService = inject(Title);
 
   get formIsValid(): boolean {
     return !!this.usernameOrEmail && !!this.password;
@@ -45,7 +46,7 @@ export class LoginComponent {
   loading = signal(false);
 
   constructor() {
-    this.titleService.setTitle('Tovedem - Login');
+    this.seoService.update('Tovedem - Login');
   }
 
   async login(): Promise<void> {
