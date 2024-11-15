@@ -9,3 +9,14 @@ mat-expansion-panel {
 // mat-expansion-panel-header {
 //   max-width: 10em;
 // }
+
+
+.action-card {
+  cursor: pointer;
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}

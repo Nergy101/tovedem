@@ -13,6 +13,7 @@
             <img style="max-height: 10em; border-radius: 1em; margin: 1em;"
                 [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+user()?.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
                 alt="avatar">
+            <img src="assets/TovedemLogo.svg" style="height: 4em">
         </div>
     </div>
 
@@ -55,22 +56,23 @@
     </div>
 
     <div class="row justify-content-around mt-4">
-        <mat-card class="col-3">
-            <mat-card-title>Mejoto's</mat-card-title>
-            <mat-card-actions><button mat-icon-button><mat-icon>groups</mat-icon></button></mat-card-actions>
+        <mat-card class="col-3 action-card">
+            <mat-card-title class="text-center">Mejoto's</mat-card-title>
+            <mat-card-actions class="actions"><button
+                    mat-icon-button><mat-icon>groups</mat-icon></button></mat-card-actions>
         </mat-card>
 
-        <mat-card class="col-3">
-            <mat-card-title>Cloos</mat-card-title>
-            <mat-card-actions>
+        <mat-card class="col-3 action-card">
+            <mat-card-title class="text-center">Cloos</mat-card-title>
+            <mat-card-actions class="actions">
                 <button mat-icon-button><mat-icon>groups_2</mat-icon>
                 </button>
             </mat-card-actions>
         </mat-card>
 
-        <mat-card class="col-3">
-            <mat-card-title>Tovedem</mat-card-title>
-            <mat-card-actions>
+        <mat-card class="col-3 action-card">
+            <mat-card-title class="text-center">Tovedem</mat-card-title>
+            <mat-card-actions class="actions">
                 <button mat-icon-button><mat-icon>groups_3</mat-icon>
                 </button>
             </mat-card-actions>
@@ -78,15 +80,20 @@
     </div>
 
     <div class="row justify-content-around mt-4">
-        <mat-card class="col-5">
-            <mat-card-title>Kassa</mat-card-title>
-            <mat-card-actions><button mat-icon-button><mat-icon>shopping_cart</mat-icon></button></mat-card-actions>
+        <mat-card class="col-5 action-card">
+            <mat-card-title class="text-center">Kassa</mat-card-title>
+            <mat-card-actions class="actions">
+                <button mat-icon-button>
+                    <mat-icon>shopping_cart</mat-icon>
+                </button>
+            </mat-card-actions>
         </mat-card>
 
-        <mat-card class="col-5">
-            <mat-card-title>Algemene Informatie</mat-card-title>
-            <mat-card-actions>
-                <button mat-icon-button><mat-icon>info</mat-icon>
+        <mat-card class="col-5 action-card">
+            <mat-card-title class="text-center">Algemene Informatie</mat-card-title>
+            <mat-card-actions class="actions">
+                <button mat-icon-button>
+                    <mat-icon>info</mat-icon>
                 </button>
             </mat-card-actions>
         </mat-card>
