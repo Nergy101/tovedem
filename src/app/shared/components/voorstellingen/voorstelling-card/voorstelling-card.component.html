@@ -1,11 +1,14 @@
 <mat-card class="voorstelling-card mat-elevation-z4">
     <div class="row">
-        <div class="col-md-4 col-12">
+        <div class="col-12">
             <mat-card-header style="width: 100%;">
                 <div style="width: 100%;">
-                    <mat-card-title style="font-size: x-large;">{{voorstelling().titel}}</mat-card-title>
-                    <mat-card-subtitle>Gespeeld door:
-                        {{voorstelling().expand.groep.naam}}</mat-card-subtitle>
+                    <mat-card-title style="font-size: x-large;"
+                        class="text-center">{{voorstelling().titel}}</mat-card-title>
+                    <mat-card-subtitle class="text-center">
+                        Gespeeld door:
+                        {{voorstelling().expand.groep.naam}}
+                    </mat-card-subtitle>
                     <mat-card-subtitle class="d-flex flex-column">
                         @if(!!voorstelling().datum_tijd_1 &&
                         !!voorstelling().datum_tijd_2){
@@ -24,18 +27,17 @@
                         <mat-divider></mat-divider>
                         }
                     </mat-card-subtitle>
-
                 </div>
             </mat-card-header>
         </div>
-        <div class="col-md-8 col-12 p-4">
+    </div>
+    <div class="row">
+        <div class="col-12 p-4 center-image">
             @if(!!voorstelling().afbeelding){
             <img alt="voorstelling image" class="card-image"
-                [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)"
-                style="object-fit: contain; max-width: 100%; max-height: 100%; border-radius: 1em; align-content:end;" />}
+                [src]="getImageUrl(voorstelling().collectionId, voorstelling().id, voorstelling().afbeelding)" />}
             @else {
-            <img alt="voorstelling image" class="card-image" src="/assets/Place-Holder-Image.jpg"
-                style="object-fit: contain; max-width: 100%; border-radius: 1em;" />
+            <img alt="voorstelling image" class="card-image" src="/assets/Place-Holder-Image.jpg" />
             }
         </div>
     </div>

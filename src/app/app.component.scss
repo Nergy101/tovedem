@@ -89,3 +89,12 @@ a {
   // align-items: center;
   justify-content: space-evenly;
 }
+
+
+.side-menu-toggle {
+  position: sticky;
+  top: 5rem;
+  left: .25rem;
+  z-index: 1000;
+  cursor: pointer;
+}

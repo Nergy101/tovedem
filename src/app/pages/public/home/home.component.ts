@@ -29,7 +29,7 @@ export class HomePaginaComponent {
     const voorstellingen = await this.client.getAll<Voorstelling>(
       'voorstellingen',
       {
-        sort: '-created',
+        sort: '-datum_tijd_1',
         expand: 'groep',
       }
     );

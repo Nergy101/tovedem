@@ -60,4 +60,8 @@ export class AppComponent {
       this.drawer.close();
     });
   }
+
+  toggle() {
+    this.sideDrawerService.toggle();
+  }
 }

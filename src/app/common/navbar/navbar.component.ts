@@ -30,4 +30,8 @@ export class NavbarComponent {
   get groepenClass() {
     return this.router.url.includes('groep') ? 'active' : '';
   }
+
+  toggle() {
+    this.sideDrawerService.toggle();
+  }
 }

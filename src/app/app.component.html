@@ -19,6 +19,19 @@
 
   <div class="drawer-content">
     <div class="router-content">
+      @if(authService.isLoggedIn()) {
+      <li class="side-menu-toggle">
+        @if (sideDrawerService.isOpen()) {
+        <button class="nav-link" mat-icon-button (click)="toggle()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        } @else {
+        <button class="nav-link" mat-icon-button (click)="toggle()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        }
+      </li>
+      }
       <router-outlet />
     </div>
     <footer class="container-fluid">

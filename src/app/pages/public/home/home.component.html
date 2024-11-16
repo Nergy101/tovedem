@@ -15,8 +15,7 @@
         <div class="section">
             <div class="row">
                 @for (item of voorstellingen(); track $index) {
-                <app-voorstelling-card [voorstelling]="item"
-                    class="col-12 col-lg-6 col-xl-4 mb-4 d-flex flex-grow-1">
+                <app-voorstelling-card [voorstelling]="item" class="col-12 col-lg-6 col-xl-6 mb-4 d-flex flex-grow-1">
                 </app-voorstelling-card>
                 }
             </div>
