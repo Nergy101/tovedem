@@ -140,7 +140,6 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               try {
 
                 let aanmelding = {
-                  reden: 'lid_worden',
                   voornaam: this.voornaam,
                   achternaam: this.achternaam,
                   groep: this.selectedGroep,

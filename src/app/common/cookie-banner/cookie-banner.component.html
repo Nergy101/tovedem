@@ -1,0 +1,14 @@
+<div class="cookie-banner" *ngIf="!cookieBannerAccepted">
+    <div class="cookie-banner-content">
+        <div class="cookie-banner-text">
+            <p>
+                Door deze website te gebruiken, gaat u akkoord met het gebruik van onze cookies.
+                Deze zijn nodig om de website goed te laten werken.
+            </p>
+        </div>
+        <div class="cookie-banner-buttons">
+            <!-- <button mat-button (click)="rejectCookies()" class="reject">Weigeren</button> -->
+            <button mat-flat-button (click)="acceptCookies()" class="accept">Accepteren</button>
+        </div>
+    </div>
+</div>

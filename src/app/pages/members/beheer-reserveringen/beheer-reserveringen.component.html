@@ -171,13 +171,13 @@
         -->
           @for(reservering of reserveringenVanVoorstelling(); track $index){
           @for(ticketItem of createListOfAmountOfItems(amountOfItemsForReservation(reservering)); track $index){
-          <div class="row">
+          <div class="row ">
             <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
             <div class="col-3">
               <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
                 style="margin-left: 3em; margin-right: 3em; height: 12em" />
             </div>
-            <div class="col-6" style="align-items: center">
+            <div class="col-6 " style="align-items: center">
               <div class="row" style="text-align: center">
                 <h2 style="font-weight: 200; font-size: 2em">
                   Gereserveerd voor:
@@ -207,7 +207,7 @@
           }
 
           @for (item of createListOfAmountOfItems(kidsLabels); track $index) {
-          <div class="row">
+          <div class="row printable">
             <mat-divider style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
             <div class="col-3">
               <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"

@@ -17,6 +17,7 @@ import { SideDrawerService } from './shared/services/side-drawer.service';
 import { MatListModule } from '@angular/material/list';
 import { SidenavComponent } from './common/sidenav/sidenav.component';
 import { BreakpointService } from './shared/services/breakpoint.service';
+import { CookieBannerComponent } from "./common/cookie-banner/cookie-banner.component";
 registerLocaleData(localeNL);
 
 @Component({
@@ -40,6 +41,7 @@ registerLocaleData(localeNL);
     FooterComponent,
     MatListModule,
     SidenavComponent,
+    CookieBannerComponent
   ],
 })
 export class AppComponent {

@@ -38,6 +38,7 @@ img {
   padding-bottom: 2em;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  background-color: white;
 }
 
 .sponsor-image {
@@ -73,4 +74,9 @@ h2 {
   flex-direction: row;
   align-items: center;
   gap: .5rem;
+}
+
+.adres {
+  color: white;
+  text-decoration: underline;
 }

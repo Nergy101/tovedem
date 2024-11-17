@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -9,7 +10,8 @@ import { Router, RouterModule } from '@angular/router';
   imports: [
     MatListModule,
     RouterModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',

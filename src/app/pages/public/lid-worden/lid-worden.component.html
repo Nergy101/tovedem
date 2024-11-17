@@ -65,11 +65,11 @@
         </div>
         <mat-form-field class="col-md-4 col-12">
             <mat-label>Voornaam</mat-label>
-            <input placeholder="Pieter" matInput type="text" [(ngModel)]="voornaam">
+            <input placeholder="Pieter" matInput type="text" required [(ngModel)]="voornaam">
         </mat-form-field>
         <mat-form-field class="col-md-5 col-12">
             <mat-label>Achternaam</mat-label>
-            <input placeholder="Post" matInput type="text" [(ngModel)]="achternaam">
+            <input placeholder="Post" matInput type="text" required [(ngModel)]="achternaam">
         </mat-form-field>
         <mat-form-field class="col-md-3 col-12">
             <mat-label>Groep</mat-label>
@@ -81,18 +81,19 @@
         </mat-form-field>
         <mat-form-field class="col-md-8 col-12">
             <mat-label>E-mail</mat-label>
-            <input placeholder="pieter-post@voorbeeld.nl" matInput type="email" [(ngModel)]="email">
+            <input placeholder="pieter-post@voorbeeld.nl" matInput type="email" required [(ngModel)]="email">
         </mat-form-field>
         <mat-form-field class="col-md-4 col-12">
             <mat-label>Geboortedatum</mat-label>
-            <input matInput [matDatepicker]="picker1" [(ngModel)]="geboorteDatum" name="picker1">
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="geboorteDatum" required name="picker1">
             <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <div style="display: flex;">
             <mat-form-field style="flex: 1;">
                 <mat-label>Bericht</mat-label>
-                <textarea [(ngModel)]="message" matInput rows="10" placeholder="Type hier je bericht"></textarea>
+                <textarea [(ngModel)]="message" matInput rows="10" required
+                    placeholder="Type hier je bericht"></textarea>
             </mat-form-field>
         </div>
         <div style="display: flex;">
