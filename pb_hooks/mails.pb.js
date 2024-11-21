@@ -58,5 +58,27 @@ onRecordAfterCreateRequest((e) => {
 
     // send a mail to the sint-commissie themselves, so they can check the request
     // ...
+    const mailInfoBeheer = mailing.getMail("sintcommissie-beheer");
+    const filledMailTemplateBeheer = mailing.getSintcommissieBeheerMailHtml(
+        mailInfo,
+        verzoek,
+    );
+
+    const recipientBeheer = "ptrvlaar@gmail.com";
+
+    $app.logger().info("recipientBeheer", JSON.stringify(recipientBeheer));
+
+    const messageBeheer = new MailerMessage({
+        from: {
+            address: $app.settings().meta.senderAddress,
+            name: $app.settings().meta.senderName,
+        },
+        to: [{ address: recipientBeheer }],
+        subject: mailInfoBeheer.get("onderwerp"),
+        html: filledMailTemplateBeheer,
+    });
+
+    $app.newMailClient().send(messageBeheer);
+
 
 }, "sinterklaas_verzoeken");
