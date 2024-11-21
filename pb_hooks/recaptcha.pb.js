@@ -1,6 +1,10 @@
-routerAdd("GET", "/hello", (context) => {
-    return context.html(200, "<div>Hello World</div>");
-});
+routerAdd(
+    "GET",
+    "/hello",
+    (context) => {
+        return context.html(200, "<div>Hello World</div>");
+    }
+);
 
 routerAdd(
     "POST",

@@ -37,3 +37,13 @@ jobs:
             rm -rf hooks
             cp -r tovedem/pb_hooks hooks
             echo "Replaced pb_hooks folder"
+
+      - name: Restart pocketbase
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "Restart Pocketbase"
+            docker stop tovedem-pocketbase && docker start tovedem-pocketbase
