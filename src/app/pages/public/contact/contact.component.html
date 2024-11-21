@@ -56,7 +56,8 @@
                     </mat-form-field>
                 </div>
                 <div style="display: flex;">
-                    <button style="flex: 1;" mat-raised-button [color]="'primary'" type="submit">Verzenden</button>
+                    <button style="flex: 1;" mat-raised-button [color]="'primary'" type="submit"
+                        [disabled]="!name || !email || !subject || !message">Verzenden</button>
                 </div>
             </form>
         </div>

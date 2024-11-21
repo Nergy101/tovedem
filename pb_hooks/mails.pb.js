@@ -40,7 +40,7 @@ onRecordAfterCreateRequest((e) => {
         verzoek,
     );
 
-    const recipient = e.record.get("email");
+    const recipient = verzoek.get("email");
 
     $app.logger().info("recipient", JSON.stringify(recipient));
 
@@ -55,4 +55,8 @@ onRecordAfterCreateRequest((e) => {
     });
 
     $app.newMailClient().send(message);
+
+    // send a mail to the sint-commissie themselves, so they can check the request
+    // ...
+
 }, "sinterklaas_verzoeken");

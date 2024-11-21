@@ -36,7 +36,8 @@
                 </mat-form-field>
             </div>
             <div style="display: flex;">
-                <button style="flex: 1;" mat-raised-button (click)="verstuurVriendVanTovedemMail()">Verzenden</button>
+                <button style="flex: 1;" mat-raised-button (click)="verstuurVriendVanTovedemMail()"
+                    [disabled]="!name || !email || !subject || !message">Verzenden</button>
             </div>
         </div>
     </div>

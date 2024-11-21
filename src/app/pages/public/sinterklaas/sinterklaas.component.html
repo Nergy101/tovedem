@@ -58,7 +58,8 @@
                 </mat-form-field>
             </div>
             <div style="display: flex;">
-                <button style="flex: 1;" mat-raised-button (click)="verstuurSinterklaasMail()">Verzenden</button>
+                <button style="flex: 1;" mat-raised-button (click)="verstuurSinterklaasMail()"
+                    [disabled]="!name || !email || !subject || !message">Verzenden</button>
             </div>
         </div>
     </div>

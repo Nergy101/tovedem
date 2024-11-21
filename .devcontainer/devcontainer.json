@@ -22,7 +22,9 @@
   "postAttachCommand": "bash .devcontainer/scripts/postattach.sh",
   // Configure tool-specific properties.
   "customizations": {
-    "vscode": { "settings": {}, "extensions": [
+    "vscode": {
+      "settings": {},
+      "extensions": [
         "Angular.ng-template",
         "aaron-bond.better-comments",
         "pranaygp.vscode-css-peek",
@@ -31,9 +33,10 @@
         "ecmel.vscode-html-css",
         "stateful.runme",
         "christian-kohler.npm-intellisense"
-      ] }
-  }
+      ]
+    }
+  },
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  //"remoteUser": "root"
+  "remoteUser": "root"
 }
