@@ -22,6 +22,7 @@
                         <th scope="col">Datum Tijd 1 </th>
                         <th scope="col">Datum Tijd 2 </th>
                         <th scope="col">Spelers</th>
+                        <th scope="col">Publiseren</th>
                         <th scope="col"></th>
                         @if (!!authService.isGlobalAdmin)
                         {
@@ -29,7 +30,7 @@
                         }
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> 
 
                     @for (item of items(); track $index)
                     {
@@ -37,8 +38,8 @@
                         <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
                         <td>{{item.titel}}</td>
                         <td>{{item.expand.groep.naam}}</td>
-                        <td>{{item.datum_tijd_1 | date : 'HH:mm'}}</td>
-                        <td>{{item.datum_tijd_2| date : 'HH:mm'}}</td>
+                        <td>{{item.datum_tijd_1 | date : 'MMM d, Y [HH:mm]'}}</td>
+                        <td>{{item.datum_tijd_2 | date : 'MMM d, Y [HH:mm]'}}</td>
                         <td>
                             @if ((item.expand?.spelers?.length || 0) >
                             0) {
@@ -60,6 +61,14 @@
                             <span>
                                 Geen Spelers
                             </span>
+                            }
+                        </td>
+                        <td>
+                            @if(publicatieActief(item.publicatie_datum)){
+                                <button mat-mini-fab disabled> <mat-icon >share</mat-icon></button>
+                            }
+                            @else {
+                                <button mat-icon-button [matTooltip]="item.publicatie_datum"  style="background-color: rgb(48, 205, 48);" ><mat-icon>share</mat-icon></button>
                             }
                         </td>
                         <td>

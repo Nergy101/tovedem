@@ -13,6 +13,13 @@ import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -23,7 +30,14 @@ import { DatePipe } from '@angular/common';
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    DatePipe
+    DatePipe,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatTooltipModule,
+  ],providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
@@ -90,5 +104,20 @@ export class BeheerVoorstellingenComponent {
     }
 
     this.loading.set(false);
+  }
+
+  publicatieActief(publishDate: Date){
+    const currentDate = new Date();
+    console.log (publishDate)
+    console.log (currentDate)
+    console.log( currentDate.setHours(0,0,0,0) < publishDate.setHours(0,0,0,0))
+    if(Number(currentDate) - Number(publishDate) > 0){
+
+      return true;
+    }
+    else {return false;}
+    
+
+
   }
 }

@@ -61,6 +61,9 @@ export class ReserveringAanpassenComponent {
   email = signal('');
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
+  opmerking = signal("");
+  
+  opmerkingLength = signal('');
   amountOfPeopleDate1 = signal(0);
   amountOfPeopleDate2 = signal(0);
   saving = signal(false);
@@ -164,6 +167,14 @@ export class ReserveringAanpassenComponent {
 
   onNameChanged(newValue: string) {
     this.name.set(newValue);
+  }
+
+  onOpmerkingChange(newValue: string){
+    this.opmerking.set(newValue);
+  }
+  
+  onOpmerkingChange2(event: Event){
+    this.opmerkingLength.set((event.target as HTMLInputElement).value);
   }
 
   onSurnameChanged(newValue: string) {

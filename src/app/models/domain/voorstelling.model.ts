@@ -10,6 +10,7 @@ export interface Voorstelling extends BaseModel {
   datum_tijd_1: string;
   datum_tijd_2?: string;
   spelers?: string[];
+  publicatie_datum: string;
 };
 
 export function voorstellingIsInToekomst(date: Date) {
