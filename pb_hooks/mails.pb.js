@@ -66,7 +66,7 @@ onRecordAfterCreateRequest((e) => {
 
     const recipientBeheer = "ptrvlaar@gmail.com";
 
-    $app.logger().info("recipientBeheer", JSON.stringify(recipientBeheer));
+    $app.logger().info("recipient", JSON.stringify(recipientBeheer));
 
     const messageBeheer = new MailerMessage({
         from: {
