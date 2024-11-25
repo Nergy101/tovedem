@@ -67,7 +67,7 @@
         </h2>
         <app-pie-chart
           [series]="seriesDatum1()"
-          [labels]="labels()"
+          [labels]="labelsDatum1()"
         ></app-pie-chart>
       </div>
       @if (!!selectedVoorstelling()!.datum_tijd_2) {
@@ -75,7 +75,7 @@
           <h2 class="text-center">
             {{ selectedVoorstelling()!.datum_tijd_2! | date: "dd-MM-YYYY" }}
           </h2>
-          <app-pie-chart [series]="seriesDatum2()" [labels]="labels()">
+          <app-pie-chart [series]="seriesDatum2()" [labels]="labelsDatum2()">
           </app-pie-chart>
         </div>
       }

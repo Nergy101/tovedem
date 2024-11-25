@@ -126,5 +126,19 @@ export class ReserveringenInzienComponent implements OnInit {
     return [gereseveerd, vrij];
   })
 
-  labels = signal<string[]>(["Gereserveerd", "Vrij"])
+  labelsDatum1 = computed<string[]>(() => {
+    const gereserveerd = this.seriesDatum1()[0];
+    const vrij = this.seriesDatum1()[1];
+
+    return [`Gereserveerd: ${gereserveerd}`, `Vrij ${vrij}`]
+  })
+
+  labelsDatum2 = computed<string[]>(() => {
+
+    const gereserveerd = this.seriesDatum2()[0];
+    const vrij = this.seriesDatum2()[1];
+
+    return [`Gereserveerd: ${gereserveerd}`, `Vrij ${vrij}`]
+  })
+
 }
