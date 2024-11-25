@@ -1,16 +1,21 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { Observable, filter, map, startWith } from 'rxjs';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { ChartOptions, PieChartComponent } from './pie-chart/pie-chart.component';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -22,9 +27,14 @@ import { ChartOptions, PieChartComponent } from './pie-chart/pie-chart.component
     MatButtonModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     DatePipe,
     MatExpansionModule,
-    PieChartComponent
+    PieChartComponent,
+    MatCardModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss'
@@ -41,7 +51,9 @@ export class ReserveringenInzienComponent implements OnInit {
   selectedVoorstelling = signal<Voorstelling | null>(null);
   reserveringenOfSelectedVoorstelling = signal<Reservering[]>([]);
 
-
+  reservatieSearchControl = new FormControl('');
+  filteredOptions: Observable<Reservering[]>;
+  selectedOption = signal<Reservering | null>(null);
 
   constructor() {
     // set Reserveringen Of Voorstelling
@@ -64,6 +76,24 @@ export class ReserveringenInzienComponent implements OnInit {
 
       this.reserveringenOfSelectedVoorstelling.set(reserveringen)
     }, { allowSignalWrites: true })
+
+    this.filteredOptions = this.reservatieSearchControl.valueChanges.pipe(
+      takeUntilDestroyed(),
+      startWith(''),
+      filter(x => typeof (x) === 'string'),
+      map(filter => this._filter(filter || '')),
+    );
+  }
+
+  private _filter(value: string): Reservering[] {
+    console.log('filtering value', value)
+    const filterValue = value.toLowerCase();
+
+    return this.reserveringenOfSelectedVoorstelling()
+      .filter(option =>
+        option.voornaam.toLowerCase().includes(filterValue)
+        || option.achternaam.toLowerCase().includes(filterValue)
+        || option.email.toLowerCase().includes(filterValue));
   }
 
   async ngOnInit(): Promise<void> {
@@ -76,36 +106,15 @@ export class ReserveringenInzienComponent implements OnInit {
     this.selectedVoorstelling.set(event.value)
   }
 
-  getChartOptionsDatum2(): ChartOptions {
-    let aantalGereserveerdDatum2 = 0;
-    let aantalVrijDatum2 = 80;
+  setSelectedOption(value: Reservering) {
+    this.selectedOption.set(this.reserveringenOfSelectedVoorstelling()
+      .find(x => x.id === value.id)
+      ?? null);
+  }
 
-    this.reserveringenOfSelectedVoorstelling().forEach((reservering) => {
-      aantalGereserveerdDatum2 += reservering.datum_tijd_2_aantal;
-      aantalVrijDatum2 -= reservering.datum_tijd_2_aantal;
-    })
-
-    return {
-      series: [aantalGereserveerdDatum2, aantalVrijDatum2],
-      chart: {
-        width: 380,
-        type: "pie"
-      },
-      labels: ["Gereserveerd", "Vrij"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
-    }
+  displayFn(reservering: Reservering | undefined): string {
+    if (!reservering) return 'Geen geselecteerd'
+    return `${reservering.voornaam} ${reservering.achternaam} - ${reservering.email}`
   }
 
   seriesDatum1 = computed(() => {

@@ -1,4 +1,4 @@
-<div class="row" style="margin-top: 1em">
+<div class="row">
   <mat-form-field>
     <mat-select
       placeholder="Selecteer een voorstelling"
@@ -16,8 +16,8 @@
   @if (
     !!selectedVoorstelling() && reserveringenOfSelectedVoorstelling().length > 0
   ) {
-    <div class="row">
-      <mat-expansion-panel>
+    <div class="row col-12 mb-4 justify-content-center">
+      <mat-expansion-panel style="width: 80%">
         <mat-expansion-panel-header>
           <mat-panel-title> Toon data tabel </mat-panel-title>
           <mat-panel-description>
@@ -62,23 +62,71 @@
 
     <div class="row col-12">
       <div class="col-6">
-        <h2 class="text-center">
-          {{ selectedVoorstelling()!.datum_tijd_1 | date: "dd-MM-YYYY" }}
-        </h2>
-        <app-pie-chart
-          [series]="seriesDatum1()"
-          [labels]="labelsDatum1()"
-        ></app-pie-chart>
-      </div>
-      @if (!!selectedVoorstelling()!.datum_tijd_2) {
-        <div class="col-6">
-          <h2 class="text-center">
-            {{ selectedVoorstelling()!.datum_tijd_2! | date: "dd-MM-YYYY" }}
+        <mat-card class="center-items" appearance="outlined">
+          <h2>
+            {{ selectedVoorstelling()!.datum_tijd_1 | date: "dd-MM-YYYY" }}
           </h2>
-          <app-pie-chart [series]="seriesDatum2()" [labels]="labelsDatum2()">
-          </app-pie-chart>
-        </div>
+          <app-pie-chart
+            [series]="seriesDatum1()"
+            [labels]="labelsDatum1()"
+          ></app-pie-chart>
+        </mat-card>
+      </div>
+      <div class="col-6">
+        <mat-card class="center-items" appearance="outlined">
+          @if (!!selectedVoorstelling()!.datum_tijd_2) {
+            <h2 class="text-center">
+              {{ selectedVoorstelling()!.datum_tijd_2! | date: "dd-MM-YYYY" }}
+            </h2>
+            <app-pie-chart [series]="seriesDatum2()" [labels]="labelsDatum2()">
+            </app-pie-chart>
+          } @else {
+            Geen tweede datum
+          }
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="row col-12">
+      <mat-form-field class="col-12">
+        <mat-label>Zoek naar reservatie</mat-label>
+        <input
+          type="text"
+          aria-label="Number"
+          matInput
+          [formControl]="reservatieSearchControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          (optionSelected)="setSelectedOption($event.option.value)"
+        >
+          @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option">
+              {{ option.voornaam }} - {{ option.achternaam }} -
+              {{ option.email }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      @if (!!selectedOption()) {
+        <mat-card>
+          <mat-card-header
+            >{{ selectedOption()!.voornaam }} {{ selectedOption()!.achternaam }}
+          </mat-card-header>
+          <mat-card-content>
+            {{ selectedOption() | json }}
+          </mat-card-content>
+        </mat-card>
       }
+    </div>
+  } @else {
+    <div class="row">
+      <mat-card class="center-items m-3 p-3" appearance="outlined">
+        Geen data beschikbaar
+      </mat-card>
     </div>
   }
 </div>
