@@ -1,6 +1,5 @@
 import {
   Component,
-  Inject,
   WritableSignal,
   effect,
   inject,
@@ -10,27 +9,26 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatLine } from '@angular/material/core';
+import { MatLine, MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelect } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
-import { debounceTime, lastValueFrom, pipe, tap } from 'rxjs';
+import { debounceTime, lastValueFrom, tap } from 'rxjs';
 import { Reservering } from '../../../models/domain/reservering.model';
-import { Voorstelling, dagenTussenNuEnVoorstellingDatum } from '../../../models/domain/voorstelling.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
-import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { Subject } from 'rxjs';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/core';
-import { MatMenuModule } from '@angular/material/menu';
+import { ReserveringenInzienComponent } from './reserveringen-inzien/reserveringen-inzien.component';
 
 
 
@@ -53,6 +51,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelect,
     MatOption,
     MatMenuModule,
+    ReserveringenInzienComponent
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',
@@ -87,14 +86,14 @@ export class BeheerReserveringenComponent {
   kidsLabels: number = 1; // Initial amount value
 
   createListOfAmountOfItems(amountOfItems: number) {
-    console.log('received createlist for items:', amountOfItems)
+    // console.log('received createlist for items:', amountOfItems)
     let list: any[] = []
 
     for (let index = 0; index < amountOfItems; index++) {
       list.push({})
     }
 
-    console.log(list)
+    // console.log(list)
     return list
   }
 
@@ -102,7 +101,7 @@ export class BeheerReserveringenComponent {
     return !!this.selectedVoorstelling();
   }
 
-  amountOfItemsForReservation(reservering: any){
+  amountOfItemsForReservation(reservering: any) {
     return this.selectedDatum() ==
       "Datum 1" ? reservering.datum_tijd_1_aantal :
       reservering.datum_tijd_2_aantal
@@ -183,7 +182,7 @@ export class BeheerReserveringenComponent {
       });
 
     effect(() => {
-      console.log('reserveringenVoorVoorstelling', this.reserveringenVanVoorstelling())
+      // console.log('reserveringenVoorVoorstelling', this.reserveringenVanVoorstelling())
     })
 
     effect(async () => {
@@ -295,20 +294,20 @@ export class BeheerReserveringenComponent {
   createHtml(): string {
     return `
   <html>
-  
+
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
     @media print {
       img {
-          display: inline-block; 
-          width: auto; 
+          display: inline-block;
+          width: auto;
           height: auto;
       }
     }
   </style>
   </head>
-  
+
   <body style="display:flex; font:400 14px/20px Roboto,sans-serif; letter-spacing: .0178571429em">
     <div style="display:flex; flex-direction: column;">
     <div style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: center;>

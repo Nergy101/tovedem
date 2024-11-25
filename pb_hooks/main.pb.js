@@ -1,4 +1,3 @@
-
 // //* This script is used to send an email to the user after a reservation is made
 // onRecordAfterCreateRequest((e) => {
 //   console.log("reservering aangemaakt", JSON.stringify(e.record));

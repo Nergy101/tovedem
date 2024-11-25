@@ -1,0 +1,84 @@
+<div class="row" style="margin-top: 1em">
+  <mat-form-field>
+    <mat-select
+      placeholder="Selecteer een voorstelling"
+      (selectionChange)="setSelectedVoorstelling($event)"
+    >
+      @for (voorstelling of voorstellingen(); track $index) {
+        <mat-option [value]="voorstelling"
+          >{{ voorstelling.titel }} -
+          {{ voorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}</mat-option
+        >
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (
+    !!selectedVoorstelling() && reserveringenOfSelectedVoorstelling().length > 0
+  ) {
+    <div class="row">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Toon data tabel </mat-panel-title>
+          <mat-panel-description>
+            {{ selectedVoorstelling()!.titel }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Voornaam</th>
+              <th scope="col">Achternaam</th>
+              <th scope="col">Email</th>
+              <th scope="col">Datum 1 Aantal</th>
+              <th scope="col">Datum 2 Aantal</th>
+              <th scope="col">Vriend</th>
+              <th scope="col">Lid</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of reserveringenOfSelectedVoorstelling(); track $index) {
+              <tr>
+                <td>{{ item.voornaam }}</td>
+                <td>{{ item.achternaam }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.datum_tijd_1_aantal }}</td>
+                <td>{{ item.datum_tijd_2_aantal }}</td>
+
+                <td>
+                  <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
+                  </mat-checkbox>
+                </td>
+                <td>
+                  <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
+                  </mat-checkbox>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="row col-12">
+      <div class="col-6">
+        <h2 class="text-center">
+          {{ selectedVoorstelling()!.datum_tijd_1 | date: "dd-MM-YYYY" }}
+        </h2>
+        <app-pie-chart
+          [series]="seriesDatum1()"
+          [labels]="labels()"
+        ></app-pie-chart>
+      </div>
+      @if (!!selectedVoorstelling()!.datum_tijd_2) {
+        <div class="col-6">
+          <h2 class="text-center">
+            {{ selectedVoorstelling()!.datum_tijd_2! | date: "dd-MM-YYYY" }}
+          </h2>
+          <app-pie-chart [series]="seriesDatum2()" [labels]="labels()">
+          </app-pie-chart>
+        </div>
+      }
+    </div>
+  }
+</div>
