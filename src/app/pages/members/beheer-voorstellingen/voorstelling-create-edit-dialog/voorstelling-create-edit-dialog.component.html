@@ -76,9 +76,17 @@
         </div>
       </div>
       <div class="row">
+        <mat-form-field class="col-md-3 col-6">
+          <mat-label>Publicatie datum</mat-label>
+          <input matInput [matDatepicker]="picker3" [(ngModel)]="publicatie_datum" name="picker3" />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
         <h3>Afbeelding</h3>
         <app-tovedem-file-picker (onFileUploaded)="onFileUploaded($event)"></app-tovedem-file-picker>
       </div>
+      
 
       <div class="row">
         <div class="col-md-6 col-12 d-flex justify-content-center">

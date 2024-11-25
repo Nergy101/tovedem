@@ -67,7 +67,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   selectedSpelers: any[] = [];
   selectedGroep?: any;
   voorstelling?: Voorstelling;
-
+  publicatie_datum?: Date;
   afbeelding?: FilePreviewModel;
 
   loading = signal(false);
@@ -119,6 +119,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       this.selectedGroep = this.groepen().find(g => g.id == this.existingVoorstelling?.expand?.groep?.id);
       this.datum1 = new Date(this.existingVoorstelling.datum_tijd_1);
       this.datum2 = !!this.existingVoorstelling.datum_tijd_2 ? new Date(this.existingVoorstelling.datum_tijd_2) : undefined;
+      this.publicatie_datum = new Date(this.existingVoorstelling.publicatie_datum);
+      console.log(this.publicatie_datum);
       //TODO fix
 
       this.tijd1 = this.formatDateTo12HourString(new Date(this.existingVoorstelling.datum_tijd_1))
@@ -137,7 +139,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       groep: this.selectedGroep?.id,
       // tijden added below
       datum_tijd_1: undefined,
-      datum_tijd_2: undefined
+      datum_tijd_2: undefined,
       // spelers added through form-data
       // afbeelding added through form-data
     } as any;
@@ -161,6 +163,13 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
         .toISO();
 
       voorstelling.datum_tijd_2 = date2ISO;
+    }
+
+    if (!!this.publicatie_datum) {
+      let publicatie_datum = DateTime.fromISO(this.publicatie_datum!.toISOString());
+      const PublicatieDateISO = publicatie_datum.toISO();
+
+      voorstelling.publicatie_datum = PublicatieDateISO;
     }
 
     const formData = this.objectToFormData(voorstelling);

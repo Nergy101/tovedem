@@ -67,6 +67,8 @@ export class ReserverenComponent implements OnInit {
   email = signal('');
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
+  opmerking = signal('')
+  opmerkingLength = signal('')
   amountOfPeopleDate1 = signal(0);
   amountOfPeopleDate2 = signal(0);
   saving = signal(false);
@@ -138,7 +140,7 @@ export class ReserverenComponent implements OnInit {
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
         guid: this.uuidv4(),
-        opmerking: ''
+        opmerking: this.opmerking(),
       }
     );
 
@@ -183,5 +185,13 @@ export class ReserverenComponent implements OnInit {
 
   amountOfPeopleDate2Changed(newValue: number) {
     this.amountOfPeopleDate2.set(newValue);
+  }
+
+  onOpmerkingChange(newValue: string){
+    this.opmerking.set(newValue);
+  }
+
+  onOpmerkingChange2(event: Event){
+    this.opmerkingLength.set((event.target as HTMLInputElement).value);
   }
 }

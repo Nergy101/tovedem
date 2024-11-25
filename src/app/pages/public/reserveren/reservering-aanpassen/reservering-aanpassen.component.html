@@ -91,6 +91,11 @@
                     </div>
                     <div class="row">
                         <div class="d-flex align-items-center flex-column">
+                            <mat-form-field>
+                                <mat-label>Opmerking</mat-label>
+                                <textarea matInput #input maxlength="250" type="opmerking" [ngModel]="opmerking()" (ngModelChange)="onOpmerkingChange($event)" (input)="onOpmerkingChange2($event)"></textarea>
+                                <mat-hint align="end">{{opmerkingLength().length}}/250</mat-hint>
+                            </mat-form-field>
                             <div class="d-flex flex-column">
                                 <mat-checkbox [ngModel]="vriendVanTovedem()" color="primary"
                                     (ngModelChange)="vriendVanTovedemChanged($event)"
