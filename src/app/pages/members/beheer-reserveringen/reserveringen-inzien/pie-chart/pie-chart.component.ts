@@ -7,6 +7,7 @@ export interface ChartOptions {
   chart: ApexChart;
   responsive: ApexResponsive[];
   labels: any;
+  dataLabels: any;
 };
 
 @Component({
@@ -28,6 +29,13 @@ export class PieChartComponent {
         type: "pie"
       },
       labels: this.labels(),
+      dataLabels: {
+        enabled: true,
+        formatter: function (val: any, opts: any) {
+          // Display the absolute value
+          return opts.w.config.series[opts.seriesIndex];
+        },
+      },
       responsive: [
         {
           breakpoint: 480,

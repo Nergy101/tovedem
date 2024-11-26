@@ -113,7 +113,7 @@ export class ReserveringenInzienComponent implements OnInit {
   }
 
   displayFn(reservering: Reservering | undefined): string {
-    if (!reservering) return 'Geen geselecteerd'
+    if (!reservering) return ''
     return `${reservering.voornaam} ${reservering.achternaam} - ${reservering.email}`
   }
 
@@ -135,19 +135,7 @@ export class ReserveringenInzienComponent implements OnInit {
     return [gereseveerd, vrij];
   })
 
-  labelsDatum1 = computed<string[]>(() => {
-    const gereserveerd = this.seriesDatum1()[0];
-    const vrij = this.seriesDatum1()[1];
-
-    return [`Gereserveerd: ${gereserveerd}`, `Vrij ${vrij}`]
+  labels = computed<string[]>(() => {
+    return ['Gereserveerd', 'Vrij']
   })
-
-  labelsDatum2 = computed<string[]>(() => {
-
-    const gereserveerd = this.seriesDatum2()[0];
-    const vrij = this.seriesDatum2()[1];
-
-    return [`Gereserveerd: ${gereserveerd}`, `Vrij ${vrij}`]
-  })
-
 }
