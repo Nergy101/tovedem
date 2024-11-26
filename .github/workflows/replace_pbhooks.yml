@@ -3,7 +3,9 @@ name: Replace hooks folder with latest
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches: ["main", "peters-mails"]
+    paths:
+      - "pb_hooks/**"
 
 jobs:
   ReplaceHooksFolderWithLatest:
