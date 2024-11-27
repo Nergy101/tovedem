@@ -2,5 +2,5 @@
 # and uses the build-artifacts directory to copy the build files to the nginx image.
 FROM nginx:1.17.1-alpine
 COPY config/nginx.conf /etc/nginx/nginx.conf
-COPY /home/runner/work/tovedem/tovedem /usr/share/nginx/html
+COPY dist/tovedem-reserveringen/browser /usr/share/nginx/html
 EXPOSE 80
