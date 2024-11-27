@@ -19,15 +19,15 @@ export class AuthService {
   sideDrawerService = inject(SideDrawerService);
   client = inject(PocketbaseService).client;
 
-  public userRecord: WritableSignal<Gebruiker | AdminModel | null | undefined> =
+  public userRecord: WritableSignal<Gebruiker | null | undefined> =
     signal<Gebruiker | null | undefined>(undefined);
 
-  public userData: Signal<Gebruiker | AdminModel | null> = computed(() => {
+  public userData: Signal<Gebruiker | null> = computed(() => {
     return this.userRecord() ?? null;
   });
 
   get isGlobalAdmin(): boolean {
-    return this.client?.authStore?.isAdmin ?? false;
+    return this.client?.authStore?.model?.collectionName === "_superusers";
   }
 
   public isLoggedIn: Signal<boolean> = computed(() => {
@@ -59,7 +59,7 @@ export class AuthService {
     return false;
   }
 
-  registerUser(userRecord: Gebruiker | AdminModel): void {
+  registerUser(userRecord: Gebruiker): void {
     this.userRecord.set(userRecord);
     this.sideDrawerService.open();
   }

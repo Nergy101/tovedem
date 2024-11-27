@@ -65,13 +65,14 @@ export class LoginComponent {
           this.router.navigate(['profiel']);
         }
       } catch {
-        const authData = await this.pocketbase.client.admins.authWithPassword(
+        const authData = await this.pocketbase.client.collection("_superusers").authWithPassword(
           this.usernameOrEmail!,
           this.password!
         );
 
-        if (!!authData?.admin) {
-          this.authService.registerUser(authData.admin);
+        console.log("Admin data", authData);
+        if (!!authData.record) {
+          this.authService.registerUser(authData.record as any as Gebruiker);
           this.router.navigate(['profiel']);
         }
       } finally {
