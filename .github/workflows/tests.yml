@@ -40,6 +40,12 @@ jobs:
         with:
           name: build-artifact
 
+      - name: Install tree
+        run: sudo apt-get update && sudo apt-get install -y tree
+
+      - name: Output directory tree
+        run: tree
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
