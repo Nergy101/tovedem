@@ -5,7 +5,6 @@ routerAdd("GET", "/hello", (context) => {
 routerAdd("POST", "/recaptcha", (context) => {
     const recaptchaSecret = process.env.RECAPTCHA_SECRET;
     const requestInfo = context.requestInfo();
-    $app.logger().warn(JSON.stringify(requestInfo));
     const data = requestInfo.body;
     const token = data.token;
 
