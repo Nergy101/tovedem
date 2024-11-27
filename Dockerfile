@@ -1,3 +1,5 @@
+# This dockerfile is used to build the Docker image locally,
+# and builds its own dist directory in the 1st base layer to copy the build files to the nginx image.
 FROM node:22.3-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
