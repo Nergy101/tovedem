@@ -1,4 +1,4 @@
-name: Deploy new Docker Image version
+name: Deployment tests
 
 on:
   workflow_dispatch:
