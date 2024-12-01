@@ -22,6 +22,7 @@ import { BeheerMailsComponent } from './pages/members/beheer-mails/beheer-mails.
 import { ReserveringEditDialogComponent } from './pages/members/beheer-reserveringen/reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ReserveringAanpassenComponent } from './pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component';
 import { ProductieInfoComponent } from './pages/members/productie-info/productie-info.component';
+import { CommissieSinterklaasComponent } from './pages/members/commissie-sinterklaas/commissie-sinterklaas.component';
 
 export const routes: Routes = [
   {
@@ -127,6 +128,11 @@ export const routes: Routes = [
   {
     path: 'productie-info/Mejotos',
     component: ProductieInfoComponent,
+    canActivate: [loggedInGuard]
+  },
+  {
+    path: 'commissie-sinterklaas',
+    component: CommissieSinterklaasComponent,
     canActivate: [loggedInGuard]
   },
 ];

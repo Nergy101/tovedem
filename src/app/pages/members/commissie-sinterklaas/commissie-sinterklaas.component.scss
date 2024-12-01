@@ -1,0 +1,29 @@
+
+
+.splash-image {
+    background: url("/assets/Sinterklaas_banner.jpg") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 14em;
+    min-width: 100%;
+    margin-bottom: 2%;
+  }
+
+  .section-label {
+    background-color: #90F1EF;
+    border-radius: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  .section-text {
+    text-align: center; 
+    margin-bottom: 2.5em; 
+    margin-top: 0.5;
+  }
+
+  .styleGreen{
+    background-color: #90F1FE;
+  }
+  
