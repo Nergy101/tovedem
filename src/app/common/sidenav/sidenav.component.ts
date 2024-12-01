@@ -1,5 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
+import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { FormsModule } from '@angular/forms';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -15,7 +17,11 @@ import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { FooterComponent } from '../footer/footer.component';
 import { NavbarComponent } from '../navbar/navbar.component';
-
+import { MatBadgeModule} from '@angular/material/badge';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 @Component({
   selector: 'sidenav',
   standalone: true,
@@ -33,6 +39,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
     FooterComponent,
     MatListModule,
     MatExpansionModule,
+    MatBadgeModule,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
@@ -41,11 +48,18 @@ export class SidenavComponent {
   sideDrawerService = inject(SideDrawerService);
   authService = inject(AuthService);
   breakpointService = inject(BreakpointService);
+  sintVerzoeken: WritableSignal<any[] | null> = signal(null);
+  client = inject(PocketbaseService);
 
   toggle() {
     if (!this.breakpointService.isDesktopScreen()) {
       this.sideDrawerService.toggle();
     }
+    //this.sintVerzoeken.set(
+      //await this.client.getAll('sinterklaas_verzoeken', {
+      //  sort: '-created',
+      //})
+    //);
   }
 
   close() {
