@@ -19,6 +19,18 @@ $custom-light-theme: mat.define-light-theme(
       accent: (
         default: #424242,
       ),
+      tovGreen: (
+        default: #68A357,
+      ),
+      tovYellow: (
+        default: #F4E409,
+      ),
+      tovOrange: (
+        default: #EEBA0B,
+      ),
+      tovBlue: (
+        default: #90F1EF
+      ),
     ),
   )
 );

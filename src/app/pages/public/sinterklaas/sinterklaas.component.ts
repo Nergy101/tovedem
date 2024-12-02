@@ -55,6 +55,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   subject: string | null = null;
   message: string | null = null;
   images: any[] = [];
+  status: string | null = null;
 
   toastr = inject(ToastrService);
   router = inject(Router);
@@ -86,7 +87,8 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
                   name: this.name,
                   email: this.email,
                   subject: this.subject,
-                  message: this.message
+                  message: this.message,
+                  status: "nieuw"
                 });
 
                 this.toastr.success('Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.');
