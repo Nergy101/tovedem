@@ -1,10 +1,10 @@
 /* Send an email after somebody did a reservation */
-onRecordAfterCreateRequest((e) => {
+onRecordAfterCreateSuccess((e) => {
     const mailing = require(`${__hooks}/mailing.js`);
 
     const reservatie = e.record;
-    $app.dao().expandRecord(e.record, ["voorstelling"], null);
-    const voorstelling = e.record.expandedOne("voorstelling");
+    $app.expandRecord(reservatie, ["voorstelling"], null);
+    const voorstelling = reservatie.expandedOne("voorstelling");
 
     const mailInfo = mailing.getMail("reservatie_confirmatie");
 
@@ -28,7 +28,7 @@ onRecordAfterCreateRequest((e) => {
 }, "reserveringen");
 
 /* Send an email after somebody did a sinterklaas verzoek */
-onRecordAfterCreateRequest((e) => {
+onRecordAfterCreateSuccess((e) => {
     const mailing = require(`${__hooks}/mailing.js`);
 
     const verzoek = e.record;
@@ -60,13 +60,13 @@ onRecordAfterCreateRequest((e) => {
     // ...
     const mailInfoBeheer = mailing.getMail("sintcommissie-beheer");
     const filledMailTemplateBeheer = mailing.getSintcommissieBeheerMailHtml(
-        mailInfo,
+        mailInfoBeheer,
         verzoek,
     );
 
     const recipientBeheer = "ptrvlaar@gmail.com";
 
-    $app.logger().info("recipient", JSON.stringify(recipientBeheer));
+    $app.logger().info("recipient", JSON.stringify({ recipientBeheer }));
 
     const messageBeheer = new MailerMessage({
         from: {
@@ -79,6 +79,4 @@ onRecordAfterCreateRequest((e) => {
     });
 
     $app.newMailClient().send(messageBeheer);
-
-
 }, "sinterklaas_verzoeken");

@@ -1,15 +1,15 @@
 module.exports = {
     getMail: (mailName) => {
         const filter = `naam = '${mailName}'`;
-        const record = $app.dao().findFirstRecordByFilter("mails", filter);
+        const record = $app.findFirstRecordByFilter("mails", filter);
 
-        if (!mailInfo) {
-            throw new Error("Mail template 'sintcommissie' not found");
+        if (!record) {
+            throw new Error($`Mail template '${mailName}' not found`);
         }
 
         if (record.length > 1) {
             throw new Error(
-                "Multiple mails found with the same name: " + mailName,
+                `Multiple mails found with the same name: '${mailName}'`,
             );
         }
 
@@ -55,13 +55,16 @@ module.exports = {
             /{reserveerdersNaam}/g,
             reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
         );
-        mailHtml = mailHtml.replace(/{voorstellingsNaam}/g, voorstelling.get("titel"));
+        mailHtml = mailHtml.replace(
+            /{voorstellingsNaam}/g,
+            voorstelling.get("titel"),
+        );
 
         mailHtml = mailHtml.replace(
             /{aantal1}/g,
             reservatie.get("datum_tijd_1_aantal"),
         );
-        mailHtml = mailHtml.replace(/{datum1}/g, datumOnly);
+        mailHtml = mailHtml.replace(/{datum1}/g, datumOnly1);
         mailHtml = mailHtml.replace(/{tijd1}/g, tijdOnly1);
         mailHtml = mailHtml.replace(
             /{islid1}/g,
@@ -92,6 +95,7 @@ module.exports = {
 
         return mailHtml;
     },
+
     getSintcommissieMailHtml: (mailInfo, verzoek) => {
         $app.logger().info("mailinfo", JSON.stringify(mailInfo));
         $app.logger().info("verzoek", JSON.stringify(verzoek));
@@ -104,10 +108,10 @@ module.exports = {
     },
 
     getSintcommissieBeheerMailHtml: (mailInfoBeheer, verzoek) => {
-        $app.logger().info("mailinfoBeheer", JSON.stringify(Beheer));
+        $app.logger().info("mailinfoBeheer", JSON.stringify(mailInfoBeheer));
         $app.logger().info("verzoek", JSON.stringify(verzoek));
 
-        let mailHtml = mailInfo.get("inhoud");
+        let mailHtml = mailInfoBeheer.get("inhoud");
 
         mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
         mailHtml = mailHtml.replace(/{email}/g, verzoek.get("email"));
@@ -115,5 +119,4 @@ module.exports = {
 
         return mailHtml;
     },
-    
 };
