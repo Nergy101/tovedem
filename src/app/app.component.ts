@@ -27,7 +27,8 @@ registerLocaleData(localeNL);
   styleUrl: './app.component.scss',
   providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
   imports: [
-    RouterOutlet, ,
+    RouterOutlet,
+    RouterModule,
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
