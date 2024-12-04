@@ -28,7 +28,7 @@ registerLocaleData(localeNL);
   providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
   imports: [
     RouterOutlet,
-    RouterModule,
+    ,
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
