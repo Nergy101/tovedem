@@ -1,23 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { tap } from 'rxjs';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { Reservering } from '../../../../models/domain/reservering.model';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
+import { tap } from 'rxjs';
+import { Reservering } from '../../../../models/domain/reservering.model';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
   selector: 'app-reservering-aanpassen',
@@ -62,7 +62,7 @@ export class ReserveringAanpassenComponent {
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
   opmerking = signal("");
-  
+
   opmerkingLength = signal('');
   amountOfPeopleDate1 = signal(0);
   amountOfPeopleDate2 = signal(0);
@@ -150,7 +150,9 @@ export class ReserveringAanpassenComponent {
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
         opmerking: this.reservering().opmerking,
-        guid: this.reservering().guid
+        guid: this.reservering().guid,
+        aanwezig_datum_1: this.reservering().aanwezig_datum_1,
+        aanwezig_datum_2: this.reservering().aanwezig_datum_2
       }
     );
 
@@ -172,7 +174,7 @@ export class ReserveringAanpassenComponent {
   onOpmerkingChange(newValue: string){
     this.opmerking.set(newValue);
   }
-  
+
   onOpmerkingChange2(event: Event){
     this.opmerkingLength.set((event.target as HTMLInputElement).value);
   }

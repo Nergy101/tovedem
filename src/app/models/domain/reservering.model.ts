@@ -11,4 +11,6 @@ export interface Reservering extends BaseModel {
   datum_tijd_2_aantal: number;
   opmerking: string;
   guid: string;
+  aanwezig_datum_1: boolean;
+  aanwezig_datum_2: boolean;
 }
