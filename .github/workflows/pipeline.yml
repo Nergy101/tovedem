@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
+  pull_request:
+    branches:
+      - main
 
 jobs:
   # Stage 1: Build Angular App
