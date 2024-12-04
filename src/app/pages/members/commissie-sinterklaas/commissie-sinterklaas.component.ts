@@ -21,6 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDivider } from '@angular/material/divider';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 
 @Component({
@@ -57,7 +58,13 @@ export class CommissieSinterklaasComponent {
 
   titleService = inject(Title);
 
-  
+  statussen = ["nieuw", "inbehandeling", "ingepland", "afgerond"];
+  statusColor: {[key : string]: string} = {
+    nieuw: "#90F1EF",
+    inbehandeling: "#F4E409",
+    ingepland: "#EEBA0B",
+    afgerond: "#68A357",
+  }
 
   constructor() {
     this.titleService.setTitle('Tovedem - Commissie - Sinterklaas');
@@ -101,5 +108,8 @@ export class CommissieSinterklaasComponent {
     item.status = "afgerond";
     const updated = await this.client.update('sinterklaas_verzoeken', item);
 
+  }
+  getLabelBackgroundColor(state : string){
+    return this.statusColor[state] || "#E3B75B"
   }
 }
