@@ -1,6 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, effect, model } from '@angular/core';
-import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
+import { CommonModule } from "@angular/common";
+import { Component, ViewChild, computed, effect, model } from "@angular/core";
+import {
+  ApexChart,
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ChartComponent,
+  NgApexchartsModule,
+} from "ng-apexcharts";
 
 export interface ChartOptions {
   series: ApexNonAxisChartSeries;
@@ -8,14 +14,14 @@ export interface ChartOptions {
   responsive: ApexResponsive[];
   labels: any;
   dataLabels: any;
-};
+}
 
 @Component({
-  selector: 'app-pie-chart',
+  selector: "app-pie-chart",
   standalone: true,
   imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './pie-chart.component.html',
-  styleUrl: './pie-chart.component.scss'
+  templateUrl: "./pie-chart.component.html",
+  styleUrl: "./pie-chart.component.scss",
 })
 export class PieChartComponent {
   @ViewChild(ChartComponent) chart: ChartComponent | undefined;
@@ -26,10 +32,9 @@ export class PieChartComponent {
   constructor() {
     effect(() => {
       const newSeries = this.series();
-      this.chart?.updateSeries(newSeries)
-    })
+      this.chart?.updateSeries(newSeries);
+    });
   }
-
 
   chartOptions = computed(() => {
     return {
@@ -40,12 +45,12 @@ export class PieChartComponent {
         type: "pie",
         animations: {
           enabled: true,
-        }
+        },
       },
       labels: this.labels(),
       dataLabels: {
         enabled: true,
-        formatter: function (val: any, opts: any) {
+        formatter: function (_val: any, opts: any) {
           // Display the absolute value
           return opts.w.config.series[opts.seriesIndex];
         },
@@ -55,14 +60,14 @@ export class PieChartComponent {
           breakpoint: 480,
           options: {
             chart: {
-              width: 200
+              width: 200,
             },
             legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
-    } as Partial<ChartOptions>
-  })
+              position: "bottom",
+            },
+          },
+        },
+      ],
+    } as Partial<ChartOptions>;
+  });
 }
