@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,7 +16,6 @@ import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -117,25 +117,76 @@ export class ReserveringenInzienComponent implements OnInit {
     return `${reservering.voornaam} ${reservering.achternaam} - ${reservering.email}`
   }
 
+  onCheckboxChange(reservering: Reservering, dag_1_of_2: number): void {
+    if (dag_1_of_2 === 1) {
+      reservering.aanwezig_datum_1 = !reservering.aanwezig_datum_1;
+    } else {
+      reservering.aanwezig_datum_2 = !reservering.aanwezig_datum_2;
+    }
+
+    this.client.update<Reservering>('reserveringen', reservering);
+
+    this.reserveringenOfSelectedVoorstelling.update(
+      reserveringen => reserveringen.map(x => x.id === reservering.id ? reservering : x)
+    )
+  }
+
   seriesDatum1 = computed(() => {
     const reserveringen = this.reserveringenOfSelectedVoorstelling();
+    let aanwezig = 0;
+    let gereserveerd = 0;
+    let vrij = 80;
 
-    const gereserveerd = reserveringen.reduce((acc, reservering) => acc + reservering.datum_tijd_1_aantal, 0)
-    const vrij = reserveringen.reduce((acc, reservering) => acc - reservering.datum_tijd_1_aantal, 80)
-
-    return [gereserveerd, vrij];
+    reserveringen.forEach(reservering => {
+      if (reservering.aanwezig_datum_1) {
+        aanwezig+=  reservering.datum_tijd_1_aantal;
+      } else {
+      gereserveerd += reservering.datum_tijd_1_aantal;
+      }
+      vrij -= reservering.datum_tijd_1_aantal;
+    });
+    return [aanwezig, gereserveerd, vrij];
   })
 
   seriesDatum2 = computed(() => {
     const reserveringen = this.reserveringenOfSelectedVoorstelling();
+    let aanwezig = 0;
+    let gereserveerd = 0;
+    let vrij = 80;
 
-    const gereseveerd = reserveringen.reduce((acc, reservering) => acc + reservering.datum_tijd_2_aantal, 0)
-    const vrij = reserveringen.reduce((acc, reservering) => acc - reservering.datum_tijd_2_aantal, 80)
+    reserveringen.forEach(reservering => {
+      if (reservering.aanwezig_datum_2) {
+        aanwezig+=  reservering.datum_tijd_2_aantal;
+      } else {
+      gereserveerd += reservering.datum_tijd_2_aantal;
+      }
+      vrij -= reservering.datum_tijd_2_aantal;
+    });
 
-    return [gereseveerd, vrij];
+    return [aanwezig, gereserveerd, vrij];
   })
 
+  seriesDatum22Effect = effect(() => {
+    const reserveringen = this.reserveringenOfSelectedVoorstelling();
+    let aanwezig = 0;
+    let gereserveerd = 0;
+    let vrij = 80;
+
+    reserveringen.forEach(reservering => {
+      if (reservering.aanwezig_datum_2) {
+        aanwezig+=  reservering.datum_tijd_2_aantal;
+      } else {
+      gereserveerd += reservering.datum_tijd_2_aantal;
+      }
+      vrij -= reservering.datum_tijd_2_aantal;
+    });
+
+    this.seriesDatum22 = [aanwezig, gereserveerd, vrij];
+  })
+
+  seriesDatum22 = [0, 0, 80];
+
   labels = computed<string[]>(() => {
-    return ['Gereserveerd', 'Vrij']
+    return ['Aanwezig', 'Gereserveerd', 'Vrij']
   })
 }

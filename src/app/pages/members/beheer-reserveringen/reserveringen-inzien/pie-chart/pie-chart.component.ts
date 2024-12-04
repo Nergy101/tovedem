@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, model } from '@angular/core';
-import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, NgApexchartsModule } from 'ng-apexcharts';
+import { Component, ViewChild, computed, effect, model } from '@angular/core';
+import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 
 export interface ChartOptions {
   series: ApexNonAxisChartSeries;
@@ -18,15 +18,29 @@ export interface ChartOptions {
   styleUrl: './pie-chart.component.scss'
 })
 export class PieChartComponent {
+  @ViewChild(ChartComponent) chart: ChartComponent | undefined;
+
   series = model.required<number[]>();
   labels = model.required<string[]>();
 
+  constructor() {
+    effect(() => {
+      const newSeries = this.series();
+      this.chart?.updateSeries(newSeries)
+    })
+  }
+
+
   chartOptions = computed(() => {
     return {
-      series: this.series(),
+      autoUpdateSeries: false,
+      series: [],
       chart: {
         width: 380,
-        type: "pie"
+        type: "pie",
+        animations: {
+          enabled: true,
+        }
       },
       labels: this.labels(),
       dataLabels: {
