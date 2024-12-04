@@ -106,4 +106,8 @@ export class CommissieSinterklaasComponent {
     const updated = await this.client.update('sinterklaas_verzoeken', item);
 
   }
+
+  getLabelBackgroundColor(status: string){
+    return this.statusColor[status] || "#000000"
+  }
 }
