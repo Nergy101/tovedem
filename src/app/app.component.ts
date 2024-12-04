@@ -1,23 +1,22 @@
-import { Component, LOCALE_ID, ViewChild, effect, inject } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AgendaComponent } from './pages/public/agenda/agenda.component';
-import { NavbarComponent } from './common/navbar/navbar.component';
-import { FooterComponent } from './common/footer/footer.component';
 import { registerLocaleData } from '@angular/common';
-import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import localeNL from '@angular/common/locales/nl';
-import { AuthService } from './shared/services/auth.service';
-import { SideDrawerService } from './shared/services/side-drawer.service';
+import { Component, LOCALE_ID, ViewChild, effect, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { SidenavComponent } from './common/sidenav/sidenav.component';
-import { BreakpointService } from './shared/services/breakpoint.service';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { CookieBannerComponent } from "./common/cookie-banner/cookie-banner.component";
+import { FooterComponent } from './common/footer/footer.component';
+import { NavbarComponent } from './common/navbar/navbar.component';
+import { SidenavComponent } from './common/sidenav/sidenav.component';
+import { AuthService } from './shared/services/auth.service';
+import { BreakpointService } from './shared/services/breakpoint.service';
+import { SideDrawerService } from './shared/services/side-drawer.service';
 registerLocaleData(localeNL);
 
 @Component({
@@ -28,7 +27,7 @@ registerLocaleData(localeNL);
   providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
   imports: [
     RouterOutlet,
-    ,
+    RouterModule,
     MatButtonModule,
     MatSidenavModule,
     MatInputModule,
@@ -36,7 +35,6 @@ registerLocaleData(localeNL);
     FormsModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    AgendaComponent,
     NavbarComponent,
     FooterComponent,
     MatListModule,
