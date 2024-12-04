@@ -5,25 +5,26 @@
         <div class="row">
             <p class="display-1">Sinterklaas verzoeken</p>
         </div>
-        <div class="section-label" style="background-color: #90F1EF;">
-            <h1 class="section-text">Nieuw</h1>
+        @for(statusIndex of statussen; track $index){
+        <div class="section-label mat-elevation-z2" [style]="{'background-color': getLabelBackgroundColor(statusIndex)}"> 
+            <h1 class="section-text">{{statusIndex.charAt(0).toUpperCase() + statusIndex.slice(1)}}</h1>
         </div>
-        <div class="row" style="margin-top: -4em;">
+        <div class="row" style="margin-top: -4em; margin-left: 0em; margin-right: 0em;">
             @defer(when items()){
             <table class="table mat-elevation-z2" style="background-color: rgb(255, 255, 255);">
                 <thead>
                     <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Onderwerp</th>
-                        <th scope="col">Bericht</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ingepland op</th>
-                        <th scope="col"></th>
+                        <th scope="col" style="width: 10%;">Aangemaakt</th>
+                        <th scope="col" style="width: 20%;">Naam</th>
+                        <th scope="col" style="width: 10%;">email</th>
+                        <th scope="col" style="width: 20%;">Onderwerp</th>
+                        <th scope="col" style="width: 5%;">Bericht</th>
+                        <th scope="col" style="width: 10%;">Status</th>
+                        <th scope="col" style="width: 10%;">Ingepland op</th>
+                        <th scope="col" style="width: 10%;"></th>
                         @if (!!authService.isGlobalAdmin)
                         {
-                        <th scope="col"></th>
+                        <th scope="col" style="width: 5%;"></th>
                         }
                     </tr>
                 </thead>
@@ -31,13 +32,13 @@
 
                     @for (item of items(); track $index)
                     {
-                        @if (item.status == "nieuw"){
+                        @if (item.status == statusIndex){
                     <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.subject}}</td>
-                        <td>
+                        <td style="width: 10%">{{item.created | date : 'dd-LL-YY' }}</td>
+                        <td style="width: 20%;">{{item.name}}</td>
+                        <td style="width: 10%;">{{item.email}}</td>
+                        <td style="width: 20%;">{{item.subject}}</td>
+                        <td style="width: 5%;">
                             @if (item.message == null || item.message == "") {
                             <button mat-fab disabled>
                               <mat-icon>description</mat-icon>
@@ -54,7 +55,7 @@
                             </mat-menu>
                             }
                           </td>
-                        <td><button mat-button [matMenuTriggerFor]="menu" style="background-color: #90F1EF;">{{item.status}}</button>
+                        <td style="width: 10%;"><button mat-button [matMenuTriggerFor]="menu" [style]="{'background-color': getLabelBackgroundColor(statusIndex)}">{{item.status}}</button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item (click)="selectNieuw(item)">nieuw</button>
                                 <button mat-menu-item (click)="selectInbehandeling(item)">inbehandeling</button>
@@ -62,10 +63,10 @@
                                 <button mat-menu-item (click)="selectAfgerond(item)">afgerond</button>
                             </mat-menu>
                         </td>
-                        <td>{{item.plannedDate}}</td>
+                        <td style="width: 10%;">{{item.plannedDate}}</td>
                         @if (!!authService.isGlobalAdmin)
                             {
-                            <td>
+                            <td style="width: 5%;">
                                 <button mat-icon-button (click)="delete(item)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
@@ -80,294 +81,7 @@
                 <mat-spinner></mat-spinner>
             </div>
             }
+            
         </div>
-
-        <div class="section-label" style="background-color: #F4E409;">
-            <h1 class="section-text">In behandeling</h1>
-        </div>
-        <div class="row" style="margin-top: -4em;">
-            @defer(when items()){
-            <table class="table mat-elevation-z2" style="background-color: rgb(255, 255, 255);">
-                <thead>
-                    <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Onderwerp</th>
-                        <th scope="col">Bericht</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ingepland op</th>
-                        <th scope="col"></th>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th scope="col"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @for (item of items(); track $index)
-                    {
-                        @if (item.status == "inbehandeling"){
-                    <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.subject}}</td>
-                        <td>
-                            @if (item.message == null || item.message == "") {
-                            <button mat-fab disabled>
-                              <mat-icon>description</mat-icon>
-                            </button>
-                            } @else {
-                            <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
-                              <mat-icon color>description</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <div style="margin: 5px">
-                                <h3><b>Bericht: </b></h3>
-                                {{ item.message }}
-                              </div>
-                            </mat-menu>
-                            }
-                          </td>
-                        <td><button mat-button [matMenuTriggerFor]="menu" style="background-color: #F4E409;">{{item.status}}</button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="selectNieuw(item)">nieuw</button>
-                                <button mat-menu-item (click)="selectInbehandeling(item)">inbehandeling</button>
-                                <button mat-menu-item (click)="selectIngepland(item)">ingepland</button>
-                                <button mat-menu-item (click)="selectAfgerond(item)">afgerond</button>
-                            </mat-menu>
-                        </td>
-                        <td>{{item.plannedDate}}</td>
-                        @if (!!authService.isGlobalAdmin)
-                            {
-                            <td>
-                                <button mat-icon-button (click)="delete(item)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </td>
-                            }
-                    </tr>
-                    }}
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
-            }
-        </div>
-
-        <div class="section-label" style="background-color: #EEBA0B;">
-            <h1 class="section-text">Ingepland</h1>
-        </div>
-        <div class="row" style="margin-top: -4em;">
-            @defer(when items()){
-            <table class="table mat-elevation-z2" style="background-color: rgb(255, 255, 255);">
-                <thead>
-                    <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Onderwerp</th>
-                        <th scope="col">Bericht</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ingepland op</th>
-                        <th scope="col"></th>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th scope="col"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @for (item of items(); track $index)
-                    {
-                        @if (item.status == "ingepland"){
-                    <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.subject}}</td>
-                        <td>
-                            @if (item.message == null || item.message == "") {
-                            <button mat-fab disabled>
-                              <mat-icon>description</mat-icon>
-                            </button>
-                            } @else {
-                            <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
-                              <mat-icon color>description</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <div style="margin: 5px">
-                                <h3><b>Bericht: </b></h3>
-                                {{ item.message }}
-                              </div>
-                            </mat-menu>
-                            }
-                          </td>
-                        <td><button mat-button [matMenuTriggerFor]="menu" style="background-color: #EEBA0B;">{{item.status}}</button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="selectNieuw(item)">nieuw</button>
-                                <button mat-menu-item (click)="selectInbehandeling(item)">inbehandeling</button>
-                                <button mat-menu-item (click)="selectIngepland(item)">ingepland</button>
-                                <button mat-menu-item (click)="selectAfgerond(item)">afgerond</button>
-                            </mat-menu>
-                        </td>
-                        <td>{{item.plannedDate}}</td>
-                        @if (!!authService.isGlobalAdmin)
-                            {
-                            <td>
-                                <button mat-icon-button (click)="delete(item)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </td>
-                            }
-                    </tr>
-                    }}
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
-            }
-        </div>
-        <div class="section-label" style="background-color: #68A357;">
-            <h1 class="section-text">Afgerond</h1>
-        </div>
-        <div class="row" style="margin-top: -4em;">
-            @defer(when items()){
-            <table class="table mat-elevation-z2" style="background-color: rgb(255, 255, 255);">
-                <thead>
-                    <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Onderwerp</th>
-                        <th scope="col">Bericht</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ingepland op</th>
-                        <th scope="col"></th>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th scope="col"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @for (item of items(); track $index)
-                    {
-                        @if (item.status == "afgerond"){
-                    <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.subject}}</td>
-                        <td>
-                            @if (item.message == null || item.message == "") {
-                            <button mat-fab disabled>
-                              <mat-icon>description</mat-icon>
-                            </button>
-                            } @else {
-                            <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
-                              <mat-icon color>description</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu" xPosition="before">
-                              <div style="margin: 5px">
-                                <h3><b>Bericht: </b></h3>
-                                {{ item.message }}
-                              </div>
-                            </mat-menu>
-                            }
-                          </td>
-                        <td><button mat-button [matMenuTriggerFor]="menu" style="background-color: #68A357;">{{item.status}}</button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="selectNieuw(item)">nieuw</button>
-                                <button mat-menu-item (click)="selectInbehandeling(item)">inbehandeling</button>
-                                <button mat-menu-item (click)="selectIngepland(item)">ingepland</button>
-                                <button mat-menu-item (click)="selectAfgerond(item)">afgerond</button>
-                            </mat-menu>
-                        </td>
-                        <td>{{item.plannedDate}}</td>
-                        @if (!!authService.isGlobalAdmin)
-                            {
-                            <td>
-                                <button mat-icon-button (click)="delete(item)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </td>
-                            }
-                    </tr>
-                    }}
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
-            }
-
-        </div>
-<!--
-        <div style="width: 100%;">
-            <mat-divider style="margin: 2em;"></mat-divider>
-        </div>
-
-        <div class="row" style="background-color: #F4E409; border-radius: 1em;">
-        <h1 style="text-align: center; margin-top: 0.5em; margin-bottom: -0.5em;">In behandeling</h1>
-        <div class="row pt-4">
-            @defer(when items()){
-            <table class="table mat-elevation-z2" style="background-color: rgb(255, 255, 255); margin: 0em; padding: 0em; align-self: center;">
-                <thead>
-                    <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Naam</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Onderwerp</th>
-                        <th scope="col">Bericht</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ingepland op</th>
-                        <th scope="col"></th>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th scope="col"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @for (item of items(); track $index)
-                    {
-                        @if(item.status == "inbehandeling"){
-                    <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.subject}}</td>
-                        <td>{{item.message}}</td>
-                        <td>{{item.status}}</td>
-                        <td>{{item.plannedDate}}</td>
-                        @if (!!authService.isGlobalAdmin)
-                            {
-                            <td>
-                                <button mat-icon-button (click)="delete(item)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </td>
-                            }
-                    </tr>
-                    }}
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
-            }
-        </div></div>
-    </div>-->
+    }
 </div>

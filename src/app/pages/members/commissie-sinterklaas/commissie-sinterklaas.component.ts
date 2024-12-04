@@ -2,19 +2,20 @@ import { DatePipe } from "@angular/common";
 import { Component, WritableSignal, inject, signal } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import {
-    MAT_DATE_LOCALE,
-    provideNativeDateAdapter,
-} from "@angular/material/core";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDivider } from '@angular/material/divider';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { MatDialog } from "@angular/material/dialog";
-import { MatDivider } from "@angular/material/divider";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
-import { MatTooltipModule } from "@angular/material/tooltip";
 import { Title } from "@angular/platform-browser";
-import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../../shared/services/auth.service";
 import { PocketbaseService } from "../../../shared/services/pocketbase.service";
@@ -53,6 +54,14 @@ export class CommissieSinterklaasComponent {
   toastr = inject(ToastrService);
 
   titleService = inject(Title);
+
+  statussen = ["nieuw", "inbehandeling", "ingepland", "afgerond"];
+  statusColor: {[key : string]: string} = {
+    nieuw: "#90F1EF",
+    inbehandeling: "#F4E409",
+    ingepland: "#EEBA0B",
+    afgerond: "#68A357",
+  }
 
   constructor() {
     this.titleService.setTitle("Tovedem - Commissie - Sinterklaas");
@@ -94,6 +103,11 @@ export class CommissieSinterklaasComponent {
   async selectAfgerond(item: any) {
     this.loading.set(true);
     item.status = "afgerond";
-    const updated = await this.client.update("sinterklaas_verzoeken", item);
+    const updated = await this.client.update('sinterklaas_verzoeken', item);
+
+  }
+
+  getLabelBackgroundColor(status: string){
+    return this.statusColor[status] || "#000000"
   }
 }
