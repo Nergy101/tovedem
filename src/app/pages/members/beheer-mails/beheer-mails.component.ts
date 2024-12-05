@@ -48,6 +48,14 @@ export class BeheerMailsComponent implements OnInit {
   toastr = inject(ToastrService);
   titleService = inject(Title);
 
+  statussen = ["concept", "inprogress", "done", "verified"];
+  statusColor: {[key : string]: string} = {
+    concept: "#AE1545",
+    inprogress: "#28668F",
+    done: "#DFA801",
+    verified: "#338450",
+  }
+
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Mails');
   }
@@ -70,5 +78,34 @@ export class BeheerMailsComponent implements OnInit {
       this.toastr.success(`Mail '${edited.naam}' aangepast.`);
       await this.ngOnInit();
     }
+  }
+
+  async selectConcept(item: any) {
+    this.loading.set(true);
+    item.status = "concept";
+    const updated = await this.client.update("mails", item);
+    this.loading.set(false);
+  }
+  async selectInProgress(item: any) {
+    this.loading.set(true);
+    item.status = "inprogress";
+    const updated = await this.client.update("mails", item);
+    this.loading.set(false);
+  }
+  async selectDone(item: any) {
+    this.loading.set(true);
+    item.status = "done";
+    const updated = await this.client.update("mails", item);
+    this.loading.set(false);
+  }
+  async selectVerified(item: any) {
+    this.loading.set(true);
+    item.status = "verified";
+    const updated = await this.client.update('mails', item);
+    this.loading.set(false);
+  }
+
+  getLabelBackgroundColor(status: string){
+    return this.statusColor[status] || "#000000"
   }
 }
