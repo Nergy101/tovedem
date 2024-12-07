@@ -31,6 +31,8 @@ jobs:
 
   # Stage 2: Build and Push Docker Image
   BuildAndPushDockerImage:
+    # only run on push to main branch
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: BuildAngularApp
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +62,8 @@ jobs:
 
   # Stage 3: Deploy to Server
   DeployDockerImage:
+    # only run on push to main branch
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: BuildAndPushDockerImage
     runs-on: ubuntu-latest
     steps:
