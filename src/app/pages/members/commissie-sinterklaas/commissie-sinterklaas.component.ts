@@ -57,10 +57,10 @@ export class CommissieSinterklaasComponent {
 
   statussen = ["nieuw", "inbehandeling", "ingepland", "afgerond"];
   statusColor: {[key : string]: string} = {
-    nieuw: "#90F1EF",
-    inbehandeling: "#F4E409",
-    ingepland: "#EEBA0B",
-    afgerond: "#68A357",
+    nieuw: "#AE1545",
+    inbehandeling: "#28668F",
+    ingepland: "#DFA801",
+    afgerond: "#338450",
   }
 
   constructor() {
@@ -89,21 +89,25 @@ export class CommissieSinterklaasComponent {
     this.loading.set(true);
     item.status = "nieuw";
     const updated = await this.client.update("sinterklaas_verzoeken", item);
+    this.loading.set(false);
   }
   async selectInbehandeling(item: any) {
     this.loading.set(true);
     item.status = "inbehandeling";
     const updated = await this.client.update("sinterklaas_verzoeken", item);
+    this.loading.set(false);
   }
   async selectIngepland(item: any) {
     this.loading.set(true);
     item.status = "ingepland";
     const updated = await this.client.update("sinterklaas_verzoeken", item);
+    this.loading.set(false);
   }
   async selectAfgerond(item: any) {
     this.loading.set(true);
     item.status = "afgerond";
     const updated = await this.client.update('sinterklaas_verzoeken', item);
+    this.loading.set(false);
 
   }
 

@@ -119,4 +119,52 @@ module.exports = {
 
         return mailHtml;
     },
+
+    getVriendWordenMailHtml: (mailInfo, verzoek) => {
+        $app.logger().info("mailinfo", JSON.stringify(mailInfo));
+        $app.logger().info("verzoek", JSON.stringify(verzoek));
+
+        let mailHtml = mailInfo.get("inhoud");
+
+        mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
+
+        return mailHtml;
+    },
+
+    getVriendWordenBeheerMailHtml: (mailInfoBeheer, verzoek) => {
+        $app.logger().info("mailinfoBeheer", JSON.stringify(mailInfoBeheer));
+        $app.logger().info("verzoek", JSON.stringify(verzoek));
+
+        let mailHtml = mailInfoBeheer.get("inhoud");
+
+        mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
+        mailHtml = mailHtml.replace(/{email}/g, verzoek.get("email"));
+        mailHtml = mailHtml.replace(/{message}/g, verzoek.get("message"));
+
+        return mailHtml;
+    },
+
+    getContactMailHtml: (mailInfo, verzoek) => {
+        $app.logger().info("mailinfo", JSON.stringify(mailInfo));
+        $app.logger().info("verzoek", JSON.stringify(verzoek));
+
+        let mailHtml = mailInfo.get("inhoud");
+
+        mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
+
+        return mailHtml;
+    },
+
+    getContactBeheerMailHtml: (mailInfoBeheer, verzoek) => {
+        $app.logger().info("mailinfoBeheer", JSON.stringify(mailInfoBeheer));
+        $app.logger().info("verzoek", JSON.stringify(verzoek));
+
+        let mailHtml = mailInfoBeheer.get("inhoud");
+
+        mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
+        mailHtml = mailHtml.replace(/{email}/g, verzoek.get("email"));
+        mailHtml = mailHtml.replace(/{message}/g, verzoek.get("message"));
+
+        return mailHtml;
+    },
 };
