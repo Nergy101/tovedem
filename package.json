@@ -27,12 +27,12 @@
     "jquery": "^3.7.1",
     "luxon": "^3.4.4",
     "mdb-angular-ui-kit": "^7.1.0",
-    "ng-apexcharts": "~1.10.0",
+    "ng-apexcharts": "^1.15.0",
     "ng-recaptcha": "^13.2.1",
     "ngx-awesome-uploader": "^17.1.0",
     "ngx-material-timepicker": "^13.1.1",
     "ngx-quill": "^27.0.0",
-    "ngx-toastr": "^18.0.0",
+    "ngx-toastr": "^19.0.0",
     "pocketbase": "^0.22.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -43,6 +43,6 @@
     "@angular/cli": "^19.0.4",
     "@angular/compiler-cli": "^19.0.3",
     "@types/canvas-confetti": "^1.6.4",
-    "typescript": "~5.5.4"
+    "typescript": "~5.6.0"
   }
 }
