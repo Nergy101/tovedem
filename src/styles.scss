@@ -6,7 +6,8 @@
 @import "mdb-angular-ui-kit/assets/scss/mdb.scss";
 @import "ngx-toastr/toastr";
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $my-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 500);
 $my-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
@@ -36,7 +37,8 @@ $custom-light-theme: mat.m2-define-light-theme(
 );
 
 // Include the custom light theme in your application
-@include mat.core-theme($custom-light-theme);
+@include mat.elevation-classes();
+@include mat.app-background();
 @include mat.all-component-themes($custom-light-theme);
 
 :root {
