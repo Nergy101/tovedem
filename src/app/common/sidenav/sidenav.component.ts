@@ -23,26 +23,25 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 @Component({
-  selector: 'sidenav',
-  standalone: true,
-  imports: [
-    RouterModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    AgendaComponent,
-    NavbarComponent,
-    FooterComponent,
-    MatListModule,
-    MatExpansionModule,
-    MatBadgeModule,
-  ],
-  templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.scss',
+    selector: 'sidenav',
+    imports: [
+        RouterModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        AgendaComponent,
+        NavbarComponent,
+        FooterComponent,
+        MatListModule,
+        MatExpansionModule,
+        MatBadgeModule,
+    ],
+    templateUrl: './sidenav.component.html',
+    styleUrl: './sidenav.component.scss'
 })
 export class SidenavComponent {
   sideDrawerService = inject(SideDrawerService);

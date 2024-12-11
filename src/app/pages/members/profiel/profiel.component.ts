@@ -15,21 +15,20 @@ import { BreakpointService } from '../../../shared/services/breakpoint.service';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-profiel',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatAccordion,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatButtonModule,
-    MatListModule,
-    MatCardModule
-  ],
-  templateUrl: './profiel.component.html',
-  styleUrl: './profiel.component.scss',
+    selector: 'app-profiel',
+    imports: [
+        CommonModule,
+        MatAccordion,
+        MatExpansionModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatButtonModule,
+        MatListModule,
+        MatCardModule
+    ],
+    templateUrl: './profiel.component.html',
+    styleUrl: './profiel.component.scss'
 })
 export class ProfielComponent implements OnInit {
   authService: AuthService = inject(AuthService);

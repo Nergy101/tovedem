@@ -30,28 +30,27 @@ import { TovedemFilePickerComponent } from '../../../../shared/components/tovede
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
-  selector: 'app-gebruiker-create-edit-dialog',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    QuillModule,
-    NgxMaterialTimepickerModule,
-    TovedemFilePickerComponent,
-  ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
-  templateUrl: './gebruiker-create-edit-dialog.component.html',
-  styleUrl: './gebruiker-create-edit-dialog.component.scss',
+    selector: 'app-gebruiker-create-edit-dialog',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        QuillModule,
+        NgxMaterialTimepickerModule,
+        TovedemFilePickerComponent,
+    ],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
+    templateUrl: './gebruiker-create-edit-dialog.component.html',
+    styleUrl: './gebruiker-create-edit-dialog.component.scss'
 })
 export class GebruikerCreateEditDialogComponent implements OnInit {
   gebruiker: Gebruiker = {

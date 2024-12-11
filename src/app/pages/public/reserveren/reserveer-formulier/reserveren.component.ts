@@ -32,30 +32,29 @@ import { Groep } from '../../../../models/domain/groep.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 
 @Component({
-  selector: 'app-reserveren',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './reserveren.component.html',
-  styleUrl: './reserveren.component.scss',
+    selector: 'app-reserveren',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './reserveren.component.html',
+    styleUrl: './reserveren.component.scss'
 })
 export class ReserverenComponent implements OnInit {
   client = inject(PocketbaseService);

@@ -19,18 +19,17 @@ import { Groep } from '../../../models/domain/groep.model';
 
 
 @Component({
-  selector: 'app-productie-info',
-  standalone: true,
-  imports: [
-    VoorstellingCardComponent,
-    MatProgressSpinnerModule,
-    RouterModule,
-    MdbCarouselModule,
-    MatListModule,
-    MatTreeModule,
-  ],
-  templateUrl: './productie-info.component.html',
-  styleUrl: './productie-info.component.scss',
+    selector: 'app-productie-info',
+    imports: [
+        VoorstellingCardComponent,
+        MatProgressSpinnerModule,
+        RouterModule,
+        MdbCarouselModule,
+        MatListModule,
+        MatTreeModule,
+    ],
+    templateUrl: './productie-info.component.html',
+    styleUrl: './productie-info.component.scss'
 })
 export class ProductieInfoComponent {
   groepsNaam: string;

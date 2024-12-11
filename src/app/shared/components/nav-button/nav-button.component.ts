@@ -3,11 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-nav-button',
-  standalone: true,
-  imports: [MatButtonModule],
-  templateUrl: './nav-button.component.html',
-  styleUrl: './nav-button.component.scss',
+    selector: 'app-nav-button',
+    imports: [MatButtonModule],
+    templateUrl: './nav-button.component.html',
+    styleUrl: './nav-button.component.scss'
 })
 export class NavButtonComponent {
   queryParams = input<any>({});

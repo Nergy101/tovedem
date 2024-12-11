@@ -18,17 +18,16 @@ import { Groep } from '../../../models/domain/groep.model';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-groep',
-  standalone: true,
-  imports: [
-    VoorstellingCardComponent,
-    MatProgressSpinnerModule,
-    RouterModule,
-    MdbCarouselModule,
-    MatListModule,
-  ],
-  templateUrl: './groep.component.html',
-  styleUrl: './groep.component.scss',
+    selector: 'app-groep',
+    imports: [
+        VoorstellingCardComponent,
+        MatProgressSpinnerModule,
+        RouterModule,
+        MdbCarouselModule,
+        MatListModule,
+    ],
+    templateUrl: './groep.component.html',
+    styleUrl: './groep.component.scss'
 })
 export class GroepComponent {
   groepsNaam: string;

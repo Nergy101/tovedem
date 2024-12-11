@@ -23,20 +23,19 @@ import { Mail }  from '../../../models/domain/mail.model';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-beheer-mails',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './beheer-mails.component.html',
-  styleUrl: './beheer-mails.component.scss',
+    selector: 'app-beheer-mails',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatButtonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './beheer-mails.component.html',
+    styleUrl: './beheer-mails.component.scss'
 })
 export class BeheerMailsComponent implements OnInit {
   loading = signal(false);

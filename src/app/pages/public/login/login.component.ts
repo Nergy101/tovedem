@@ -16,18 +16,17 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [
+        CommonModule,
+        MatInputModule,
+        FormsModule,
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   usernameOrEmail?: string;

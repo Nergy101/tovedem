@@ -22,25 +22,24 @@ import { SeoService } from '../../../shared/services/seo.service';
 
 
 @Component({
-  selector: 'app-contact',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatTooltipModule,
-    MatDividerModule
-  ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
-  templateUrl: './contact.component.html',
-  styleUrl: './contact.component.scss',
+    selector: 'app-contact',
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatTooltipModule,
+        MatDividerModule
+    ],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
+    templateUrl: './contact.component.html',
+    styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnDestroy {
   name: string | null = null;

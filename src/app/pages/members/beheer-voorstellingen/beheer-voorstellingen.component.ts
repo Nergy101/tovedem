@@ -22,25 +22,24 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-beheer-voorstellingen',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    DatePipe,
-    MatDatepickerModule,
-    NgxMaterialTimepickerModule,
-    MatTooltipModule,
-  ],providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './beheer-voorstellingen.component.html',
-  styleUrl: './beheer-voorstellingen.component.scss',
+    selector: 'app-beheer-voorstellingen',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        DatePipe,
+        MatDatepickerModule,
+        NgxMaterialTimepickerModule,
+        MatTooltipModule,
+    ], providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './beheer-voorstellingen.component.html',
+    styleUrl: './beheer-voorstellingen.component.scss'
 })
 export class BeheerVoorstellingenComponent {
   loading = signal(false);

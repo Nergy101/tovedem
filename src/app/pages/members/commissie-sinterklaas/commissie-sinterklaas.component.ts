@@ -21,27 +21,26 @@ import { AuthService } from "../../../shared/services/auth.service";
 import { PocketbaseService } from "../../../shared/services/pocketbase.service";
 
 @Component({
-  selector: "commissie-sinterklaas",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    DatePipe,
-    MatDatepickerModule,
-    NgxMaterialTimepickerModule,
-    MatTooltipModule,
-    MatDivider,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: "nl-NL" },
-  ],
-  templateUrl: "./commissie-sinterklaas.component.html",
-  styleUrl: "./commissie-sinterklaas.component.scss",
+    selector: "commissie-sinterklaas",
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        DatePipe,
+        MatDatepickerModule,
+        NgxMaterialTimepickerModule,
+        MatTooltipModule,
+        MatDivider,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: "nl-NL" },
+    ],
+    templateUrl: "./commissie-sinterklaas.component.html",
+    styleUrl: "./commissie-sinterklaas.component.scss"
 })
 export class CommissieSinterklaasComponent {
   loading = signal(false);

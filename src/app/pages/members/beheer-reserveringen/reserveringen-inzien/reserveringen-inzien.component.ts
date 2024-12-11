@@ -25,26 +25,25 @@ import { PocketbaseService } from "../../../../shared/services/pocketbase.servic
 import { PieChartComponent } from "./pie-chart/pie-chart.component";
 
 @Component({
-  selector: "app-reserveringen-inzien",
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    DatePipe,
-    MatExpansionModule,
-    PieChartComponent,
-    MatCardModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: "./reserveringen-inzien.component.html",
-  styleUrl: "./reserveringen-inzien.component.scss",
+    selector: "app-reserveringen-inzien",
+    imports: [
+        CommonModule,
+        MatCheckboxModule,
+        MatIconModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        DatePipe,
+        MatExpansionModule,
+        PieChartComponent,
+        MatCardModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: "./reserveringen-inzien.component.html",
+    styleUrl: "./reserveringen-inzien.component.scss"
 })
 export class ReserveringenInzienComponent implements OnInit {
   loading = signal(false);

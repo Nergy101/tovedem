@@ -32,32 +32,31 @@ import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
-  selector: 'app-voorstelling-create-edit-dialog',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    QuillModule,
-    NgxMaterialTimepickerModule,
-    TovedemFilePickerComponent,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './voorstelling-create-edit-dialog.component.html',
-  styleUrl: './voorstelling-create-edit-dialog.component.scss',
+    selector: 'app-voorstelling-create-edit-dialog',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        QuillModule,
+        NgxMaterialTimepickerModule,
+        TovedemFilePickerComponent,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './voorstelling-create-edit-dialog.component.html',
+    styleUrl: './voorstelling-create-edit-dialog.component.scss'
 })
 export class VoorstellingCreateEditDialogComponent implements OnInit {
   titel?: string;

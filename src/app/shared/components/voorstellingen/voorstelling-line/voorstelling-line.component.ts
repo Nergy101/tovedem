@@ -8,18 +8,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { NavButtonComponent } from '../../nav-button/nav-button.component';
 
 @Component({
-  selector: 'app-voorstelling-line',
-  standalone: true,
-  templateUrl: './voorstelling-line.component.html',
-  styleUrl: './voorstelling-line.component.scss',
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatDividerModule,
-    NavButtonComponent,
-  ],
+    selector: 'app-voorstelling-line',
+    templateUrl: './voorstelling-line.component.html',
+    styleUrl: './voorstelling-line.component.scss',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+        NavButtonComponent,
+    ]
 })
 export class VoorstellingLineComponent {
   voorstelling = input.required<any>();

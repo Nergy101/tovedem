@@ -13,19 +13,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-mail-edit-dialog',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    FormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatListModule,
-    MatIconModule
-  ],
-  templateUrl: './mail-edit-dialog.component.html',
-  styleUrl: './mail-edit-dialog.component.scss',
+    selector: 'app-mail-edit-dialog',
+    imports: [
+        MatDialogModule,
+        FormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatListModule,
+        MatIconModule
+    ],
+    templateUrl: './mail-edit-dialog.component.html',
+    styleUrl: './mail-edit-dialog.component.scss'
 })
 export class MailEditDialogComponent {
   dialogRef = inject(MatDialogRef<MailEditDialogComponent>);

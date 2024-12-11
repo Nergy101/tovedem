@@ -22,18 +22,17 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-beheer-spelers',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './beheer-spelers.component.html',
-  styleUrl: './beheer-spelers.component.scss',
+    selector: 'app-beheer-spelers',
+    imports: [
+        MatIconModule,
+        MatButtonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './beheer-spelers.component.html',
+    styleUrl: './beheer-spelers.component.scss'
 })
 export class BeheerSpelersComponent implements OnInit {
   loading = signal(false);

@@ -19,19 +19,18 @@ import { Groep } from '../../../models/domain/groep.model';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-agenda',
-  standalone: true,
-  templateUrl: './agenda.component.html',
-  styleUrl: './agenda.component.scss',
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    VoorstellingCardComponent,
-    VoorstellingLineComponent,
-    MatProgressSpinnerModule,
-    MatDividerModule,
-  ],
+    selector: 'app-agenda',
+    templateUrl: './agenda.component.html',
+    styleUrl: './agenda.component.scss',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        VoorstellingCardComponent,
+        VoorstellingLineComponent,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+    ]
 })
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';

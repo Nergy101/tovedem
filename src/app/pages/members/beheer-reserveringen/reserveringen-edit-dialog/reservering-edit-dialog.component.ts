@@ -28,34 +28,33 @@ import { MatCardModule } from '@angular/material/card';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
-  selector: 'app-Reservering-edit-dialog',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    QuillModule,
-    NgxMaterialTimepickerModule,
-    TovedemFilePickerComponent,
-    MatCardModule,
-    DatePipe
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './reservering-edit-dialog.component.html',
-  styleUrl: './reservering-edit-dialog.component.scss',
+    selector: 'app-Reservering-edit-dialog',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        QuillModule,
+        NgxMaterialTimepickerModule,
+        TovedemFilePickerComponent,
+        MatCardModule,
+        DatePipe
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './reservering-edit-dialog.component.html',
+    styleUrl: './reservering-edit-dialog.component.scss'
 })
 export class ReserveringEditDialogComponent implements OnInit {
   voornaam?: string;
