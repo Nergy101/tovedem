@@ -43,7 +43,6 @@ import { ReserveringenInzienComponent } from './reserveringen-inzien/reservering
         MatInputModule,
         MatFormFieldModule,
         FormsModule,
-        MatLine,
         MatDivider,
         MatProgressBarModule,
         MatPaginatorModule,

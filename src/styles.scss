@@ -2,9 +2,10 @@
 
 @use "@angular/material" as mat;
 
-@import "variables.scss";
-@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
-@import "ngx-toastr/toastr";
+@use "variables.scss" as *;
+@use "mdb-angular-ui-kit/assets/scss/mdb.scss" as *;
+@use "ngx-toastr/toastr" as *;
+@use 'quill/dist/quill.snow.css';
 
 @include mat.elevation-classes();
 @include mat.app-background();

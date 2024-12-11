@@ -1,54 +1,50 @@
+import { DatePipe } from '@angular/common';
 import {
   Component,
-  ImportProvidersSource,
-  Inject,
   OnInit,
-  Provider,
   WritableSignal,
   inject,
-  signal,
+  signal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
 import {
   MAT_DATE_LOCALE,
+  MatOption,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { QuillModule } from 'ngx-quill';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { DatePipe } from '@angular/common';
+import { MatFormField } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
 import { DateTime } from 'luxon';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { QuillModule } from 'ngx-quill';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
     selector: 'app-voorstelling-create-edit-dialog',
     imports: [
-        MatButtonModule,
-        MatIconModule,
+      MatDatepickerModule,
+        MatButton,
+        MatIcon,
         MatDialogModule,
         MatInputModule,
         FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressSpinnerModule,
-        MatSelectModule,
+        MatFormField,
+        MatDatepicker,
+        MatFormField,
+        MatInput,
+        MatSelect,
         QuillModule,
         NgxMaterialTimepickerModule,
-        TovedemFilePickerComponent,
+        MatOption,
+        TovedemFilePickerComponent
     ],
     providers: [
         provideNativeDateAdapter(),

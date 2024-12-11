@@ -5,23 +5,21 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { Title } from '@angular/platform-browser';
 import { MatTreeModule } from '@angular/material/tree';
+import { Title } from '@angular/platform-browser';
+import { Router, RouterModule } from '@angular/router';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 
-import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
-import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Groep } from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 
 
 @Component({
     selector: 'app-productie-info',
     imports: [
-        VoorstellingCardComponent,
         MatProgressSpinnerModule,
         RouterModule,
         MdbCarouselModule,

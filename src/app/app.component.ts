@@ -46,17 +46,17 @@ export class AppComponent {
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
 
-  @ViewChild(MatDrawer) drawer!: MatDrawer;
+  @ViewChild(MatDrawer) drawer?: MatDrawer;
 
   constructor() {
     effect(() => {
       if (this.authService.isLoggedIn()) {
         if (this.sideDrawerService.isOpen()) {
-          this.drawer.open();
+          this.drawer?.open();
           return;
         }
       }
-      this.drawer.close();
+      this.drawer?.close();
     });
   }
 
