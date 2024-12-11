@@ -21,7 +21,7 @@ jobs:
         run: npm ci --legacy-peer-deps #@TODO: Remove legacy-peer-deps when possible
 
       - name: Build Angular App
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
