@@ -11,11 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-beheer-spelers-update-dialog',
-  standalone: true,
-  imports: [MatDialogModule, FormsModule, MatInputModule, MatButtonModule, MatIconModule],
-  templateUrl: './beheer-spelers-update-dialog.component.html',
-  styleUrl: './beheer-spelers-update-dialog.component.scss',
+    selector: 'app-beheer-spelers-update-dialog',
+    imports: [MatDialogModule, FormsModule, MatInputModule, MatButtonModule, MatIconModule],
+    templateUrl: './beheer-spelers-update-dialog.component.html',
+    styleUrl: './beheer-spelers-update-dialog.component.scss'
 })
 export class BeheerSpelersUpdateDialogComponent implements OnInit {
   dialogRef = inject(MatDialogRef<BeheerSpelersUpdateDialogComponent>);

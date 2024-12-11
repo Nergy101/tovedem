@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   MAT_DATE_LOCALE,
@@ -22,40 +23,36 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
 import { Reservering } from '../../../../models/domain/reservering.model';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { MatCardModule } from '@angular/material/card';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-  selector: 'app-Reservering-edit-dialog',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    QuillModule,
-    NgxMaterialTimepickerModule,
-    TovedemFilePickerComponent,
-    MatCardModule,
-    DatePipe
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './reservering-edit-dialog.component.html',
-  styleUrl: './reservering-edit-dialog.component.scss',
+    selector: 'app-Reservering-edit-dialog',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        QuillModule,
+        NgxMaterialTimepickerModule,
+        MatCardModule,
+        DatePipe
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './reservering-edit-dialog.component.html',
+    styleUrl: './reservering-edit-dialog.component.scss'
 })
 export class ReserveringEditDialogComponent implements OnInit {
   voornaam?: string;
@@ -135,6 +132,9 @@ export class ReserveringEditDialogComponent implements OnInit {
       is_lid_van_vereniging: this.is_lid_van_vereniging,
       opmerking: this.opmerking,
       voorstelling: this.existingVoorstelling?.id,
+      aanwezig_datum_1: this.existingReservering?.aanwezig_datum_1,
+      aanwezig_datum_2: this.existingReservering?.aanwezig_datum_2,
+      guid: this.existingReservering?.guid,
     } as Reservering;
 
     const formData = this.objectToFormData(reservering);

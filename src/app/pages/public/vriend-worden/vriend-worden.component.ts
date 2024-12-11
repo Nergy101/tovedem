@@ -25,24 +25,23 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-vriend-worden',
-  standalone: true,
-  imports: [MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    CommonModule,
-    RouterModule,
-    MatInputModule,
-    FormsModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    RouterModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatDividerModule,
-  ],
-  templateUrl: './vriend-worden.component.html',
-  styleUrl: './vriend-worden.component.scss',
+    selector: 'app-vriend-worden',
+    imports: [MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        CommonModule,
+        RouterModule,
+        MatInputModule,
+        FormsModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        RouterModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatDividerModule,
+    ],
+    templateUrl: './vriend-worden.component.html',
+    styleUrl: './vriend-worden.component.scss'
 })
 
 export class VriendWordenComponent implements OnInit, OnDestroy {

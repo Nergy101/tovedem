@@ -6,11 +6,10 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { AdminModel } from 'pocketbase';
-import { SideDrawerService } from './side-drawer.service';
 import { Gebruiker } from '../../models/domain/gebruiker.model';
-import { PocketbaseService } from './pocketbase.service';
 import { Rol } from '../../models/domain/rol.model';
+import { PocketbaseService } from './pocketbase.service';
+import { SideDrawerService } from './side-drawer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +36,7 @@ export class AuthService {
 
   constructor() {
     // check the localstorage for userData
-    const existingUserData = this.client.authStore.model as Gebruiker;
+    const existingUserData = this.client.authStore.record as any as Gebruiker;
 
     if (!!existingUserData) {
       if (this.client.authStore.isValid) {

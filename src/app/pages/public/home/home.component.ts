@@ -7,11 +7,10 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  imports: [VoorstellingCardComponent, MatProgressSpinnerModule],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    imports: [VoorstellingCardComponent, MatProgressSpinnerModule]
 })
 export class HomePaginaComponent {
   client = inject(PocketbaseService);

@@ -3,7 +3,7 @@
 FROM node:22.3-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps //@TODO: Remove legacy-peer-deps when possible
 COPY . .
 RUN npm run build
 

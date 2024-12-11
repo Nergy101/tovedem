@@ -20,44 +20,43 @@ import { SideDrawerService } from './shared/services/side-drawer.service';
 registerLocaleData(localeNL);
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
-  imports: [
-    RouterOutlet,
-    RouterModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    NavbarComponent,
-    FooterComponent,
-    MatListModule,
-    SidenavComponent,
-    CookieBannerComponent
-  ],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    providers: [{ provide: LOCALE_ID, useValue: 'nl-NL' }],
+    imports: [
+        RouterOutlet,
+        RouterModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        NavbarComponent,
+        FooterComponent,
+        MatListModule,
+        SidenavComponent,
+        CookieBannerComponent
+    ]
 })
 export class AppComponent {
   authService = inject(AuthService);
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
 
-  @ViewChild(MatDrawer) drawer!: MatDrawer;
+  @ViewChild(MatDrawer) drawer?: MatDrawer;
 
   constructor() {
     effect(() => {
       if (this.authService.isLoggedIn()) {
         if (this.sideDrawerService.isOpen()) {
-          this.drawer.open();
+          this.drawer?.open();
           return;
         }
       }
-      this.drawer.close();
+      this.drawer?.close();
     });
   }
 

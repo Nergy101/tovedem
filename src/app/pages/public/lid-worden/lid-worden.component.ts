@@ -36,31 +36,30 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-lid-worden',
-  standalone: true,
-  templateUrl: './lid-worden.component.html',
-  styleUrl: './lid-worden.component.scss',
-  imports: [
-    MatProgressSpinnerModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatSelect,
-    MatSelectModule,
-    MatDividerModule,
-    MatTooltipModule,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
+    selector: 'app-lid-worden',
+    templateUrl: './lid-worden.component.html',
+    styleUrl: './lid-worden.component.scss',
+    imports: [
+        MatProgressSpinnerModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatSelect,
+        MatSelectModule,
+        MatDividerModule,
+        MatTooltipModule,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ]
 })
 export class LidWordenComponent implements OnInit, OnDestroy {
   //info om lid te worden

@@ -20,30 +20,29 @@ import { Reservering } from '../../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-  selector: 'app-reservering-aanpassen',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-  ],
-  templateUrl: './reservering-aanpassen.component.html',
-  styleUrl: './reservering-aanpassen.component.scss'
+    selector: 'app-reservering-aanpassen',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    ],
+    templateUrl: './reservering-aanpassen.component.html',
+    styleUrl: './reservering-aanpassen.component.scss'
 })
 export class ReserveringAanpassenComponent {
 

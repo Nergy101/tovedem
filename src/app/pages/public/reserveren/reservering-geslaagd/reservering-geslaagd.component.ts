@@ -18,19 +18,18 @@ import { NavButtonComponent } from '../../../../shared/components/nav-button/nav
 import confetti from 'canvas-confetti';
 
 @Component({
-  selector: 'app-reservering-geslaagd',
-  standalone: true,
-  templateUrl: './reservering-geslaagd.component.html',
-  styleUrl: './reservering-geslaagd.component.scss',
-  imports: [
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDividerModule,
-    NavButtonComponent,
-  ],
+    selector: 'app-reservering-geslaagd',
+    templateUrl: './reservering-geslaagd.component.html',
+    styleUrl: './reservering-geslaagd.component.scss',
+    imports: [
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatDividerModule,
+        NavButtonComponent,
+    ]
 })
 export class ReserveringGeslaagdComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';

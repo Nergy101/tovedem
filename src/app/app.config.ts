@@ -16,6 +16,7 @@ import { Environment } from '../environment';
 import { environment } from '../environment/environment.dev';
 import { routes } from './app.routes';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideNoopAnimations(),
     provideAnimations(),
+    provideHttpClient(),
     provideToastr({
       preventDuplicates: true,
     }),

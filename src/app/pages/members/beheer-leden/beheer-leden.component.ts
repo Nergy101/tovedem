@@ -25,21 +25,20 @@ import { PocketbaseService } from "../../../shared/services/pocketbase.service";
 import { GebruikerCreateEditDialogComponent } from "./gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component";
 
 @Component({
-  selector: "app-beheer-leden",
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-  ],
-  templateUrl: "./beheer-leden.component.html",
-  styleUrl: "./beheer-leden.component.scss",
+    selector: "app-beheer-leden",
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatButtonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+    ],
+    templateUrl: "./beheer-leden.component.html",
+    styleUrl: "./beheer-leden.component.scss"
 })
 export class BeheerLedenComponent implements OnInit {
   loading = signal(false);

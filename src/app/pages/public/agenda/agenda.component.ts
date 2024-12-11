@@ -6,32 +6,29 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Groep } from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { VoorstellingLineComponent } from '../../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { MatDividerModule } from '@angular/material/divider';
-import { Title } from '@angular/platform-browser';
-import { Voorstelling } from '../../../models/domain/voorstelling.model';
-import { Groep } from '../../../models/domain/groep.model';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-agenda',
-  standalone: true,
-  templateUrl: './agenda.component.html',
-  styleUrl: './agenda.component.scss',
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    VoorstellingCardComponent,
-    VoorstellingLineComponent,
-    MatProgressSpinnerModule,
-    MatDividerModule,
-  ],
+    selector: 'app-agenda',
+    templateUrl: './agenda.component.html',
+    styleUrl: './agenda.component.scss',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        VoorstellingLineComponent,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+    ]
 })
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';

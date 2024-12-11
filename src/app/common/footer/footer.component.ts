@@ -5,16 +5,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-footer',
-  standalone: true,
-  imports: [
-    MatListModule,
-    RouterModule,
-    MatIconModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss',
+    selector: 'app-footer',
+    imports: [
+        MatListModule,
+        RouterModule,
+        MatIconModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './footer.component.html',
+    styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
 

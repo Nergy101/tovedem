@@ -26,25 +26,24 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-  selector: 'app-sinterklaas',
-  standalone: true,
-  imports: [MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    CommonModule,
-    RouterModule,
-    MatInputModule,
-    FormsModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    RouterModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatDividerModule,
-    MdbCarouselModule,
-  ],
-  templateUrl: './sinterklaas.component.html',
-  styleUrl: './sinterklaas.component.scss',
+    selector: 'app-sinterklaas',
+    imports: [MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        CommonModule,
+        RouterModule,
+        MatInputModule,
+        FormsModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        RouterModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatDividerModule,
+        MdbCarouselModule,
+    ],
+    templateUrl: './sinterklaas.component.html',
+    styleUrl: './sinterklaas.component.scss'
 })
 export class SinterklaasComponent implements OnInit, OnDestroy {
   content: WritableSignal<string | null> = signal(null);

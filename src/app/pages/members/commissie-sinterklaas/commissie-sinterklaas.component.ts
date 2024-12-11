@@ -6,42 +6,38 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDivider } from '@angular/material/divider';
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Title } from "@angular/platform-browser";
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "../../../shared/services/auth.service";
 import { PocketbaseService } from "../../../shared/services/pocketbase.service";
 
 @Component({
-  selector: "commissie-sinterklaas",
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    DatePipe,
-    MatDatepickerModule,
-    NgxMaterialTimepickerModule,
-    MatTooltipModule,
-    MatDivider,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    DatePipe,
-    { provide: MAT_DATE_LOCALE, useValue: "nl-NL" },
-  ],
-  templateUrl: "./commissie-sinterklaas.component.html",
-  styleUrl: "./commissie-sinterklaas.component.scss",
+    selector: "commissie-sinterklaas",
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        DatePipe,
+        MatDatepickerModule,
+        NgxMaterialTimepickerModule,
+        MatTooltipModule
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        DatePipe,
+        { provide: MAT_DATE_LOCALE, useValue: "nl-NL" },
+    ],
+    templateUrl: "./commissie-sinterklaas.component.html",
+    styleUrl: "./commissie-sinterklaas.component.scss"
 })
 export class CommissieSinterklaasComponent {
   loading = signal(false);

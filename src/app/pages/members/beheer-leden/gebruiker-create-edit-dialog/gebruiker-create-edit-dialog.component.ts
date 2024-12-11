@@ -5,20 +5,16 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { Gebruiker } from '../../../../models/domain/gebruiker.model';
-import { Speler } from '../../../../models/domain/speler.model';
-import { Groep } from '../../../../models/domain/groep.model';
-import { Rol } from '../../../../models/domain/rol.model';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -26,32 +22,34 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
+import { Gebruiker } from '../../../../models/domain/gebruiker.model';
+import { Groep } from '../../../../models/domain/groep.model';
+import { Rol } from '../../../../models/domain/rol.model';
+import { Speler } from '../../../../models/domain/speler.model';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-  selector: 'app-gebruiker-create-edit-dialog',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    QuillModule,
-    NgxMaterialTimepickerModule,
-    TovedemFilePickerComponent,
-  ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
-  templateUrl: './gebruiker-create-edit-dialog.component.html',
-  styleUrl: './gebruiker-create-edit-dialog.component.scss',
+    selector: 'app-gebruiker-create-edit-dialog',
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        QuillModule,
+        NgxMaterialTimepickerModule
+    ],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
+    templateUrl: './gebruiker-create-edit-dialog.component.html',
+    styleUrl: './gebruiker-create-edit-dialog.component.scss'
 })
 export class GebruikerCreateEditDialogComponent implements OnInit {
   gebruiker: Gebruiker = {

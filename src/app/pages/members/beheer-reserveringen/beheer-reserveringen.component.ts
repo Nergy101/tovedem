@@ -33,28 +33,26 @@ import { ReserveringenInzienComponent } from './reserveringen-inzien/reservering
 
 
 @Component({
-  selector: 'app-beheer-reserveringen',
-  standalone: true,
-  imports: [
-    MatCheckboxModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatProgressSpinnerModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatLine,
-    MatDivider,
-    MatProgressBarModule,
-    MatPaginatorModule,
-    MatSelect,
-    MatOption,
-    MatMenuModule,
-    ReserveringenInzienComponent
-  ],
-  templateUrl: './beheer-reserveringen.component.html',
-  styleUrl: './beheer-reserveringen.component.scss',
+    selector: 'app-beheer-reserveringen',
+    imports: [
+        MatCheckboxModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatProgressSpinnerModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatDivider,
+        MatProgressBarModule,
+        MatPaginatorModule,
+        MatSelect,
+        MatOption,
+        MatMenuModule,
+        ReserveringenInzienComponent
+    ],
+    templateUrl: './beheer-reserveringen.component.html',
+    styleUrl: './beheer-reserveringen.component.scss'
 })
 export class BeheerReserveringenComponent {
   loading = signal(false);
