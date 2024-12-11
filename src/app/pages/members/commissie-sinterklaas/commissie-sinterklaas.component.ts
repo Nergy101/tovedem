@@ -7,7 +7,6 @@ import {
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from "@angular/material/dialog";
-import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -30,8 +29,7 @@ import { PocketbaseService } from "../../../shared/services/pocketbase.service";
         DatePipe,
         MatDatepickerModule,
         NgxMaterialTimepickerModule,
-        MatTooltipModule,
-        MatDivider,
+        MatTooltipModule
     ],
     providers: [
         provideNativeDateAdapter(),

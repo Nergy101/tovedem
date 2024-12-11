@@ -10,13 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { AgendaComponent } from '../../pages/public/agenda/agenda.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
-import { FooterComponent } from '../footer/footer.component';
-import { NavbarComponent } from '../navbar/navbar.component';
 @Component({
     selector: 'sidenav',
     imports: [
@@ -28,9 +25,6 @@ import { NavbarComponent } from '../navbar/navbar.component';
         FormsModule,
         MatFormFieldModule,
         MatCheckboxModule,
-        AgendaComponent,
-        NavbarComponent,
-        FooterComponent,
         MatListModule,
         MatExpansionModule,
         MatBadgeModule,

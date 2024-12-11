@@ -2,23 +2,22 @@ import { Component, OnInit, computed, inject } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
-import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { BreakpointService } from '../../../shared/services/breakpoint.service';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'app-profiel',
     imports: [
         CommonModule,
-        MatAccordion,
         MatExpansionModule,
         MatInputModule,
         MatFormFieldModule,

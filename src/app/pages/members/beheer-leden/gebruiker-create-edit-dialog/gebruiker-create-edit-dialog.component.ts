@@ -45,8 +45,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
         MatProgressSpinnerModule,
         MatSelectModule,
         QuillModule,
-        NgxMaterialTimepickerModule,
-        TovedemFilePickerComponent,
+        NgxMaterialTimepickerModule
     ],
     providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
     templateUrl: './gebruiker-create-edit-dialog.component.html',
