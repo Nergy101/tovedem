@@ -27,7 +27,6 @@
     "canvas-confetti": "^1.9.2",
     "jquery": "^3.7.1",
     "luxon": "^3.4.4",
-    "mdb-angular-ui-kit": "^7.0.0",
     "ng-recaptcha": "^13.2.1",
     "ngx-awesome-uploader": "^17.1.0",
     "ngx-material-timepicker": "^13.1.1",
