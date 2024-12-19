@@ -57,7 +57,7 @@ export class BeheerSpelersComponent implements OnInit {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
   }
 
-  async createSpeler() {
+  async createSpeler(): Promise<void> {
     this.loading.set(true);
 
     const nieuweSpeler = await this.client.create<Speler>('spelers', {
@@ -73,7 +73,7 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(false);
   }
 
-  async updateSpeler(spelerOmAanTePassen: Speler) {
+  async updateSpeler(spelerOmAanTePassen: Speler): Promise<void> {
     this.loading.set(true);
 
     const dialogRef = this.dialog.open(BeheerSpelersUpdateDialogComponent, {
@@ -89,7 +89,7 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(false);
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.loading.set(true);
 
     if (await this.client.delete('spelers', id)) {

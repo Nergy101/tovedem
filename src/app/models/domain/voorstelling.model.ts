@@ -13,12 +13,12 @@ export interface Voorstelling extends BaseModel {
   publicatie_datum: string;
 };
 
-export function voorstellingIsInToekomst(date: Date) {
+export function voorstellingIsInToekomst(date: Date): boolean {
   const currentDate = new Date() 
   return new Date(date) > currentDate;
 }
 
-export function dagenTussenNuEnVoorstellingDatum(date: Date) {
+export function dagenTussenNuEnVoorstellingDatum(date: Date): number {
   const datum1 = new Date(date)
   const currentDate = new Date()
   
@@ -26,7 +26,7 @@ export function dagenTussenNuEnVoorstellingDatum(date: Date) {
 }
 
 // private functions
-function getDaysBetweenDates(date1: Date, date2: Date) {
+function getDaysBetweenDates(date1: Date, date2: Date): number {
   const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in one day
   const diffInTime = new Date(date2).getTime() - new Date(date1).getTime(); // Difference in milliseconds
   return diffInTime / oneDay; // Convert milliseconds to days

@@ -19,7 +19,7 @@ export class FooterComponent {
 
   router = inject(Router);
 
-  async navigateTo(routeParts: string[]) {
+  async navigateTo(routeParts: string[]): Promise<void> {
     await this.router.navigate(routeParts);
     location.reload()
   }

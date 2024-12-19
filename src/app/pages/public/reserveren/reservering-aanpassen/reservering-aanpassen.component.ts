@@ -5,7 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,32 +23,31 @@ import { Reservering } from '../../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: 'app-reservering-aanpassen',
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatInputModule,
-        MatIconModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatTooltipModule,
-    ],
-    providers: [
-        provideNativeDateAdapter(),
-        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-    ],
-    templateUrl: './reservering-aanpassen.component.html',
-    styleUrl: './reservering-aanpassen.component.scss'
+  selector: 'app-reservering-aanpassen',
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
+  templateUrl: './reservering-aanpassen.component.html',
+  styleUrl: './reservering-aanpassen.component.scss',
 })
 export class ReserveringAanpassenComponent {
-
   router = inject(Router);
   route = inject(ActivatedRoute);
   toastr = inject(ToastrService);
@@ -60,7 +62,7 @@ export class ReserveringAanpassenComponent {
   email = signal('');
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
-  opmerking = signal("");
+  opmerking = signal('');
 
   opmerkingLength = signal('');
   amountOfPeopleDate1 = signal(0);
@@ -87,114 +89,116 @@ export class ReserveringAanpassenComponent {
 
   constructor() {
     this.route.params
-      .pipe(tap(
-        params => {
+      .pipe(
+        tap((params) => {
           this.reserveringId.set(params.id);
           this.reserveringGuid.set(params.guid);
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+
+    effect(
+      async () => {
+        if (!this.reserveringId()) return;
+        this.loaded.set(false);
+        const reservering = await this.client.getOne<Reservering>(
+          'reserveringen',
+          this.reserveringId()!,
+          {
+            expand: 'voorstelling.groep',
+          }
+        );
+
+        if (this.reserveringGuid() !== reservering.guid) {
+          this.router.navigate(['/']);
         }
-      ),
-        takeUntilDestroyed())
-      .subscribe()
 
+        if (!reservering) {
+          this.router.navigate(['/']);
+        }
 
-    effect(async () => {
-      if (!this.reserveringId()) return;
-      this.loaded.set(false);
-      const reservering = await this.client.getOne<Reservering>('reserveringen', this.reserveringId()!,
-        {
-          expand: 'voorstelling.groep'
-        });
+        this.reservering.set(reservering!);
 
-      if (this.reserveringGuid() !== reservering.guid) {
-        this.router.navigate(['/']);
-      }
+        this.voorstellingsNaam = reservering.expand!.voorstelling.titel;
+        this.groepsNaam = reservering.expand!.voorstelling.expand.groep.naam;
+        this.name.set(reservering.voornaam);
+        this.surname.set(reservering.achternaam);
+        this.email.set(reservering.email);
+        this.vriendVanTovedem.set(reservering.is_vriend_van_tovedem);
+        this.lidVanTovedemMejotos.set(reservering.is_lid_van_vereniging);
+        this.datum1 = new Date(reservering.expand!.voorstelling.datum_tijd_1);
+        this.datum2 = new Date(reservering.expand!.voorstelling.datum_tijd_2);
+        this.amountOfPeopleDate1.set(reservering.datum_tijd_1_aantal);
+        this.amountOfPeopleDate2.set(reservering.datum_tijd_2_aantal);
 
-      if (!reservering) {
-        this.router.navigate(['/']);
-      }
-
-      this.reservering.set(reservering!);
-
-      this.voorstellingsNaam = reservering.expand!.voorstelling.titel;
-      this.groepsNaam = reservering.expand!.voorstelling.expand.groep.naam;
-      this.name.set(reservering.voornaam);
-      this.surname.set(reservering.achternaam);
-      this.email.set(reservering.email);
-      this.vriendVanTovedem.set(reservering.is_vriend_van_tovedem);
-      this.lidVanTovedemMejotos.set(reservering.is_lid_van_vereniging);
-      this.datum1 = new Date(reservering.expand!.voorstelling.datum_tijd_1);
-      this.datum2 = new Date(reservering.expand!.voorstelling.datum_tijd_2);
-      this.amountOfPeopleDate1.set(reservering.datum_tijd_1_aantal);
-      this.amountOfPeopleDate2.set(reservering.datum_tijd_2_aantal);
-
-      this.loaded.set(true);
-    }, { allowSignalWrites: true });
+        this.loaded.set(true);
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   async saveReservering(): Promise<void> {
     this.saving.set(true);
 
-    await this.client.update<Reservering>(
-      'reserveringen',
-      {
-        id: this.reservering()?.id ?? '',
-        created: this.reservering()?.created ?? '',
-        updated: new Date().toISOString(),
-        voornaam: this.name(),
-        achternaam: this.surname(),
-        email: this.email(),
-        is_vriend_van_tovedem: this.vriendVanTovedem(),
-        is_lid_van_vereniging: this.lidVanTovedemMejotos(),
-        voorstelling: this.reservering()?.expand?.voorstelling?.id ?? '',
-        datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
-        datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
-        opmerking: this.reservering()?.opmerking ?? '',
-        guid: this.reservering()?.guid ?? '',
-        aanwezig_datum_1: this.reservering()?.aanwezig_datum_1 ?? false,
-        aanwezig_datum_2: this.reservering()?.aanwezig_datum_2 ?? false
-      }
-    );
+    await this.client.update<Reservering>('reserveringen', {
+      id: this.reservering()?.id ?? '',
+      created: this.reservering()?.created ?? '',
+      updated: new Date().toISOString(),
+      voornaam: this.name(),
+      achternaam: this.surname(),
+      email: this.email(),
+      is_vriend_van_tovedem: this.vriendVanTovedem(),
+      is_lid_van_vereniging: this.lidVanTovedemMejotos(),
+      voorstelling: this.reservering()?.expand?.voorstelling?.id ?? '',
+      datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
+      datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
+      opmerking: this.reservering()?.opmerking ?? '',
+      guid: this.reservering()?.guid ?? '',
+      aanwezig_datum_1: this.reservering()?.aanwezig_datum_1 ?? false,
+      aanwezig_datum_2: this.reservering()?.aanwezig_datum_2 ?? false,
+    });
 
-    this.toastr.success('De reservering is aangepast', "Gelukt!", {
-      positionClass: 'toast-bottom-right'
+    this.toastr.success('De reservering is aangepast', 'Gelukt!', {
+      positionClass: 'toast-bottom-right',
     });
 
     this.saving.set(false);
   }
 
-  onEmailChanged(newValue: string) {
+  onEmailChanged(newValue: string): void {
     this.email.set(newValue);
   }
 
-  onNameChanged(newValue: string) {
+  onNameChanged(newValue: string): void {
     this.name.set(newValue);
   }
 
-  onOpmerkingChange(newValue: string){
+  onOpmerkingChange(newValue: string): void {
     this.opmerking.set(newValue);
   }
 
-  onOpmerkingChange2(event: Event){
+  onOpmerkingChange2(event: Event): void {
     this.opmerkingLength.set((event.target as HTMLInputElement).value);
   }
 
-  onSurnameChanged(newValue: string) {
+  onSurnameChanged(newValue: string): void {
     this.surname.set(newValue);
   }
 
-  vriendVanTovedemChanged(newValue: boolean) {
+  vriendVanTovedemChanged(newValue: boolean): void {
     this.vriendVanTovedem.set(newValue);
   }
 
-  lidVanTovedemMejotosChanged(newValue: boolean) {
+  lidVanTovedemMejotosChanged(newValue: boolean): void {
     this.lidVanTovedemMejotos.set(newValue);
   }
 
-  amountOfPeopleDate1Changed(newValue: number) {
+  amountOfPeopleDate1Changed(newValue: number): void {
     this.amountOfPeopleDate1.set(newValue);
   }
 
-  amountOfPeopleDate2Changed(newValue: number) {
+  amountOfPeopleDate2Changed(newValue: number): void {
     this.amountOfPeopleDate2.set(newValue);
   }
 }

@@ -61,7 +61,7 @@ export class ProfielComponent implements OnInit {
     }
   }
 
-  toggle() {
+  toggle(): void {
     this.sideDrawerService.toggle();
   }
 

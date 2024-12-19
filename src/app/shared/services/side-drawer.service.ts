@@ -6,15 +6,15 @@ import { Injectable, signal } from '@angular/core';
 export class SideDrawerService {
   isOpen = signal(true);
 
-  open() {
+  open(): void {
     this.isOpen.set(true);
   }
 
-  close() {
+  close(): void {
     this.isOpen.set(false);
   }
 
-  toggle() {
+  toggle(): void {
     this.isOpen.set(!this.isOpen());
   }
 }

@@ -98,15 +98,15 @@ export class BeheerLedenComponent implements OnInit {
     );
   }
 
-  onSearchTermChanged(newValue: string) {
+  onSearchTermChanged(newValue: string): void {
     this.searchTerm.set(newValue);
   }
 
-  isHuidigeGebruiker(gebruikerId: string) {
+  isHuidigeGebruiker(gebruikerId: string): boolean {
     return gebruikerId == this.authService.userData()?.id;
   }
 
-  async openCreateDialog() {
+  async openCreateDialog(): Promise<void> {
     const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
       data: { existingGebruiker: null },
       hasBackdrop: true,
@@ -121,7 +121,7 @@ export class BeheerLedenComponent implements OnInit {
     }
   }
 
-  async openEditDialog(gebruiker: Gebruiker) {
+  async openEditDialog(gebruiker: Gebruiker): Promise<void> {
     const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
       data: { existingGebruiker: gebruiker },
       hasBackdrop: true,
@@ -136,7 +136,7 @@ export class BeheerLedenComponent implements OnInit {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.loading.set(true);
 
     if (await this.client.delete('users', id)) {

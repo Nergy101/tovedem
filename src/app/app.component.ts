@@ -60,7 +60,7 @@ export class AppComponent {
     });
   }
 
-  toggle() {
+  toggle(): void {
     this.sideDrawerService.toggle();
   }
 }

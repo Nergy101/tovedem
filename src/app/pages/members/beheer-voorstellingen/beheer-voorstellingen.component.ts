@@ -73,7 +73,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     );
   }
 
-  async openCreateDialog() {
+  async openCreateDialog(): Promise<void> {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
@@ -87,7 +87,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     }
   }
 
-  async openEditDialog(use_voorstelling: Voorstelling) {
+  async openEditDialog(use_voorstelling: Voorstelling): Promise<void> {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: use_voorstelling },
       hasBackdrop: true,
@@ -101,7 +101,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.loading.set(true);
 
     if (await this.client.delete('voorstellingen', id)) {
@@ -111,7 +111,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     this.loading.set(false);
   }
 
-  publicatieActief(publishDateString: string) {
+  publicatieActief(publishDateString: string): boolean {
     const publishDate = new Date(publishDateString);
     const currentDate = new Date();
 

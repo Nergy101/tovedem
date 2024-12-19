@@ -63,7 +63,7 @@ export class AuthService {
     this.sideDrawerService.open();
   }
 
-  unregisterUser() {
+  unregisterUser(): void {
     this.sideDrawerService.close();
     this.userRecord.set(null);
     this.client.authStore.clear();

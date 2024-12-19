@@ -14,7 +14,7 @@ export class TovedemFilePickerComponent {
 
   adapter = new PocketBaseFilePickerAdapter();
 
-  internalOnFileUploaded(filePreview: FilePreviewModel) {
+  internalOnFileUploaded(filePreview: FilePreviewModel): void {
     this.fileUploaded.emit(filePreview);
   }
 }

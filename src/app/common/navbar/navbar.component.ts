@@ -26,11 +26,11 @@ export class NavbarComponent {
   breakpointService = inject(BreakpointService);
   sideDrawerService = inject(SideDrawerService);
 
-  get groepenClass() {
+  get groepenClass(): string {
     return this.router.url.includes('groep') ? 'active' : '';
   }
 
-  toggle() {
+  toggle(): void {
     this.sideDrawerService.toggle();
   }
 }

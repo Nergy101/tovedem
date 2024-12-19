@@ -88,7 +88,7 @@ export class CommissieSinterklaasComponent implements OnInit {
     );
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.loading.set(true);
 
     if (await this.client.delete('sinterklaas_verzoeken', id)) {
@@ -98,14 +98,17 @@ export class CommissieSinterklaasComponent implements OnInit {
     this.loading.set(false);
   }
 
-  async updateStatus(item: { id: string; status: string }, newStatus: string) {
+  async updateStatus(
+    item: { id: string; status: string },
+    newStatus: string
+  ): Promise<void> {
     this.loading.set(true);
     item.status = newStatus;
     await this.client.update('sinterklaas_verzoeken', item);
     this.loading.set(false);
   }
 
-  getLabelBackgroundColor(status: string) {
+  getLabelBackgroundColor(status: string): string {
     return this.statusColor[status] || '#000000';
   }
 }

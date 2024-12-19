@@ -44,7 +44,7 @@ export class SidenavComponent {
     }
   }
 
-  close() {
+  close(): void {
     this.sideDrawerService.close();
   }
 

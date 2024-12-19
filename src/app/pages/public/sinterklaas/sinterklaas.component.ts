@@ -68,7 +68,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   recaptchaV3Service = inject(ReCaptchaV3Service);
   subscriptions: Subscription[] = [];
 
-  verstuurSinterklaasMail() {
+  verstuurSinterklaasMail(): void {
     this.subscriptions.push(
       this.recaptchaV3Service.execute('sinterklaas').subscribe({
         next: async (token) => {

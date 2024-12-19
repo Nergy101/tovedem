@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { inject, Injectable } from '@angular/core';
 
-import PocketBase, { BaseModel } from 'pocketbase';
+import PocketBase, { BaseModel, RecordModel, RecordService } from 'pocketbase';
 import Page from '../../models/pocketbase/page.model';
 import { Environment } from '../../../environment';
 
@@ -77,7 +77,7 @@ export class PocketbaseService {
     return pageModel;
   }
 
-  private getCollection(nameOrId: string) {
+  private getCollection(nameOrId: string): RecordService<RecordModel> {
     return this.client.collection(nameOrId);
   }
 }

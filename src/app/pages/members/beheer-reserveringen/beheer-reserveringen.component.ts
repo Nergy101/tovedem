@@ -83,7 +83,7 @@ export class BeheerReserveringenComponent implements OnInit {
 
   kidsLabels = 1; // Initial amount value
 
-  createListOfAmountOfItems(amountOfItems: number) {
+  createListOfAmountOfItems(amountOfItems: number): unknown[] {
     // console.log('received createlist for items:', amountOfItems)
     const list: unknown[] = [];
 
@@ -95,11 +95,11 @@ export class BeheerReserveringenComponent implements OnInit {
     return list;
   }
 
-  get isPrintEnabled() {
+  get isPrintEnabled(): boolean {
     return !!this.selectedVoorstelling();
   }
 
-  amountOfItemsForReservation(reservering: Reservering) {
+  amountOfItemsForReservation(reservering: Reservering): number {
     return this.selectedDatum() == 'Datum 1'
       ? reservering.datum_tijd_1_aantal
       : reservering.datum_tijd_2_aantal;
@@ -224,7 +224,7 @@ export class BeheerReserveringenComponent implements OnInit {
     );
   }
 
-  async openEditDialog(reservering: Reservering) {
+  async openEditDialog(reservering: Reservering): Promise<void> {
     const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
       data: { reservering },
       hasBackdrop: true,
@@ -238,38 +238,38 @@ export class BeheerReserveringenComponent implements OnInit {
     );
   }
 
-  onSearchTermChanged(newValue: string) {
+  onSearchTermChanged(newValue: string): void {
     this.searchTerm.set(newValue);
   }
 
-  onVoorstellingChanged(newValue: MatSelectChange) {
+  onVoorstellingChanged(newValue: MatSelectChange): void {
     this.selectTerm.set(newValue.value.titel);
     this.selectedVoorstelling.set(newValue.value);
   }
 
-  onSelectDatumChanged(newValue: Event) {
+  onSelectDatumChanged(newValue: Event): void {
     this.selectedDatum.set(newValue.toString());
   }
 
-  increment() {
+  increment(): void {
     this.kidsLabels++;
   }
 
-  decrement() {
+  decrement(): void {
     if (this.kidsLabels > 0) {
       // Optional: prevent negative values
       this.kidsLabels--;
     }
   }
 
-  onAmountChange() {
+  onAmountChange(): void {
     // Ensure amount is a valid number
     if (isNaN(this.kidsLabels)) {
       this.kidsLabels = 0;
     }
   }
 
-  formatDate(date: Date) {
+  formatDate(date: Date): string {
     const day = String(date.getDate()).padStart(2, '0'); // Day of the month
     const month = date.toLocaleString('default', { month: 'long' }); // Full month name
     const year = date.getFullYear(); // Full year
@@ -279,7 +279,7 @@ export class BeheerReserveringenComponent implements OnInit {
     return `${day} ${month} ${year} ${hours}:${minutes}`;
   }
 
-  async printHtml() {
+  printHtml(): void {
     const htmlToPrint = this.createHtml();
 
     const w = window.open()!;

@@ -82,7 +82,7 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
   dialogRef = inject(MatDialogRef<GebruikerCreateEditDialogComponent>);
   data = inject(MAT_DIALOG_DATA);
 
-  get isUpdate() {
+  get isUpdate(): boolean {
     return !!this.data?.existingGebruiker;
   }
 
@@ -122,7 +122,7 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
     this.loading.set(false);
   }
 
-  formIsValid() {
+  formIsValid(): boolean {
     if (this.isUpdate) {
       return (
         !!this.gebruiker.username &&

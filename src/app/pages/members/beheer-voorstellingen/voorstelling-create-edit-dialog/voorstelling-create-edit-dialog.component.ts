@@ -221,11 +221,11 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     this.loading.set(false);
   }
 
-  onFileUploaded(filePreviewModel: FilePreviewModel) {
+  onFileUploaded(filePreviewModel: FilePreviewModel): void {
     this.afbeelding = filePreviewModel;
   }
 
-  formIsValid() {
+  formIsValid(): boolean {
     return (
       !!this.titel &&
       this.titel != '' &&

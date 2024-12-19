@@ -150,7 +150,7 @@ export class ReserveringEditDialogComponent implements OnInit {
     this.loading.set(false);
   }
 
-  formIsValid() {
+  formIsValid(): boolean {
     return (
       !!this.voornaam &&
       this.voornaam != '' &&

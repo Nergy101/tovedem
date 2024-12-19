@@ -63,7 +63,7 @@ export class BeheerMailsComponent implements OnInit {
     this.mailTemplates.set(await this.client.getAll<Mail>('mails'));
   }
 
-  async openEditDialog(mail: Mail) {
+  async openEditDialog(mail: Mail): Promise<void> {
     const dialogRef = this.dialog.open(MailEditDialogComponent, {
       data: mail,
       hasBackdrop: true,
@@ -79,14 +79,17 @@ export class BeheerMailsComponent implements OnInit {
     }
   }
 
-  async updateMailStatus(item: Mail, status: 'concept' | 'inprogress' | 'done' | 'verified') {
+  async updateMailStatus(
+    item: Mail,
+    status: 'concept' | 'inprogress' | 'done' | 'verified'
+  ): Promise<void> {
     this.loading.set(true);
     item.status = status;
     await this.client.update('mails', item);
     this.loading.set(false);
   }
 
-  getLabelBackgroundColor(status: string) {
+  getLabelBackgroundColor(status: string): string {
     return this.statusColor[status] || '#000000';
   }
 }

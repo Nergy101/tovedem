@@ -30,29 +30,29 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: 'app-reserveren',
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatInputModule,
-        MatIconModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatTooltipModule,
-    ],
-    providers: [
-        provideNativeDateAdapter(),
-        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-    ],
-    templateUrl: './reserveren.component.html',
-    styleUrl: './reserveren.component.scss'
+  selector: 'app-reserveren',
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
+  templateUrl: './reserveren.component.html',
+  styleUrl: './reserveren.component.scss',
 })
 export class ReserverenComponent implements OnInit {
   client = inject(PocketbaseService);
@@ -64,8 +64,8 @@ export class ReserverenComponent implements OnInit {
   email = signal('');
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
-  opmerking = signal('')
-  opmerkingLength = signal('')
+  opmerking = signal('');
+  opmerkingLength = signal('');
   amountOfPeopleDate1 = signal(0);
   amountOfPeopleDate2 = signal(0);
   saving = signal(false);
@@ -116,12 +116,6 @@ export class ReserverenComponent implements OnInit {
     }
   }
 
-  uuidv4() {
-    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-    );
-  }
-
   async saveReservering(): Promise<void> {
     this.saving.set(true);
 
@@ -136,8 +130,8 @@ export class ReserverenComponent implements OnInit {
         voorstelling: this.voorstellingId ?? '',
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
-        guid: this.uuidv4(),
-        opmerking: this.opmerking()
+        guid: crypto.randomUUID(),
+        opmerking: this.opmerking(),
       }
     );
 
@@ -156,39 +150,39 @@ export class ReserverenComponent implements OnInit {
     });
   }
 
-  onEmailChanged(newValue: string) {
+  onEmailChanged(newValue: string): void {
     this.email.set(newValue);
   }
 
-  onNameChanged(newValue: string) {
+  onNameChanged(newValue: string): void {
     this.name.set(newValue);
   }
 
-  onSurnameChanged(newValue: string) {
+  onSurnameChanged(newValue: string): void {
     this.surname.set(newValue);
   }
 
-  vriendVanTovedemChanged(newValue: boolean) {
+  vriendVanTovedemChanged(newValue: boolean): void {
     this.vriendVanTovedem.set(newValue);
   }
 
-  lidVanTovedemMejotosChanged(newValue: boolean) {
+  lidVanTovedemMejotosChanged(newValue: boolean): void {
     this.lidVanTovedemMejotos.set(newValue);
   }
 
-  amountOfPeopleDate1Changed(newValue: number) {
+  amountOfPeopleDate1Changed(newValue: number): void {
     this.amountOfPeopleDate1.set(newValue);
   }
 
-  amountOfPeopleDate2Changed(newValue: number) {
+  amountOfPeopleDate2Changed(newValue: number): void {
     this.amountOfPeopleDate2.set(newValue);
   }
 
-  onOpmerkingChange(newValue: string){
+  onOpmerkingChange(newValue: string): void {
     this.opmerking.set(newValue);
   }
 
-  onOpmerkingChange2(event: Event){
+  onOpmerkingChange2(event: Event): void {
     this.opmerkingLength.set((event.target as HTMLInputElement).value);
   }
 }

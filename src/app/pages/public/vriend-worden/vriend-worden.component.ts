@@ -61,7 +61,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  verstuurVriendVanTovedemMail() {
+  verstuurVriendVanTovedemMail(): void {
     this.subscriptions.push(this.recaptchaV3Service.execute('vriend_worden')
       .subscribe(
         {

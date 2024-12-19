@@ -58,7 +58,7 @@ export class ReserveringGeslaagdComponent implements OnInit {
     this.content.set(record.tekst_1);
   }
 
-  celebrate() {
+  celebrate(): void {
     confetti({
       particleCount: 200,
       spread: 300,

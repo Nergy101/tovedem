@@ -60,7 +60,7 @@ export class ContactComponent implements OnDestroy {
     this.seoService.update('Tovedem - Contact');
   }
 
-  verstuurContactMail() {
+  verstuurContactMail(): void {
     this.subscriptions.push(this.recaptchaV3Service.execute('contact')
       .subscribe(
         {

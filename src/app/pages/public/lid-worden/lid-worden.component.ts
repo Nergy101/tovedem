@@ -172,7 +172,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
     this.loading.set(false);
   }
 
-  formIsValid() {
+  formIsValid(): boolean {
     return (
       !!this.voornaam &&
       this.voornaam != '' &&
