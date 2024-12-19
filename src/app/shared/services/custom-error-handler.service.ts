@@ -1,4 +1,5 @@
-import { ErrorHandler, Injectable, Injector, inject } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({

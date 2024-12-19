@@ -1,15 +1,16 @@
 import {
   Component,
+  OnInit,
   WritableSignal,
   effect,
   inject,
-  signal
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatLine, MatOption } from '@angular/material/core';
+import { MatOption } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
 import { debounceTime, lastValueFrom, tap } from 'rxjs';
@@ -30,34 +31,32 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ReserveringenInzienComponent } from './reserveringen-inzien/reserveringen-inzien.component';
 
-
-
 @Component({
-    selector: 'app-beheer-reserveringen',
-    imports: [
-        MatCheckboxModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTabsModule,
-        MatProgressSpinnerModule,
-        MatInputModule,
-        MatFormFieldModule,
-        FormsModule,
-        MatDivider,
-        MatProgressBarModule,
-        MatPaginatorModule,
-        MatSelect,
-        MatOption,
-        MatMenuModule,
-        ReserveringenInzienComponent
-    ],
-    templateUrl: './beheer-reserveringen.component.html',
-    styleUrl: './beheer-reserveringen.component.scss'
+  selector: 'app-beheer-reserveringen',
+  imports: [
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatDivider,
+    MatProgressBarModule,
+    MatPaginatorModule,
+    MatSelect,
+    MatOption,
+    MatMenuModule,
+    ReserveringenInzienComponent,
+  ],
+  templateUrl: './beheer-reserveringen.component.html',
+  styleUrl: './beheer-reserveringen.component.scss',
 })
-export class BeheerReserveringenComponent {
+export class BeheerReserveringenComponent implements OnInit {
   loading = signal(false);
-  searching = signal(false)
-  items: WritableSignal<any[] | null> = signal(null);
+  searching = signal(false);
+  items: WritableSignal<Reservering[] | null> = signal(null);
   client = inject(PocketbaseService);
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
@@ -67,11 +66,12 @@ export class BeheerReserveringenComponent {
   titleService = inject(Title);
   range = Array.from({ length: 5 }, (_, i) => i); // Creates [0, 1, 2, 3, 4]
 
-  printItems: WritableSignal<any[] | null> = signal(null);
-  voorstellingen: WritableSignal<any[] | null> = signal(null);
+  printItems: WritableSignal<Reservering[] | null> = signal(null);
+  voorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
-  selectedVoorstelling: WritableSignal<any | null> = signal(null);
-  reserveringenVanVoorstelling: WritableSignal<any[] | null> = signal(null);
+  selectedVoorstelling: WritableSignal<Voorstelling | null> = signal(null);
+  reserveringenVanVoorstelling: WritableSignal<Reservering[] | null> =
+    signal(null);
 
   selecting = signal(false);
   selectTerm = signal('');
@@ -79,46 +79,46 @@ export class BeheerReserveringenComponent {
   nothingSelected = true;
 
   selectedDatum: WritableSignal<string | null> = signal(null);
-  beschikbareDatums = ["Datum 1", "Datum 2"]
+  beschikbareDatums = ['Datum 1', 'Datum 2'];
 
-  kidsLabels: number = 1; // Initial amount value
+  kidsLabels = 1; // Initial amount value
 
   createListOfAmountOfItems(amountOfItems: number) {
     // console.log('received createlist for items:', amountOfItems)
-    let list: any[] = []
+    const list: unknown[] = [];
 
     for (let index = 0; index < amountOfItems; index++) {
-      list.push({})
+      list.push({});
     }
 
     // console.log(list)
-    return list
+    return list;
   }
 
   get isPrintEnabled() {
     return !!this.selectedVoorstelling();
   }
 
-  amountOfItemsForReservation(reservering: any) {
-    return this.selectedDatum() ==
-      "Datum 1" ? reservering.datum_tijd_1_aantal :
-      reservering.datum_tijd_2_aantal
+  amountOfItemsForReservation(reservering: Reservering) {
+    return this.selectedDatum() == 'Datum 1'
+      ? reservering.datum_tijd_1_aantal
+      : reservering.datum_tijd_2_aantal;
   }
 
   get formattedSelectedDate(): string | null {
-    const dateString = (this.selectedDatum() == "Datum 1" ?
-      this.selectedVoorstelling()?.datum_tijd_1 :
-      this.selectedVoorstelling()?.datum_tijd_2);
+    const dateString =
+      this.selectedDatum() == 'Datum 1'
+        ? this.selectedVoorstelling()?.datum_tijd_1
+        : this.selectedVoorstelling()?.datum_tijd_2;
 
     if (!dateString) {
       return null;
     }
 
-    const date = new Date(dateString)
+    const date = new Date(dateString);
 
     return this.formatDate(date);
   }
-
 
   constructor() {
     this.selectedDatum.set(this.beschikbareDatums[0]);
@@ -170,7 +170,7 @@ export class BeheerReserveringenComponent {
               filter: this.client.client.filter(
                 'voorstelling.titel ~ {:select}',
                 {
-                  select: this.selectedVoorstelling().titel,
+                  select: this.selectedVoorstelling()?.titel,
                 }
               ),
             })
@@ -181,7 +181,7 @@ export class BeheerReserveringenComponent {
 
     effect(() => {
       // console.log('reserveringenVoorVoorstelling', this.reserveringenVanVoorstelling())
-    })
+    });
 
     effect(async () => {
       const nieuweGeselecteerdeVoorstelling = this.selectedVoorstelling();
@@ -191,37 +191,37 @@ export class BeheerReserveringenComponent {
         return;
       }
 
-      let reserveringenVoorVoorstelling = await this.client.getAll<Reservering>('reserveringen', {
-        expand: 'voorstelling',
-        filter: this.client.client.filter(
-          'voorstelling.id = {:voorstellingId} && is_vriend_van_tovedem = true', {
-          voorstellingId: nieuweGeselecteerdeVoorstelling.id
+      let reserveringenVoorVoorstelling = await this.client.getAll<Reservering>(
+        'reserveringen',
+        {
+          expand: 'voorstelling',
+          filter: this.client.client.filter(
+            'voorstelling.id = {:voorstellingId} && is_vriend_van_tovedem = true',
+            {
+              voorstellingId: nieuweGeselecteerdeVoorstelling.id,
+            }
+          ),
         }
-        )
-      })
+      );
 
-      if (this.selectedDatum() == "Datum 1") {
-        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(x => x.datum_tijd_1_aantal > 0)
+      if (this.selectedDatum() == 'Datum 1') {
+        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(
+          (x) => x.datum_tijd_1_aantal > 0
+        );
       } else {
-        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(x => x.datum_tijd_2_aantal > 0)
+        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(
+          (x) => x.datum_tijd_2_aantal > 0
+        );
       }
 
-      this.reserveringenVanVoorstelling.set(reserveringenVoorVoorstelling)
-    })
+      this.reserveringenVanVoorstelling.set(reserveringenVoorVoorstelling);
+    });
   }
 
   async ngOnInit(): Promise<void> {
-    this.voorstellingen.set(await this.client.getAll<Voorstelling>('voorstellingen'));
-  }
-
-  async delete({ id }: any) {
-    this.loading.set(true);
-
-    if (await this.client.delete('reserveringen', id)) {
-      this.items.update((x) => x!.filter((y: any) => y.id != id));
-    }
-
-    this.loading.set(false);
+    this.voorstellingen.set(
+      await this.client.getAll<Voorstelling>('voorstellingen')
+    );
   }
 
   async openEditDialog(reservering: Reservering) {
@@ -242,22 +242,22 @@ export class BeheerReserveringenComponent {
     this.searchTerm.set(newValue);
   }
 
-  onVoorstellingChanged(newValue: any) {
+  onVoorstellingChanged(newValue: MatSelectChange) {
     this.selectTerm.set(newValue.value.titel);
     this.selectedVoorstelling.set(newValue.value);
   }
 
-  onSelectDatumChanged(newValue: any) {
-    this.selectedDatum.set(newValue)
+  onSelectDatumChanged(newValue: Event) {
+    this.selectedDatum.set(newValue.toString());
   }
-
 
   increment() {
     this.kidsLabels++;
   }
 
   decrement() {
-    if (this.kidsLabels > 0) { // Optional: prevent negative values
+    if (this.kidsLabels > 0) {
+      // Optional: prevent negative values
       this.kidsLabels--;
     }
   }
@@ -280,8 +280,7 @@ export class BeheerReserveringenComponent {
   }
 
   async printHtml() {
-
-    const htmlToPrint = this.createHtml()
+    const htmlToPrint = this.createHtml();
 
     const w = window.open()!;
     w.document.write(htmlToPrint);
@@ -325,7 +324,7 @@ export class BeheerReserveringenComponent {
               <h3 style="text-wrap: wrap;>-Klaas Janssen-</h3>
             </div>
             <div style="text-align: center">
-              <h3>${this.selectedVoorstelling().titel}</h3>
+              <h3>${this.selectedVoorstelling()?.titel}</h3>
             </div>
             <div style="text-align: center">
               <h3>${this.formattedSelectedDate}</h3>
@@ -341,6 +340,6 @@ export class BeheerReserveringenComponent {
   </body>
 
   </html>
-  `
+  `;
   }
 }

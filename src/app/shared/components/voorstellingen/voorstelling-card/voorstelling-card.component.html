@@ -51,7 +51,7 @@
     <mat-card-actions>
         <div></div>
         @if(inToekomst()) {
-        <app-nav-button [navigationParts]="['/reserveren']" [queryParams]="{voorstelling: this.voorstelling().id}">
+        <app-nav-button [navigationParts]="['/reserveren']" [queryParams]="{voorstellingId: this.voorstelling().id}">
             RESERVEREN
         </app-nav-button>
         }

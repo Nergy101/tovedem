@@ -1,44 +1,44 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
 import {
   Component,
   OnInit,
   WritableSignal,
   inject,
   signal,
-} from "@angular/core";
-import { takeUntilDestroyed, toObservable } from "@angular/core/rxjs-interop";
-import { FormsModule } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MatDialog } from "@angular/material/dialog";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { Title } from "@angular/platform-browser";
-import { ToastrService } from "ngx-toastr";
-import { debounceTime, lastValueFrom, tap } from "rxjs";
-import { Gebruiker } from "../../../models/domain/gebruiker.model";
-import { AuthService } from "../../../shared/services/auth.service";
-import { PocketbaseService } from "../../../shared/services/pocketbase.service";
-import { GebruikerCreateEditDialogComponent } from "./gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component";
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Title } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
+import { debounceTime, lastValueFrom, tap } from 'rxjs';
+import { Gebruiker } from '../../../models/domain/gebruiker.model';
+import { AuthService } from '../../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
 
 @Component({
-    selector: "app-beheer-leden",
-    imports: [
-        CommonModule,
-        MatIconModule,
-        MatButtonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-        MatProgressBarModule,
-    ],
-    templateUrl: "./beheer-leden.component.html",
-    styleUrl: "./beheer-leden.component.scss"
+  selector: 'app-beheer-leden',
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+  ],
+  templateUrl: './beheer-leden.component.html',
+  styleUrl: './beheer-leden.component.scss',
 })
 export class BeheerLedenComponent implements OnInit {
   loading = signal(false);
@@ -53,36 +53,36 @@ export class BeheerLedenComponent implements OnInit {
   titleService = inject(Title);
 
   searching = signal(false);
-  searchTerm = signal("");
+  searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
 
   constructor() {
-    this.titleService.setTitle("Tovedem - Beheer - Leden");
+    this.titleService.setTitle('Tovedem - Beheer - Leden');
 
     this.searchTerm$
       .pipe(
         tap(() => this.searching.set(true)),
         debounceTime(500),
-        takeUntilDestroyed(),
+        takeUntilDestroyed()
       )
       .subscribe(async (newSearchTerm: string) => {
-        if (!newSearchTerm || newSearchTerm == "") {
+        if (!newSearchTerm || newSearchTerm == '') {
           this.gebruikers.set(
-            await this.client.getAll<Gebruiker>("users", {
-              expand: "rollen,groep,speler",
-            }),
+            await this.client.getAll<Gebruiker>('users', {
+              expand: 'rollen,groep,speler',
+            })
           );
         } else {
           this.gebruikers.set(
-            await this.client.getAll<Gebruiker>("users", {
-              expand: "rollen,groep,speler",
+            await this.client.getAll<Gebruiker>('users', {
+              expand: 'rollen,groep,speler',
               filter: this.client.client.filter(
-                "email ~ {:search} || username ~ {:search} || name ~ {:search}",
+                'email ~ {:search} || username ~ {:search} || name ~ {:search}',
                 {
                   search: newSearchTerm,
-                },
+                }
               ),
-            }),
+            })
           );
         }
 
@@ -92,9 +92,9 @@ export class BeheerLedenComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.gebruikers.set(
-      await this.client.getAll<Gebruiker>("users", {
-        expand: "rollen,groep,speler",
-      }),
+      await this.client.getAll<Gebruiker>('users', {
+        expand: 'rollen,groep,speler',
+      })
     );
   }
 
@@ -110,12 +110,12 @@ export class BeheerLedenComponent implements OnInit {
     const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
       data: { existingGebruiker: null },
       hasBackdrop: true,
-      minWidth: "50vw",
+      minWidth: '50vw',
     });
 
     const created: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!created) {
+    if (created) {
       this.toastr.success(`Gebruiker ${created.username} aangemaakt.`);
       await this.ngOnInit();
     }
@@ -125,22 +125,22 @@ export class BeheerLedenComponent implements OnInit {
     const dialogRef = this.dialog.open(GebruikerCreateEditDialogComponent, {
       data: { existingGebruiker: gebruiker },
       hasBackdrop: true,
-      minWidth: "50vw",
+      minWidth: '50vw',
     });
 
     const edited: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!edited) {
+    if (edited) {
       this.toastr.success(`Gebruiker ${edited.username} aangepast.`);
       await this.ngOnInit();
     }
   }
 
-  async delete({ id }: any) {
+  async delete(id: string) {
     this.loading.set(true);
 
-    if (await this.client.delete("users", id)) {
-      this.gebruikers.update((x) => x!.filter((y: any) => y.id != id));
+    if (await this.client.delete('users', id)) {
+      this.gebruikers.update((x) => x!.filter((y: Gebruiker) => y.id != id));
     }
 
     this.loading.set(false);

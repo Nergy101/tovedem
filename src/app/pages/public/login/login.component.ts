@@ -59,8 +59,8 @@ export class LoginComponent {
             expand: 'groep,rollen',
           });
 
-        if (!!authData) {
-          this.authService.registerUser(authData.record as any as Gebruiker);
+        if (authData) {
+          this.authService.registerUser(authData.record as unknown as Gebruiker);
           this.router.navigate(['profiel']);
         }
       } catch {
@@ -70,8 +70,8 @@ export class LoginComponent {
         );
 
         console.log("Admin data", authData);
-        if (!!authData.record) {
-          this.authService.registerUser(authData.record as any as Gebruiker);
+        if (authData.record) {
+          this.authService.registerUser(authData.record as unknown as Gebruiker);
           this.router.navigate(['profiel']);
         }
       } finally {

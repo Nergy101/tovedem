@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
     styleUrl: './nav-button.component.scss'
 })
 export class NavButtonComponent {
-  queryParams = input<any>({});
-  navigationParts = input.required<any[]>();
+  queryParams = input<Record<string, string>>({});
+  navigationParts = input.required<string[]>();
 
   router = inject(Router);
 

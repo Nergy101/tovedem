@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { NavButtonComponent } from '../../nav-button/nav-button.component';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
     selector: 'app-voorstelling-card',
@@ -21,19 +22,22 @@ import { NavButtonComponent } from '../../nav-button/nav-button.component';
     ]
 })
 export class VoorstellingCardComponent {
-  voorstelling = input.required<any>();
+  voorstelling = input.required<Voorstelling>();
   
 
   router = inject(Router);
 
-  getImageUrl(collectionId: string, recordId: string, imageId: string): string {
+  getImageUrl(collectionId: string, recordId: string, imageId: string | undefined): string {
+    if (!imageId) {
+      return '/assets/Place-Holder-Image.jpg';
+    }
     return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
   inToekomst(): boolean {
     return (
-      new Date(this.voorstelling().datum_tijd_1) > new Date() ||
-      new Date(this.voorstelling().datum_tijd_2) > new Date()
+      new Date(this.voorstelling().datum_tijd_1 ?? '') > new Date() ||
+      new Date(this.voorstelling().datum_tijd_2 ?? '') > new Date()
     );
   }
 }

@@ -1,25 +1,31 @@
-import { Component, WritableSignal, inject, signal } from '@angular/core';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDialog } from '@angular/material/dialog';
-import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
-import { ToastrService } from 'ngx-toastr';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Voorstelling } from '../../../models/domain/voorstelling.model';
-import { lastValueFrom } from 'rxjs';
-import { AuthService } from '../../../shared/services/auth.service';
-import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Title } from '@angular/platform-browser';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { ToastrService } from 'ngx-toastr';
+import { lastValueFrom } from 'rxjs';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { AuthService } from '../../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -42,10 +48,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
 })
-export class BeheerVoorstellingenComponent {
+export class BeheerVoorstellingenComponent implements OnInit {
   loading = signal(false);
 
-  items: WritableSignal<any[] | null> = signal(null);
+  items: WritableSignal<Voorstelling[] | null> = signal(null);
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
@@ -75,7 +81,7 @@ export class BeheerVoorstellingenComponent {
 
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!created) {
+    if (created) {
       this.toastr.success(`Voorstelling ${created.titel} aangemaakt.`);
       await this.ngOnInit();
     }
@@ -89,17 +95,17 @@ export class BeheerVoorstellingenComponent {
 
     const updated: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!updated) {
+    if (updated) {
       this.toastr.success(`Voorstelling ${updated.titel} aangepast.`);
       await this.ngOnInit();
     }
   }
 
-  async delete({ id }: any) {
+  async delete(id: string) {
     this.loading.set(true);
 
     if (await this.client.delete('voorstellingen', id)) {
-      this.items.update((x) => x!.filter((y: any) => y.id != id));
+      this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
     }
 
     this.loading.set(false);

@@ -1,35 +1,35 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
+  Input,
   OnInit,
   WritableSignal,
-  signal,
-  inject,
-  Input,
   effect,
+  inject,
+  signal,
 } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { NavButtonComponent } from '../../../../shared/components/nav-button/nav-button.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import confetti from 'canvas-confetti';
+import { NavButtonComponent } from '../../../../shared/components/nav-button/nav-button.component';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: 'app-reservering-geslaagd',
-    templateUrl: './reservering-geslaagd.component.html',
-    styleUrl: './reservering-geslaagd.component.scss',
-    imports: [
-        MatProgressSpinnerModule,
-        MatButtonModule,
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatDividerModule,
-        NavButtonComponent,
-    ]
+  selector: 'app-reservering-geslaagd',
+  templateUrl: './reservering-geslaagd.component.html',
+  styleUrl: './reservering-geslaagd.component.scss',
+  imports: [
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    NavButtonComponent,
+  ],
 })
 export class ReserveringGeslaagdComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
@@ -38,15 +38,15 @@ export class ReserveringGeslaagdComponent implements OnInit {
 
   content: WritableSignal<string | null> = signal(null);
 
-  @Input({ required: true, alias: 'voorstelling' })
+  @Input({ required: true })
   voorstellingId!: string;
 
-  @Input({ required: true, alias: 'reservering' })
+  @Input({ required: true })
   reserveringsId!: string;
 
   constructor() {
     effect(() => {
-      if (!!this.content()) {
+      if (this.content()) {
         this.celebrate();
       }
     });
@@ -55,7 +55,7 @@ export class ReserveringGeslaagdComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
-    this.content.set((record as any).tekst_1);
+    this.content.set(record.tekst_1);
   }
 
   celebrate() {

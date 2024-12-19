@@ -196,7 +196,7 @@
         <tbody>
           @for (item of losseVerkoopOfSelectedVoorstelling(); track $index) {
           <tr>
-            <td>{{ (item.datum == 'datum1' ? selectedVoorstelling.datum_tijd_1 : selectedVoorstelling.datum_tijd_2) | date: "dd-MM-YYYY" }}</td>
+            <td>{{ (item.datum === 'datum1' ? selectedVoorstelling.datum_tijd_1 : selectedVoorstelling.datum_tijd_2) | date: "dd-MM-YYYY" }}</td>
             <td>{{ item.aantal }}</td>
             <td><button mat-icon-button (click)="deleteLosseVerkoop(item)">
               <mat-icon color="warn">delete</mat-icon>

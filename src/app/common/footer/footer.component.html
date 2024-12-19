@@ -30,10 +30,15 @@
         <div class="justify-content-center d-flex row">
             <h2><mat-icon>map</mat-icon> Links</h2>
             <ul>
-                <li (click)="navigateTo(['/'])">
-                    Reserveren</li>
-                <li (click)="navigateTo(['/lid-worden'])">Lid worden</li>
-                <li (click)="navigateTo(['/contact'])">Contact</li>
+                <li>
+                    <button (click)="navigateTo(['/'])" (keydown.enter)="navigateTo(['/'])" role="link">Reserveren</button>
+                </li>
+                <li>
+                    <button (click)="navigateTo(['/lid-worden'])" (keydown.enter)="navigateTo(['/lid-worden'])" role="link">Lid worden</button>
+                </li>
+                <li>
+                    <button (click)="navigateTo(['/contact'])" (keydown.enter)="navigateTo(['/contact'])" role="link">Contact</button>
+                </li>
                 <li>Privacy beleid</li>
             </ul>
         </div>
@@ -42,8 +47,12 @@
         <div class="justify-content-center d-flex row">
             <h2><mat-icon>language</mat-icon> Social Media</h2>
             <ul>
-                <li (click)=" navigateToInstagram()"> Instagram </li>
-                <li (click)="navigateToFaceBook()">Facebook</li>
+                <li>
+                    <button (click)="navigateToInstagram()" (keydown.enter)="navigateToInstagram()" role="link">Instagram</button>
+                </li>
+                <li>
+                    <button (click)="navigateToFaceBook()" (keydown.enter)="navigateToFaceBook()" role="link">Facebook</button>
+                </li>
             </ul>
         </div>
     </div>

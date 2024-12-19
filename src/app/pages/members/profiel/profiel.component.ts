@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { BreakpointService } from '../../../shared/services/breakpoint.service';
+import { Rol } from '../../../models/domain/rol.model';
 
 @Component({
     selector: 'app-profiel',
@@ -39,7 +40,7 @@ export class ProfielComponent implements OnInit {
     const rollen = this.user()?.expand?.rollen;
 
     if (!!rollen && rollen?.length > 0) {
-      const mappedRollen = rollen.map((r: any) => r.rol) as any[];
+      const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
       return mappedRollen.join(', ');
     }
     return '';

@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   WritableSignal,
   effect,
   inject,
@@ -15,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { Speler } from '../../../models/domain/speler.model';
 
 
 @Component({
@@ -29,7 +31,7 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
     templateUrl: './productie-info.component.html',
     styleUrl: './productie-info.component.scss'
 })
-export class ProductieInfoComponent {
+export class ProductieInfoComponent implements OnInit {
   groepsNaam: string;
   url = 'https://pocketbase.nergy.space/';
 
@@ -41,8 +43,8 @@ export class ProductieInfoComponent {
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
   afgelopenVoorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
-  spelers: WritableSignal<any[] | null> = signal(null);
-  slides: WritableSignal<any[] | null> = signal(null);
+  spelers: WritableSignal<Speler[] | null> = signal(null);
+  slides: WritableSignal<{ id: number; title: string; description: string; src: string }[] | null> = signal(null);
 
   titleService = inject(Title);
 
@@ -50,7 +52,7 @@ export class ProductieInfoComponent {
     this.groepsNaam = this.router.url.substring(16);
 
     effect(() => {
-      if (!!this.groep()?.naam) {
+      if (this.groep()?.naam) {
         this.titleService.setTitle(`Tovedem - Groep - ${this.groep()?.naam} `);
       }
     });
@@ -62,13 +64,13 @@ export class ProductieInfoComponent {
         sort: '-created',
         expand: 'groep',
       })
-    ).filter((x: any) => x.groep.includes(this.groepsNaam.substring(0, 3)));
+    ).filter((x: Voorstelling) => x.groep.includes(this.groepsNaam.substring(0, 3)));
 
     const groep = (
       await this.client.getAll<Groep>('groepen', {
         sort: '-created',
       })
-    ).filter((x: any) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
+    ).filter((x: Groep) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
 
     this.groep.set(groep);
     this.voorstellingen.set(voorstellingen);

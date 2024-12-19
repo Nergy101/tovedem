@@ -13,21 +13,21 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { Observable, filter, lastValueFrom, map, startWith, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, filter, lastValueFrom, map, startWith } from 'rxjs';
+import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
-import { MatDialog } from '@angular/material/dialog';
 import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
-import { ToastrService } from 'ngx-toastr';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-reserveringen-inzien',

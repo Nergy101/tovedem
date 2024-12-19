@@ -36,9 +36,9 @@ export class AuthService {
 
   constructor() {
     // check the localstorage for userData
-    const existingUserData = this.client.authStore.record as any as Gebruiker;
+    const existingUserData = this.client.authStore.record as unknown as Gebruiker;
 
-    if (!!existingUserData) {
+    if (existingUserData) {
       if (this.client.authStore.isValid) {
         this.registerUser(existingUserData);
       } else {
@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   userHasAllRoles(roles: string[]): boolean {
-    if (!!this.userData()?.expand?.rollen) {
+    if (this.userData()?.expand?.rollen) {
       const rollenVanGebruiker = this.userData()?.expand?.rollen?.map(
         (r: Rol) => r.rol
       );

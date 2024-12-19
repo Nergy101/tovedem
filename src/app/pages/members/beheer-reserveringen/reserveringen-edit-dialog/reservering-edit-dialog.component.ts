@@ -1,10 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  inject,
-  signal
-} from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,7 +9,11 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -27,32 +26,32 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: 'app-Reservering-edit-dialog',
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatInputModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressSpinnerModule,
-        MatSelectModule,
-        QuillModule,
-        NgxMaterialTimepickerModule,
-        MatCardModule,
-        DatePipe
-    ],
-    providers: [
-        provideNativeDateAdapter(),
-        DatePipe,
-        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-    ],
-    templateUrl: './reservering-edit-dialog.component.html',
-    styleUrl: './reservering-edit-dialog.component.scss'
+  selector: 'app-reservering-edit-dialog',
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatInputModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    QuillModule,
+    NgxMaterialTimepickerModule,
+    MatCardModule,
+    DatePipe,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
+  templateUrl: './reservering-edit-dialog.component.html',
+  styleUrl: './reservering-edit-dialog.component.scss',
 })
 export class ReserveringEditDialogComponent implements OnInit {
   voornaam?: string;
@@ -60,8 +59,8 @@ export class ReserveringEditDialogComponent implements OnInit {
   email?: string;
   datum_tijd_1_aantal?: number;
   datum_tijd_2_aantal?: number;
-  is_lid_van_tovedem: any;
-  is_lid_van_vereniging?: any;
+  is_lid_van_tovedem?: boolean;
+  is_lid_van_vereniging?: boolean;
   opmerking?: string;
 
   reservering?: Reservering;
@@ -90,29 +89,33 @@ export class ReserveringEditDialogComponent implements OnInit {
     ],
   };
 
-
   client = inject(PocketbaseService).client;
   datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<ReserveringEditDialogComponent>);
-  existingReserveringData: any = inject(MAT_DIALOG_DATA)
+  existingReserveringData: { reservering: Reservering; voorstelling: Voorstelling } = inject(MAT_DIALOG_DATA);
   existingReservering!: Reservering;
   existingVoorstelling!: Voorstelling;
 
   async ngOnInit(): Promise<void> {
-    this.existingReservering = this.existingReserveringData.reservering
-    this.existingVoorstelling = this.existingReservering.expand.voorstelling
+    this.existingReservering = this.existingReserveringData.reservering;
+    this.existingVoorstelling = this.existingReservering.expand.voorstelling;
 
-    if (!!this.existingReservering) {
+    if (this.existingReservering) {
       this.voornaam = this.existingReservering.voornaam;
       this.achternaam = this.existingReservering.achternaam;
       this.email = this.existingReservering.email;
       this.datum_tijd_1_aantal = this.existingReservering.datum_tijd_1_aantal;
       this.datum_tijd_2_aantal = this.existingReservering.datum_tijd_2_aantal;
       this.is_lid_van_tovedem = this.existingReservering.is_vriend_van_tovedem;
-      this.is_lid_van_vereniging = this.existingReservering.is_lid_van_vereniging;
+      this.is_lid_van_vereniging =
+        this.existingReservering.is_lid_van_vereniging;
       this.opmerking = this.existingReservering.opmerking;
-      this.datum1 = !!this.existingVoorstelling?.datum_tijd_1 ? new Date(this.existingVoorstelling?.datum_tijd_1) : undefined;
-      this.datum2 = !!this.existingVoorstelling?.datum_tijd_2 ? new Date(this.existingVoorstelling?.datum_tijd_2) : undefined;
+      this.datum1 = this.existingVoorstelling?.datum_tijd_1
+        ? new Date(this.existingVoorstelling?.datum_tijd_1)
+        : undefined;
+      this.datum2 = this.existingVoorstelling?.datum_tijd_2
+        ? new Date(this.existingVoorstelling?.datum_tijd_2)
+        : undefined;
     }
   }
 
@@ -158,7 +161,8 @@ export class ReserveringEditDialogComponent implements OnInit {
     );
   }
 
-  private objectToFormData(obj: { [key: string]: any }): FormData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private objectToFormData(obj: Record<string, any>): FormData {
     const formData = new FormData();
     Object.entries(obj).forEach(([key, value]) => {
       if (Array.isArray(value)) {

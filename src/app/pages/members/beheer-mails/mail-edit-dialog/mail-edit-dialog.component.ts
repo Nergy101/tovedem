@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './mail-edit-dialog.component.html',
     styleUrl: './mail-edit-dialog.component.scss'
 })
-export class MailEditDialogComponent {
+export class MailEditDialogComponent implements OnInit {
   dialogRef = inject(MatDialogRef<MailEditDialogComponent>);
   dialogData: Mail = inject(MAT_DIALOG_DATA);
 

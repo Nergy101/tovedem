@@ -16,26 +16,26 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { lastValueFrom } from 'rxjs';
+import { Mail } from '../../../models/domain/mail.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
-import { Mail }  from '../../../models/domain/mail.model';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
-    selector: 'app-beheer-mails',
-    imports: [
-        CommonModule,
-        MatIconModule,
-        MatButtonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-    ],
-    templateUrl: './beheer-mails.component.html',
-    styleUrl: './beheer-mails.component.scss'
+  selector: 'app-beheer-mails',
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './beheer-mails.component.html',
+  styleUrl: './beheer-mails.component.scss',
 })
 export class BeheerMailsComponent implements OnInit {
   loading = signal(false);
@@ -47,13 +47,13 @@ export class BeheerMailsComponent implements OnInit {
   toastr = inject(ToastrService);
   titleService = inject(Title);
 
-  statussen = ["concept", "inprogress", "done", "verified"];
-  statusColor: {[key : string]: string} = {
-    concept: "#AE1545",
-    inprogress: "#28668F",
-    done: "#DFA801",
-    verified: "#338450",
-  }
+  statussen = ['concept', 'inprogress', 'done', 'verified'];
+  statusColor: Record<string, string> = {
+    concept: '#AE1545',
+    inprogress: '#28668F',
+    done: '#DFA801',
+    verified: '#338450',
+  };
 
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Mails');
@@ -72,39 +72,21 @@ export class BeheerMailsComponent implements OnInit {
     });
     const edited: Mail = await lastValueFrom(dialogRef.afterClosed());
 
-    if (!!edited) {
+    if (edited) {
       await this.client.update<Mail>('mails', edited);
       this.toastr.success(`Mail '${edited.naam}' aangepast.`);
       await this.ngOnInit();
     }
   }
 
-  async selectConcept(item: any) {
+  async updateMailStatus(item: Mail, status: 'concept' | 'inprogress' | 'done' | 'verified') {
     this.loading.set(true);
-    item.status = "concept";
-    const updated = await this.client.update("mails", item);
-    this.loading.set(false);
-  }
-  async selectInProgress(item: any) {
-    this.loading.set(true);
-    item.status = "inprogress";
-    const updated = await this.client.update("mails", item);
-    this.loading.set(false);
-  }
-  async selectDone(item: any) {
-    this.loading.set(true);
-    item.status = "done";
-    const updated = await this.client.update("mails", item);
-    this.loading.set(false);
-  }
-  async selectVerified(item: any) {
-    this.loading.set(true);
-    item.status = "verified";
-    const updated = await this.client.update('mails', item);
+    item.status = status;
+    await this.client.update('mails', item);
     this.loading.set(false);
   }
 
-  getLabelBackgroundColor(status: string){
-    return this.statusColor[status] || "#000000"
+  getLabelBackgroundColor(status: string) {
+    return this.statusColor[status] || '#000000';
   }
 }

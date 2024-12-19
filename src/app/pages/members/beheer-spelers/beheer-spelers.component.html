@@ -54,7 +54,7 @@
                             <button mat-icon-button (click)="updateSpeler(speler)" [disabled]="loading()">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button mat-icon-button (click)="delete(speler)" [disabled]="loading()">
+                            <button mat-icon-button (click)="delete(speler.id)" [disabled]="loading()">
                                 <mat-icon color="warn">delete</mat-icon>
                             </button>
                         </td>

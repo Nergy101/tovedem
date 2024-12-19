@@ -1,26 +1,27 @@
-import { CommonModule } from "@angular/common";
-import { Component, ViewChild, computed, effect, model } from "@angular/core";
+import { CommonModule } from '@angular/common';
+import { Component, ViewChild, computed, effect, model } from '@angular/core';
 import {
   ApexChart,
   ApexNonAxisChartSeries,
   ApexResponsive,
+  ApexDataLabels,
   ChartComponent,
   NgApexchartsModule,
-} from "ng-apexcharts";
+} from 'ng-apexcharts';
 
 export interface ChartOptions {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
   responsive: ApexResponsive[];
-  labels: any;
-  dataLabels: any;
+  labels: string[];
+  dataLabels: ApexDataLabels;
 }
 
 @Component({
-    selector: "app-pie-chart",
-    imports: [CommonModule, NgApexchartsModule],
-    templateUrl: "./pie-chart.component.html",
-    styleUrl: "./pie-chart.component.scss"
+  selector: 'app-pie-chart',
+  imports: [CommonModule, NgApexchartsModule],
+  templateUrl: './pie-chart.component.html',
+  styleUrl: './pie-chart.component.scss',
 })
 export class PieChartComponent {
   @ViewChild(ChartComponent) chart: ChartComponent | undefined;
@@ -41,7 +42,7 @@ export class PieChartComponent {
       series: [],
       chart: {
         width: 380,
-        type: "pie",
+        type: 'pie',
         animations: {
           enabled: true,
         },
@@ -49,7 +50,8 @@ export class PieChartComponent {
       labels: this.labels(),
       dataLabels: {
         enabled: true,
-        formatter: function (_val: any, opts: any) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        formatter: function (_val: number, opts: any) {
           // Display the absolute value
           return opts.w.config.series[opts.seriesIndex];
         },
@@ -62,7 +64,7 @@ export class PieChartComponent {
               width: 200,
             },
             legend: {
-              position: "bottom",
+              position: 'bottom',
             },
           },
         },

@@ -10,11 +10,11 @@ import { PocketBaseFilePickerAdapter } from './pocketbase-file-picker-adapter';
 })
 export class TovedemFilePickerComponent {
   @Output()
-  onFileUploaded = new EventEmitter<FilePreviewModel>();
+  fileUploaded = new EventEmitter<FilePreviewModel>();
 
   adapter = new PocketBaseFilePickerAdapter();
 
   internalOnFileUploaded(filePreview: FilePreviewModel) {
-    this.onFileUploaded.emit(filePreview);
+    this.fileUploaded.emit(filePreview);
   }
 }

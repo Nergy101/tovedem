@@ -1,48 +1,65 @@
-import { DatePipe } from "@angular/common";
-import { Component, WritableSignal, inject, signal } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
+import { DatePipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog } from "@angular/material/dialog";
-import { MatIconModule } from "@angular/material/icon";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatSelectModule } from "@angular/material/select";
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Title } from "@angular/platform-browser";
+import { Title } from '@angular/platform-browser';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { ToastrService } from "ngx-toastr";
-import { AuthService } from "../../../shared/services/auth.service";
-import { PocketbaseService } from "../../../shared/services/pocketbase.service";
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../shared/services/auth.service';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: "commissie-sinterklaas",
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatSelectModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-        DatePipe,
-        MatDatepickerModule,
-        NgxMaterialTimepickerModule,
-        MatTooltipModule
-    ],
-    providers: [
-        provideNativeDateAdapter(),
-        DatePipe,
-        { provide: MAT_DATE_LOCALE, useValue: "nl-NL" },
-    ],
-    templateUrl: "./commissie-sinterklaas.component.html",
-    styleUrl: "./commissie-sinterklaas.component.scss"
+  selector: 'app-commissie-sinterklaas',
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    DatePipe,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatTooltipModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
+  templateUrl: './commissie-sinterklaas.component.html',
+  styleUrl: './commissie-sinterklaas.component.scss',
 })
-export class CommissieSinterklaasComponent {
+export class CommissieSinterklaasComponent implements OnInit {
   loading = signal(false);
 
-  items: WritableSignal<any[] | null> = signal(null);
+  items: WritableSignal<
+    {
+      id: string;
+      status: string;
+      plannedDate: string;
+      message: string;
+      created: string;
+      name: string;
+      email: string;
+      subject: string;
+    }[] | null
+  > = signal(null);
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
@@ -51,63 +68,44 @@ export class CommissieSinterklaasComponent {
 
   titleService = inject(Title);
 
-  statussen = ["nieuw", "inbehandeling", "ingepland", "afgerond"];
-  statusColor: {[key : string]: string} = {
-    nieuw: "#AE1545",
-    inbehandeling: "#28668F",
-    ingepland: "#DFA801",
-    afgerond: "#338450",
-  }
+  statussen = ['nieuw', 'inbehandeling', 'ingepland', 'afgerond'];
+  statusColor: Record<string, string> = {
+    nieuw: '#AE1545',
+    inbehandeling: '#28668F',
+    ingepland: '#DFA801',
+    afgerond: '#338450',
+  };
 
   constructor() {
-    this.titleService.setTitle("Tovedem - Commissie - Sinterklaas");
+    this.titleService.setTitle('Tovedem - Commissie - Sinterklaas');
   }
 
   async ngOnInit(): Promise<void> {
     this.items.set(
-      await this.client.getAll("sinterklaas_verzoeken", {
-        sort: "-created",
-      }),
+      await this.client.getAll('sinterklaas_verzoeken', {
+        sort: '-created',
+      })
     );
   }
 
-  async delete({ id }: any) {
+  async delete(id: string) {
     this.loading.set(true);
 
-    if (await this.client.delete("sinterklaas_verzoeken", id)) {
-      this.items.update((x) => x!.filter((y: any) => y.id != id));
+    if (await this.client.delete('sinterklaas_verzoeken', id)) {
+      this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
     }
 
     this.loading.set(false);
   }
 
-  async selectNieuw(item: any) {
+  async updateStatus(item: { id: string; status: string }, newStatus: string) {
     this.loading.set(true);
-    item.status = "nieuw";
-    const updated = await this.client.update("sinterklaas_verzoeken", item);
+    item.status = newStatus;
+    await this.client.update('sinterklaas_verzoeken', item);
     this.loading.set(false);
-  }
-  async selectInbehandeling(item: any) {
-    this.loading.set(true);
-    item.status = "inbehandeling";
-    const updated = await this.client.update("sinterklaas_verzoeken", item);
-    this.loading.set(false);
-  }
-  async selectIngepland(item: any) {
-    this.loading.set(true);
-    item.status = "ingepland";
-    const updated = await this.client.update("sinterklaas_verzoeken", item);
-    this.loading.set(false);
-  }
-  async selectAfgerond(item: any) {
-    this.loading.set(true);
-    item.status = "afgerond";
-    const updated = await this.client.update('sinterklaas_verzoeken', item);
-    this.loading.set(false);
-
   }
 
-  getLabelBackgroundColor(status: string){
-    return this.statusColor[status] || "#000000"
+  getLabelBackgroundColor(status: string) {
+    return this.statusColor[status] || '#000000';
   }
 }

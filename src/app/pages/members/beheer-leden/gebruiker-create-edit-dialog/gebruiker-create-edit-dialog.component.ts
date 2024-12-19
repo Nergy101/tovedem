@@ -26,7 +26,6 @@ import { Gebruiker } from '../../../../models/domain/gebruiker.model';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Rol } from '../../../../models/domain/rol.model';
 import { Speler } from '../../../../models/domain/speler.model';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
@@ -88,7 +87,7 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!!this.data?.existingGebruiker) {
+    if (this.data?.existingGebruiker) {
       const existing = this.data.existingGebruiker;
       this.gebruiker = existing;
     }

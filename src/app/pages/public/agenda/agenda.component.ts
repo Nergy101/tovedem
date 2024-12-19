@@ -12,7 +12,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
-import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { VoorstellingLineComponent } from '../../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -41,7 +40,7 @@ export class AgendaComponent implements OnInit {
   voorstellingenLong: WritableSignal<Voorstelling[]> = signal([]);
   groepen: WritableSignal<Groep[]> = signal([]);
 
-  voorstellingenPerJaar: WritableSignal<{ year: number; items: any[] }[]> =
+  voorstellingenPerJaar: WritableSignal<{ year: number; items: Voorstelling[] }[]> =
     signal([]);
 
   constructor() {
@@ -61,7 +60,7 @@ export class AgendaComponent implements OnInit {
     const groepen = await this.client.getAll<Groep>('groepen', {
       sort: '-created',
     });
-    this.groepen.set(groepen as any);
+    this.groepen.set(groepen);
 
     const voorstellingenPerJaar = this.groupByYear(
       voorstellingenInDeToekomst
@@ -72,11 +71,11 @@ export class AgendaComponent implements OnInit {
     const voorstellingenInDeToekomstEnMaxVan6 =
       voorstellingenInDeToekomst.slice(0, 6);
 
-    this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6 as any);
-    this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6 as any);
+    this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6);
+    this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6);
   }
 
-  groupByYear(fullList: any[]): { year: number; items: any[] }[] {
+  groupByYear(fullList: Voorstelling[]): { year: number; items: Voorstelling[] }[] {
     return Object.values(
       fullList.reduce((result, item) => {
         const year = new Date(item.datum_tijd_1).getFullYear();
@@ -88,7 +87,7 @@ export class AgendaComponent implements OnInit {
         result[year].items.push(item);
 
         return result;
-      }, {} as Record<number, { year: number; items: any[] }>)
+      }, {} as Record<number, { year: number; items: Voorstelling[] }>)
     );
   }
 }

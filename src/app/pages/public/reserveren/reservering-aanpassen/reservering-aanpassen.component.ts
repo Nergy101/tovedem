@@ -51,7 +51,7 @@ export class ReserveringAanpassenComponent {
   toastr = inject(ToastrService);
   reserveringId = signal<string | undefined>(undefined);
   reserveringGuid = signal<string | undefined>(undefined);
-  reservering = signal<any | undefined>(undefined);
+  reservering = signal<Reservering | undefined>(undefined);
   client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
 
@@ -134,24 +134,24 @@ export class ReserveringAanpassenComponent {
   async saveReservering(): Promise<void> {
     this.saving.set(true);
 
-    const updatedReservering = await this.client.update<Reservering>(
+    await this.client.update<Reservering>(
       'reserveringen',
       {
-        id: this.reservering().id,
-        created: this.reservering().created,
+        id: this.reservering()?.id ?? '',
+        created: this.reservering()?.created ?? '',
         updated: new Date().toISOString(),
         voornaam: this.name(),
         achternaam: this.surname(),
         email: this.email(),
         is_vriend_van_tovedem: this.vriendVanTovedem(),
         is_lid_van_vereniging: this.lidVanTovedemMejotos(),
-        voorstelling: this.reservering().expand.voorstelling.id,
+        voorstelling: this.reservering()?.expand?.voorstelling?.id ?? '',
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
-        opmerking: this.reservering().opmerking,
-        guid: this.reservering().guid,
-        aanwezig_datum_1: this.reservering().aanwezig_datum_1,
-        aanwezig_datum_2: this.reservering().aanwezig_datum_2
+        opmerking: this.reservering()?.opmerking ?? '',
+        guid: this.reservering()?.guid ?? '',
+        aanwezig_datum_1: this.reservering()?.aanwezig_datum_1 ?? false,
+        aanwezig_datum_2: this.reservering()?.aanwezig_datum_2 ?? false
       }
     );
 

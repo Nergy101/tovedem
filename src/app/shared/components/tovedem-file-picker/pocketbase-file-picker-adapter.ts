@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { Observable, from, of } from 'rxjs';
+import { inject } from '@angular/core';
 import {
   FilePickerAdapter,
+  FilePreviewModel,
   UploadResponse,
   UploadStatus,
-  FilePreviewModel,
 } from 'ngx-awesome-uploader';
-import { inject } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { PocketbaseService } from '../../services/pocketbase.service';
 
 //? https://github.com/vugar005/ngx-awesome-uploader/blob/master/projects/file-picker/src/lib/mock-file-picker.adapter.ts
@@ -27,7 +27,7 @@ export class PocketBaseFilePickerAdapter extends FilePickerAdapter {
     });
   }
 
-  public removeFile(fileItem: FilePreviewModel): Observable<any> {
+  public removeFile(_: FilePreviewModel): Observable<any> {
     // @TODO Check implementation?
     return of(null);
   }

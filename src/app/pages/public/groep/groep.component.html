@@ -10,7 +10,7 @@
     <div class="row pt-4">
       <div class="col-lg-3 col-12">
         @if(!!firstImg){
-        <img alt="group image" src={{firstImg.src}}
+        <img alt="group image" src={{firstImg}}
           style="object-fit: contain; max-width: 100%; border-radius: 1em;" />}
         @else {
         <img alt="group image" src="/assets/Place-Holder-Image.jpg"
@@ -59,10 +59,10 @@
   <div class="row pt-4">
     <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
   </div>
-  @if(aankomendeVoorstelling() != null){
+  @if(aankomendeVoorstelling(); as voorstelling){
   <div class="row">
     <div class="flex justify-content-center">
-      <app-voorstelling-card [voorstelling]="aankomendeVoorstelling()" class="col-md-6 col-12">
+      <app-voorstelling-card [voorstelling]="voorstelling" class="col-md-6 col-12">
       </app-voorstelling-card>
     </div>
   </div>

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   Input,
@@ -10,26 +11,23 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
-import PocketBase from 'pocketbase';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { lastValueFrom } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
     selector: 'app-reserveren',
@@ -81,7 +79,7 @@ export class ReserverenComponent implements OnInit {
     );
   });
 
-  loaded: boolean = false;
+  loaded = false;
 
   voorstellingOmschrijving = '';
   voorstellingsNaam = '';
@@ -90,7 +88,7 @@ export class ReserverenComponent implements OnInit {
   datum2: Date | null = null;
   today = new Date();
 
-  @Input('voorstelling')
+  @Input()
   voorstellingId: string | null = null;
 
   async ngOnInit(): Promise<void> {
@@ -99,15 +97,15 @@ export class ReserverenComponent implements OnInit {
   }
 
   async loadData(): Promise<void> {
-    if (!!this.voorstellingId) {
+    if (this.voorstellingId) {
       const voorstelling = await this.client.getOne<Voorstelling>(
         'voorstellingen',
         this.voorstellingId
       );
 
       this.voorstellingsNaam = voorstelling.titel;
-      this.datum1 = new Date(voorstelling.datum_tijd_1);
-      this.datum2 = new Date(voorstelling.datum_tijd_2);
+      this.datum1 = new Date(voorstelling.datum_tijd_1 ?? '');
+      this.datum2 = new Date(voorstelling.datum_tijd_2 ?? '');
 
       const groep = await this.client.getOne<Groep>(
         'groepen',
@@ -135,11 +133,11 @@ export class ReserverenComponent implements OnInit {
         email: this.email(),
         is_vriend_van_tovedem: this.vriendVanTovedem(),
         is_lid_van_vereniging: this.lidVanTovedemMejotos(),
-        voorstelling: this.voorstellingId,
+        voorstelling: this.voorstellingId ?? '',
         datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
         datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
         guid: this.uuidv4(),
-        opmerking: this.opmerking(),
+        opmerking: this.opmerking()
       }
     );
 
@@ -148,8 +146,8 @@ export class ReserverenComponent implements OnInit {
 
     this.router.navigate(['/reservering-geslaagd'], {
       queryParams: {
-        voorstelling: this.voorstellingId,
-        reservering: nieuweReservering.id,
+        voorstellingId: this.voorstellingId,
+        reserveringId: nieuweReservering.id,
       },
     });
 

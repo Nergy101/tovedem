@@ -77,7 +77,7 @@
                   />
                 </td>
                 <td>
-                  @if (gebruiker.expand?.rollen?.length == 1) {
+                  @if (gebruiker.expand?.rollen?.length === 1) {
                     <p style="margin: 1em">
                       {{ gebruiker.expand.rollen[0].rol }}
                     </p>
@@ -129,7 +129,7 @@
                   <td>
                     <button
                       mat-icon-button
-                      (click)="delete(gebruiker)"
+                      (click)="delete(gebruiker.id)"
                       [disabled]="loading()"
                     >
                       <mat-icon color="warn">delete</mat-icon>

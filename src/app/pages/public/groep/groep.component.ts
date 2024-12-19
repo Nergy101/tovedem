@@ -1,38 +1,39 @@
 import {
   Component,
+  OnInit,
   WritableSignal,
   effect,
   inject,
   signal,
 } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { Title } from '@angular/platform-browser';
 
-import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatListModule } from '@angular/material/list';
-import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Groep } from '../../../models/domain/groep.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { SeoService } from '../../../shared/services/seo.service';
+import { Speler } from '../../../models/domain/speler.model';
 
 @Component({
-    selector: 'app-groep',
-    imports: [
-        VoorstellingCardComponent,
-        MatProgressSpinnerModule,
-        RouterModule,
-        MdbCarouselModule,
-        MatListModule,
-    ],
-    templateUrl: './groep.component.html',
-    styleUrl: './groep.component.scss'
+  selector: 'app-groep',
+  imports: [
+    VoorstellingCardComponent,
+    MatProgressSpinnerModule,
+    RouterModule,
+    MdbCarouselModule,
+    MatListModule,
+  ],
+  templateUrl: './groep.component.html',
+  styleUrl: './groep.component.scss',
 })
-export class GroepComponent {
+export class GroepComponent implements OnInit {
   groepsNaam: string;
   url = 'https://pocketbase.nergy.space/';
-  firstImg: any = ''
+  firstImg = '';
   client = inject(PocketbaseService);
 
   groep: WritableSignal<Groep | null> = signal(null);
@@ -41,17 +42,17 @@ export class GroepComponent {
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
   afgelopenVoorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
-  spelers: WritableSignal<any[] | null> = signal(null);
-  slides: any[] | any = [];
+  spelers: WritableSignal<Speler[] | null> = signal(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  slides: any[] = [];
 
   seoService = inject(SeoService);
 
   constructor(private router: Router) {
-
     this.groepsNaam = this.router.url.substring(7);
 
     effect(() => {
-      if (!!this.groep()?.naam) {
+      if (this.groep()?.naam) {
         this.seoService.update(`Tovedem - Groep - ${this.groep()?.naam}`);
       }
     });
@@ -63,13 +64,15 @@ export class GroepComponent {
         sort: '-created',
         expand: 'groep',
       })
-    ).filter((x: any) => x.groep.includes(this.groepsNaam.substring(0, 3)));
+    ).filter((x: Voorstelling) =>
+      x.groep.includes(this.groepsNaam.substring(0, 3))
+    );
 
     const groep = (
       await this.client.getAll<Groep>('groepen', {
         sort: '-created',
       })
-    ).filter((x: any) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
+    ).filter((x: Groep) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
 
     this.groep.set(groep);
     this.voorstellingen.set(voorstellingen);
@@ -99,9 +102,8 @@ export class GroepComponent {
     this.slides = groep.afbeeldingen?.map((img: string) => ({
       id: img,
       src: this.getImageUrl(groep.collectionId, groep.id, img),
-    }));
-    this.firstImg = this.slides[0];
-    console.log(this.firstImg)
+    })) ?? [];
+    this.firstImg = this.slides[0]?.src ?? '';
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {

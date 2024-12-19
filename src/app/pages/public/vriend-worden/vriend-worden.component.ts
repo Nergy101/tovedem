@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-vriend-worden',
@@ -58,7 +59,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   recaptchaV3Service = inject(ReCaptchaV3Service);
   environment = inject(Environment);
 
-  subscriptions: any[] = [];
+  subscriptions: Subscription[] = [];
 
   verstuurVriendVanTovedemMail() {
     this.subscriptions.push(this.recaptchaV3Service.execute('vriend_worden')
@@ -107,9 +108,9 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    const record = (await this.client.collection('vriend_worden').getList(1, 1))
+    const { tekst_1 } = (await this.client.collection('vriend_worden').getList(1, 1))
       .items[0];
-    this.content.set((record as any).tekst_1);
+    this.content.set(tekst_1);
   }
 
   ngOnDestroy(): void {

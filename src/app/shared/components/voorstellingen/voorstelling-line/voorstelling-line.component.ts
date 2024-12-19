@@ -6,22 +6,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { NavButtonComponent } from '../../nav-button/nav-button.component';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 
 @Component({
-    selector: 'app-voorstelling-line',
-    templateUrl: './voorstelling-line.component.html',
-    styleUrl: './voorstelling-line.component.scss',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatDividerModule,
-        NavButtonComponent,
-    ]
+  selector: 'app-voorstelling-line',
+  templateUrl: './voorstelling-line.component.html',
+  styleUrl: './voorstelling-line.component.scss',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    NavButtonComponent,
+  ],
 })
 export class VoorstellingLineComponent {
-  voorstelling = input.required<any>();
+  voorstelling = input.required<Voorstelling>();
   router = inject(Router);
 
   getYearFormat(): number {
@@ -34,15 +35,15 @@ export class VoorstellingLineComponent {
 
   inToekomst(): boolean {
     return (
-      new Date(this.voorstelling().datum_tijd_1) > new Date() ||
-      new Date(this.voorstelling().datum_tijd_2) > new Date()
+      new Date(this.voorstelling().datum_tijd_1 ?? '') > new Date() ||
+      new Date(this.voorstelling().datum_tijd_2 ?? '') > new Date()
     );
   }
 
   goToReserveren(): void {
     this.router.navigate(['/reserveren'], {
       queryParams: {
-        voorstelling: this.voorstelling().id,
+        voorstellingId: this.voorstelling().id,
       },
     });
   }

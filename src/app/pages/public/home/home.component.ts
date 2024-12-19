@@ -1,9 +1,8 @@
-import { Component, WritableSignal, inject, signal } from '@angular/core';
-import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { Meta, Title } from '@angular/platform-browser';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
@@ -12,7 +11,7 @@ import { SeoService } from '../../../shared/services/seo.service';
     styleUrl: './home.component.scss',
     imports: [VoorstellingCardComponent, MatProgressSpinnerModule]
 })
-export class HomePaginaComponent {
+export class HomePaginaComponent implements OnInit {
   client = inject(PocketbaseService);
 
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
@@ -59,7 +58,7 @@ export class HomePaginaComponent {
         'startDate': this.voorstellingen()[0].datum_tijd_1,
         'endDate': this.voorstellingen()[0].datum_tijd_2 ?? this.voorstellingen()[0].datum_tijd_1,
         "director": this.voorstellingen()[0].regie,
-        "url": `https://tovedem.nergy.space/reserveren?voorstelling=${this.voorstellingen()[0].id}`,
+        "url": `https://tovedem.nergy.space/reserveren?voorstellingid=${this.voorstellingen()[0].id}`,
       }
     });
   }

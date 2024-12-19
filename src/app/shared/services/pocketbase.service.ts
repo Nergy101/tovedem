@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { inject, Injectable } from '@angular/core';
 
 import PocketBase, { BaseModel } from 'pocketbase';
@@ -15,8 +16,8 @@ export class PocketbaseService {
     this.client = new PocketBase(this.environment.pocketbase.baseUrl);
   }
 
-  async create<T>(collectionName: string, item: any): Promise<T> {
-    return this.getCollection(collectionName).create(item);
+  async create<T>(collectionName: string, item: Partial<T>): Promise<T> {
+    return this.getCollection(collectionName).create(item as any);
   }
 
   async update<T extends BaseModel>(
@@ -38,7 +39,7 @@ export class PocketbaseService {
       filter?: string;
       sort?: string;
     }
-  ) {
+  ): Promise<T> {
     return await this.getCollection(collectionName).getOne(id, options);
   }
 

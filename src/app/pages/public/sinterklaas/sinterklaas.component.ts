@@ -24,36 +24,41 @@ import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-sinterklaas',
-    imports: [MatProgressSpinnerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        CommonModule,
-        RouterModule,
-        MatInputModule,
-        FormsModule,
-        MatDatepickerModule,
-        MatButtonModule,
-        RouterModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatDividerModule,
-        MdbCarouselModule,
-    ],
-    templateUrl: './sinterklaas.component.html',
-    styleUrl: './sinterklaas.component.scss'
+  selector: 'app-sinterklaas',
+  imports: [
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    CommonModule,
+    RouterModule,
+    MatInputModule,
+    FormsModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    RouterModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MdbCarouselModule,
+  ],
+  templateUrl: './sinterklaas.component.html',
+  styleUrl: './sinterklaas.component.scss',
 })
 export class SinterklaasComponent implements OnInit, OnDestroy {
   content: WritableSignal<string | null> = signal(null);
-  img_src: WritableSignal<any[] | null> = signal(null);
+  img_src: WritableSignal<
+    { id: number; title: string; description: string; src: string }[] | null
+  > = signal(null);
 
   name: string | null = null;
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
-  images: any[] = [];
+  images: { id: number; title: string; description: string; src: string }[] =
+    [];
   status: string | null = null;
 
   toastr = inject(ToastrService);
@@ -61,48 +66,55 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   client = inject(PocketbaseService).client;
   environment = inject(Environment);
   recaptchaV3Service = inject(ReCaptchaV3Service);
-  subscriptions: any[] = [];
+  subscriptions: Subscription[] = [];
 
   verstuurSinterklaasMail() {
-    this.subscriptions.push(this.recaptchaV3Service.execute('sinterklaas')
-      .subscribe(
-        {
-          next: async (token) => {
-            const response = await fetch(`${this.environment.pocketbase.baseUrl}/recaptcha`, {
-              method: "POST",
+    this.subscriptions.push(
+      this.recaptchaV3Service.execute('sinterklaas').subscribe({
+        next: async (token) => {
+          const response = await fetch(
+            `${this.environment.pocketbase.baseUrl}/recaptcha`,
+            {
+              method: 'POST',
               headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                token
-              })
-            });
+                token,
+              }),
+            }
+          );
 
-            const resultObj = await response.json();
+          const resultObj = await response.json();
 
-            if (resultObj.result.success) {
-              try {
-                await this.client.collection('sinterklaas_verzoeken').create({
-                  name: this.name,
-                  email: this.email,
-                  subject: this.subject,
-                  message: this.message,
-                  status: "nieuw"
-                });
+          if (resultObj.result.success) {
+            try {
+              await this.client.collection('sinterklaas_verzoeken').create({
+                name: this.name,
+                email: this.email,
+                subject: this.subject,
+                message: this.message,
+                status: 'nieuw',
+              });
 
-                this.toastr.success('Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.');
+              this.toastr.success(
+                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
+              );
 
-                this.name = null;
-                this.email = null;
-                this.subject = null;
-                this.message = null;
-              } catch (error) {
-                console.error(error);
-                this.toastr.error('Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.');
-              }
+              this.name = null;
+              this.email = null;
+              this.subject = null;
+              this.message = null;
+            } catch (error) {
+              console.error(error);
+              this.toastr.error(
+                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+              );
             }
           }
-        }));
+        },
+      })
+    );
   }
 
   seoService = inject(SeoService);
@@ -118,9 +130,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
 
-
-    this.content.set((record as any).tekst_1);
-
+    this.content.set(record.tekst_1);
 
     this.images = record.afbeeldingen.map((img: string) => ({
       id: img,
@@ -129,7 +139,6 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
-
 }
