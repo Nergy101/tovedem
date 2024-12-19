@@ -77,15 +77,18 @@
         </mat-form-field>
       </div>
       <div class="row">
-        <div class="col-12">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Publicatie datum</mat-label>
-            <input matInput [matDatepicker]="picker3" [(ngModel)]="publicatie_datum" name="picker3" />
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3></mat-datepicker>
-          </mat-form-field>
-        </div>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Publicatie datum</mat-label>
+          <input matInput [matDatepicker]="picker3" [(ngModel)]="publicatie_datum" name="picker3" />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+          <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Prijs per kaartje</mat-label>
+          <mat-icon matPrefix >euro</mat-icon>
+          <input matInput type="number" [(ngModel)]="prijs_per_kaartje" name="prijs_per_kaartje" />
+        </mat-form-field>
       </div>
       <div class="row">
         <div class="col-md-6 col-12">

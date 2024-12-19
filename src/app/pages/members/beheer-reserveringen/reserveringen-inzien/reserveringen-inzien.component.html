@@ -102,8 +102,8 @@
           <td>{{ item.voornaam }}</td>
           <td>{{ item.achternaam }}</td>
           <td>{{ item.email }}</td>
-          <td>{{ item.datum_tijd_1_aantal }}</td>
-          <td>{{ item.datum_tijd_2_aantal }}</td>
+          <td>{{ item.datum_tijd_1_aantal }} ({{ item.datum_tijd_1_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
+          <td>{{ item.datum_tijd_2_aantal }} ({{ item.datum_tijd_2_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
 
           <td>
             <mat-checkbox [color]="'primary'" [checked]="item.is_vriend_van_tovedem" disabled>
@@ -162,8 +162,8 @@
           <td>{{ item.voornaam }}</td>
           <td>{{ item.achternaam }}</td>
           <td>{{ item.email }}</td>
-          <td>{{ item.datum_tijd_1_aantal }}</td>
-          <td>{{ item.datum_tijd_2_aantal }}</td>
+          <td>{{ item.datum_tijd_1_aantal }} ({{ item.datum_tijd_1_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
+          <td>{{ item.datum_tijd_2_aantal }} ({{ item.datum_tijd_2_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
 
           <td>
             <mat-checkbox [color]="'primary'" [checked]="item.is_vriend_van_tovedem" disabled>
@@ -206,7 +206,7 @@
           @for (item of losseVerkoopOfSelectedVoorstelling(); track $index) {
           <tr>
             <td>{{ (item.datum === 'datum1' ? selectedVoorstelling.datum_tijd_1 : selectedVoorstelling.datum_tijd_2) | date: "dd-MM-YYYY" }}</td>
-            <td>{{ item.aantal }}</td>
+            <td>{{ item.aantal }} ({{ item.aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
             <td><button mat-icon-button (click)="deleteLosseVerkoop(item)">
               <mat-icon color="warn">delete</mat-icon>
             </button></td>

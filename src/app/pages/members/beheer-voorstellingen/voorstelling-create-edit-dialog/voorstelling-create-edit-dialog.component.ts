@@ -76,6 +76,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   afbeelding?: FilePreviewModel;
   beschikbare_stoelen_datum_tijd_1?: number = 100;
   beschikbare_stoelen_datum_tijd_2?: number = 100;
+  prijs_per_kaartje?: number;
 
   loading = signal(false);
 
@@ -146,6 +147,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
         : undefined;
       this.beschikbare_stoelen_datum_tijd_1 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1;
       this.beschikbare_stoelen_datum_tijd_2 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2;
+      this.prijs_per_kaartje = this.existingVoorstelling.prijs_per_kaartje;
     }
   }
 
@@ -161,6 +163,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       beschikbare_stoelen_datum_tijd_1: this.beschikbare_stoelen_datum_tijd_1,
       beschikbare_stoelen_datum_tijd_2: this.beschikbare_stoelen_datum_tijd_2,
       publicatie_datum: this.publicatie_datum,
+      prijs_per_kaartje: this.prijs_per_kaartje,
       //* tijden added below
       datum_tijd_1: undefined,
       datum_tijd_2: undefined,
@@ -242,7 +245,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       !!this.omschrijving &&
       this.omschrijving != '' &&
       this.omschrijving != '<p></p>' &&
-      !!this.selectedGroep
+      !!this.selectedGroep &&
+      !!this.prijs_per_kaartje
     );
   }
 
