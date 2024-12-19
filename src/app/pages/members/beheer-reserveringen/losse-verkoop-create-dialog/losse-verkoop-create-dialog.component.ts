@@ -40,12 +40,12 @@ export class LosseVerkoopCreateDialogComponent {
 
   voorstelling = computed(() => this.data.voorstelling);
 
-  aantal = 0;
+  aantal: number | null = null;
   datumSelectOption: 'datum1' | 'datum2' | null = null;
 
   formIsValid(): boolean {
     return (
-      this.aantal > 0 && this.aantal <= 20 && this.datumSelectOption !== null
+      this.aantal !== null && this.aantal > 0 && this.aantal <= 20 && this.datumSelectOption !== null
     );
   }
 
@@ -53,7 +53,7 @@ export class LosseVerkoopCreateDialogComponent {
     if (!this.formIsValid()) return;
 
     const losseVerkoop = {
-      aantal: this.aantal,
+      aantal: this.aantal!,
       datum: this.datumSelectOption!,
       voorstelling: this.data.voorstelling.id,
     };

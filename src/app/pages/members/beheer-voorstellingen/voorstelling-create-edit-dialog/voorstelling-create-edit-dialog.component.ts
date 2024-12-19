@@ -74,6 +74,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   voorstelling?: Voorstelling;
   publicatie_datum?: Date;
   afbeelding?: FilePreviewModel;
+  beschikbare_stoelen_datum_tijd_1?: number = 100;
+  beschikbare_stoelen_datum_tijd_2?: number = 100;
 
   loading = signal(false);
 
@@ -142,6 +144,8 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
             new Date(this.existingVoorstelling.datum_tijd_2)
           )
         : undefined;
+      this.beschikbare_stoelen_datum_tijd_1 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1;
+      this.beschikbare_stoelen_datum_tijd_2 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2;
     }
   }
 
@@ -154,6 +158,9 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       regie: this.regie,
       omschrijving: this.omschrijving,
       groep: this.selectedGroep?.id,
+      beschikbare_stoelen_datum_tijd_1: this.beschikbare_stoelen_datum_tijd_1,
+      beschikbare_stoelen_datum_tijd_2: this.beschikbare_stoelen_datum_tijd_2,
+      publicatie_datum: this.publicatie_datum,
       //* tijden added below
       datum_tijd_1: undefined,
       datum_tijd_2: undefined,

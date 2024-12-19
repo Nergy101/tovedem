@@ -213,6 +213,8 @@ export class ReserveringenInzienComponent implements OnInit {
         x.id === updatedReservering.id ? updatedReservering : x
       )
     );
+
+    this.toastr.success('Reservering succesvol aangepast');
   }
 
   clearReservatieSearch(): void {
