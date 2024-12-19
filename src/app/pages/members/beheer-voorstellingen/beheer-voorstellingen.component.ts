@@ -22,24 +22,25 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-    selector: 'app-beheer-voorstellingen',
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatSelectModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-        DatePipe,
-        MatDatepickerModule,
-        NgxMaterialTimepickerModule,
-        MatTooltipModule,
-    ], providers: [
-        provideNativeDateAdapter(),
-        DatePipe,
-        { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
-    ],
-    templateUrl: './beheer-voorstellingen.component.html',
-    styleUrl: './beheer-voorstellingen.component.scss'
+  selector: 'app-beheer-voorstellingen',
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    DatePipe,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatTooltipModule,
+  ],
+  providers: [
+    provideNativeDateAdapter(),
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
+  templateUrl: './beheer-voorstellingen.component.html',
+  styleUrl: './beheer-voorstellingen.component.scss',
 })
 export class BeheerVoorstellingenComponent {
   loading = signal(false);
@@ -94,7 +95,6 @@ export class BeheerVoorstellingenComponent {
     }
   }
 
-
   async delete({ id }: any) {
     this.loading.set(true);
 
@@ -105,18 +105,10 @@ export class BeheerVoorstellingenComponent {
     this.loading.set(false);
   }
 
-  publicatieActief(publishDate: Date){
+  publicatieActief(publishDateString: string) {
+    const publishDate = new Date(publishDateString);
     const currentDate = new Date();
-    console.log (publishDate)
-    console.log (currentDate)
-    console.log( currentDate.setHours(0,0,0,0) < publishDate.setHours(0,0,0,0))
-    if(Number(currentDate) - Number(publishDate) > 0){
 
-      return true;
-    }
-    else {return false;}
-    
-
-
+    return currentDate.setHours(0, 0, 0, 0) < publishDate.setHours(0, 0, 0, 0);
   }
 }

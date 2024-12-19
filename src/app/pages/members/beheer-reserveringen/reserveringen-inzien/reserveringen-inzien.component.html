@@ -1,6 +1,7 @@
 <div class="row">
   <mat-form-field class="pt-2">
-    <mat-select placeholder="Selecteer een voorstelling" (selectionChange)="setSelectedVoorstelling($event)">
+    <mat-select placeholder="Selecteer een voorstelling" (selectionChange)="setSelectedVoorstelling($event)"
+    [value]="selectedVoorstelling()">
       @for (voorstelling of voorstellingen(); track $index) {
       <mat-option [value]="voorstelling">{{ voorstelling.titel }} -
         {{ voorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}</mat-option>
@@ -39,9 +40,15 @@
   <div class="col-12 pt-2">
     <mat-form-field style="display: flex;">
       <mat-label>Zoek naar reservatie</mat-label>
-      <mat-icon matPrefix>search</mat-icon>
       <input type="text" aria-label="Number" matInput [formControl]="reservatieSearchControl"
-        [matAutocomplete]="auto" />
+        [matAutocomplete]="auto"  />
+      @if (reservatieSearchControl.value) {
+      <button matPrefix mat-icon-button aria-label="Clear" (click)="clearReservatieSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+      } @else {
+        <mat-icon matPrefix>search</mat-icon>
+      }
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
         (optionSelected)="setSelectedOption($event.option.value)">
         @for (option of filteredOptions | async; track option) {
@@ -173,17 +180,44 @@
   <div class="col-12 pt-2">
     <mat-card appearance="outlined">
     <mat-card-header>
-      <h2>
-      Losse verkoop
-      </h2>
+        <h2>
+        Losse verkoop
+        </h2>
     </mat-card-header>
+    <mat-card-content>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Datum</th>
+            <th scope="col">Aantal</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of losseVerkoopOfSelectedVoorstelling(); track $index) {
+          <tr>
+            <td>{{ (item.datum == 'datum1' ? selectedVoorstelling.datum_tijd_1 : selectedVoorstelling.datum_tijd_2) | date: "dd-MM-YYYY" }}</td>
+            <td>{{ item.aantal }}</td>
+            <td><button mat-icon-button (click)="deleteLosseVerkoop(item)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button></td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <button mat-fab extended color="primary" (click)="addLosseVerkoop()">
+        <mat-icon>add_circle</mat-icon>
+        Toevoegen
+      </button>
+    </mat-card-content>
     </mat-card>
   </div>
 
   } @else {
   <div class="row">
     <mat-card class="center-items m-3 p-3" appearance="outlined">
-      Geen data beschikbaar
+      Selecteer een voorstelling hierboven!
     </mat-card>
   </div>
   }

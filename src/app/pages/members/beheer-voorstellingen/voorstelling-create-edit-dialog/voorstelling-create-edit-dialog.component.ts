@@ -7,7 +7,7 @@ import {
   signal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MAT_DATE_LOCALE,
   MatOption,
@@ -32,6 +32,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     imports: [
       MatDatepickerModule,
         MatButton,
+        MatIconButton,
         MatIcon,
         MatDialogModule,
         MatInputModule,

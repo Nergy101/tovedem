@@ -75,7 +75,7 @@
             <mat-label>Groep</mat-label>
             <mat-select [(value)]="selectedGroep" required>
                 @for (groep of groepen(); track $index) {
-                <mat-option [value]="groep">{{groep.naam}}</mat-option>
+                <mat-option [value]="groep.id">{{groep.naam}}</mat-option>
                 }
             </mat-select>
         </mat-form-field>

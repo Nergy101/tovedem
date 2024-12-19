@@ -1,0 +1,62 @@
+<div class="container header">
+    <h2 mat-dialog-title class="display-4">Losse Verkoop Toevoegen: 
+       {{ voorstelling().titel }}</h2>
+    <button
+      mat-icon-button
+      aria-label="close dialog"
+      tabindex="-1"
+      mat-dialog-close
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <div mat-dialog-content class="container p-4">
+    <div class="row">
+      <form (ngSubmit)="submit()">
+        <div class="row">
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>Aantal</mat-label>
+            <input
+              matInput
+              type="number"
+              name="aantal"
+              min="1"
+              max="20"
+              tabindex="0"
+              required
+              [(ngModel)]="aantal"
+            />
+          </mat-form-field>
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>Datum</mat-label>
+            <mat-select [(ngModel)]="datumSelectOption" name="datum">
+              <mat-option value="datum1">Datum 1</mat-option>
+              <mat-option value="datum2">Datum 2</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-6 col-12 d-flex justify-content-center">
+            <button mat-stroked-button mat-dialog-close class="flex-grow-1">
+              <mat-icon>arrow_back</mat-icon>
+              Terug
+            </button>
+          </div>
+          <div class="col-md-6 col-12 d-flex justify-content-center">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              class="flex-grow-1"
+              [disabled]="loading() || !formIsValid()"
+            >
+              Toevoegen
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
