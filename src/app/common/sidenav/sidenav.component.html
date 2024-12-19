@@ -1,160 +1,247 @@
 <div class="links-container">
-    <ul class="links navbar-nav nav-pills nav-fill">
-        @if (authService.userHasAllRoles(['admin']) ||
-        authService.isGlobalAdmin)
-        {
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
-        <mat-expansion-panel style="width: 100%;">
-            <mat-expansion-panel-header>
-                <mat-panel-title> Productie informatie </mat-panel-title>
-                <mat-panel-description>
+  <ul class="links navbar-nav nav-pills nav-fill">
+    @if (authService.userHasAllRoles(['admin']) || authService.isGlobalAdmin) {
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
+    <mat-expansion-panel style="width: 100%">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Productie informatie </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/productie-info/Tovedem"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Tovedem <mat-icon>diversity_1</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/productie-info/Cloos"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Cloos <mat-icon>diversity_2</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/productie-info/Mejotos"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Mejotro's <mat-icon>diversity_3</mat-icon>
+          </button>
+        </li>
+      </p>
+    </mat-expansion-panel>
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
 
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/productie-info/Tovedem" [routerLinkActiveOptions]="{ exact: true }">
-                        Tovedem <mat-icon>diversity_1</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/productie-info/Cloos" [routerLinkActiveOptions]="{ exact: true }">
-                        Cloos <mat-icon>diversity_2</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/productie-info/Mejotos" [routerLinkActiveOptions]="{ exact: true }">
-                        Mejotro's <mat-icon>diversity_3</mat-icon>
-                    </button>
-                </li>
-            </p>
-        </mat-expansion-panel>
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
+    <mat-expansion-panel style="width: 100%">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Commissies</mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/commissie-sinterklaas"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Sinterklaas <mat-icon>redeem</mat-icon>
+          </button>
+        </li>
+      </p>
+      <p>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-voorstellingen"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Lees Commissie <mat-icon>auto_stories</mat-icon>
+          </button>
+        </li>
+      </p>
+    </mat-expansion-panel>
 
-        <mat-expansion-panel style="width: 100%;">
-            <mat-expansion-panel-header>
-                <mat-panel-title>Commissies</mat-panel-title>
-                <mat-panel-description>
-
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/commissie-sinterklaas" [routerLinkActiveOptions]="{ exact: true }">
-                        Sinterklaas <mat-icon>redeem</mat-icon>
-                    </button>
-                </li>
-            </p>
-            <p>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/beheer-voorstellingen" [routerLinkActiveOptions]="{ exact: true }">
-                        Lees Commissie <mat-icon>auto_stories</mat-icon>
-                    </button>
-                </li>
-            </p>
-        </mat-expansion-panel>
-
-        <!-- <li>
+    <!-- <li>
             <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
                 data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
                 [routerLinkActiveOptions]="{ exact: true }">
                 Spelers <mat-icon>groups_3</mat-icon>
             </button>
         </li> -->
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
 
-        <mat-expansion-panel style="width: 100%;">
-            <mat-expansion-panel-header>
-                <mat-panel-title> Beheer </mat-panel-title>
-                <mat-panel-description>
+    <mat-expansion-panel style="width: 100%">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Beheer </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-reserveringen"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Reserveringen <mat-icon>payments</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-voorstellingen"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Voorstellingen <mat-icon>curtains</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-leden"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Leden <mat-icon>diversity_3</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="toggle()"
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-mails"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Emails <mat-icon>mail</mat-icon>
+          </button>
+        </li>
+      </p>
+    </mat-expansion-panel>
+    } @if (authService.isGlobalAdmin) {
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
 
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/beheer-reserveringen" [routerLinkActiveOptions]="{ exact: true }">
-                        Reserveringen <mat-icon>payments</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                        routerLink="/beheer-voorstellingen" [routerLinkActiveOptions]="{ exact: true }">
-                        Voorstellingen <mat-icon>curtains</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-leden"
-                        [routerLinkActiveOptions]="{ exact: true }">
-                        Leden <mat-icon>diversity_3</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button (click)="toggle()" class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-mails"
-                        [routerLinkActiveOptions]="{ exact: true }">
-                        Emails <mat-icon>mail</mat-icon>
-                    </button>
-                </li>
-            </p>
-        </mat-expansion-panel> }
-        @if (authService.isGlobalAdmin)
-        {
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
+    <mat-expansion-panel style="width: 100%">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Gallerij </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>
+        <li>
+          <button
+            mat-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLink="/gallerij"
+          >
+            Gallerij <mat-icon>image</mat-icon>
+          </button>
+        </li>
+      </p>
+    </mat-expansion-panel>
 
-        <mat-expansion-panel style="width: 100%;">
-            <mat-expansion-panel-header>
-                <mat-panel-title> Developers </mat-panel-title>
-                <mat-panel-description>
+    <mat-expansion-panel style="width: 100%">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Developers </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>
+        <li>
+          <button
+            mat-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            (click)="navigate('https://pocketbase.nergy.space/_/#/collections')"
+          >
+            Admin <mat-icon>admin_panel_settings</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            (click)="navigate('https://app.mailjet.com')"
+          >
+            MailJet <mat-icon>contact_mail</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            (click)="navigate('https://www.zoho.com')"
+          >
+            ZoHo <mat-icon>mark_email_read</mat-icon>
+          </button>
+        </li>
+      </p>
+    </mat-expansion-panel>
 
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <p>
-                <li>
-                    <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show"
-                        (click)="navigate('https://pocketbase.nergy.space/_/#/collections')">
-                        Admin <mat-icon>admin_panel_settings</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" (click)="navigate('https://app.mailjet.com')">
-                        MailJet <mat-icon>contact_mail</mat-icon>
-                    </button>
-                </li>
-                <li>
-                    <button mat-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse.show" (click)="navigate('https://www.zoho.com')">
-                        ZoHo <mat-icon>mark_email_read</mat-icon>
-                    </button>
-                </li>
-            </p>
-        </mat-expansion-panel>
-        <div style="width: 100%;">
-            <mat-divider></mat-divider>
-        </div>
-        }
-    </ul>
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
+    }
+  </ul>
 </div>

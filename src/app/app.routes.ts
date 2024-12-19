@@ -22,6 +22,7 @@ import { ReserveringGeslaagdComponent } from './pages/public/reserveren/reserver
 import { SinterklaasComponent } from './pages/public/sinterklaas/sinterklaas.component';
 import { VriendWordenComponent } from './pages/public/vriend-worden/vriend-worden.component';
 import { AuthService } from './shared/services/auth.service';
+import { GallerijComponent } from './pages/members/gallerij/gallerij.component';
 
 export const routes: Routes = [
   {
@@ -132,6 +133,11 @@ export const routes: Routes = [
   {
     path: 'commissie-sinterklaas',
     component: CommissieSinterklaasComponent,
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: 'gallerij',
+    component: GallerijComponent,
     canActivate: [loggedInGuard],
   },
 ];

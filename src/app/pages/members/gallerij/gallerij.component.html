@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Gallerij</p>
+    </div>
+
+    <mat-card class="gallery" appearance="outlined">
+      <div class="grid">
+        @for (item of items(); track item.id) {
+        <mat-card appearance="outlined">
+          <img
+            mat-card-image
+            [src]="getFileUrl(item)"
+            alt="Afbeelding"
+            placeholder="assets/images/placeholder.png"
+          />
+          <mat-card-actions align="end">
+            <button mat-icon-button>
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button>
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        }
+      </div>
+
+      <mat-paginator
+        [length]="paginatorLength()"
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions()"
+        (page)="onPageChange($event)"
+        [showFirstLastButtons]="true"
+      ></mat-paginator>
+    </mat-card>
+  </div>
+</div>

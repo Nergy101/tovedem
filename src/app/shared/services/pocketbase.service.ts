@@ -2,7 +2,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import PocketBase, { BaseModel, RecordModel, RecordService } from 'pocketbase';
-import Page from '../../models/pocketbase/page.model';
+import { Page } from '../../models/pocketbase/page.model';
 import { Environment } from '../../../environment';
 
 @Injectable({
@@ -66,6 +66,8 @@ export class PocketbaseService {
       { expand }
     );
 
+    console.log('pbPage', pbPage);
+
     const pageModel = {
       page,
       perPage,
@@ -74,7 +76,13 @@ export class PocketbaseService {
       totalPages: pbPage.totalPages,
     } as Page<T>;
 
+    console.log('pageModel', pageModel);
+
     return pageModel;
+  }
+
+  async getFileToken(): Promise<string> {
+    return await this.client.files.getToken();
   }
 
   private getCollection(nameOrId: string): RecordService<RecordModel> {
