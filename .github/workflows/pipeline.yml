@@ -2,6 +2,12 @@ name: Deploy new Docker Image version
 
 on:
   workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Force Deploy'
+        required: true
+        type: boolean
+        default: false
   push:
     branches: ["main"]
 
@@ -36,7 +42,7 @@ jobs:
   # Stage 2: Build and Push Docker Image
   BuildAndPushDockerImage:
     # only run on push to main branch
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
     needs: BuildAngularApp
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +73,7 @@ jobs:
   # Stage 3: Deploy to Server
   DeployDockerImage:
     # only run on push to main branch
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
     needs: BuildAndPushDockerImage
     runs-on: ubuntu-latest
     steps:
