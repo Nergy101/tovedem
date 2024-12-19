@@ -73,9 +73,11 @@ export class ReserveringenInzienComponent implements OnInit {
 
   seriesDatum1 = computed(() => {
     const reserveringen = this.reserveringenOfSelectedVoorstelling();
+    const voorstelling = this.selectedVoorstelling();
+
     let aanwezig = 0;
     let gereserveerd = 0;
-    let vrij = 80;
+    let vrij = voorstelling?.beschikbare_stoelen_datum_tijd_1 ?? 0;
     let losseVerkoopAantal = 0;
 
     reserveringen.forEach((reservering) => {
@@ -90,6 +92,7 @@ export class ReserveringenInzienComponent implements OnInit {
     this.losseVerkoopOfSelectedVoorstelling().forEach((losseVerkoop) => {
       if (losseVerkoop.datum === 'datum1') {
         losseVerkoopAantal += losseVerkoop.aantal;
+        vrij -= losseVerkoop.aantal;
       }
     });
 
@@ -98,9 +101,11 @@ export class ReserveringenInzienComponent implements OnInit {
 
   seriesDatum2 = computed(() => {
     const reserveringen = this.reserveringenOfSelectedVoorstelling();
+    const voorstelling = this.selectedVoorstelling();
+
     let aanwezig = 0;
     let gereserveerd = 0;
-    let vrij = 80;
+    let vrij = voorstelling?.beschikbare_stoelen_datum_tijd_2 ?? 0;
     let losseVerkoopAantal = 0;
 
     reserveringen.forEach((reservering) => {
@@ -115,6 +120,7 @@ export class ReserveringenInzienComponent implements OnInit {
     this.losseVerkoopOfSelectedVoorstelling().forEach((losseVerkoop) => {
       if (losseVerkoop.datum === 'datum2') {
         losseVerkoopAantal += losseVerkoop.aantal;
+        vrij -= losseVerkoop.aantal;
       }
     });
 

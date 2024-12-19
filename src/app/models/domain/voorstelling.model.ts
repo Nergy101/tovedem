@@ -10,6 +10,8 @@ export interface Voorstelling extends BaseModel {
   datum_tijd_1: string;
   datum_tijd_2?: string;
   spelers?: string[];
+  beschikbare_stoelen_datum_tijd_1: number;
+  beschikbare_stoelen_datum_tijd_2: number;
   publicatie_datum: string;
 };
 

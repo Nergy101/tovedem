@@ -17,7 +17,8 @@
     <div style="flex:1;">
       <mat-card class="center-items" appearance="outlined">
         <h2>
-          {{ selectedVoorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}
+          {{ selectedVoorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }} - 
+          {{ selectedVoorstelling.beschikbare_stoelen_datum_tijd_1 }} plekken
         </h2>
         <app-pie-chart [series]="seriesDatum1()" [labels]="labels()"></app-pie-chart>
       </mat-card>
@@ -26,7 +27,8 @@
       <mat-card class="center-items" appearance="outlined">
         @if (selectedVoorstelling.datum_tijd_2; as datum_tijd_2) {
         <h2 class="text-center">
-          {{ datum_tijd_2 | date: "dd-MM-YYYY" }}
+          {{ datum_tijd_2 | date: "dd-MM-YYYY" }} - 
+          {{ selectedVoorstelling.beschikbare_stoelen_datum_tijd_2 }} plekken
         </h2>
         <app-pie-chart [series]="seriesDatum2()" [labels]="labels()">
         </app-pie-chart>
