@@ -50,8 +50,6 @@ export class LosseVerkoopCreateDialogComponent {
   }
 
   async submit(): Promise<void> {
-    console.log(this.aantal, this.datumSelectOption, this.voorstelling());
-
     if (!this.formIsValid()) return;
 
     const losseVerkoop = {

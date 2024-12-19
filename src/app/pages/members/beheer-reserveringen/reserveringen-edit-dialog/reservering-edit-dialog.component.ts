@@ -98,7 +98,7 @@ export class ReserveringEditDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.existingReservering = this.existingReserveringData.reservering;
-    this.existingVoorstelling = this.existingReservering.expand.voorstelling;
+    this.existingVoorstelling = this.existingReserveringData.voorstelling;;
 
     if (this.existingReservering) {
       this.voornaam = this.existingReservering.voornaam;
@@ -142,11 +142,11 @@ export class ReserveringEditDialogComponent implements OnInit {
 
     const formData = this.objectToFormData(reservering);
 
-    const created = await this.client
+    const upserted = await this.client
       .collection('reserveringen')
       .update(this.existingReservering!.id, formData);
 
-    this.dialogRef.close(created);
+    this.dialogRef.close({updatedReservering: upserted});
     this.loading.set(false);
   }
 

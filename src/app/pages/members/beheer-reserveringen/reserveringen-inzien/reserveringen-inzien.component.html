@@ -138,6 +138,7 @@
           <th scope="col">Datum 2 Aantal</th>
           <th scope="col">Vriend</th>
           <th scope="col">Lid</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -170,6 +171,12 @@
             <mat-checkbox [color]="'primary'" [checked]="item.is_lid_van_vereniging" disabled>
             </mat-checkbox>
           </td>
+
+          <td>
+            <button mat-icon-button (click)="openEditDialog(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
         </tr>
         }
       </tbody>

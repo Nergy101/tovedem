@@ -13,40 +13,6 @@
         <app-reserveringen-inzien></app-reserveringen-inzien>
       </div>
     </mat-tab>
-    <!-- <mat-tab label="Kassa">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Voorstelling</th>
-            <th scope="col">Datum 1 Aantal</th>
-            <th scope="col">Datum 2 Aantal</th>
-            <th scope="col">Achternaam</th>
-            <th scope="col">Vriend</th>
-            <th scope="col">Lid</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of items(); track $index) {
-          <tr>
-            <td>{{ item.expand.voorstelling?.titel }}</td>
-            <td>{{ item.datum_tijd_1_aantal }}</td>
-            <td>{{ item.datum_tijd_2_aantal }}</td>
-            <td>{{ item.achternaam }}</td>
-
-            <td>
-              <mat-checkbox [checked]="item.is_vriend_van_tovedem" disabled>
-              </mat-checkbox>
-            </td>
-            <td>
-              <mat-checkbox [checked]="item.is_lid_van_vereniging" disabled>
-              </mat-checkbox>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </mat-tab> -->
-
     <mat-tab label="Printen">
       <div class="row" style="margin-top: 1em">
         <mat-label class="col-2" style="margin: 1em; font-size: large">

@@ -28,6 +28,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -189,6 +190,22 @@ export class ReserveringenInzienComponent implements OnInit {
       await this.client.getAll<Voorstelling>('voorstellingen', {
         sort: '-datum_tijd_1',
       })
+    );
+  }
+
+  async openEditDialog(reservering: Reservering): Promise<void> {
+    const dialogData = { reservering, voorstelling: this.selectedVoorstelling() }
+
+    const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
+      data: dialogData,
+      hasBackdrop: true,
+    });
+
+    const { updatedReservering } = await lastValueFrom(dialogRef.afterClosed());
+    this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
+      reserveringen.map((x) =>
+        x.id === updatedReservering.id ? updatedReservering : x
+      )
     );
   }
 

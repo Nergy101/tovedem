@@ -133,8 +133,6 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       this.publicatie_datum = new Date(
         this.existingVoorstelling.publicatie_datum
       );
-      console.log(this.publicatie_datum);
-      //TODO fix
 
       this.tijd1 = this.formatDateTo12HourString(
         new Date(this.existingVoorstelling.datum_tijd_1)

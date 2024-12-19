@@ -23,12 +23,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
-import { debounceTime, lastValueFrom, tap } from 'rxjs';
+import { debounceTime, tap } from 'rxjs';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { ReserveringEditDialogComponent } from './reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ReserveringenInzienComponent } from './reserveringen-inzien/reserveringen-inzien.component';
 
 @Component({
@@ -84,14 +83,12 @@ export class BeheerReserveringenComponent implements OnInit {
   kidsLabels = 1; // Initial amount value
 
   createListOfAmountOfItems(amountOfItems: number): unknown[] {
-    // console.log('received createlist for items:', amountOfItems)
     const list: unknown[] = [];
 
     for (let index = 0; index < amountOfItems; index++) {
       list.push({});
     }
 
-    // console.log(list)
     return list;
   }
 
@@ -179,10 +176,6 @@ export class BeheerReserveringenComponent implements OnInit {
         this.selecting.set(false);
       });
 
-    effect(() => {
-      // console.log('reserveringenVoorVoorstelling', this.reserveringenVanVoorstelling())
-    });
-
     effect(async () => {
       const nieuweGeselecteerdeVoorstelling = this.selectedVoorstelling();
       const nieuweGeselecteerdeDatum = this.selectedDatum();
@@ -221,20 +214,6 @@ export class BeheerReserveringenComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.voorstellingen.set(
       await this.client.getAll<Voorstelling>('voorstellingen')
-    );
-  }
-
-  async openEditDialog(reservering: Reservering): Promise<void> {
-    const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
-      data: { reservering },
-      hasBackdrop: true,
-    });
-
-    await lastValueFrom(dialogRef.afterClosed());
-    this.items.set(
-      await this.client.getAll<Reservering>('reserveringen', {
-        expand: 'voorstelling',
-      })
     );
   }
 

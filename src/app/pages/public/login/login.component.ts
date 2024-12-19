@@ -69,7 +69,6 @@ export class LoginComponent {
           this.password!
         );
 
-        console.log("Admin data", authData);
         if (authData.record) {
           this.authService.registerUser(authData.record as unknown as Gebruiker);
           this.router.navigate(['profiel']);
