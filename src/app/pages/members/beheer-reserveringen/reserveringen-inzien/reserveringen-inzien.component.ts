@@ -29,6 +29,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -200,7 +201,10 @@ export class ReserveringenInzienComponent implements OnInit {
   }
 
   async openEditDialog(reservering: Reservering): Promise<void> {
-    const dialogData = { reservering, voorstelling: this.selectedVoorstelling() }
+    const dialogData = {
+      reservering,
+      voorstelling: this.selectedVoorstelling(),
+    };
 
     const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
       data: dialogData,
@@ -208,13 +212,16 @@ export class ReserveringenInzienComponent implements OnInit {
     });
 
     const { updatedReservering } = await lastValueFrom(dialogRef.afterClosed());
-    this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
-      reserveringen.map((x) =>
-        x.id === updatedReservering.id ? updatedReservering : x
-      )
-    );
 
-    this.toastr.success('Reservering succesvol aangepast');
+    if (updatedReservering) {
+      this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
+        reserveringen.map((x) =>
+          x.id === updatedReservering.id ? updatedReservering : x
+        )
+      );
+
+      this.toastr.success('Reservering succesvol aangepast');
+    }
   }
 
   clearReservatieSearch(): void {
@@ -269,21 +276,33 @@ export class ReserveringenInzienComponent implements OnInit {
 
     const dialogResult = await lastValueFrom(dialogRef.afterClosed());
 
-    this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) => [
-      ...losseVerkoop,
-      dialogResult,
-    ]);
-
-    this.toastr.success('Losse verkoop succesvol toegevoegd');
+    if (dialogResult) {
+      this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) => [
+        ...losseVerkoop,
+        dialogResult,
+      ]);
+      this.toastr.success('Losse verkoop succesvol toegevoegd');
+    }
   }
 
   async deleteLosseVerkoop(losseVerkoopToDelete: LosseVerkoop): Promise<void> {
-    await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
-    this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
-      losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)
-    );
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Losse verkoop verwijderen',
+        message: 'Weet je zeker dat je de losse verkoop wilt verwijderen?',
+      },
+    });
 
-    this.toastr.success('Losse verkoop succesvol verwijderd');
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (dialogResult) {
+      await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
+      this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
+        losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)
+      );
+
+      this.toastr.success('Losse verkoop succesvol verwijderd');
+    }
   }
 
   private _filter(value: string): Reservering[] {
