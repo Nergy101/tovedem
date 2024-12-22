@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,16 +9,16 @@ import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 
 @Component({
-    selector: 'app-navbar',
-    imports: [
-        RouterModule,
-        MatToolbarModule,
-        MatMenuModule,
-        MatButtonModule,
-        MatIconModule,
-    ],
-    templateUrl: './navbar.component.html',
-    styleUrl: './navbar.component.scss'
+  selector: 'app-navbar',
+  imports: [
+    RouterModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   authService = inject(AuthService);
