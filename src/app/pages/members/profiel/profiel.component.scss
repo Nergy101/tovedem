@@ -6,13 +6,16 @@ mat-expansion-panel {
   width: auto;
 }
 
-// mat-expansion-panel-header {
-//   max-width: 10em;
-// }
-
-
 .action-card {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+    background-color: #AE1545;
+    color: white;
+    transition: background-color 0.1s ease;
+    transition: color 0.1s ease;
+  }
+
+  border-radius: 1em;
 
   .actions {
     display: flex;

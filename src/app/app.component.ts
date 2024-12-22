@@ -49,14 +49,18 @@ export class AppComponent {
   @ViewChild(MatDrawer) drawer?: MatDrawer;
 
   constructor() {
+    if (this.authService.isLoggedIn()) {
+      this.sideDrawerService.open();
+    }
+
     effect(() => {
       if (this.authService.isLoggedIn()) {
+        this.sideDrawerService.open();
         if (this.sideDrawerService.isOpen()) {
           this.drawer?.open();
           return;
         }
       }
-      this.drawer?.close();
     });
   }
 

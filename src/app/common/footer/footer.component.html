@@ -1,64 +1,127 @@
 <div class="container-fluid mat-elevation-z5 sponsors">
-    <h2>Sponsoren</h2>
-    <div class="row" style="justify-content: space-around; flex-flow: row wrap;">
-        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/Logo-kringkoop.jpg"
-            alt="sponsor kringkoop">
-        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/crossmotion.png" alt="sponsor crossmotion">
-        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/digistate.png" alt="sponsor digistate">
-        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/hazenveld_camping.png"
-            alt="sponsor hazenveld camping">
-        <img mat-card-image class="sponsor-image col-2" src="assets/sponsors/logo-wawollie.png" alt="sponsor wawollie">
-    </div>
+  <h2>Sponsoren</h2>
+  <div class="row" style="justify-content: space-around; flex-flow: row wrap">
+    <img
+      mat-card-image
+      class="sponsor-image col-2"
+      src="assets/sponsors/Logo-kringkoop.jpg"
+      alt="sponsor kringkoop"
+    />
+    <img
+      mat-card-image
+      class="sponsor-image col-2"
+      src="assets/sponsors/crossmotion.png"
+      alt="sponsor crossmotion"
+    />
+    <img
+      mat-card-image
+      class="sponsor-image col-2"
+      src="assets/sponsors/digistate.png"
+      alt="sponsor digistate"
+    />
+    <img
+      mat-card-image
+      class="sponsor-image col-2"
+      src="assets/sponsors/hazenveld_camping.png"
+      alt="sponsor hazenveld camping"
+    />
+    <img
+      mat-card-image
+      class="sponsor-image col-2"
+      src="assets/sponsors/logo-wawollie.png"
+      alt="sponsor wawollie"
+    />
+  </div>
 </div>
 
-<div class="container-fluid links" style="display:flex; flex-flow: row wrap; justify-content: space-evenly;">
-    <div class="col-4 link-row d-flex">
-        <div class="justify-content-center d-flex row">
-            <h2> <mat-icon>pin_drop</mat-icon> Adres</h2>
-            <a href="https://maps.app.goo.gl/dd9fe7p2udocU298A" target="_blank" class="adres"
-                matTooltip="Open Google Maps">
-                <span>
-                    De Schalm<br />
-                    Orangjelaan 10<br />
-                    3454 BT<br />
-                    De Meern
-                </span>
-            </a>
-        </div>
+<div
+  class="container-fluid links"
+  style="display: flex; flex-flow: row wrap; justify-content: space-evenly"
+>
+  <div class="col-4 link-row d-flex">
+    <div class="justify-content-center d-flex row">
+      <h2><mat-icon>pin_drop</mat-icon> Adres</h2>
+      <a
+        href="https://maps.app.goo.gl/dd9fe7p2udocU298A"
+        target="_blank"
+        class="adres"
+        matTooltip="Open Google Maps"
+      >
+        <span>
+          De Schalm<br />
+          Orangjelaan 10<br />
+          3454 BT<br />
+          De Meern
+        </span>
+      </a>
     </div>
-    <div class="col-4 link-row d-flex">
-        <div class="justify-content-center d-flex row">
-            <h2><mat-icon>map</mat-icon> Links</h2>
-            <ul>
-                <li>
-                    <button (click)="navigateTo(['/'])" (keydown.enter)="navigateTo(['/'])" role="link">Reserveren</button>
-                </li>
-                <li>
-                    <button (click)="navigateTo(['/lid-worden'])" (keydown.enter)="navigateTo(['/lid-worden'])" role="link">Lid worden</button>
-                </li>
-                <li>
-                    <button (click)="navigateTo(['/contact'])" (keydown.enter)="navigateTo(['/contact'])" role="link">Contact</button>
-                </li>
-                <li>Privacy beleid</li>
-            </ul>
-        </div>
+  </div>
+  <div class="col-4 link-row d-flex">
+    <div class="justify-content-center d-flex row">
+      <h2><mat-icon>map</mat-icon> Links</h2>
+      <ul>
+        <li>
+          <button
+            mat-button
+            (click)="navigateTo(['/'])"
+            (keydown.enter)="navigateTo(['/'])"
+            role="link"
+          >
+            Reserveren
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="navigateTo(['/lid-worden'])"
+            (keydown.enter)="navigateTo(['/lid-worden'])"
+            role="link"
+          >
+            Lid worden
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="navigateTo(['/contact'])"
+            (keydown.enter)="navigateTo(['/contact'])"
+            role="link"
+          >
+            Contact
+          </button>
+        </li>
+      </ul>
     </div>
-    <div class="col-4 link-row d-flex">
-        <div class="justify-content-center d-flex row">
-            <h2><mat-icon>language</mat-icon> Social Media</h2>
-            <ul>
-                <li>
-                    <button (click)="navigateToInstagram()" (keydown.enter)="navigateToInstagram()" role="link">Instagram</button>
-                </li>
-                <li>
-                    <button (click)="navigateToFaceBook()" (keydown.enter)="navigateToFaceBook()" role="link">Facebook</button>
-                </li>
-            </ul>
-        </div>
+  </div>
+  <div class="col-4 link-row d-flex">
+    <div class="justify-content-center d-flex row">
+      <h2><mat-icon>language</mat-icon> Social Media</h2>
+      <ul>
+        <li>
+          <button
+            mat-button
+            (click)="navigateToInstagram()"
+            (keydown.enter)="navigateToInstagram()"
+            role="link"
+          >
+            Instagram
+          </button>
+        </li>
+        <li>
+          <button
+            mat-button
+            (click)="navigateToFaceBook()"
+            (keydown.enter)="navigateToFaceBook()"
+            role="link"
+          >
+            Facebook
+          </button>
+        </li>
+      </ul>
     </div>
+  </div>
 </div>
 
 <div class="container-fluid privacy">
-    <a href="/PrivacyBeleid">Privacybeleid</a><span>&nbsp;/&nbsp;&#64;2024
-        Tovedem</span>
+  <a class="privacy-link" href="/PrivacyBeleid"><span>Privacybeleid/&#64;{{currentYear}} Tovedem</span></a>
 </div>

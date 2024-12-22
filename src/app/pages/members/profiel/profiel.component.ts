@@ -61,6 +61,10 @@ export class ProfielComponent implements OnInit {
     }
   }
 
+  navigateTo(url: string): void {
+    this.router.navigate([url]);
+  }
+
   toggle(): void {
     this.sideDrawerService.toggle();
   }

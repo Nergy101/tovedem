@@ -1,167 +1,187 @@
 <div class="container col-lg-8 col-12 mat-elevation-z2">
-    <div class="row">
-        <div class="d-flex justify-content-center">
-            <div class="display-3 mt-4 ">Welkom,</div>
-        </div>
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <div class="display-3 mt-4">Welkom,</div>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="d-flex flex-column align-items-center justify-content-center">
-            <div class="display-6">
-                {{ user()?.name ?? user()?.email }}
-            </div>
-            <img style="max-height: 10em; border-radius: 1em; margin: 1em;"
-                [src]="'https://api.dicebear.com/7.x/thumbs/svg?seed='+user()?.name+'&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'"
-                alt="avatar">
-            <img src="assets/TovedemLogo.svg" style="height: 4em" alt="Tovedem Logo">
-        </div>
+  <div class="row">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <div class="display-6">
+        {{ user()?.name ?? user()?.email }}
+      </div>
+      <img
+        style="max-height: 10em; border-radius: 1em; margin: 1em"
+        [src]="
+          'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
+          user()?.name +
+          '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
+        "
+        alt="avatar"
+      />
+      <img
+        src="assets/TovedemLogo.svg"
+        style="height: 4em"
+        alt="Tovedem Logo"
+      />
     </div>
+  </div>
 
-    <div class="row">
-        <div class="d-flex justify-content-center">
-            <div class="display-5">Wat wil je doen?</div>
-        </div>
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <div class="display-5">Wat wil je doen?</div>
     </div>
+  </div>
 
-    <div class="row justify-content-center mt-4">
-        <div class="col-xl-6 col-12 d-flex">
-            @if (authService.isLoggedIn())
-            {
-            @if (sideDrawerService.isOpen()) {
-            <button class="flex-grow-1" mat-raised-button (click)="toggle()">
-                <mat-icon>chevron_left</mat-icon>
-                Sluit leden paneel</button>
-            } @else {
-            <button class="flex-grow-1" mat-raised-button (click)="toggle()">
-                <mat-icon>chevron_right</mat-icon>
-                Open leden paneel</button>
-            }
-            }
-        </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-xl-6 col-12 d-flex">
+      @if (authService.isLoggedIn()) { @if (sideDrawerService.isOpen()) {
+      <button class="flex-grow-1" mat-raised-button (click)="toggle()">
+        <mat-icon>chevron_left</mat-icon>
+        Sluit leden paneel
+      </button>
+      } @else {
+      <button class="flex-grow-1" mat-raised-button (click)="toggle()">
+        <mat-icon>chevron_right</mat-icon>
+        Open leden paneel
+      </button>
+      } }
     </div>
+  </div>
 
-    <div class="row justify-content-center mt-4">
-        <div class="col-xl-6 col-12">
-            @if (!breakpointService.isMobileScreen())
-            {
-            <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
-            }@else
-            {
-            <div style="max-width: 400px">
-                <ng-container *ngTemplateOutlet="expansionPanel">
-                </ng-container>
-            </div>
-            }
-        </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-xl-6 col-12">
+      @if (!breakpointService.isMobileScreen()) {
+      <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
+      }@else {
+      <div style="max-width: 400px">
+        <ng-container *ngTemplateOutlet="expansionPanel"> </ng-container>
+      </div>
+      }
     </div>
+  </div>
 
-    <div class="row justify-content-around mt-4">
-        <mat-card class="col-3 action-card">
-            <mat-card-title class="text-center">Mejoto's</mat-card-title>
-            <mat-card-actions class="actions"><button
-                    mat-icon-button><mat-icon>groups</mat-icon></button></mat-card-actions>
-        </mat-card>
+  <div class="row justify-content-around mt-4">
+    <mat-card
+      class="col-3 action-card"
+      (click)="navigateTo('/productie-info/Tovedem')"
+    >
+      <mat-card-title class="text-center">Tovedem</mat-card-title>
+      <mat-card-actions class="actions">
+        <mat-icon>diversity_1</mat-icon>
+      </mat-card-actions>
+    </mat-card>
 
-        <mat-card class="col-3 action-card">
-            <mat-card-title class="text-center">Cloos</mat-card-title>
-            <mat-card-actions class="actions">
-                <button mat-icon-button><mat-icon>groups_2</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
+    <mat-card
+      class="col-3 action-card"
+      (click)="navigateTo('/productie-info/Cloos')"
+    >
+      <mat-card-title class="text-center">Cloos</mat-card-title>
+      <mat-card-actions class="actions">
+        <mat-icon>diversity_2</mat-icon>
+      </mat-card-actions>
+    </mat-card>
 
-        <mat-card class="col-3 action-card">
-            <mat-card-title class="text-center">Tovedem</mat-card-title>
-            <mat-card-actions class="actions">
-                <button mat-icon-button><mat-icon>groups_3</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
+    <mat-card
+      class="col-3 action-card"
+      (click)="navigateTo('/productie-info/Mejotos')"
+    >
+      <mat-card-title class="text-center">Mejoto's</mat-card-title>
+      <mat-card-actions class="actions">
+        <mat-icon>diversity_3</mat-icon>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="row justify-content-around mt-4">
+    <mat-card
+      class="col-5 action-card"
+      (click)="navigateTo('/beheer-reserveringen')"
+    >
+      <mat-card-title class="text-center">Kassa</mat-card-title>
+      <mat-card-actions class="actions">
+        <mat-icon>shopping_cart</mat-icon>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card
+      class="col-5 action-card"
+      (click)="navigateTo('/algemene-informatie')"
+    >
+      <mat-card-title class="text-center">Algemene Informatie</mat-card-title>
+      <mat-card-actions class="actions">
+        <mat-icon>info</mat-icon>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="row d-flex flex-grow-1 mt-4">
+    <div class="d-flex justify-content-center">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="logout()"
+        class="col-xl-6 col-12"
+      >
+        Log uit
+      </button>
     </div>
+  </div>
 
-    <div class="row justify-content-around mt-4">
-        <mat-card class="col-5 action-card">
-            <mat-card-title class="text-center">Kassa</mat-card-title>
-            <mat-card-actions class="actions">
-                <button mat-icon-button>
-                    <mat-icon>shopping_cart</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
+  <ng-template #expansionPanel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Gegevens inzien </mat-panel-title>
+        <mat-panel-description>
+          {{ user()?.name ?? user()?.email }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-list role="list">
+        @if (this.authService.isGlobalAdmin) {
+        <mat-list-item role="listitem">
+          Je bent een <b>Admin</b>.
+        </mat-list-item>
+        }@else{
+        <mat-list-item role="listitem">
+          <b>Echte naam:</b> {{ user()?.name }}
+        </mat-list-item>
 
-        <mat-card class="col-5 action-card">
-            <mat-card-title class="text-center">Algemene Informatie</mat-card-title>
-            <mat-card-actions class="actions">
-                <button mat-icon-button>
-                    <mat-icon>info</mat-icon>
-                </button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
+        <mat-list-item role="listitem">
+          <b>Account naam:</b> {{ user()?.username }}
+        </mat-list-item>
 
-    <div class="row d-flex flex-grow-1 mt-4">
-        <div class="d-flex justify-content-center">
-            <button mat-flat-button color="primary" (click)="logout()" class="col-xl-6 col-12">
-                Log uit
-            </button>
-        </div>
-    </div>
+        <mat-list-item role="listitem">
+          <b>Rollen:</b> {{ userRoles() }}
+        </mat-list-item>
 
-    <ng-template #expansionPanel>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title> Gegevens inzien </mat-panel-title>
-                <mat-panel-description>
-                    {{ user()?.name ?? user()?.email }}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-list role="list">
-                @if (this.authService.isGlobalAdmin)
-                {
-                <mat-list-item role="listitem">
-                    Je bent een <b>Admin</b>.
-                </mat-list-item>
-                }@else{
-                <mat-list-item role="listitem">
-                    <b>Echte naam:</b> {{ user()?.name }}
-                </mat-list-item>
+        <mat-list-item role="listitem">
+          <b>Groep:</b> {{ user()?.expand?.groep?.naam ?? "n.v.t." }}
+        </mat-list-item>
 
-                <mat-list-item role="listitem">
-                    <b>Account naam:</b> {{ user()?.username }}
-                </mat-list-item>
+        <mat-list-item role="listitem">
+          <b>Uniek ID:</b> {{ user()?.id }}
+        </mat-list-item>
 
-                <mat-list-item role="listitem">
-                    <b>Rollen:</b> {{userRoles()}}
-                </mat-list-item>
+        <mat-list-item role="listitem">
+          <b>Aangemaakt op:</b>
+          {{ user()?.created | date : "dd LLLL YYYY" }}
+        </mat-list-item>
 
-                <mat-list-item role="listitem">
-                    <b>Groep:</b> {{user()?.expand?.groep?.naam ??
-                    "n.v.t."}}
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <b>Uniek ID:</b> {{ user()?.id }}
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <b>Aangemaakt op:</b>
-                    {{ user()?.created | date : "dd LLLL YYYY" }}
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <b>Laatst aangepast:</b>
-                    {{ user()?.updated | date : "dd LLLL YYYY" }}
-                </mat-list-item>
-                }
-            </mat-list>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Rauwe gegevens
-                        inzien</mat-panel-title>
-                </mat-expansion-panel-header>
-                <pre>
+        <mat-list-item role="listitem">
+          <b>Laatst aangepast:</b>
+          {{ user()?.updated | date : "dd LLLL YYYY" }}
+        </mat-list-item>
+        }
+      </mat-list>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Rauwe gegevens inzien</mat-panel-title>
+        </mat-expansion-panel-header>
+        <pre>
                         {{ user() | json }}
-                    </pre>
-            </mat-expansion-panel>
-        </mat-expansion-panel>
-    </ng-template>
+                    </pre
+        >
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+  </ng-template>
+</div>
