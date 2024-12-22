@@ -20,6 +20,7 @@ import { Speler } from '../../../models/domain/speler.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -90,6 +91,17 @@ export class BeheerSpelersComponent implements OnInit {
   }
 
   async delete(id: string): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Speler verwijderen',
+        message: 'Weet je zeker dat je de speler wilt verwijderen?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+
     this.loading.set(true);
 
     if (await this.client.delete('spelers', id)) {

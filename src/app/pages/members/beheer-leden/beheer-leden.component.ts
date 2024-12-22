@@ -23,6 +23,7 @@ import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -137,6 +138,17 @@ export class BeheerLedenComponent implements OnInit {
   }
 
   async delete(id: string): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Gebruiker verwijderen',
+        message: 'Weet je zeker dat je de gebruiker wilt verwijderen?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+
     this.loading.set(true);
 
     if (await this.client.delete('users', id)) {

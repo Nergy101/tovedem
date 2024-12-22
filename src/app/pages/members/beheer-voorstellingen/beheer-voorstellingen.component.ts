@@ -26,6 +26,7 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -102,6 +103,17 @@ export class BeheerVoorstellingenComponent implements OnInit {
   }
 
   async delete(id: string): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Voorstelling verwijderen',
+        message: 'Weet je zeker dat je de voorstelling wilt verwijderen?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+    
     this.loading.set(true);
 
     if (await this.client.delete('voorstellingen', id)) {

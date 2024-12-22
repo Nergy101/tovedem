@@ -295,14 +295,14 @@ export class ReserveringenInzienComponent implements OnInit {
 
     const dialogResult = await lastValueFrom(dialogRef.afterClosed());
 
-    if (dialogResult) {
-      await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
-      this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
-        losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)
-      );
+    if (!dialogResult) return;
+    
+    await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
+    this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
+      losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)
+    );
 
-      this.toastr.success('Losse verkoop succesvol verwijderd');
-    }
+    this.toastr.success('Losse verkoop succesvol verwijderd');
   }
 
   private _filter(value: string): Reservering[] {

@@ -23,6 +23,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { lastValueFrom } from 'rxjs';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-commissie-sinterklaas',
@@ -89,6 +91,16 @@ export class CommissieSinterklaasComponent implements OnInit {
   }
 
   async delete(id: string): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Sinterklaas verzoek verwijderen',
+        message: 'Weet je zeker dat je het verzoek wilt verwijderen?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
     this.loading.set(true);
 
     if (await this.client.delete('sinterklaas_verzoeken', id)) {
