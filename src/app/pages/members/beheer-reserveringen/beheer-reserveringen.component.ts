@@ -216,7 +216,7 @@ export class BeheerReserveringenComponent implements OnInit {
       await this.client.getAll<Voorstelling>('voorstellingen')
     );
   }
-
+  
   onSearchTermChanged(newValue: string): void {
     this.searchTerm.set(newValue);
   }

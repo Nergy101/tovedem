@@ -10,7 +10,19 @@ nav {
   justify-content: space-around;
   align-items: center;
   min-height: 4em;
-  background-color: rgba(255, 255, 255, 0.8) !important;
+  padding: 0 !important;
+
+  .light {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .dark {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+  }
+}
+
+.p-0 {
+  padding: 0 !important;
 }
 
 .links-container {
@@ -40,10 +52,17 @@ li {
   }
 }
 
+.navbar {
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+
+.lid-worden-button {
+  min-width: 6em !important;
+}
+
 .navbar-collapse {
   li {
-    width: 100%;
-
     .active {
       color: white;
       background-color: #ae1545;
@@ -77,6 +96,26 @@ mat-icon {
   pointer-events: none;
 }
 
-.navbar-toggler-icon {
-  color: black !important;
+.profiel-button {
+  padding: 0 2em;
+}
+
+.theme-switch {
+  cursor: pointer;
+  border-radius: 1em;
+  padding: 0.5em;
+
+  :hover {
+    background-color: #ae1545;
+    color: white;
+    border-radius: 1em;
+  }
+}
+
+.light-mode {
+  color: white;
+}
+
+.dark-mode {
+  color: black;
 }

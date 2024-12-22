@@ -5,7 +5,7 @@ import {
   computed,
   effect,
   inject,
-  signal,
+  signal, AfterViewChecked,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,6 +30,7 @@ import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialo
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { ThemeService } from '../../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -52,12 +53,13 @@ import { ConfirmatieDialogComponent } from '../../../../shared/components/confir
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss',
 })
-export class ReserveringenInzienComponent implements OnInit {
+export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
   client = inject(PocketbaseService);
   path = inject(ActivatedRoute);
   router = inject(Router);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
+  themeService = inject(ThemeService);
 
   loading = signal(false);
   searching = signal(false);
@@ -200,6 +202,21 @@ export class ReserveringenInzienComponent implements OnInit {
     );
   }
 
+
+  ngAfterViewChecked(): void {
+    const isDarkTheme = this.themeService.isDarkTheme$();
+
+    const tables = document.getElementsByTagName('table');
+
+    if (isDarkTheme) {
+      tables[0]?.classList.add('table-dark');
+      tables[1]?.classList.add('table-dark');
+    } else {
+      tables[0]?.classList.remove('table-dark');
+      tables[1]?.classList.remove('table-dark');
+    }
+  }
+
   async openEditDialog(reservering: Reservering): Promise<void> {
     const dialogData = {
       reservering,
@@ -296,7 +313,7 @@ export class ReserveringenInzienComponent implements OnInit {
     const dialogResult = await lastValueFrom(dialogRef.afterClosed());
 
     if (!dialogResult) return;
-    
+
     await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
     this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
       losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)

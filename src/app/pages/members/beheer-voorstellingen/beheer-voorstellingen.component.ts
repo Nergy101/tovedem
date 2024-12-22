@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import {
+  AfterViewChecked,
   Component,
   OnInit,
   WritableSignal,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -27,6 +29,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -49,7 +52,7 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
 })
-export class BeheerVoorstellingenComponent implements OnInit {
+export class BeheerVoorstellingenComponent implements OnInit, AfterViewChecked {
   loading = signal(false);
 
   items: WritableSignal<Voorstelling[] | null> = signal(null);
@@ -58,6 +61,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
+  themeService = inject(ThemeService);
 
   titleService = inject(Title);
 
@@ -72,6 +76,18 @@ export class BeheerVoorstellingenComponent implements OnInit {
         sort: '-created',
       })
     );
+  }
+
+  ngAfterViewChecked(): void {
+    const isDarkTheme = this.themeService.isDarkTheme$();
+
+    const tables = document.getElementsByTagName('table');
+
+    if (isDarkTheme) {
+      tables[0]?.classList.add('table-dark');
+    } else {
+      tables[0]?.classList.remove('table-dark');
+    }
   }
 
   async openCreateDialog(): Promise<void> {
@@ -113,7 +129,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     const dialogResult = await lastValueFrom(dialogRef.afterClosed());
 
     if (!dialogResult) return;
-    
+
     this.loading.set(true);
 
     if (await this.client.delete('voorstellingen', id)) {

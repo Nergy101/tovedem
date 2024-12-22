@@ -5,6 +5,7 @@ import {
   WritableSignal,
   inject,
   signal,
+  AfterViewChecked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +22,7 @@ import { Mail } from '../../../models/domain/mail.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-beheer-mails',
@@ -37,7 +39,7 @@ import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.com
   templateUrl: './beheer-mails.component.html',
   styleUrl: './beheer-mails.component.scss',
 })
-export class BeheerMailsComponent implements OnInit {
+export class BeheerMailsComponent implements OnInit, AfterViewChecked {
   loading = signal(false);
   mailTemplates: WritableSignal<Mail[] | null> = signal(null);
 
@@ -46,7 +48,7 @@ export class BeheerMailsComponent implements OnInit {
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
   titleService = inject(Title);
-
+  themeService = inject(ThemeService);
   statussen = ['concept', 'inprogress', 'done', 'verified'];
   statusColor: Record<string, string> = {
     concept: '#AE1545',
@@ -61,6 +63,19 @@ export class BeheerMailsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.mailTemplates.set(await this.client.getAll<Mail>('mails'));
+  }
+
+  ngAfterViewChecked(): void {
+    const isDarkTheme = this.themeService.isDarkTheme$();
+
+    const tables = document.getElementsByTagName('table');
+    console.log(tables);
+
+    if (isDarkTheme) {
+      tables[0]?.classList.add('table-dark');
+    } else {
+      tables[0]?.classList.remove('table-dark');
+    }
   }
 
   async openEditDialog(mail: Mail): Promise<void> {

@@ -37,14 +37,53 @@ $custom-light-theme: mat.m2-define-light-theme(
   )
 );
 
+$custom-dark-theme: mat.m2-define-dark-theme(
+  (
+    color: (
+      primary: (
+        default: #ae1545,
+      ),
+      accent: (
+        default: #424242,
+      ),
+      tovGreen: (
+        default: #68A357,
+      ),
+      tovYellow: (
+        default: #F4E409,
+      ),
+      tovOrange: (
+        default: #EEBA0B,
+      ),
+      tovBlue: (
+        default: #90F1EF
+      ),
+    ),
+    background-color: (
+      default: #121212,
+    ),
+  )
+);
+
 // Include the custom light theme in your application
 @include mat.elevation-classes();
 @include mat.app-background();
-@include mat.all-component-themes($custom-light-theme);
 
 :root {
+  @include mat.all-component-colors($custom-light-theme);
+
   --mdc-elevated-card-container-elevation: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  @include mat.all-component-colors($custom-dark-theme);
+}
+
+html {
+  &.dark-theme {
+    @include mat.all-component-colors($custom-dark-theme);
+  }
 }
 
 html,

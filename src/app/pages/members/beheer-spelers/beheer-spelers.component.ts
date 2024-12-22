@@ -4,6 +4,7 @@ import {
   WritableSignal,
   inject,
   signal,
+  AfterViewChecked,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -21,6 +22,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -35,7 +37,7 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
   templateUrl: './beheer-spelers.component.html',
   styleUrl: './beheer-spelers.component.scss',
 })
-export class BeheerSpelersComponent implements OnInit {
+export class BeheerSpelersComponent implements OnInit, AfterViewChecked {
   loading = signal(false);
 
   dialog = inject(MatDialog);
@@ -47,6 +49,7 @@ export class BeheerSpelersComponent implements OnInit {
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
+  themeService = inject(ThemeService);
 
   titleService = inject(Title);
 
@@ -56,6 +59,19 @@ export class BeheerSpelersComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
+  }
+
+  ngAfterViewChecked(): void {
+    const isDarkTheme = this.themeService.isDarkTheme$();
+
+    const tables = document.getElementsByTagName('table');
+    console.log(tables);
+
+    if (isDarkTheme) {
+      tables[0]?.classList.add('table-dark');
+    } else {
+      tables[0]?.classList.remove('table-dark');
+    }
   }
 
   async createSpeler(): Promise<void> {
@@ -105,7 +121,9 @@ export class BeheerSpelersComponent implements OnInit {
     this.loading.set(true);
 
     if (await this.client.delete('spelers', id)) {
-      this.spelers.update((x) => (x ?? []).filter((y: { id: string }) => y.id != id));
+      this.spelers.update((x) =>
+        (x ?? []).filter((y: { id: string }) => y.id != id)
+      );
     }
 
     this.loading.set(false);

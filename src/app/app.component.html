@@ -3,19 +3,11 @@
 </header>
 
 <mat-drawer-container autosize [hasBackdrop]="false">
-  @if (breakpointService.isDesktopScreen()) {
-  <mat-drawer #drawer class="sidenav bg-light" mode="side">
+  <mat-drawer #drawer class="sidenav bg-light" [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'">
     <div class="drawer-content">
       <app-sidenav></app-sidenav>
     </div>
   </mat-drawer>
-  } @else {
-  <mat-drawer #drawer class="sidenav bg-light" mode="over">
-    <div class="drawer-content">
-      <app-sidenav></app-sidenav>
-    </div>
-  </mat-drawer>
-  }
 
   <div class="drawer-content">
     <div class="router-content">

@@ -5,6 +5,7 @@ import {
   WritableSignal,
   inject,
   signal,
+  AfterViewChecked,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -41,7 +43,7 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',
 })
-export class BeheerLedenComponent implements OnInit {
+export class BeheerLedenComponent implements OnInit, AfterViewChecked {
   loading = signal(false);
 
   gebruikers: WritableSignal<Gebruiker[] | null> = signal(null);
@@ -50,7 +52,7 @@ export class BeheerLedenComponent implements OnInit {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
-
+  themeService = inject(ThemeService);
   titleService = inject(Title);
 
   searching = signal(false);
@@ -97,6 +99,19 @@ export class BeheerLedenComponent implements OnInit {
         expand: 'rollen,groep,speler',
       })
     );
+  }
+
+  ngAfterViewChecked(): void {
+    const isDarkTheme = this.themeService.isDarkTheme$();
+
+    const tables = document.getElementsByTagName('table');
+    console.log(tables);
+
+    if (isDarkTheme) {
+      tables[0]?.classList.add('table-dark');
+    } else {
+      tables[0]?.classList.remove('table-dark');
+    }
   }
 
   onSearchTermChanged(newValue: string): void {

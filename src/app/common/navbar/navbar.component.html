@@ -1,14 +1,19 @@
-<nav class="navbar navbar-expand-xl navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img class="logo" src="/assets/tovedem_logo.png" alt="tovedem logo" /></a>
+<nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
+  <div class="container-fluid p-2">
+    <a class="navbar-brand" routerLink="/"
+      ><img class="logo" src="/assets/tovedem_logo.png" alt="tovedem logo"
+    /></a>
     <div>
       @if (authService.isLoggedIn()){
-      <button class="navbar-toggler justify-self-end" type="button" aria-label="Toggle side navigation"
-        (click)="sideDrawerService.toggle()">
+      <button
+        class="navbar-toggler justify-self-end"
+        type="button"
+        aria-label="Toggle side navigation"
+        (click)="sideDrawerService.toggle()"
+      >
         <div class="d-flex flex-column">
-          <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
-
-          <span class="navbar-toggler-icon">
+          <span><mat-icon>menu</mat-icon></span>
+          <span>
             @if(sideDrawerService.isOpen()){
             <mat-icon>chevron_right</mat-icon>
             } @else {
@@ -18,11 +23,20 @@
         </div>
       </button>
       }
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <div class="d-flex flex-column">
-          <span class="navbar-toggler-icon"><mat-icon>menu</mat-icon></span>
-          <span class="navbar-toggler-icon"><mat-icon>expand_more</mat-icon></span>
+          <span><mat-icon>menu</mat-icon></span>
+          <span
+            ><mat-icon>expand_more</mat-icon></span
+          >
         </div>
       </button>
     </div>
@@ -30,95 +44,182 @@
       <div class="links-container">
         <ul class="links navbar-nav nav-pills nav-fill">
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/" [routerLinkActiveOptions]="{ exact: true }">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
               Home <mat-icon>cottage</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/agenda">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/agenda"
+            >
               Agenda <mat-icon>calendar_month</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button [matMenuTriggerFor]="menu" class="nav-link w-100 {{ groepenClass }}">
+            <button
+              mat-raised-button
+              [matMenuTriggerFor]="menu"
+              class="w-100 {{ groepenClass }}"
+            >
               Groepen<mat-icon>groups</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
               <ul class="links navbar-nav nav-pills nav-fill p-2">
                 <li>
-                  <a class="nav-link in-menu d-flex justify-content-center" style="width: 12em"
-                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                    routerLink="/groep/Tovedem">
-                    <span class="groepsnaam text-center" style="margin: 0">Tovedem</span>
-                  </a>
+                  <button
+                    style="width: 12em"
+                    mat-raised-button
+                    routerLinkActive="active"
+                    routerLink="/groep/Tovedem"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Tovedem</span
+                    >
+                  </button>
                 </li>
                 <li>
-                  <a class="nav-link in-menu d-flex justify-content-center" style="width: 12em"
-                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                    routerLink="/groep/Cloos">
-                    <span class="groepsnaam text-center" style="margin: 0">Cloos</span>
-                  </a>
+                  <button
+                    style="width: 12em"
+                    mat-raised-button
+                    routerLinkActive="active"
+                    routerLink="/groep/Cloos"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Cloos</span
+                    >
+                  </button>
                 </li>
                 <li>
-                  <a class="nav-link in-menu d-flex justify-content-center" style="width: 12em"
-                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show" routerLinkActive="active"
-                    routerLink="/groep/Mejotos">
-                    <span class="groepsnaam text-center" style="margin: 0">Mejoto's</span>
-                  </a>
+                  <button
+                    style="width: 12em"
+                    mat-raised-button
+                    routerLinkActive="active"
+                    routerLink="/groep/Mejotos"
+                  >
+                    <span class="groepsnaam text-center" style="margin: 0"
+                      >Mejoto's</span
+                    >
+                  </button>
                 </li>
               </ul>
             </mat-menu>
           </li>
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/lid-worden">
-              Lid worden <mat-icon>person_add</mat-icon>
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/lid-worden"
+            >
+              <span>Lid worden</span>
+              <mat-icon>person_add</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/steunen">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/steunen"
+            >
               Steunen <mat-icon>volunteer_activism</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/sinterklaas">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/sinterklaas"
+            >
               Sinterklaas <mat-icon>redeem</mat-icon>
             </button>
           </li>
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/contact">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/contact"
+            >
               Contact <mat-icon>mail</mat-icon>
             </button>
           </li>
 
           @if (!authService.isLoggedIn()){
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/login">
+            <button
+              mat-raised-button
+              class="w-100"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/login"
+            >
               Login
               <mat-icon>login</mat-icon>
             </button>
           </li>
           } @else {
           <li>
-            <button mat-button class="nav-link w-100" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"
-              routerLinkActive="active" routerLink="/profiel">
-              <div class="d-flex justify-content-center align-items-center gap-2">
-                <img alt="avatar" style="max-height: 2em; border-radius: 0.2em" [src]="
+            <button
+              mat-raised-button
+              class="w-100 profiel-button"
+              data-bs-toggle="collapse"
+              data-bs-target=".navbar-collapse.show"
+              routerLinkActive="active"
+              routerLink="/profiel"
+            >
+              <div
+                class="d-flex justify-content-center align-items-center gap-2"
+              >
+                <img
+                  alt="avatar"
+                  style="max-height: 2em; border-radius: 0.2em"
+                  [src]="
                     'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
                     authService.userData()?.name +
                     '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
-                  " alt="avatar" />
+                  "
+                  alt="avatar"
+                />
                 Profiel
               </div>
             </button>
           </li>
           }
+          <li class="theme-switch">
+            @if (themeService.isDarkTheme()) {
+            <mat-icon class="light-mode" (click)="themeService.toggleTheme()"
+              >light_mode</mat-icon
+            >
+            } @else {
+            <mat-icon class="dark-mode" (click)="themeService.toggleTheme()"
+              >dark_mode</mat-icon
+            >
+            }
+          </li>
         </ul>
       </div>
     </div>

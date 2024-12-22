@@ -11,9 +11,13 @@ h1 {
 }
 
 h2 {
-  color: $primary-color;
   font-size: 2em;
-  background-color: white;
+  background-color: light;
+}
+
+.primary-color {
+  background-color: $primary-color;
+  color: white;
 }
 
 .homepage {
