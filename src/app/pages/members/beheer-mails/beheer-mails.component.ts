@@ -69,7 +69,6 @@ export class BeheerMailsComponent implements OnInit, AfterViewChecked {
     const isDarkTheme = this.themeService.isDarkTheme$();
 
     const tables = document.getElementsByTagName('table');
-    console.log(tables);
 
     if (isDarkTheme) {
       tables[0]?.classList.add('table-dark');

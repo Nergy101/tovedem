@@ -15,6 +15,8 @@ import { Page } from '../../../models/pocketbase/page.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
 
 @Component({
   selector: 'app-gallerij',
@@ -34,6 +36,7 @@ export class GallerijComponent implements OnInit {
   pageSize = signal(10);
   pageSizeOptions = signal([10, 20, 50, 100]);
   pageIndex = signal(0);
+  dialog = inject(MatDialog);
 
   client = inject(PocketbaseService);
 
@@ -64,9 +67,16 @@ export class GallerijComponent implements OnInit {
     );
   }
 
+  openImage(afbeelding: Afbeelding): void {
+    this.dialog.open(ImagePreviewDialogComponent, {
+      data: {
+        afbeelding: afbeelding,
+      }
+    });
+  }
+
   async onPageChange(event: PageEvent): Promise<void> {
-    console.log('event', event);
-    this.pageIndex.set(event.pageIndex+1);
+    this.pageIndex.set(event.pageIndex + 1);
     this.pageSize.set(event.pageSize);
   }
 

@@ -14,12 +14,9 @@
             alt="Afbeelding"
             placeholder="assets/images/placeholder.png"
           />
-          <mat-card-actions align="end">
-            <button mat-icon-button>
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button>
-              <mat-icon color="warn">delete</mat-icon>
+          <mat-card-actions class="d-flex justify-content-center">
+            <button mat-icon-button (click)="openImage(item)">
+              <mat-icon>visibility</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>

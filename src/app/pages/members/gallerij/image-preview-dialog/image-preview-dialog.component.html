@@ -1,0 +1,14 @@
+<div class="container">
+  <mat-dialog-content class="d-flex justify-content-center align-items-center">
+    <img [src]="getFileUrl()" alt="Afbeelding" />
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="d-flex justify-content-center actions" align="end">
+    <button mat-button mat-dialog-close>
+      <mat-icon>close</mat-icon> Sluiten
+    </button>
+    <button mat-button (click)="downloadImage()">
+      <mat-icon>download</mat-icon> Downloaden
+    </button>
+  </mat-dialog-actions>
+</div>

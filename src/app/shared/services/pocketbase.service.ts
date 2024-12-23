@@ -66,8 +66,6 @@ export class PocketbaseService {
       { expand }
     );
 
-    console.log('pbPage', pbPage);
-
     const pageModel = {
       page,
       perPage,
@@ -75,8 +73,6 @@ export class PocketbaseService {
       totalItems: pbPage.totalItems,
       totalPages: pbPage.totalPages,
     } as Page<T>;
-
-    console.log('pageModel', pageModel);
 
     return pageModel;
   }
