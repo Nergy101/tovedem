@@ -18,12 +18,7 @@ export class SeoService {
   }
 
   updateStructuredData(data: any): void {
-    const structuredData = this.metaService.getTag('json+ld');
-    if (!structuredData) {
-      this.metaService.addTag({ name: 'json+ld', content: JSON.stringify(data) });
-    } else {
-      this.metaService.updateTag({ name: 'json+ld', content: JSON.stringify(data) });
-    }
+    this.metaService.addTag({ name: 'json+ld', content: JSON.stringify(data) });
   }
 
   private updateTitle(title: string): void {
