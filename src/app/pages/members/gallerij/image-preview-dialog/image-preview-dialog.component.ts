@@ -29,6 +29,7 @@ export class ImagePreviewDialogComponent implements OnInit {
   client = inject(PocketbaseService);
   fileToken = signal<string | null>(null);
   loading = signal<boolean>(true);
+
   async ngOnInit(): Promise<void> {
     this.fileToken.set(await this.client.getFileToken());
   }
@@ -51,6 +52,7 @@ export class ImagePreviewDialogComponent implements OnInit {
   }
 
   getFileUrl(): string {
+    if (!this.fileToken()) return 'assets/images/placeholder.png';
     return this.client.client.files.getURL(
       this.data.afbeelding,
       this.data.afbeelding.bestand,
