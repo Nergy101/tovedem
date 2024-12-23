@@ -4,20 +4,19 @@ import {
   computed,
   effect,
   inject,
-  model,
   OnInit,
   signal,
 } from '@angular/core';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { lastValueFrom } from 'rxjs';
 import { Afbeelding } from '../../../models/domain/afbeelding.model';
 import { Page } from '../../../models/pocketbase/page.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-gallerij',

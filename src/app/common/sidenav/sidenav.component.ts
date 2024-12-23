@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,6 @@ import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
-import { ThemeService } from '../../shared/services/theme.service';
 @Component({
   selector: 'app-sidenav',
   imports: [
