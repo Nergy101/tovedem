@@ -99,7 +99,7 @@ export class GallerijComponent implements OnInit {
   }
 
   getFileUrl(afbeelding: Afbeelding): string {
-    if (!this.fileToken()) return 'assets/images/placeholder.png';
+    if (!this.fileToken()) return 'assets/Place-Holder-Image.jpg';
     return this.client.client.files.getURL(afbeelding, afbeelding.bestand, {
       token: this.fileToken(),
       thumb: '100x100',

@@ -52,7 +52,7 @@ export class ImagePreviewDialogComponent implements OnInit {
   }
 
   getFileUrl(): string {
-    if (!this.fileToken()) return 'assets/images/placeholder.png';
+    if (!this.fileToken()) return 'assets/Place-Holder-Image.jpg';
     return this.client.client.files.getURL(
       this.data.afbeelding,
       this.data.afbeelding.bestand,

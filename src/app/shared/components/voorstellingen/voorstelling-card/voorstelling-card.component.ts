@@ -31,7 +31,7 @@ export class VoorstellingCardComponent {
     if (!imageId) {
       return '/assets/Place-Holder-Image.jpg';
     }
-    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
+    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}?thumb=0x800`;
   }
 
   inToekomst(): boolean {
