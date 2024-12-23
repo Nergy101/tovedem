@@ -34,9 +34,7 @@
       >
         <div class="d-flex flex-column">
           <span><mat-icon>menu</mat-icon></span>
-          <span
-            ><mat-icon>expand_more</mat-icon></span
-          >
+          <span><mat-icon>expand_more</mat-icon></span>
         </div>
       </button>
     </div>
@@ -78,40 +76,37 @@
             </button>
             <mat-menu #menu="matMenu">
               <ul class="links navbar-nav nav-pills nav-fill p-2">
-                <li>
+                <li class="groepsnaam">
                   <button
                     style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Tovedem"
                   >
-                    <span class="groepsnaam text-center" style="margin: 0"
-                      >Tovedem</span
-                    >
+                    <mat-icon> diversity_1 </mat-icon>
+                    <span>Tovedem</span>
                   </button>
                 </li>
-                <li>
+                <li class="groepsnaam">
                   <button
                     style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Cloos"
                   >
-                    <span class="groepsnaam text-center" style="margin: 0"
-                      >Cloos</span
-                    >
+                    <mat-icon> diversity_2 </mat-icon>
+                    <span>Cloos</span>
                   </button>
                 </li>
-                <li>
+                <li class="groepsnaam">
                   <button
                     style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Mejotos"
                   >
-                    <span class="groepsnaam text-center" style="margin: 0"
-                      >Mejoto's</span
-                    >
+                    <mat-icon> diversity_3 </mat-icon>
+                    <span>Mejoto's</span>
                   </button>
                 </li>
               </ul>

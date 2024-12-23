@@ -40,6 +40,7 @@ ul {
 
 li {
   list-style: none;
+  margin-right: .5rem;
 
   .active {
     color: white;
@@ -93,7 +94,7 @@ mat-icon {
 
 .groepsnaam {
   margin: 0.5rem;
-  pointer-events: none;
+  pointer-events: cursor;
 }
 
 .profiel-button {

@@ -1,6 +1,5 @@
 <div class="links-container">
   <ul class="links navbar-nav nav-pills nav-fill">
-    @if (authService.userHasAllRoles(['admin']) || authService.isGlobalAdmin) {
     <div style="width: 100%">
       <mat-divider></mat-divider>
     </div>
@@ -54,15 +53,25 @@
         </li>
       </p>
     </mat-expansion-panel>
+
     <div style="width: 100%">
       <mat-divider></mat-divider>
     </div>
 
+    @if ( authService.userHasAllRoles(['admin']) ||
+    authService.userHasAllRoles(['bestuur']) ||
+    authService.userHasAllRoles(['sint_commissie']) ||
+    authService.userHasAllRoles(['lees_commissie']) ||
+    authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title>Commissies</mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
+      @if( authService.userHasAllRoles(['admin']) ||
+      authService.userHasAllRoles(['bestuur']) ||
+      authService.userHasAllRoles(['sint_commissie']) ||
+      authService.isGlobalAdmin) {
       <p>
         <li>
           <button
@@ -79,6 +88,10 @@
           </button>
         </li>
       </p>
+      } @if( authService.userHasAllRoles(['admin']) ||
+      authService.userHasAllRoles(['bestuur']) ||
+      authService.userHasAllRoles(['lees_commissie']) ||
+      authService.isGlobalAdmin) {
       <p>
         <li>
           <button
@@ -95,19 +108,14 @@
           </button>
         </li>
       </p>
+      }
     </mat-expansion-panel>
 
-    <!-- <li>
-            <button mat-raised-button class="nav-link flex-grow-1" data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse.show" routerLinkActive="active" routerLink="/beheer-spelers"
-                [routerLinkActiveOptions]="{ exact: true }">
-                Spelers <mat-icon>groups_3</mat-icon>
-            </button>
-        </li> -->
     <div style="width: 100%">
       <mat-divider></mat-divider>
     </div>
-
+    } @if ( authService.userHasAllRoles(['admin']) ||
+    authService.userHasAllRoles(['bestuur']) || authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title> Beheer </mat-panel-title>
@@ -172,11 +180,10 @@
         </li>
       </p>
     </mat-expansion-panel>
-    } @if (authService.isGlobalAdmin) {
     <div style="width: 100%">
       <mat-divider></mat-divider>
     </div>
-
+    } @if (authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title> Gallerij </mat-panel-title>
@@ -197,6 +204,10 @@
       </p>
     </mat-expansion-panel>
 
+    <div style="width: 100%">
+      <mat-divider></mat-divider>
+    </div>
+    } @if (authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title> Developers </mat-panel-title>

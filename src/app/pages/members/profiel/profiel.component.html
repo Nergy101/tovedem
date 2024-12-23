@@ -19,11 +19,6 @@
         "
         alt="avatar"
       />
-      <img
-        src="assets/TovedemLogo.svg"
-        style="height: 4em"
-        alt="Tovedem Logo"
-      />
     </div>
   </div>
 
@@ -118,11 +113,12 @@
   <div class="row d-flex flex-grow-1 mt-4">
     <div class="d-flex justify-content-center">
       <button
-        mat-raised-button
+        mat-flat-button
         color="warn"
         (click)="logout()"
         class="col-xl-6 col-12"
       >
+        <mat-icon matSuffix>logout</mat-icon>
         Log uit
       </button>
     </div>
