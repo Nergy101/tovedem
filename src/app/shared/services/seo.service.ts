@@ -14,7 +14,7 @@ export class SeoService {
   update(title: string): void {
     this.updateTitle(title);
     this.updateMetaTags([{ name: 'description', content: title }]);
-    this.updateCanonicalUrl(this.router.url);
+    this.updateCanonicalUrl(window.location.href);
   }
 
   updateStructuredData(data: any): void {
