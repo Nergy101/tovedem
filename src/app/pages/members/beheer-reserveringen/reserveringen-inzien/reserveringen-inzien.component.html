@@ -149,7 +149,9 @@
     }
   </div>
   } @if (reserveringenOfSelectedVoorstelling().length > 0) {
-  <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
+  <div class="col-12">
+    <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
+  </div>
   <div style="display: flex; gap: 1em">
     <div style="flex: 1">
       <mat-card class="center-items" appearance="outlined">
