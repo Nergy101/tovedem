@@ -3,3 +3,8 @@
   margin: 35px auto;
   padding: 0;
 }
+
+:host {
+  min-width: 380px;
+  min-height: 380px;
+}

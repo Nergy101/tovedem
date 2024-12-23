@@ -1,58 +1,50 @@
 <div class="row">
   <mat-form-field class="pt-2">
-    <mat-select placeholder="Selecteer een voorstelling" (selectionChange)="setSelectedVoorstelling($event)"
-    [value]="selectedVoorstelling()">
+    <mat-select
+      placeholder="Selecteer een voorstelling"
+      (selectionChange)="setSelectedVoorstelling($event)"
+      [value]="selectedVoorstelling()"
+    >
       @for (voorstelling of voorstellingen(); track $index) {
-      <mat-option [value]="voorstelling">{{ voorstelling.titel }} -
-        {{ voorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}</mat-option>
+      <mat-option [value]="voorstelling"
+        >{{ voorstelling.titel }} -
+        {{ voorstelling.datum_tijd_1 | date : "dd-MM-YYYY" }} en
+        {{ voorstelling.datum_tijd_2 | date : "dd-MM-YYYY" }}</mat-option
+      >
       }
     </mat-select>
   </mat-form-field>
 
-  @if (
-  selectedVoorstelling(); as selectedVoorstelling
-  && reserveringenOfSelectedVoorstelling().length > 0
-  ) {
-  <div style="display: flex; gap: 1em;">
-    <div style="flex:1;">
-      <mat-card class="center-items" appearance="outlined">
-        <h2>
-          {{ selectedVoorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }} - 
-          {{ selectedVoorstelling.beschikbare_stoelen_datum_tijd_1 }} plekken
-        </h2>
-        <app-pie-chart [series]="seriesDatum1()" [labels]="labels()"></app-pie-chart>
-      </mat-card>
-    </div>
-    <div style="flex:1;">
-      <mat-card class="center-items" appearance="outlined">
-        @if (selectedVoorstelling.datum_tijd_2; as datum_tijd_2) {
-        <h2 class="text-center">
-          {{ datum_tijd_2 | date: "dd-MM-YYYY" }} - 
-          {{ selectedVoorstelling.beschikbare_stoelen_datum_tijd_2 }} plekken
-        </h2>
-        <app-pie-chart [series]="seriesDatum2()" [labels]="labels()">
-        </app-pie-chart>
-        } @else {
-        Geen tweede datum
-        }
-      </mat-card>
-    </div>
-  </div>
-
   <div class="col-12 pt-2">
-    <mat-form-field style="display: flex;">
-      <mat-label>Zoek naar reservatie</mat-label>
-      <input type="text" aria-label="Number" matInput [formControl]="reservatieSearchControl"
-        [matAutocomplete]="auto"  />
+    <mat-form-field style="display: flex">
+      <mat-label
+        >Zoek naar losse reservaties voor
+        {{ selectedVoorstelling()?.titel }}</mat-label
+      >
+      <input
+        type="text"
+        aria-label="Number"
+        matInput
+        [formControl]="reservatieSearchControl"
+        [matAutocomplete]="auto"
+      />
       @if (reservatieSearchControl.value) {
-      <button matPrefix mat-icon-button aria-label="Clear" (click)="clearReservatieSearch()">
+      <button
+        matPrefix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearReservatieSearch()"
+      >
         <mat-icon>close</mat-icon>
       </button>
       } @else {
-        <mat-icon matPrefix>search</mat-icon>
+      <mat-icon matPrefix>search</mat-icon>
       }
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-        (optionSelected)="setSelectedOption($event.option.value)">
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        [displayWith]="displayFn"
+        (optionSelected)="setSelectedOption($event.option.value)"
+      >
         @for (option of filteredOptions | async; track option) {
         <mat-option [value]="option">
           {{ option.voornaam }} - {{ option.achternaam }} -
@@ -65,55 +57,90 @@
     @if (selectedOption(); as item) {
     <mat-card appearance="outlined">
       <mat-card-header>
-        <h2>
-        Reservering van: {{ item.voornaam }} {{ item.achternaam }}
-        </h2>
+        <h2>Reservering van: {{ item.voornaam }} {{ item.achternaam }}</h2>
       </mat-card-header>
       <mat-card-content>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">{{ selectedVoorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}</th>
-              <th scope="col">{{ selectedVoorstelling.datum_tijd_2 | date: "dd-MM-YYYY" }}</th>
+              <th scope="col">
+                Aanwezig <br />
+                {{ selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM" }}
+              </th>
+              <th scope="col">
+                Aanwezig <br />
+                {{ selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM" }}
+              </th>
               <th scope="col">Voornaam</th>
               <th scope="col">Achternaam</th>
               <th scope="col">Email</th>
-              <th scope="col">Datum 1 Aantal</th>
-              <th scope="col">Datum 2 Aantal</th>
+              <th scope="col">
+                Aantal <br />
+                {{ selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM" }}
+              </th>
+              <th scope="col">
+                Aantal <br />
+                {{ selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM" }}
+              </th>
               <th scope="col">Vriend</th>
               <th scope="col">Lid</th>
             </tr>
           </thead>
           <tbody>
-        <tr>
-          <td>
-            <mat-checkbox
-              (change)="onCheckboxChange(item, 1)"
-              [color]="'primary'" [checked]=item.aanwezig_datum_1>
-            </mat-checkbox>
-          </td>
-          <td>
-            <mat-checkbox
-              (change)="onCheckboxChange(item, 2)"
-              [color]="'primary'" [checked]=item.aanwezig_datum_2>
-            </mat-checkbox>
-          </td>
+            <tr>
+              <td>
+                <mat-checkbox
+                  (change)="onCheckboxChange(item, 1)"
+                  [color]="'primary'"
+                  [checked]="item.aanwezig_datum_1"
+                >
+                </mat-checkbox>
+              </td>
+              <td>
+                <mat-checkbox
+                  (change)="onCheckboxChange(item, 2)"
+                  [color]="'primary'"
+                  [checked]="item.aanwezig_datum_2"
+                >
+                </mat-checkbox>
+              </td>
 
-          <td>{{ item.voornaam }}</td>
-          <td>{{ item.achternaam }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.datum_tijd_1_aantal }} ({{ item.datum_tijd_1_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
-          <td>{{ item.datum_tijd_2_aantal }} ({{ item.datum_tijd_2_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
+              <td>{{ item.voornaam }}</td>
+              <td>{{ item.achternaam }}</td>
+              <td>{{ item.email }}</td>
 
-          <td>
-            <mat-checkbox [color]="'primary'" [checked]="item.is_vriend_van_tovedem" disabled>
-            </mat-checkbox>
-          </td>
-          <td>
-            <mat-checkbox [color]="'primary'" [checked]="item.is_lid_van_vereniging" disabled>
-            </mat-checkbox>
-          </td>
-        </tr>
+              <td>
+                {{ item.datum_tijd_1_aantal }} ({{
+                  item.datum_tijd_1_aantal *
+                    (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
+                    | currency : "EUR"
+                }})
+              </td>
+              <td>
+                {{ item.datum_tijd_2_aantal }} ({{
+                  item.datum_tijd_2_aantal *
+                    (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
+                    | currency : "EUR"
+                }})
+              </td>
+
+              <td>
+                <mat-checkbox
+                  [color]="'primary'"
+                  [checked]="item.is_vriend_van_tovedem"
+                  disabled
+                >
+                </mat-checkbox>
+              </td>
+              <td>
+                <mat-checkbox
+                  [color]="'primary'"
+                  [checked]="item.is_lid_van_vereniging"
+                  disabled
+                >
+                </mat-checkbox>
+              </td>
+            </tr>
           </tbody>
         </table>
       </mat-card-content>
@@ -121,108 +148,208 @@
     }
   </div>
 
-  <div class="col-12 pt-2">
-    <mat-card appearance="outlined">
-    <mat-card-header>
-      <h2>
-      Reserveringen
-      </h2>
-    </mat-card-header>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">{{ selectedVoorstelling.datum_tijd_1 | date: "dd-MM-YYYY" }}</th>
-          <th scope="col">{{ selectedVoorstelling.datum_tijd_2 | date: "dd-MM-YYYY" }}</th>
-          <th scope="col">Voornaam</th>
-          <th scope="col">Achternaam</th>
-          <th scope="col">Email</th>
-          <th scope="col">Datum 1 Aantal</th>
-          <th scope="col">Datum 2 Aantal</th>
-          <th scope="col">Vriend</th>
-          <th scope="col">Lid</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of reserveringenOfSelectedVoorstelling(); track $index) {
-        <tr>
-          <td>
-            <mat-checkbox
-              (change)="onCheckboxChange(item, 1)"
-              [color]="'primary'" [checked]=item.aanwezig_datum_1>
-            </mat-checkbox>
-          </td>
-          <td>
-            <mat-checkbox
-              (change)="onCheckboxChange(item, 2)"
-              [color]="'primary'" [checked]=item.aanwezig_datum_2>
-            </mat-checkbox>
-          </td>
+  <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
 
-          <td>{{ item.voornaam }}</td>
-          <td>{{ item.achternaam }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.datum_tijd_1_aantal }} ({{ item.datum_tijd_1_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
-          <td>{{ item.datum_tijd_2_aantal }} ({{ item.datum_tijd_2_aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
-
-          <td>
-            <mat-checkbox [color]="'primary'" [checked]="item.is_vriend_van_tovedem" disabled>
-            </mat-checkbox>
-          </td>
-          <td>
-            <mat-checkbox [color]="'primary'" [checked]="item.is_lid_van_vereniging" disabled>
-            </mat-checkbox>
-          </td>
-
-          <td>
-            <button mat-icon-button (click)="openEditDialog(item)">
-                <mat-icon>edit</mat-icon>
-            </button>
-        </td>
-        </tr>
-        }
-      </tbody>
-    </table>
-  </mat-card>
+  @if (reserveringenOfSelectedVoorstelling().length > 0) {
+  <div style="display: flex; gap: 1em">
+    <div style="flex: 1">
+      <mat-card class="center-items" appearance="outlined">
+        <h2>
+          {{
+            (selectedDag() === "datum1"
+              ? selectedVoorstelling()?.datum_tijd_1
+              : selectedVoorstelling()?.datum_tijd_2
+            ) | date : "dd-MM-YYYY"
+          }}
+          -
+          {{
+            selectedDag() === "datum1"
+              ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
+              : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
+          }}
+          plekken
+        </h2>
+        <app-pie-chart
+          [series]="seriesVoorDag()"
+          [labels]="labels()"
+        ></app-pie-chart>
+      </mat-card>
+    </div>
   </div>
 
   <div class="col-12 pt-2">
+    <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
     <mat-card appearance="outlined">
-    <mat-card-header>
+      <mat-card-header>
         <h2>
-        Losse verkoop
+          Reserveringen
+          {{
+            (selectedDag() === "datum1"
+              ? selectedVoorstelling()?.datum_tijd_1
+              : selectedVoorstelling()?.datum_tijd_2
+            ) | date : "dd-MM-YYYY"
+          }}
         </h2>
-    </mat-card-header>
-    <mat-card-content>
+      </mat-card-header>
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Datum</th>
+            @if (selectedDag() === "datum1") {
+            <th scope="col">
+              {{ selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-YYYY" }}
+            </th>
+            } @if (selectedDag() === "datum2") {
+            <th scope="col">
+              {{ selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-YYYY" }}
+            </th>
+            }
+            <th scope="col">Voornaam</th>
+            <th scope="col">Achternaam</th>
+            <th scope="col">Email</th>
             <th scope="col">Aantal</th>
+            <th scope="col">Vriend</th>
+            <th scope="col">Lid</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          @for (item of losseVerkoopOfSelectedVoorstelling(); track $index) {
+          @for (item of reserveringenOfSelectedVoorstelling(); track $index) {
           <tr>
-            <td>{{ (item.datum === 'datum1' ? selectedVoorstelling.datum_tijd_1 : selectedVoorstelling.datum_tijd_2) | date: "dd-MM-YYYY" }}</td>
-            <td>{{ item.aantal }} ({{ item.aantal * selectedVoorstelling.prijs_per_kaartje | currency: 'EUR' }})</td>
-            <td><button mat-icon-button (click)="deleteLosseVerkoop(item)">
-              <mat-icon color="warn">delete</mat-icon>
-            </button></td>
+            @if (selectedDag() === "datum1") {
+            <td>
+              <mat-checkbox
+                (change)="onCheckboxChange(item, 1)"
+                [color]="'primary'"
+                [checked]="item.aanwezig_datum_1"
+              >
+              </mat-checkbox>
+            </td>
+            } @if (selectedDag() === "datum2") {
+            <td>
+              <mat-checkbox
+                (change)="onCheckboxChange(item, 2)"
+                [color]="'primary'"
+                [checked]="item.aanwezig_datum_2"
+              >
+              </mat-checkbox>
+            </td>
+            }
+
+            <td>{{ item.voornaam }}</td>
+            <td>{{ item.achternaam }}</td>
+            <td>{{ item.email }}</td>
+            @if (selectedDag() === "datum1") {
+            <td>
+              {{ item.datum_tijd_1_aantal }} ({{
+                item.datum_tijd_1_aantal *
+                  (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
+                  | currency : "EUR"
+              }})
+            </td>
+            } @if (selectedDag() === "datum2") {
+            <td>
+              {{ item.datum_tijd_2_aantal }} ({{
+                item.datum_tijd_2_aantal *
+                  (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
+                  | currency : "EUR"
+              }})
+            </td>
+            }
+
+            <td>
+              <mat-checkbox
+                [color]="'primary'"
+                [checked]="item.is_vriend_van_tovedem"
+                disabled
+              >
+              </mat-checkbox>
+            </td>
+            <td>
+              <mat-checkbox
+                [color]="'primary'"
+                [checked]="item.is_lid_van_vereniging"
+                disabled
+              >
+              </mat-checkbox>
+            </td>
+
+            <td>
+              <button mat-icon-button (click)="openEditDialog(item)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
           </tr>
           }
         </tbody>
       </table>
-
-      <button mat-fab extended color="primary" (click)="addLosseVerkoop()">
-        <mat-icon>add_circle</mat-icon>
-        Toevoegen
-      </button>
-    </mat-card-content>
     </mat-card>
   </div>
 
+  <div class="col-12 pt-2">
+    <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <h2>
+          Losse verkoop
+          {{
+            (selectedDag() === "datum1"
+              ? selectedVoorstelling()?.datum_tijd_1
+              : selectedVoorstelling()?.datum_tijd_2
+            ) | date : "dd-MM-YYYY"
+          }}
+        </h2>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Datum</th>
+              <th scope="col">Aantal</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of losseVerkoopOfSelectedVoorstellingDag(); track $index)
+            {
+            <tr>
+              <td>
+                {{
+                  (item.datum === "datum1"
+                    ? selectedVoorstelling()?.datum_tijd_1
+                    : selectedVoorstelling()?.datum_tijd_2
+                  ) | date : "dd-MM-YYYY"
+                }}
+              </td>
+              <td>
+                {{ item.aantal }} ({{
+                  item.aantal * (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
+                    | currency : "EUR"
+                }})
+              </td>
+              <td>
+                <button mat-icon-button (click)="deleteLosseVerkoop(item)">
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+
+        <button mat-fab extended color="primary" (click)="addLosseVerkoop()">
+          <mat-icon>add_circle</mat-icon>
+          Toevoegen
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  } @else if (reserveringenOfSelectedVoorstelling().length === 0) {
+  <div class="row">
+    <mat-card class="center-items m-3 p-3" appearance="outlined">
+      Er zijn nog geen reserveringen voor deze voorstelling.
+    </mat-card>
+  </div>
   } @else {
   <div class="row">
     <mat-card class="center-items m-3 p-3" appearance="outlined">
@@ -231,3 +358,25 @@
   </div>
   }
 </div>
+
+<ng-template #dagSelector>
+  <mat-button-toggle-group
+    (change)="setSelectedDag($event)"
+    [value]="selectedDag()"
+  >
+    <mat-button-toggle value="datum1"
+      >Datum 1:
+      {{
+        selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-YYYY"
+      }}</mat-button-toggle
+    >
+    @if(selectedVoorstelling()?.datum_tijd_2) {
+    <mat-button-toggle value="datum2"
+      >Datum 2:
+      {{
+        selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-YYYY"
+      }}</mat-button-toggle
+    >
+    }
+  </mat-button-toggle-group>
+</ng-template>

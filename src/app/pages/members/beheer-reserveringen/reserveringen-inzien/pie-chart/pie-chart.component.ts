@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, effect, model } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  ViewChild,
+  computed,
+  effect,
+  model
+} from '@angular/core';
 import {
   ApexChart,
+  ApexDataLabels,
   ApexNonAxisChartSeries,
   ApexResponsive,
-  ApexDataLabels,
   ChartComponent,
   NgApexchartsModule,
 } from 'ng-apexcharts';
@@ -23,17 +30,31 @@ export interface ChartOptions {
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.scss',
 })
-export class PieChartComponent {
+export class PieChartComponent implements AfterContentChecked {
   @ViewChild(ChartComponent) chart: ChartComponent | undefined;
 
   series = model.required<number[]>();
   labels = model.required<string[]>();
+
+  colors = ['#01E396', '#008FFB', '#FEB019', '#FF4560'];
+
+  legend: ApexLegend = {
+    show: true,
+    position: 'bottom',
+    labels: {
+      colors: this.colors,
+    },
+  };
 
   constructor() {
     effect(() => {
       const newSeries = this.series();
       this.chart?.updateSeries(newSeries);
     });
+  }
+
+  ngAfterContentChecked(): void {
+    this.chart?.updateSeries(this.series());
   }
 
   chartOptions = computed(() => {

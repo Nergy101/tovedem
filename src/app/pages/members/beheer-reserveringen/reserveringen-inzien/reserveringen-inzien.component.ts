@@ -1,16 +1,21 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import {
+  AfterViewChecked,
   Component,
   OnInit,
   computed,
   effect,
   inject,
-  signal, AfterViewChecked,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import {
+  MatButtonToggleChange,
+  MatButtonToggleModule,
+} from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,12 +30,13 @@ import { Observable, filter, lastValueFrom, map, startWith } from 'rxjs';
 import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../../shared/services/theme.service';
+import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
+import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -49,6 +55,8 @@ import { ThemeService } from '../../../../shared/services/theme.service';
     MatCardModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss',
@@ -68,11 +76,26 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
   voorstellingen = signal<Voorstelling[]>([]);
 
   selectedVoorstelling = signal<Voorstelling | null>(null);
+
+  selectedDag = signal<'datum1' | 'datum2'>('datum1');
+
   reserveringenOfSelectedVoorstelling = signal<Reservering[]>([]);
   losseVerkoopOfSelectedVoorstelling = signal<LosseVerkoop[]>([]);
+  losseVerkoopOfSelectedVoorstellingDag = computed(() => {
+    return this.losseVerkoopOfSelectedVoorstelling().filter(
+      (losseVerkoop) => losseVerkoop.datum === this.selectedDag()
+    );
+  });
+
   reservatieSearchControl = new FormControl('');
   filteredOptions: Observable<Reservering[]>;
   selectedOption = signal<Reservering | null>(null);
+
+  seriesVoorDag = computed(() => {
+    return this.selectedDag() === 'datum1'
+      ? this.seriesDatum1()
+      : this.seriesDatum2();
+  });
 
   seriesDatum1 = computed(() => {
     const reserveringen = this.reserveringenOfSelectedVoorstelling();
@@ -135,6 +158,8 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
   });
 
   constructor() {
+    this.selectedDag.set('datum1');
+
     // set Reserveringen Of Voorstelling
     effect(async () => {
       const selectedVoorstelling = this.selectedVoorstelling();
@@ -202,7 +227,6 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
     );
   }
 
-
   ngAfterViewChecked(): void {
     const isDarkTheme = this.themeService.isDarkTheme$();
 
@@ -215,6 +239,10 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
       tables[0]?.classList.remove('table-dark');
       tables[1]?.classList.remove('table-dark');
     }
+  }
+
+  setSelectedDag(event: MatButtonToggleChange): void {
+    this.selectedDag.set(event.value);
   }
 
   async openEditDialog(reservering: Reservering): Promise<void> {
