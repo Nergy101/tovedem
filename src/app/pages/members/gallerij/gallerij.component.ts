@@ -17,6 +17,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-gallerij',
@@ -67,12 +68,30 @@ export class GallerijComponent implements OnInit {
     );
   }
 
-  openImage(afbeelding: Afbeelding): void {
-    this.dialog.open(ImagePreviewDialogComponent, {
+  async openImage(afbeelding: Afbeelding): Promise<void> {
+    const dialogRef = this.dialog.open(ImagePreviewDialogComponent, {
       data: {
         afbeelding: afbeelding,
-      }
+      },
     });
+
+    const result = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!result) return;
+
+    const currentAfbeeldingIndex = this.items().findIndex(
+      (item) => item.id === afbeelding.id
+    );
+
+    if (result.action === 'next') {
+      if (currentAfbeeldingIndex < this.items().length - 1) {
+        this.openImage(this.items()[currentAfbeeldingIndex + 1]);
+      }
+    } else if (result.action === 'previous') {
+      if (currentAfbeeldingIndex > 0) {
+        this.openImage(this.items()[currentAfbeeldingIndex - 1]);
+      }
+    }
   }
 
   async onPageChange(event: PageEvent): Promise<void> {

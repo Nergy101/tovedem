@@ -1,14 +1,30 @@
 <div class="container">
   <mat-dialog-content class="d-flex justify-content-center align-items-center">
-    <img [src]="getFileUrl()" alt="Afbeelding" />
-  </mat-dialog-content>
+    <img [src]="getFileUrl()" alt="Afbeelding" (load)="loading.set(false)" />
 
-  <mat-dialog-actions class="d-flex justify-content-center actions" align="end">
-    <button mat-button mat-dialog-close>
-      <mat-icon>close</mat-icon> Sluiten
+    @if(loading()){
+    <mat-spinner></mat-spinner>
+    }
+  </mat-dialog-content>
+  @if(!loading()){
+  <mat-dialog-actions class="d-flex justify-content-between actions">
+    <button mat-button [disabled]="">
+      <mat-icon>arrow_back</mat-icon> Vorige - pijltjes toets naar links
     </button>
-    <button mat-button (click)="downloadImage()">
-      <mat-icon>download</mat-icon> Downloaden
+
+    <div>
+      <button mat-button mat-dialog-close>
+        <mat-icon>close</mat-icon> Sluiten - escape toets
+      </button>
+      <button mat-button (click)="downloadImage()">
+        <mat-icon>download</mat-icon> Downloaden
+      </button>
+    </div>
+
+    <button #nextButton mat-button>
+      Volgende - pijltjes toets naar rechts
+      <mat-icon iconPositionEnd>arrow_forward</mat-icon>
     </button>
   </mat-dialog-actions>
+  }
 </div>
