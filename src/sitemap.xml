@@ -11,27 +11,27 @@
   </url>
   <url>
     <loc>https://tovedem.nergy.space/login</loc>
-    <priority>0.7</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/groep/Tovedem</loc>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/groep/Cloos</loc>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/groep/Mejotos</loc>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/reserveren</loc>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/reservering-geslaagd</loc>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tovedem.nergy.space/vriend-worden</loc>
