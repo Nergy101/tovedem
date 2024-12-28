@@ -33,14 +33,25 @@ export class ImagePreviewDialogComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.fileToken.set(await this.client.getFileToken());
   }
-
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
     if (event.key === 'ArrowLeft') {
       this.onLeftArrowDown();
     } else if (event.key === 'ArrowRight') {
       this.onRightArrowDown();
+    } else if (event.key === 'Escape') {
+      this.onEscapeDown();
+    } else if (event.key === 'Enter') {
+      this.onEnterDown();
     }
+  }
+
+  onEnterDown(): void {
+    this.openImageInNewTab();
+  }
+
+  onEscapeDown(): void {
+    this.dialogRef.close();
   }
 
   onLeftArrowDown(): void {
@@ -62,7 +73,7 @@ export class ImagePreviewDialogComponent implements OnInit {
     );
   }
 
-  downloadImage(): void {
+  openImageInNewTab(): void {
     window.open(this.getFileUrl(), '_blank');
   }
 }
