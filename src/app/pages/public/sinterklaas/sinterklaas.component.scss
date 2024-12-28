@@ -1,6 +1,3 @@
-
-
-
 .titel {
   display: flex;
   justify-content: center;
@@ -27,7 +24,26 @@ li {
   -o-background-size: cover;
   background-size: cover;
   min-height: 14em;
-  min-width: 100%;
+  width: 100vw;
   margin-bottom: 2%;
   margin-top: -2em;
+}
+
+.carousel-item {
+  align-content: center;
+  text-align: center;
+  max-width: 100vw;
+}
+
+.carousel-image {
+  object-fit: cover;
+  max-width: 100%;
+  border-radius: 1em;
+  align-content: center;
+
+  height: 40em;
+
+  @media (max-width: 768px) {
+    height: 20em;
+  }
 }
