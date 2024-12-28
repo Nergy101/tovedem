@@ -1,0 +1,38 @@
+.voorstelling-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1em;
+}
+
+mat-card-header {
+  flex-shrink: 0;
+}
+
+mat-card-content {
+  margin: 1em;
+  flex: 1;
+  overflow: auto;
+}
+
+mat-card-actions {
+  gap: 2em;
+  justify-content: space-between;
+}
+
+.card-image {
+  border-radius: 1em !important;
+  object-fit: cover;
+
+  max-width: 100%;
+  height: 40em;
+
+  border-radius: 1em;
+}
+
+.center-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

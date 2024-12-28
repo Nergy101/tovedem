@@ -3,12 +3,43 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <h1 class="mat-elevation-z2 text-center primary-color">Welkom bij Tovedem De Meern</h1>
+        <div class="row center text-center mainText">
+            <h1>Welkom bij</h1>
+            <img style="width: 70%; margin: 1em" src="/assets/tovedem_logo.png" alt="main-logo">
         </div>
+
+        <div class="nieuwsAnimation">
+        @defer (when nieuws().length > 0){
+        <div class="row">
+            <mat-divider [vertical]="true" style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+            <div>
+                <mat-divider style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+                <h1 class="text-center" style="font-size: x-large;">Nieuws</h1>
+                <mat-divider style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+            </div>
+            <div class="center">
+            <mdb-carousel [controls]="true" [indicators]="true" [animation]="'slide'" [interval]="5000" [ride]="true"
+                [wrap]="true" style="align-items: center; align-content: center;">
+                @for (slide of nieuws(); track $index) {
+                <mdb-carousel-item style="height: 10em;">
+                    <app-nieuws-card [nieuws]="slide"></app-nieuws-card>
+                </mdb-carousel-item>
+                }
+            </mdb-carousel>
+            </div>
+            <mat-divider [vertical]="true" style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+        </div>
+        }
+        </div>
+        
         @defer (when voorstellingen().length > 0) {
         <div class="section">
-            <div class="row">
+            <div>
+                <mat-divider style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+                <h1 class="p-4  text-center" style="font-size: x-large;">Aankomende voorstellingen</h1>
+                <mat-divider style="border-width: 5px; border-color: #ae1545;"></mat-divider>
+            </div>
+            <div class="row" >
                 @for (item of voorstellingen(); track $index) {
                 <app-voorstelling-card [voorstelling]="item" class="col-12 col-lg-6 col-xl-6 mb-4 d-flex flex-grow-1">
                 </app-voorstelling-card>

@@ -7,7 +7,8 @@
 }
 
 h1 {
-  font-weight: bold;
+  font-size: 3em;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 h2 {
@@ -32,6 +33,20 @@ h2 {
   margin-bottom: 2em;
 }
 
+.mainText{
+  opacity: 0;
+  animation: fadeIn 3s ease-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; /* Image starts off-screen */
+  } 
+  100% {
+    opacity: 1; /* Image slides into the frame */
+  }
+}
+
 .splash-image {
   background-color: $primary-color;
   background: url("/assets/Tovedem_achtergrond.jpg") no-repeat center center;
@@ -41,6 +56,32 @@ h2 {
   background-size: cover;
   min-height: 18em;
   min-width: 100%;
+  
+  transform: translateY(-100%); /* Start off-screen to the left */
+  animation: slideInTop 1.5s ease-out forwards; /* Trigger the slide animation */
+}
+
+@keyframes slideInTop {
+  0% {
+    transform: translateY(-100%); /* Image starts off-screen */
+  } 
+  100% {
+    transform: translateY(0); /* Image slides into the frame */
+  }
+}
+
+.bottomAnimation{
+  transform: translateY(100%);
+  animation: slideInBottom 4s ease-out 1 forwards;
+}
+
+@keyframes slideInBottom {
+  0% {
+    transform: translateY(100%); /* Image starts off-screen */
+  } 
+  100% {
+    transform: translateY(0); /* Image slides into the frame */
+  }
 }
 
 .container {
