@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
-import { MatDividerModule } from '@angular/material/divider';
-import { NavButtonComponent } from '../nav-button/nav-button.component';
 import { Nieuws } from '../../../models/domain/nieuws.model';
 
 @Component({
@@ -18,7 +17,6 @@ import { Nieuws } from '../../../models/domain/nieuws.model';
         MatButtonModule,
         MatProgressSpinnerModule,
         MatDividerModule,
-        NavButtonComponent,
     ]
 })
 export class NieuwsCardComponent {

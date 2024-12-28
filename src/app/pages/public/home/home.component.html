@@ -1,54 +1,58 @@
 <div class="homepage">
+  <h1>Welkom bij Tovedem De Meern - Een toneelvereniging voor iedereen</h1>
   <div class="splash-image"></div>
 
   <div class="container">
     <div class="row center text-center mainText">
       <h1>Welkom bij</h1>
       <img
-        style="width: 70%; margin: 1em; height: 100%;"
+        style="width: 70%; margin: 1em; height: 100%"
         src="/assets/tovedem_logo.png"
         alt="main-logo"
       />
     </div>
 
     @defer (when nieuws().length > 0){
-    <div class="nieuwsAnimation">
+    <div class="section nieuwsAnimation">
       <div class="row">
         <mat-divider
-          [vertical]="true"
           style="border-width: 5px; border-color: #ae1545"
         ></mat-divider>
-        <div>
-          <mat-divider
-            style="border-width: 5px; border-color: #ae1545"
-          ></mat-divider>
-          <h2 class="text-center" style="font-size: x-large">
-            Nieuws
-          </h2>
-          <mat-divider
-            style="border-width: 5px; border-color: #ae1545"
-          ></mat-divider>
-        </div>
-        <div class="center">
-          <mdb-carousel
-            [controls]="false"
-            [indicators]="true"
-            [animation]="'slide'"
-            [ride]="false"
-            [wrap]="true"
-          >
-            @for (slide of nieuws(); track $index) {
-            <mdb-carousel-item class="carousel-item">
-              <app-nieuws-card [nieuws]="slide"></app-nieuws-card>
-            </mdb-carousel-item>
-            }
-          </mdb-carousel>
-        </div>
+        <h2 class="text-center" style="font-size: x-large">Nieuws</h2>
         <mat-divider
-          [vertical]="true"
           style="border-width: 5px; border-color: #ae1545"
         ></mat-divider>
       </div>
+
+      <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
+        @for (nieuws of nieuws(); track $index) {
+        <mat-tab [label]="nieuws.titel ?? ''">
+          <app-nieuws-card [nieuws]="nieuws"></app-nieuws-card>
+        </mat-tab>
+        }
+      </mat-tab-group>
+
+      <!-- <mdb-carousel
+        [controls]="false"
+        [indicators]="true"
+        [animation]="'slide'"
+        [ride]="false"
+        [wrap]="true"
+      >
+        @for (slide of nieuws(); track $index) {
+        <mdb-carousel-item class="carousel-item">
+          <app-nieuws-card
+            [nieuws]="slide"
+            class="carousel-card"
+          ></app-nieuws-card>
+        </mdb-carousel-item>
+        }
+      </mdb-carousel> -->
+
+      <mat-divider
+        [vertical]="true"
+        style="border-width: 5px; border-color: #ae1545"
+      ></mat-divider>
     </div>
     } @defer (when voorstellingen().length > 0) {
     <div class="section">

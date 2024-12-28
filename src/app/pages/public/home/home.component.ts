@@ -8,12 +8,15 @@ import { MatDivider } from '@angular/material/divider';
 import { Nieuws } from '../../../models/domain/nieuws.model';
 import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieuws-card.component';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [VoorstellingCardComponent, MatProgressSpinnerModule, MatDivider, NieuwsCardComponent, MdbCarouselModule]
+    imports: [VoorstellingCardComponent, 
+      MatTabsModule,
+      MatProgressSpinnerModule, MatDivider, NieuwsCardComponent, MdbCarouselModule]
 })
 export class HomePaginaComponent implements OnInit {
   client = inject(PocketbaseService);
