@@ -8,20 +8,21 @@
   </mat-dialog-content>
   @if(!loading()){
   <mat-dialog-actions class="d-flex justify-content-between actions">
-    <button mat-button [disabled]="">
+    <button mat-button (click)="onLeftArrowDown()">
       <mat-icon>arrow_back</mat-icon> Vorige - pijltjes toets naar links
     </button>
 
     <div>
-      <button mat-button mat-dialog-close>
+      <button mat-button mat-dialog-close (click)="onEscapeDown()">
         <mat-icon>close</mat-icon> Sluiten - escape toets
       </button>
-      <button mat-button (click)="downloadImage()">
-        <mat-icon>download</mat-icon> Downloaden
+      <button mat-button (click)="onEnterDown()">
+        <mat-icon>aspect_ratio</mat-icon> Openen - enter toets (+ctrl in
+        achtergrond)
       </button>
     </div>
 
-    <button #nextButton mat-button>
+    <button mat-button (click)="onRightArrowDown()">
       Volgende - pijltjes toets naar rechts
       <mat-icon iconPositionEnd>arrow_forward</mat-icon>
     </button>

@@ -199,6 +199,49 @@
         ></app-pie-chart>
       </div>
       </div>
+          <div class="col-6" style="align-items: center; text-align: center">
+            <h2>
+              {{
+                (selectedDag() === "datum1"
+                  ? selectedVoorstelling()?.datum_tijd_1
+                  : selectedVoorstelling()?.datum_tijd_2
+                ) | date : "dd-MM-YYYY"
+              }}
+              -
+              {{
+                selectedDag() === "datum1"
+                  ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
+                  : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
+              }}
+              plekken
+            </h2>
+            <app-pie-chart
+              [series]="seriesDatum1()"
+              [labels]="labels()"
+            ></app-pie-chart>
+          </div>
+          <div class="col-6" style="align-items: center; text-align: center">
+            <h2>
+              {{
+                (selectedDag() === "datum2"
+                  ? selectedVoorstelling()?.datum_tijd_1
+                  : selectedVoorstelling()?.datum_tijd_2
+                ) | date : "dd-MM-YYYY"
+              }}
+              -
+              {{
+                selectedDag() === "datum2"
+                  ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
+                  : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
+              }}
+              plekken
+            </h2>
+            <app-pie-chart
+              [series]="seriesDatum2()"
+              [labels]="labels()"
+            ></app-pie-chart>
+          </div>
+        </div>
       </mat-card>
     </div>
   </div>
