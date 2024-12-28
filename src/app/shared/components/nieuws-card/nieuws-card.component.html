@@ -1,26 +1,38 @@
 <mat-card class="voorstelling-card mat-elevation-z4">
-    <div class="row center">
-        <div class="col center">
-            <mat-card-header>
-                <div>
-                    <mat-card-title style="font-size: x-large;"
-                        class="text-center">{{nieuws().titel}}
-                    </mat-card-title>
-                    <mat-divider></mat-divider>
-                    <mat-card-subtitle class="text-center">
-                        <b>{{nieuws().publishDate}}</b>{{nieuws().inhoud}}
-                    </mat-card-subtitle>
-                </div>
-            </mat-card-header>
+  <div class="row center">
+    <div class="col center">
+      <mat-card-header>
+        <div>
+          <mat-card-title style="font-size: x-large" class="text-center"
+            >{{ nieuws().titel }}
+          </mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-subtitle class="text-center">
+            <b>{{ nieuws().publishDate | date : "dd-MM-yyyy" }}</b>
+          </mat-card-subtitle>
+          <mat-card-content class="nieuws-content">
+            <span [innerHtml]="nieuws().inhoud"></span>
+          </mat-card-content>
         </div>
+      </mat-card-header>
     </div>
-    <div class="row">
-        <div class="col-12 p-4 center-image">
-            @if(!!nieuws().afbeelding){
-            <img alt="voorstelling image" class="card-image"
-                [src]="getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)" />}
-            @else {
-            }
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-12 p-4 center-image">
+      @if(!!nieuws().afbeelding){
+      <img
+        alt="voorstelling image"
+        class="card-image"
+        [src]="
+          getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)
+        "
+      />} @else {
+      <img
+        alt="voorstelling image"
+        class="card-image"
+        src="/assets/Place-Holder-Image.jpg"
+      />
+      }
     </div>
+  </div>
 </mat-card>

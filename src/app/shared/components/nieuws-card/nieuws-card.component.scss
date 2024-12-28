@@ -36,3 +36,9 @@ mat-card-actions {
   align-items: center;
   height: 100%;
 }
+
+.nieuws-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
