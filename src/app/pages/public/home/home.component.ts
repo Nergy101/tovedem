@@ -4,18 +4,25 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { MatDivider } from '@angular/material/divider';
+import { Nieuws } from '../../../models/domain/nieuws.model';
+import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieuws-card.component';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [VoorstellingCardComponent, MatProgressSpinnerModule]
+    imports: [VoorstellingCardComponent, 
+      MatTabsModule,
+      MatProgressSpinnerModule, MatDivider, NieuwsCardComponent, MdbCarouselModule]
 })
 export class HomePaginaComponent implements OnInit {
   client = inject(PocketbaseService);
 
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
-
+  nieuws: WritableSignal<Nieuws[]> = signal([]);
   seoService = inject(SeoService);
 
   constructor() {
@@ -31,8 +38,12 @@ export class HomePaginaComponent implements OnInit {
         expand: 'groep',
       }
     );
+    const nieuws = await this.client.getAll<Nieuws>(
+      'nieuws', {sort: '-publishDate'}
+    )
 
     this.voorstellingen.set(voorstellingen);
+    this.nieuws.set(nieuws);
 
     this.seoService.updateStructuredData({
       "@context": "https://schema.org",
