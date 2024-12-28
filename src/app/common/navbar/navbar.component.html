@@ -78,10 +78,11 @@
               <ul class="links navbar-nav nav-pills nav-fill p-2">
                 <li class="groepsnaam">
                   <button
-                    style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Tovedem"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
                   >
                     <mat-icon> diversity_1 </mat-icon>
                     <span>Tovedem</span>
@@ -89,10 +90,11 @@
                 </li>
                 <li class="groepsnaam">
                   <button
-                    style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Cloos"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
                   >
                     <mat-icon> diversity_2 </mat-icon>
                     <span>Cloos</span>
@@ -100,10 +102,11 @@
                 </li>
                 <li class="groepsnaam">
                   <button
-                    style="width: 12em"
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Mejotos"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse.show"
                   >
                     <mat-icon> diversity_3 </mat-icon>
                     <span>Mejoto's</span>
@@ -180,14 +183,15 @@
           <li>
             <button
               mat-raised-button
-              class="w-100 profiel-button"
+              class="profiel-button"
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/profiel"
             >
               <div
-                class="d-flex justify-content-center align-items-center gap-2"
+                class="d-flex w-100 justify-content-center align-items-center gap-2"
+                style="pointer-events: none"
               >
                 <img
                   alt="avatar"
