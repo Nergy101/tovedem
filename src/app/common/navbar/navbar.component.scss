@@ -40,7 +40,11 @@ ul {
 
 li {
   list-style: none;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
+
+  @media (max-width: 1024px) {
+    min-width: 20em;
+  }
 
   .active {
     color: white;
@@ -50,6 +54,12 @@ li {
   :hover {
     color: white;
     background-color: #ae1545;
+  }
+
+  button {
+    mat-icon {
+      pointer-events: none;
+    }
   }
 }
 
@@ -93,8 +103,18 @@ mat-icon {
 }
 
 .groepsnaam {
-  margin: 0.5rem;
   pointer-events: cursor;
+  min-width: 100%;
+
+  button {
+    min-width: 19em !important;
+  }
+
+  @media (max-width: 1024px) {
+    button {
+      min-width: 19em !important;
+    }
+  }
 }
 
 .profiel-button {
@@ -102,6 +122,9 @@ mat-icon {
 }
 
 .theme-switch {
+  display: flex;
+  justify-content: center;
+
   cursor: pointer;
   border-radius: 1em;
   padding: 0.5em;
@@ -119,4 +142,10 @@ mat-icon {
 
 .dark-mode {
   color: black;
+}
+
+.profiel-button {
+  @media (max-width: 1024px) {
+    min-width: 20em;
+  }
 }
