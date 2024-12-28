@@ -149,105 +149,39 @@
     }
   </div>
   } @if (reserveringenOfSelectedVoorstelling().length > 0) {
-  <!--<div class="col-12 pt-2">
+  <div class="col-12 pt-2">
     <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
-  </div>-->
+  </div>
   <div style="display: flex; gap: 1em">
     <div style="flex: 1">
       <mat-card class="row" appearance="outlined">
-        <div class="row">
-        <div class="col-6" style="align-items: center; text-align: center;">
-        <h2>
-          {{
-            (selectedDag() === "datum1"
-              ? selectedVoorstelling()?.datum_tijd_1
-              : selectedVoorstelling()?.datum_tijd_2
-            ) | date : "dd-MM-YYYY"
-          }}
-          -
-          {{
-            selectedDag() === "datum1"
-              ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
-              : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
-          }}
-          plekken
-        </h2>
-        <app-pie-chart
-          [series]="seriesDatum1()"
-          [labels]="labels()"
-        ></app-pie-chart>
-      </div>
-      <div class="col-6" style="align-items: center; text-align: center;">
-        <h2>
-          {{
-            (selectedDag() === "datum2"
-              ? selectedVoorstelling()?.datum_tijd_1
-              : selectedVoorstelling()?.datum_tijd_2
-            ) | date : "dd-MM-YYYY"
-          }}
-          -
-          {{
-            selectedDag() === "datum2"
-              ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
-              : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
-          }}
-          plekken
-        </h2>
-        <app-pie-chart
-          [series]="seriesDatum2()"
-          [labels]="labels()"
-        ></app-pie-chart>
-      </div>
-      </div>
-          <div class="col-6" style="align-items: center; text-align: center">
-            <h2>
-              {{
-                (selectedDag() === "datum1"
-                  ? selectedVoorstelling()?.datum_tijd_1
-                  : selectedVoorstelling()?.datum_tijd_2
-                ) | date : "dd-MM-YYYY"
-              }}
-              -
-              {{
-                selectedDag() === "datum1"
-                  ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
-                  : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
-              }}
-              plekken
-            </h2>
-            <app-pie-chart
-              [series]="seriesDatum1()"
-              [labels]="labels()"
-            ></app-pie-chart>
-          </div>
-          <div class="col-6" style="align-items: center; text-align: center">
-            <h2>
-              {{
-                (selectedDag() === "datum2"
-                  ? selectedVoorstelling()?.datum_tijd_1
-                  : selectedVoorstelling()?.datum_tijd_2
-                ) | date : "dd-MM-YYYY"
-              }}
-              -
-              {{
-                selectedDag() === "datum2"
-                  ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
-                  : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
-              }}
-              plekken
-            </h2>
-            <app-pie-chart
-              [series]="seriesDatum2()"
-              [labels]="labels()"
-            ></app-pie-chart>
-          </div>
+        <div class="col-12" style="align-items: center; text-align: center">
+          <h2>
+            {{
+              (selectedDag() === "datum1"
+                ? selectedVoorstelling()?.datum_tijd_1
+                : selectedVoorstelling()?.datum_tijd_2
+              ) | date : "dd-MM-YYYY"
+            }}
+            -
+            {{
+              selectedDag() === "datum1"
+                ? selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1
+                : selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2
+            }}
+            plekken
+          </h2>
+          <app-pie-chart
+            [series]="
+              selectedDag() === 'datum1' ? seriesDatum1() : seriesDatum2()
+            "
+            [labels]="labels()"
+          ></app-pie-chart>
         </div>
       </mat-card>
     </div>
   </div>
 
-
-  
   <div class="col-12 pt-2">
     <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
     <mat-card appearance="outlined">
@@ -350,6 +284,7 @@
 
   @if (losseVerkoopOfSelectedVoorstelling().length > 0) {
   <div class="col-12 pt-2">
+    <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
     <mat-card appearance="outlined">
       <mat-card-header>
         <h2>
@@ -419,7 +354,6 @@
     </mat-card>
   </div>
   }
-  <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
 </div>
 
 <ng-template #dagSelector>
