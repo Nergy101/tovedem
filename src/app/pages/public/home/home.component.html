@@ -6,14 +6,14 @@
     <div class="row center text-center mainText">
       <h1>Welkom bij</h1>
       <img
-        style="width: 70%; margin: 1em; height: 100%"
+        style="width: 70%; margin: 1em; height: 100%; margin-bottom: 2em;"
         src="/assets/tovedem_logo.png"
         alt="main-logo"
       />
     </div>
 
-    @defer (when nieuws().length > 0){
-    <div class="section nieuwsAnimation">
+    @defer (when nieuwsToPublish().length > 0){
+    <div class="section bottomAnimation">
       <div class="row">
         <mat-divider
           style="border-width: 5px; border-color: #ae1545"
@@ -25,7 +25,7 @@
       </div>
 
       <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
-        @for (nieuws of nieuws(); track $index) {
+        @for (nieuws of nieuwsToPublish(); track $index) {
         <mat-tab [label]="nieuws.titel ?? ''">
           <app-nieuws-card [nieuws]="nieuws"></app-nieuws-card>
         </mat-tab>
@@ -55,7 +55,7 @@
       ></mat-divider>
     </div>
     } @defer (when voorstellingen().length > 0) {
-    <div class="section">
+    <div class="section bottomAnimation">
       <div>
         <mat-divider
           style="border-width: 5px; border-color: #ae1545"
