@@ -61,7 +61,10 @@ export class ReserverenComponent implements OnInit {
   router = inject(Router);
   name = signal('');
   surname = signal('');
+
   email = signal('');
+  email2 = signal('');
+
   vriendVanTovedem = signal(false);
   lidVanTovedemMejotos = signal(false);
   opmerking = signal('');
@@ -70,11 +73,17 @@ export class ReserverenComponent implements OnInit {
   amountOfPeopleDate2 = signal(0);
   saving = signal(false);
 
+  emailsAreSame = computed(() => {
+    return this.email() === this.email2();
+  });
+
   formIsValid = computed(() => {
     return (
       !!this.name() &&
-      !!this.email &&
-      !!this.surname &&
+      !!this.email() &&
+      !!this.email2() &&
+      this.emailsAreSame() &&
+      !!this.surname() &&
       (this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0)
     );
   });
@@ -152,6 +161,10 @@ export class ReserverenComponent implements OnInit {
 
   onEmailChanged(newValue: string): void {
     this.email.set(newValue);
+  }
+
+  onEmail2Changed(newValue: string): void {
+    this.email2.set(newValue);
   }
 
   onNameChanged(newValue: string): void {

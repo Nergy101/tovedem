@@ -5,7 +5,7 @@
 @use "variables.scss" as *;
 @use "mdb-angular-ui-kit/assets/scss/mdb.scss" as *;
 @use "ngx-toastr/toastr" as *;
-@use 'quill/dist/quill.snow.css';
+@use "quill/dist/quill.snow.css";
 
 @include mat.elevation-classes();
 @include mat.app-background();
@@ -22,16 +22,16 @@ $custom-light-theme: mat.m2-define-light-theme(
         default: #424242,
       ),
       tovGreen: (
-        default: #68A357,
+        default: #68a357,
       ),
       tovYellow: (
-        default: #F4E409,
+        default: #f4e409,
       ),
       tovOrange: (
-        default: #EEBA0B,
+        default: #eeba0b,
       ),
       tovBlue: (
-        default: #90F1EF
+        default: #90f1ef,
       ),
     ),
   )
@@ -47,16 +47,16 @@ $custom-dark-theme: mat.m2-define-dark-theme(
         default: #424242,
       ),
       tovGreen: (
-        default: #68A357,
+        default: #68a357,
       ),
       tovYellow: (
-        default: #F4E409,
+        default: #f4e409,
       ),
       tovOrange: (
-        default: #EEBA0B,
+        default: #eeba0b,
       ),
       tovBlue: (
-        default: #90F1EF
+        default: #90f1ef,
       ),
     ),
     background-color: (
@@ -149,4 +149,9 @@ body > ngx-material-timepicker-container {
   --button-color: #ae1545 !important;
   --dial-editable-active-color: #ae1545 !important;
   --clock-hand-color: #ae1545 !important;
+}
+
+.divider {
+  border-width: 5px !important;
+  border-color: #ae1545 !important;
 }

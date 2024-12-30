@@ -48,61 +48,55 @@
   }
 
   <div class="row">
-    <div class="col-12">
-      <mat-form-field class="col-12">
-        <mat-label>Volledige naam</mat-label>
-        <input
-          placeholder="Pieter Post"
-          matInput
-          type="text"
-          required
-          [(ngModel)]="name"
-        />
-      </mat-form-field>
-      <mat-form-field class="col-12">
-        <mat-label>E-mail</mat-label>
-        <input
-          placeholder="pieter-post@voorbeeld.nl"
-          matInput
-          type="email"
-          required
-          [(ngModel)]="email"
-        />
-      </mat-form-field>
-      <div style="display: flex">
-        <mat-form-field style="flex: 1">
-          <mat-label>Onderwerp</mat-label>
-          <input
-            placeholder="Het Onderwerp"
-            matInput
-            type="text"
-            required
-            [(ngModel)]="subject"
-          />
-        </mat-form-field>
-      </div>
-      <div style="display: flex">
-        <mat-form-field style="flex: 1">
-          <mat-label>Bericht</mat-label>
-          <textarea
-            [(ngModel)]="message"
-            matInput
-            rows="10"
-            required
-            placeholder="Type hier je bericht"
-          ></textarea>
-        </mat-form-field>
-      </div>
-      <div style="display: flex">
-        <button
-          style="flex: 1"
-          mat-raised-button
-          (click)="verstuurSinterklaasMail()"
-          [disabled]="!name || !email || !subject || !message"
-        >
-          Verzenden
-        </button>
-      </div>
+    <mat-form-field class="col-12 col-md-4">
+      <mat-label>Volledige naam</mat-label>
+      <input
+        placeholder="Pieter Post"
+        matInput
+        type="text"
+        required
+        [(ngModel)]="name"
+      />
+    </mat-form-field>
+    <mat-form-field class="col-12 col-md-4">
+      <mat-label>E-mail</mat-label>
+      <input
+        placeholder="pieter-post@voorbeeld.nl"
+        matInput
+        type="email"
+        required
+        [(ngModel)]="email"
+      />
+    </mat-form-field>
+    <mat-form-field class="col-12 col-md-4">
+      <mat-label>Onderwerp</mat-label>
+      <input
+        placeholder="Het Onderwerp"
+        matInput
+        type="text"
+        required
+        [(ngModel)]="subject"
+      />
+    </mat-form-field>
+    <mat-form-field class="col-12">
+      <mat-label>Bericht</mat-label>
+      <textarea
+        [(ngModel)]="message"
+        matInput
+        rows="10"
+        required
+        placeholder="Typ hier je bericht"
+      ></textarea>
+    </mat-form-field>
+    <div class="d-flex">
+      <button
+        class="flex"
+        mat-raised-button
+        (click)="verstuurSinterklaasMail()"
+        [disabled]="!name || !email || !subject || !message"
+      >
+        Verzenden
+      </button>
     </div>
   </div>
 </div>

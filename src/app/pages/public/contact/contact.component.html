@@ -1,65 +1,110 @@
-<div class="splash-image">
-</div>
+<div class="splash-image"></div>
 
 <div class="container mat-elevation-z2">
-    <div class="display-1 justify-content-center" style="text-align: center;">Contact formulier</div>
-    <mat-divider style="margin-bottom: 2em"></mat-divider>
-    <div style="display: flex; flex-flow: row wrap; gap: 2em;">
-        <div style="max-width: 75%;">
-            In het volgende formulier kunt u overige vragen stellen die bij het algemene e-mail adres van
-            de Tovedem terecht komen. Heeft u een aanvraag om lid te worden, tovedem te steunen of voor de sintcommisie
-            kies dan een van de andere aanmeldformulieren.
-        </div>
+  <div class="display-1 justify-content-center" style="text-align: center">
+    Contact formulier
+  </div>
+  <mat-divider style="margin-bottom: 2em"></mat-divider>
+  <div style="display: flex; flex-flow: row wrap; gap: 2em">
+    <div style="max-width: 75%">
+      In het volgende formulier kunt u overige vragen stellen die bij het
+      algemene e-mail adres van de Tovedem terecht komen. Heeft u een aanvraag
+      om lid te worden, tovedem te steunen of voor de sintcommisie kies dan een
+      van de andere aanmeldformulieren.
+    </div>
 
-        <div style="display: flex; flex-flow: row wrap; gap: .5em">
-            <button style="background-color: #ae1545;color:white;" mat-icon-button matTooltip="Ga naar lid worden"
-                routerLinkActive="active" routerLink="/lid-worden">
-                <mat-icon>person_add</mat-icon>
-            </button>
-            <button style="background-color: #ae1545;color:white; " matTooltip="Ga naar steunen" mat-icon-button
-                routerLinkActive="active" routerLink="/steunen">
-                <mat-icon>volunteer_activism</mat-icon>
-            </button>
-            <button style="background-color: #ae1545;color:white; " matTooltip="Ga naar Sinterklaas" mat-icon-button
-                routerLinkActive="active" routerLink="/sinterklaas">
-                <mat-icon>redeem</mat-icon>
-            </button>
-        </div>
+    <div style="display: flex; flex-flow: row wrap; gap: 0.5em">
+      <button
+        style="background-color: #ae1545; color: white"
+        mat-icon-button
+        matTooltip="Ga naar lid worden"
+        routerLinkActive="active"
+        routerLink="/lid-worden"
+      >
+        <mat-icon>person_add</mat-icon>
+      </button>
+      <button
+        style="background-color: #ae1545; color: white"
+        matTooltip="Ga naar steunen"
+        mat-icon-button
+        routerLinkActive="active"
+        routerLink="/steunen"
+      >
+        <mat-icon>volunteer_activism</mat-icon>
+      </button>
+      <button
+        style="background-color: #ae1545; color: white"
+        matTooltip="Ga naar Sinterklaas"
+        mat-icon-button
+        routerLinkActive="active"
+        routerLink="/sinterklaas"
+      >
+        <mat-icon>redeem</mat-icon>
+      </button>
     </div>
-    <div style="margin-top: 2em;" class="row">
-        <div class="col-12">
-            <div class="titel">
-                <h1> <mat-icon>location_on</mat-icon> Schalm Oranjelaan 10, 3454 BT De Meern</h1>
-            </div>
-            <form (ngSubmit)="verstuurContactMail()">
-                <mat-form-field class="col-12">
-                    <mat-label>Volledige naam</mat-label>
-                    <input placeholder="Pieter Post" matInput name="name" type="text" required [(ngModel)]="name">
-                </mat-form-field>
-                <mat-form-field class="col-12">
-                    <mat-label>E-mail</mat-label>
-                    <input placeholder="pieter-post@voorbeeld.nl" name="email" required matInput type="email"
-                        [(ngModel)]="email">
-                </mat-form-field>
-                <div style="display: flex;">
-                    <mat-form-field style="flex: 1;">
-                        <mat-label>Onderwerp</mat-label>
-                        <input placeholder="Het Onderwerp" matInput name="subject" type="text" required
-                            [(ngModel)]="subject">
-                    </mat-form-field>
-                </div>
-                <div style="display: flex;">
-                    <mat-form-field style="flex: 1;">
-                        <mat-label>Bericht</mat-label>
-                        <textarea [(ngModel)]="message" matInput name="message" rows="10"
-                            placeholder="Type hier je bericht" required></textarea>
-                    </mat-form-field>
-                </div>
-                <div style="display: flex;">
-                    <button style="flex: 1;" mat-raised-button [color]="'primary'" type="submit"
-                        [disabled]="!name || !email || !subject || !message">Verzenden</button>
-                </div>
-            </form>
-        </div>
+  </div>
+  <div class="row mt-2">
+    <div class="titel">
+      <h1>
+        <mat-icon>location_on</mat-icon> Schalm Oranjelaan 10, 3454 BT De Meern
+      </h1>
     </div>
+    <form (ngSubmit)="verstuurContactMail()" class="row">
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>Volledige naam</mat-label>
+        <input
+          placeholder="Pieter Post"
+          matInput
+          name="name"
+          type="text"
+          required
+          [(ngModel)]="name"
+        />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>E-mail</mat-label>
+        <input
+          placeholder="pieter-post@voorbeeld.nl"
+          name="email"
+          required
+          matInput
+          type="email"
+          [(ngModel)]="email"
+        />
+      </mat-form-field>
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>Onderwerp</mat-label>
+        <input
+          placeholder="Het Onderwerp"
+          matInput
+          name="subject"
+          type="text"
+          required
+          [(ngModel)]="subject"
+        />
+      </mat-form-field>
+      <mat-form-field class="col-12">
+        <mat-label>Bericht</mat-label>
+        <textarea
+          [(ngModel)]="message"
+          matInput
+          name="message"
+          rows="10"
+          placeholder="Typ hier je bericht"
+          required
+        ></textarea>
+      </mat-form-field>
+      <div class="d-flex">
+        <button
+          class="flex"
+          mat-raised-button
+          [color]="'primary'"
+          type="submit"
+          [disabled]="!name || !email || !subject || !message"
+        >
+          Verzenden
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

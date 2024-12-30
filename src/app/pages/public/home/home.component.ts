@@ -9,13 +9,14 @@ import { Nieuws } from '../../../models/domain/nieuws.model';
 import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieuws-card.component';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatBadgeModule } from '@angular/material/badge';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
     imports: [VoorstellingCardComponent, 
       MatTabsModule,
+      MatBadgeModule,
       MatProgressSpinnerModule, MatDivider, NieuwsCardComponent, MdbCarouselModule]
 })
 export class HomePaginaComponent implements OnInit {

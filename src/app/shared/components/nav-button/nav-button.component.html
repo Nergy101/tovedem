@@ -1,1 +1,6 @@
-<button mat-raised-button color='primary'  (click)="navigate()"><ng-content></ng-content></button>
+<button mat-raised-button color="primary" (click)="navigate()">
+  <div class="button-content">
+    <ng-content select="[icon]" matPrefix></ng-content>
+    <ng-content></ng-content>
+  </div>
+</button>

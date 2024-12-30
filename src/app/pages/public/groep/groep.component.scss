@@ -32,3 +32,9 @@
     height: 20em;
   }
 }
+
+.groep-image {
+  object-fit: contain;
+  max-width: 100%;
+  border-radius: 1em;
+}

@@ -52,8 +52,9 @@ export class GroepComponent implements OnInit {
     this.groepsNaam = this.router.url.substring(7);
 
     effect(() => {
-      if (this.groep()?.naam) {
-        this.seoService.update(`Tovedem - Groep - ${this.groep()?.naam}`);
+      const groepsNaam = this.groep()?.naam;
+      if (groepsNaam) {
+        this.seoService.update(`Tovedem - Groep - ${groepsNaam}`);
       }
     });
   }

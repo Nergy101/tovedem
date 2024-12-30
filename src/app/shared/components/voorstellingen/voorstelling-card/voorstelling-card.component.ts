@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { NavButtonComponent } from '../../nav-button/nav-button.component';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
-
+import { MatIconModule } from '@angular/material/icon';
 @Component({
     selector: 'app-voorstelling-card',
     templateUrl: './voorstelling-card.component.html',
@@ -16,6 +16,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
         CommonModule,
         MatCardModule,
         MatButtonModule,
+        MatIconModule,
         MatProgressSpinnerModule,
         MatDividerModule,
         NavButtonComponent,
