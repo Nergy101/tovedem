@@ -24,6 +24,7 @@ export class HomePaginaComponent implements OnInit {
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
   nieuws: WritableSignal<Nieuws[]> = signal([]);
   seoService = inject(SeoService);
+  nieuwsToPublish: WritableSignal<Nieuws[]> = signal([]);
 
   constructor() {
     this.seoService.update('Tovedem - Home')
@@ -41,6 +42,8 @@ export class HomePaginaComponent implements OnInit {
     const nieuws = await this.client.getAll<Nieuws>(
       'nieuws', {sort: '-publishDate'}
     )
+    
+    nieuws.forEach((item) => {if(this.publiceren(item)) this.nieuwsToPublish().push(item)})
 
     this.voorstellingen.set(voorstellingen);
     this.nieuws.set(nieuws);
@@ -72,5 +75,16 @@ export class HomePaginaComponent implements OnInit {
         "url": `https://tovedem.nergy.space/reserveren?voorstellingid=${this.voorstellingen()[0].id}`,
       }
     });
+  }
+  publiceren(nieuws: Nieuws): boolean {
+    return (
+      new Date(nieuws.publishDate ?? '') < new Date() &&
+      new Date(nieuws.archiveDate ?? '') > new Date()
+    );
+  }
+
+  archiveren(nieuws: Nieuws): boolean {
+    return (
+      new Date(nieuws.archiveDate ?? '') > new Date())
   }
 }
