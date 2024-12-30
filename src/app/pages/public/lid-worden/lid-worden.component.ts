@@ -137,7 +137,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
 
           if (resultObj.result.success) {
             try {
-              await this.clientB.collection('lid_aanmeldingen').create({
+              await this.clientB.collection('leden').create({
                 voornaam: this.voornaam,
                 achternaam: this.achternaam,
                 groep: this.selectedGroep,
