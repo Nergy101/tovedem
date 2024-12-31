@@ -21,6 +21,7 @@
 
 .router-content {
   display: block;
+  padding-top: 4em;
   margin-bottom: 5em;
 }
 
@@ -90,13 +91,4 @@ a {
   gap: 0.5em;
   // align-items: center;
   justify-content: space-evenly;
-}
-
-
-.side-menu-toggle {
-  position: sticky;
-  top: 5rem;
-  left: .25rem;
-  z-index: 1000;
-  cursor: pointer;
 }

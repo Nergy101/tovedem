@@ -38,12 +38,6 @@ export class SidenavComponent {
   breakpointService = inject(BreakpointService);
   client = inject(PocketbaseService);
 
-  async toggle(): Promise<void> {
-    if (!this.breakpointService.isDesktopScreen()) {
-      this.sideDrawerService.toggle();
-    }
-  }
-
   close(): void {
     this.sideDrawerService.close();
   }

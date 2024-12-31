@@ -55,7 +55,11 @@ export class NavbarComponent {
     return this.router.url.includes('groep') ? 'active' : '';
   }
 
-  toggle(): void {
-    this.sideDrawerService.toggle();
+  toggleSideDrawer(): void {
+    if (this.sideDrawerService.isOpen()) {
+      this.sideDrawerService.close();
+    } else {
+      this.sideDrawerService.open();
+    }
   }
 }

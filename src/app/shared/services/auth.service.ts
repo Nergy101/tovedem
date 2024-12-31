@@ -60,7 +60,6 @@ export class AuthService {
 
   registerUser(userRecord: Gebruiker): void {
     this.userRecord.set(userRecord);
-    this.sideDrawerService.open();
   }
 
   unregisterUser(): void {

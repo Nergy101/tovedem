@@ -51,21 +51,23 @@ export class AppComponent {
   @ViewChild(MatDrawer) drawer?: MatDrawer;
 
   constructor() {
-    if (this.authService.isLoggedIn()) {
-      this.sideDrawerService.open();
-    }
-
-    
-
     // side drawer
-    effect(() => {
+    effect(async () => {
       if (this.authService.isLoggedIn()) {
-        this.sideDrawerService.open();
         if (this.sideDrawerService.isOpen()) {
-          this.drawer?.open();
+          // allow to render the drawer and open it
+          setTimeout(() => {
+            this.drawer?.open();
+          }, 100);
+
           return;
         }
       }
+      localStorage.setItem('sideDrawerOpen', 'false');
+      // allow to render the drawer and open it
+      setTimeout(() => {
+        this.drawer?.close();
+      }, 100);
     });
 
     // theme
@@ -87,9 +89,5 @@ export class AppComponent {
           ?.classList.remove('bg-dark');
       }
     });
-  }
-
-  toggle(): void {
-    this.sideDrawerService.toggle();
   }
 }

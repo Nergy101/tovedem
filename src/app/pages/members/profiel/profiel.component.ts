@@ -65,10 +65,14 @@ export class ProfielComponent implements OnInit {
     this.router.navigate([url]);
   }
 
-  toggle(): void {
-    this.sideDrawerService.toggle();
+  openSideDrawer(): void {
+    this.sideDrawerService.open();
   }
 
+  closeSideDrawer(): void {
+    this.sideDrawerService.close();
+  }
+  
   logout(): void {
     this.authService.unregisterUser();
     this.router.navigate(['/login']);
