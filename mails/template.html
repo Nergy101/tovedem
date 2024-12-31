@@ -21,7 +21,8 @@
         width: 100%;
         border-collapse: collapse;
       }
-      th, td {
+      th,
+      td {
         padding: 5px;
         text-align: left;
       }
@@ -31,7 +32,8 @@
         border-radius: 1em;
         overflow: hidden;
       }
-      .tickets-table td, .tickets-table th {
+      .tickets-table td,
+      .tickets-table th {
         border: none;
       }
       .button {
@@ -49,13 +51,23 @@
     <table width="100%" height="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center" valign="middle">
-          <table class="center" cellpadding="0" cellspacing="0" style="max-width: 600px;">
+          <table
+            class="center"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 600px"
+          >
             <tr>
               <td align="center">
-                <img 
-                  src="https://tovedem.nergy.space/assets/Tovedem_achtergrond.jpg" 
-                  alt="Tovedem achtergrond" 
-                  style="width: 100%; border-bottom-right-radius: 1em; border-bottom-left-radius: 1em; margin-bottom: 20px;"
+                <img
+                  src="https://tovedem.nergy.space/assets/Tovedem_achtergrond.jpg"
+                  alt="Tovedem achtergrond"
+                  style="
+                    width: 100%;
+                    border-bottom-right-radius: 1em;
+                    border-bottom-left-radius: 1em;
+                    margin-bottom: 20px;
+                  "
                 />
               </td>
             </tr>
@@ -63,8 +75,10 @@
               <td>
                 <h1>Beste {reserveerdersNaam},</h1>
                 <p>
-                  Bedankt voor het reserveren van een van onze voorstellingen.<br />
-                  Hierbij ontvangt u een reserveringsbevestiging voor de voorstelling:
+                  Bedankt voor het reserveren van een van onze
+                  voorstellingen.<br />
+                  Hierbij ontvangt u een reserveringsbevestiging voor de
+                  voorstelling:
                 </p>
                 <h2><b>{voorstellingsNaam}</b></h2>
                 <p>Wij hebben er al super veel zin in!!<b> U ook!?</b></p>
@@ -72,14 +86,14 @@
             </tr>
             <tr>
               <td>
-                <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                <table cellpadding="0" cellspacing="0" style="width: 100%">
                   <tr>
-                    <td style="width: 75%;">
-                      <img 
-                        src="https://tovedem.nergy.space/assets/Place-Holder-Image.jpg" 
-                        width="100%" 
-                        alt="voorstelling afbeelding" 
-                        style="border-radius: 1em;"
+                    <td style="width: 75%">
+                      <img
+                        src="https://tovedem.nergy.space/assets/Place-Holder-Image.jpg"
+                        width="100%"
+                        alt="voorstelling afbeelding"
+                        style="border-radius: 1em"
                       />
                     </td>
                   </tr>
@@ -88,7 +102,10 @@
             </tr>
             <tr>
               <td>
-                <table class="tickets-table" style="padding: 20px; width: 100%; margin-bottom: 20px;">
+                <table
+                  class="tickets-table"
+                  style="padding: 20px; width: 100%; margin-bottom: 20px"
+                >
                   <tr>
                     <td colspan="2">
                       <h1>Uw Tickets voor {datum1}</h1>
@@ -116,13 +133,18 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <a href="https://tovedem.nergy.space/reservering-aanpassen/{reserveringid}/{guid}" class="button">
-                        Reservering hier wijzigen
+                      <a
+                        href="https://tovedem.nergy.space/reservering-aanpassen/{reserveringid}/{guid}"
+                        class="button"
+                      >
+                        <span style="color: #fff"
+                          >Reservering hier wijzigen</span
+                        >
                       </a>
                     </td>
                   </tr>
                 </table>
-                <table class="tickets-table" style="padding: 20px; width: 100%;">
+                <table class="tickets-table" style="padding: 20px; width: 100%">
                   <tr>
                     <td colspan="2">
                       <h1>Uw Tickets voor {datum2}</h1>
@@ -150,8 +172,13 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <a href="https://tovedem.nergy.space/reservering-aanpassen/{reserveringid}/{guid}" class="button">
-                        Reservering hier wijzigen
+                      <a
+                        href="https://tovedem.nergy.space/reservering-aanpassen/{reserveringid}/{guid}"
+                        class="button"
+                      >
+                        <span style="color: #fff"
+                          >Reservering hier wijzigen</span
+                        >
                       </a>
                     </td>
                   </tr>
@@ -162,16 +189,34 @@
               <td>
                 <h1>Bezoekers informatie</h1>
                 <p>
-                  <img src="https://tovedem.nergy.space/assets/mails/schedule.png" alt="schedule" style="vertical-align: middle;" />
+                  <img
+                    width="20"
+                    src="https://tovedem.nergy.space/assets/mails/schedule.png"
+                    alt="schedule"
+                    style="vertical-align: middle"
+                  />
                   De zaal opent een half uur voor aanvang van de voorstelling.
                 </p>
                 <p>
-                  <img src="https://tovedem.nergy.space/assets/mails/bike.png" alt="travel" style="vertical-align: middle;" />
+                  <img
+                    width="20"
+                    src="https://tovedem.nergy.space/assets/mails/bike.png"
+                    alt="travel"
+                    style="vertical-align: middle"
+                  />
                   U kunt eenvoudig parkeren met de auto of fiets voor de schalm.
                 </p>
                 <p>
-                  <img src="https://tovedem.nergy.space/assets/mails/location.png" alt="location" style="vertical-align: middle;" />
-                  <a href="https://www.google.com/maps/place/the+Schalm" target="_blank">
+                  <img
+                    width="20"
+                    src="https://tovedem.nergy.space/assets/mails/location.png"
+                    alt="location"
+                    style="vertical-align: middle"
+                  />
+                  <a
+                    href="https://www.google.com/maps/place/the+Schalm"
+                    target="_blank"
+                  >
                     De Schalm, Oranjelaan 10, 3454 BT De Meern
                   </a>
                 </p>
@@ -180,18 +225,26 @@
             <tr>
               <td>
                 <p><b>Tot dan!</b></p>
-                <p><i><u>Gr. Tovedem</u></i></p>
+                <p>
+                  <i><u>Gr. Tovedem</u></i>
+                </p>
               </td>
             </tr>
             <tr>
               <td align="center">
-                <img src="https://tovedem.nergy.space/assets/tovedem_logo.png" alt="tovedem logo" style="width: 100px;" />
+                <img
+                  src="https://tovedem.nergy.space/assets/tovedem_logo.png"
+                  alt="tovedem logo"
+                  style="width: 100px"
+                />
               </td>
             </tr>
             <tr>
               <td align="center">
                 <a href="http://www.tovedem.nl" target="_blank" class="button">
-                  Meer voorstellingen bekijken? KLIK HIER!
+                  <span style="color: #fff"
+                    >Meer voorstellingen bekijken? KLIK HIER!</span
+                  >
                 </a>
               </td>
             </tr>
