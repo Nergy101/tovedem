@@ -1,9 +1,6 @@
 # Robots.txt for https://tovedem.nergy.space
 User-agent: *
 
-# Allow all public routes
-Allow: /
-
 # Disallow guarded and sensitive routes
 Disallow: /profiel
 Disallow: /beheer-reserveringen
