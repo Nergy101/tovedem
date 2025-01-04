@@ -149,7 +149,7 @@
     }
   </div>
   } @if (reserveringenOfSelectedVoorstelling().length > 0) {
-  <div class="col-12 pt-2">
+  <div class="col-12">
     <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
   </div>
   <div style="display: flex; gap: 1em">
@@ -182,7 +182,7 @@
     </div>
   </div>
 
-  <div class="col-12 pt-2">
+  <div class="col-12">
     <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
     <mat-card appearance="outlined">
       <mat-card-header>
@@ -357,21 +357,23 @@
 </div>
 
 <ng-template #dagSelector>
-  <mat-button-toggle-group
-    (change)="setSelectedDag($event)"
-    [value]="selectedDag()"
-  >
-    <mat-button-toggle value="datum1">
-      {{
-        selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-YYYY"
-      }}</mat-button-toggle
+  <div class="py-2">
+    <mat-button-toggle-group
+      (change)="setSelectedDag($event)"
+      [value]="selectedDag()"
     >
-    @if(selectedVoorstelling()?.datum_tijd_2) {
-    <mat-button-toggle value="datum2">
-      {{
-        selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-YYYY"
-      }}</mat-button-toggle
-    >
-    }
-  </mat-button-toggle-group>
+      <mat-button-toggle value="datum1">
+        {{
+          selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-YYYY"
+        }}</mat-button-toggle
+      >
+      @if(selectedVoorstelling()?.datum_tijd_2) {
+      <mat-button-toggle value="datum2">
+        {{
+          selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-YYYY"
+        }}</mat-button-toggle
+      >
+      }
+    </mat-button-toggle-group>
+  </div>
 </ng-template>

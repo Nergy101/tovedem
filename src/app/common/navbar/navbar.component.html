@@ -216,11 +216,11 @@
           }
           <li class="theme-switch">
             @if (themeService.isDarkTheme()) {
-            <mat-icon class="light-mode" (click)="themeService.toggleTheme()"
+            <mat-icon class="light-mode-switch" (click)="themeService.toggleTheme()"
               >light_mode</mat-icon
             >
             } @else {
-            <mat-icon class="dark-mode" (click)="themeService.toggleTheme()"
+            <mat-icon class="dark-mode-switch" (click)="themeService.toggleTheme()"
               >dark_mode</mat-icon
             >
             }

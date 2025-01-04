@@ -254,6 +254,7 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
     const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
       data: dialogData,
       hasBackdrop: true,
+      // minWidth: '90vw'
     });
 
     const { updatedReservering } = await lastValueFrom(dialogRef.afterClosed());

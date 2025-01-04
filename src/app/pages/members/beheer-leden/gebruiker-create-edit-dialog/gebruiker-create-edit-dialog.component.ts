@@ -130,7 +130,9 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
         !!this.gebruiker.email &&
         this.gebruiker.email != '' &&
         !!this.gebruiker.name &&
-        this.gebruiker.name != ''
+        this.gebruiker.name != '' &&
+        !!this.gebruiker.rollen &&
+        this.gebruiker.rollen.length > 0
       );
     } else {
       return (
@@ -142,8 +144,11 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
         this.gebruiker.password != '' &&
         !!this.gebruiker.name &&
         this.gebruiker.name != '' &&
+        !!this.gebruiker.rollen &&
+        this.gebruiker.rollen.length > 0 &&
         !!this.gebruiker.passwordConfirm &&
         this.gebruiker.passwordConfirm != ''
+        && this.gebruiker.password === this.gebruiker.passwordConfirm
       );
     }
   }

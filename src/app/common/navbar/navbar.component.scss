@@ -47,13 +47,13 @@ li {
   }
 
   .active {
-    color: white;
-    background-color: #ae1545;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
   }
 
   :hover {
-    color: white;
-    background-color: #ae1545;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
   }
 
   button {
@@ -75,15 +75,15 @@ li {
 .navbar-collapse {
   li {
     .active {
-      color: white;
-      background-color: #ae1545;
+      color: var(--mat-sys-on-primary);
+      background-color: var(--mat-sys-primary);
     }
   }
 }
 
 a {
   text-decoration: none;
-  color: black;
+  color: var(--mat-sys-on-background);
 }
 
 .links {
@@ -130,18 +130,18 @@ mat-icon {
   padding: 0.5em;
 
   :hover {
-    background-color: #ae1545;
-    color: white;
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
     border-radius: 1em;
   }
 }
 
-.light-mode {
-  color: white;
+.light-mode-switch {
+  color: var(--mat-sys-primary);
 }
 
-.dark-mode {
-  color: black;
+.dark-mode-switch {
+  color: var(--mat-sys-primary);
 }
 
 .profiel-button {

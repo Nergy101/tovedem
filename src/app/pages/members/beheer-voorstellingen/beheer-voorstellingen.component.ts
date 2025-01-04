@@ -93,6 +93,7 @@ export class BeheerVoorstellingenComponent implements OnInit, AfterViewChecked {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
+      minWidth: '90vw',
     });
 
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
@@ -107,6 +108,7 @@ export class BeheerVoorstellingenComponent implements OnInit, AfterViewChecked {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: use_voorstelling },
       hasBackdrop: true,
+      minWidth: '90vw',
     });
 
     const updated: Voorstelling = await lastValueFrom(dialogRef.afterClosed());

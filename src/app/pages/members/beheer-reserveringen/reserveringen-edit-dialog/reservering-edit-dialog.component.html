@@ -38,11 +38,11 @@
         </mat-form-field>
       </div>
       <div class="row">
-        <div class="col-md-3 col-6">
+        <div class="col-6">
           Datum 1:
           <p>{{ datum1?.toString() | date: "dd LLLL YYYY" }}</p>
         </div>
-        <mat-form-field class="col-md-3 col-6">
+        <mat-form-field class="col-6">
           <mat-label>Tickets datum 1</mat-label>
           <input
             matInput
@@ -52,11 +52,11 @@
             [(ngModel)]="datum_tijd_1_aantal"
           />
         </mat-form-field>
-        <div class="col-md-3 col-6">
+        <div class="col-6">
           Datum 2:
           <p>{{ datum2?.toString() | date: "dd LLLL YYYY" }}</p>
         </div>
-        <mat-form-field class="col-md-3 col-6">
+        <mat-form-field class="col-6">
           <mat-label>Tickets datum 2</mat-label>
           <input
             matInput
@@ -81,7 +81,7 @@
       </div>
       <div class="row">
         <mat-form-field class="col-12">
-          <h3>Opmerking</h3>
+          <mat-label>Opmerking</mat-label>
           <input
             matInput
             type="text"
@@ -100,7 +100,7 @@
         </div>
         <div class="col-md-6 col-12 d-flex justify-content-center">
           <button
-            mat-raised-button
+            mat-flat-button
             color="primary"
             type="submit"
             class="flex-grow-1"

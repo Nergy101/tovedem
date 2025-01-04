@@ -1,5 +1,9 @@
 <div class="container header">
+  @if (!!existingVoorstelling) {
+  <h2 mat-dialog-title class="display-4">Voorstelling Aanpassen</h2>
+  } @else {
   <h2 mat-dialog-title class="display-4">Voorstelling Aanmaken</h2>
+  }
   <button mat-icon-button aria-label="close dialog" tabindex="-1" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -93,11 +97,11 @@
       <div class="row">
         <div class="col-md-6 col-12">
           <h3>Regie*</h3>
-          <quill-editor [modules]="modules" name="regie" [(ngModel)]="regie"></quill-editor>
+          <quill-editor class="regie" [modules]="modules" name="regie" [(ngModel)]="regie" [placeholder]="''" ></quill-editor>
         </div>
         <div class="col-md-6 col-12">
           <h3>Omschrijving*</h3>
-          <quill-editor [modules]="modules" name="omschrijving" [(ngModel)]="omschrijving"></quill-editor>
+          <quill-editor [modules]="modules" name="omschrijving" [(ngModel)]="omschrijving" [placeholder]="''"></quill-editor>
         </div>
       </div>
       <div class="row">
@@ -112,7 +116,7 @@
           </button>
         </div>
         <div class="col-md-6 col-12 d-flex justify-content-center">
-          <button mat-raised-button color="primary" type="submit" class="flex-grow-1"
+          <button mat-flat-button color="primary" type="submit" class="flex-grow-1"
             [disabled]="loading() || !formIsValid()" (click)="submit()">
             @if (!!existingVoorstelling) {
             Opslaan

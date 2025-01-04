@@ -1,89 +1,100 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@angular/material" as mat;
-
 @use "variables.scss" as *;
 @use "mdb-angular-ui-kit/assets/scss/mdb.scss" as *;
 @use "ngx-toastr/toastr" as *;
 @use "quill/dist/quill.snow.css";
+@use "tovedem-theme-m3.scss" as *;
 
-@include mat.elevation-classes();
-@include mat.app-background();
+// $custom-light-theme: mat.m2-define-light-theme(
+//   (
+//     color: (
+//       primary: (
+//         default: $primary-color,
+//       ),
+//       accent: (
+//         default: #424242,
+//       ),
+//       tovGreen: (
+//         default: #68a357,
+//       ),
+//       tovYellow: (
+//         default: #f4e409,
+//       ),
+//       tovOrange: (
+//         default: #eeba0b,
+//       ),
+//       tovBlue: (
+//         default: #90f1ef,
+//       ),
+//     ),
+//   )
+// );
 
-$my-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 500);
-$my-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
-$custom-light-theme: mat.m2-define-light-theme(
-  (
-    color: (
-      primary: (
-        default: #ae1545,
-      ),
-      accent: (
-        default: #424242,
-      ),
-      tovGreen: (
-        default: #68a357,
-      ),
-      tovYellow: (
-        default: #f4e409,
-      ),
-      tovOrange: (
-        default: #eeba0b,
-      ),
-      tovBlue: (
-        default: #90f1ef,
-      ),
-    ),
-  )
-);
+// $custom-dark-theme: mat.m2-define-dark-theme(
+//   (
+//     color: (
+//       primary: (
+//         default: $primary-color,
+//       ),
+//       accent: (
+//         default: #424242,
+//       ),
+//       tovGreen: (
+//         default: #68a357,
+//       ),
+//       tovYellow: (
+//         default: #f4e409,
+//       ),
+//       tovOrange: (
+//         default: #eeba0b,
+//       ),
+//       tovBlue: (
+//         default: #90f1ef,
+//       ),
+//     ),
+//     background-color: (
+//       default: #000,
 
-$custom-dark-theme: mat.m2-define-dark-theme(
-  (
-    color: (
-      primary: (
-        default: #ae1545,
-      ),
-      accent: (
-        default: #424242,
-      ),
-      tovGreen: (
-        default: #68a357,
-      ),
-      tovYellow: (
-        default: #f4e409,
-      ),
-      tovOrange: (
-        default: #eeba0b,
-      ),
-      tovBlue: (
-        default: #90f1ef,
-      ),
-    ),
-    background-color: (
-      default: #121212,
-    ),
-  )
-);
-
-// Include the custom light theme in your application
-@include mat.elevation-classes();
-@include mat.app-background();
+//     ),
+//   )
+// );
 
 :root {
-  @include mat.all-component-colors($custom-light-theme);
-
   --mdc-elevated-card-container-elevation: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
-@media (prefers-color-scheme: dark) {
-  @include mat.all-component-colors($custom-dark-theme);
+html {
+  @include mat.theme(
+    (
+      color: $primary-palette,
+      typography: "Roboto",
+      density: 0,
+    ),
+    // $overrides: ()
+  );
+
+  // @include mat.theme-overrides(
+  //   (
+  //     "--mat-sys-primary": $primary-color,
+  //     "--mat-sys-on-primary": $primary-color,
+  //   )
+  // );
+
+  // @include mat.button-overrides((// protected-label-text-color: black,));
 }
 
-html {
-  &.dark-theme {
-    @include mat.all-component-colors($custom-dark-theme);
-  }
+.darkMode {
+  @include mat.theme(
+    (
+      color: (
+        primary: $primary-palette,
+        theme-type: dark,
+      ),
+    )
+  );
 }
 
 html,
@@ -138,20 +149,20 @@ a {
 }
 
 body > ngx-material-timepicker-container {
-  --dial-background-color: #ae1545 !important;
-  --button-color: #ae1545 !important;
-  --dial-editable-active-color: #ae1545 !important;
-  --clock-hand-color: #ae1545 !important;
+  --dial-background-color: $primary-color !important;
+  --button-color: $primary-color !important;
+  --dial-editable-active-color: $primary-color !important;
+  --clock-hand-color: $primary-color !important;
 }
 
 .timepicker__header {
-  --dial-background-color: #ae1545 !important;
-  --button-color: #ae1545 !important;
-  --dial-editable-active-color: #ae1545 !important;
-  --clock-hand-color: #ae1545 !important;
+  --dial-background-color: $primary-color !important;
+  --button-color: $primary-color !important;
+  --dial-editable-active-color: $primary-color !important;
+  --clock-hand-color: $primary-color !important;
 }
 
 .divider {
   border-width: 2px !important;
-  border-color: #ae1545 !important;
+  border-color: $primary-color !important;
 }

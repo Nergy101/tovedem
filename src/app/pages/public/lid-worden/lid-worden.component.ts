@@ -180,7 +180,11 @@ export class LidWordenComponent implements OnInit, OnDestroy {
       this.achternaam != '' &&
       !!this.selectedGroep &&
       !!this.email &&
-      this.email != ''
+      this.email != '' &&
+      !!this.geboorteDatum &&
+      !!this.selectedGroep &&
+      !!this.message &&
+      this.message != ''
     );
   }
 

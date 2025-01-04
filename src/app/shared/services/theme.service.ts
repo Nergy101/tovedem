@@ -16,11 +16,14 @@ export class ThemeService {
 
     effect(() => {
       const isDarkTheme = this.isDarkTheme$();
+      console.log(isDarkTheme);
 
       if (!isDarkTheme) {
-        document.getElementsByTagName('html')[0].classList.remove('dark-theme');
+        // document.getElementsByTagName('html')[0].classList.remove('dark-theme');
+        document.body.classList.remove('darkMode');
       } else {
-        document.getElementsByTagName('html')[0].classList.add('dark-theme');
+        // document.getElementsByTagName('html')[0].classList.add('dark-theme');
+        document.body.classList.add('darkMode');
       }
 
       localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
@@ -28,9 +31,7 @@ export class ThemeService {
   }
 
   isDarkTheme(): boolean {
-    return document
-      .getElementsByTagName('html')[0]
-      .classList.contains('dark-theme');
+    return document.body.classList.contains('darkMode');
   }
 
   toggleTheme(): void {
