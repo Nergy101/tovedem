@@ -10,10 +10,16 @@
   margin-top: -2em;
 }
 
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .card-image {
-  object-fit: cover;
-  object-fit: contain;
-  max-width: 100%;
+  object-fit: cover; // center the image nicely containing aspect ratio
+  max-width: 100%; // fill the flex container
+
   border-radius: 1em;
-  align-content: center;
+  height: 20em;
 }

@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
 import {
   Component,
   OnDestroy,
@@ -51,6 +51,7 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatSelectModule,
     MatDividerModule,
     MatTooltipModule,
+    NgOptimizedImage,
   ],
   providers: [
     provideNativeDateAdapter(),
