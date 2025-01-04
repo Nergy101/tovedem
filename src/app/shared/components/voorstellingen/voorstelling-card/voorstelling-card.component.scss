@@ -1,3 +1,5 @@
+@use "../../../../../variables.scss" as *;
+
 .voorstelling-card {
   flex: 1;
   display: flex;
@@ -21,13 +23,15 @@ mat-card-actions {
 }
 
 .card-image {
-  border-radius: 1em !important;
+  border-radius: 1em;
   object-fit: cover;
 
   max-width: 100%;
-  height: 40em;
+  height: 30em;
 
-  border-radius: 1em;
+  @media (max-width: 768px) {
+    height: 20em;
+  }
 }
 
 .center-image {
@@ -35,4 +39,5 @@ mat-card-actions {
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 1em;
 }

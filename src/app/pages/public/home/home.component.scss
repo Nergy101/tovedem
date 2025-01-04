@@ -28,6 +28,11 @@ h2 {
   margin-top: -10em;
 }
 
+.homepage-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .section :not(:last-child) {
   display: block;
   margin-bottom: 2em;
@@ -55,7 +60,9 @@ h2 {
   -o-background-size: cover;
   background-size: cover;
   min-height: 18em;
-  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 
   transform: translateY(-100%); /* Start off-screen to the left */
   animation: slideInTop 1.5s ease-out forwards; /* Trigger the slide animation */
@@ -86,6 +93,12 @@ h2 {
 
 .container {
   margin-top: 2em;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .carousel-item {
@@ -103,5 +116,15 @@ h2 {
 
   @media (max-width: 768px) {
     height: 20em;
+  }
+}
+
+.voorstellingen-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
