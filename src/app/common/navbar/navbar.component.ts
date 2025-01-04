@@ -8,6 +8,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { ThemeService } from '../../shared/services/theme.service';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +18,7 @@ import { ThemeService } from '../../shared/services/theme.service';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    NgOptimizedImage
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

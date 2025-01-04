@@ -3,11 +3,15 @@
   <div class="splash-image"></div>
 
   <div class="container">
-    <div class="row center text-center mainText">
+    <div class="row center text-center mainText" style="object-fit: contain">
       <h1>Welkom bij</h1>
       <img
-        style="width: 70%; margin: 1em; height: 100%; margin-bottom: 2em;"
-        src="/assets/tovedem_logo.png"
+        class="img-fluid"
+        style="width: 300px; height: 40px; margin-bottom: 2em"
+        ngSrc="/assets/tovedem_logo.png"
+        priority
+        width="300"
+        height="40"
         alt="main-logo"
       />
     </div>
@@ -17,9 +21,10 @@
       <div class="row">
         <mat-divider class="divider"></mat-divider>
         <h2 class="text-center" style="font-size: x-large">
-          <span [matBadge]="nieuwsToPublish().length" matBadgePosition="after">Nieuws</span>
+          <span [matBadge]="nieuwsToPublish().length" matBadgePosition="after"
+            >Nieuws</span
+          >
         </h2>
-        <mat-divider class="divider"></mat-divider>
       </div>
 
       <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
@@ -31,13 +36,12 @@
       </mat-tab-group>
     </div>
     } @defer (when voorstellingen().length > 0) {
-    <div class="section bottomAnimation pt-4">
+    <div class="section bottomAnimation" style="padding-top: 2em">
       <div>
         <mat-divider class="divider"></mat-divider>
         <h2 class="text-center" style="font-size: x-large">
           Aankomende voorstellingen
         </h2>
-        <mat-divider class="divider"></mat-divider>
       </div>
       <div class="row">
         @for (item of voorstellingen(); track $index) {

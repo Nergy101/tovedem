@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,8 @@ import { Router, RouterModule } from '@angular/router';
         RouterModule,
         MatIconModule,
         MatTooltipModule,
-        MatButtonModule
+        MatButtonModule,
+        NgOptimizedImage
     ],
     templateUrl: './footer.component.html',
     styleUrl: './footer.component.scss'

@@ -17,6 +17,7 @@ import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Speler } from '../../../models/domain/speler.model';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-groep',
@@ -26,6 +27,7 @@ import { Speler } from '../../../models/domain/speler.model';
     RouterModule,
     MdbCarouselModule,
     MatListModule,
+    NgOptimizedImage
   ],
   templateUrl: './groep.component.html',
   styleUrl: './groep.component.scss',

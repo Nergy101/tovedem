@@ -1,7 +1,13 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
   <div class="container-fluid p-2">
     <a class="navbar-brand" routerLink="/"
-      ><img class="logo" src="/assets/tovedem_logo.png" alt="tovedem logo"
+      ><img
+        class="logo"
+        ngSrc="/assets/tovedem_logo.png"
+        priority
+        width="300"
+        height="50"
+        alt="tovedem logo"
     /></a>
     <div>
       @if (authService.isLoggedIn()){
