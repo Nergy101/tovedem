@@ -24,6 +24,10 @@
   padding-top: 4em;
   background-color: var(--mat-sys-background);
   color: var(--mat-sys-on-background);
+
+  @media (max-width: 1024px) {
+    padding-top: 6em;
+  }
 }
 
 header {

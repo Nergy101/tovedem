@@ -5,164 +5,172 @@
 </div>
 
 <div class="container">
-  @defer (when !!items() && !!voorstellingen()) {
-  @if (!loading()) {
-  <mat-tab-group class="flex-grow-1 mat-elevation-z2">
-    <mat-tab label="Beheren">
-      <div class="row">
-        <app-reserveringen-inzien></app-reserveringen-inzien>
-      </div>
-    </mat-tab>
-    <mat-tab label="Printen">
-      <div class="row" style="margin-top: 1em">
-        <mat-label class="col-2" style="margin: 1em; font-size: large">
-          Voorstelling:</mat-label>
-        <mat-form-field class="col-6">
-          <mat-label>Voorstelling</mat-label>
-          <mat-select (selectionChange)="onVoorstellingChanged($event)">
-            @for (voorstelling of voorstellingen(); track $index) {
-            <mat-option [value]="voorstelling">{{
-              voorstelling.titel
-              }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="col-3">
-          <mat-label>Datum</mat-label>
-          <mat-select (ngModelChange)="onSelectDatumChanged($event)">
-            @for (datum of beschikbareDatums; track $index) {
-            <mat-option [value]="datum">{{ datum }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <div class="amount-editor" style="align-content: center">
+  @defer (when !!items() && !!voorstellingen()) { @if (!loading()) {
+  <div class="row">
+    <mat-tab-group class="mat-elevation-z2">
+      <mat-tab label="Beheren">
+          <app-reserveringen-inzien></app-reserveringen-inzien>
+      </mat-tab>
+      <mat-tab label="Printen">
+        <div class="row" style="margin-top: 1em">
           <mat-label class="col-2" style="margin: 1em; font-size: large">
-            Aantal kinderplekken:</mat-label>
-          <button mat-mini-fab (click)="decrement()">
-            <mat-icon>remove</mat-icon>
-          </button>
-          <mat-form-field class="col-1" appearance="outline" style="margin-inline: 1em; padding-top: 20px">
-            <input matInput type="number" [ngModel]="kidsLabels" (ngModelChange)="onAmountChange()" /></mat-form-field>
-          <button mat-mini-fab (click)="increment()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
-        <div class="col-2">
-          <button mat-fab extended [disabled]="!isPrintEnabled" (click)="printHtml()" color="primary"
-            style="align-self: flex-end">
-            <mat-icon>print</mat-icon>
-            Printen
-          </button>
-        </div>
+            Voorstelling:</mat-label
+          >
+          <mat-form-field class="col-6">
+            <mat-label>Voorstelling</mat-label>
+            <mat-select (selectionChange)="onVoorstellingChanged($event)">
+              @for (voorstelling of voorstellingen(); track $index) {
+              <mat-option [value]="voorstelling">{{
+                voorstelling.titel
+              }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-3">
+            <mat-label>Datum</mat-label>
+            <mat-select (ngModelChange)="onSelectDatumChanged($event)">
+              @for (datum of beschikbareDatums; track $index) {
+              <mat-option [value]="datum">{{ datum }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <div class="amount-editor" style="align-content: center">
+            <mat-label class="col-2" style="margin: 1em; font-size: large">
+              Aantal kinderplekken:</mat-label
+            >
+            <button mat-mini-fab (click)="decrement()">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field
+              class="col-1"
+              appearance="outline"
+              style="margin-inline: 1em; padding-top: 20px"
+            >
+              <input
+                matInput
+                type="number"
+                [ngModel]="kidsLabels"
+                (ngModelChange)="onAmountChange()"
+            /></mat-form-field>
+            <button mat-mini-fab (click)="increment()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              mat-fab
+              extended
+              [disabled]="!isPrintEnabled"
+              (click)="printHtml()"
+              color="primary"
+              style="align-self: flex-end"
+            >
+              <mat-icon>print</mat-icon>
+              Printen
+            </button>
+          </div>
 
-        <div id="printSection" class="col-12" style="align-items: center">
-          <!--<mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page">-->
+          <div id="printSection" class="col-12" style="align-items: center">
+            <!--<mat-paginator [length]="200" [pageSizeOptions]="[10, 50, 100]" aria-label="Select page">-->
 
-          <!--get all reserveringen van geselecteerde voorstelling filter op vriend van tovedem actief
+            <!--get all reserveringen van geselecteerde voorstelling filter op vriend van tovedem actief
         for opgehaalde reservering -> print een label voor het anatal gereserveerde plekken op datum.geselecteerd
         -->
-          @for (
-          reservering of reserveringenVanVoorstelling();
-          track $index
-          ) {
-          @for (
-          ticketItem of createListOfAmountOfItems(
-          amountOfItemsForReservation(reservering)
-          );
-          track $index
-          ) {
-          <div class="row">
-            <mat-divider class="divider"></mat-divider>
-            <div class="col-3">
-              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png" style="
-                          margin-left: 3em;
-                          margin-right: 3em;
-                          height: 12em;
-                        " />
+            @for ( reservering of reserveringenVanVoorstelling(); track $index )
+            { @for ( ticketItem of createListOfAmountOfItems(
+            amountOfItemsForReservation(reservering) ); track $index ) {
+            <div class="row">
+              <mat-divider class="divider"></mat-divider>
+              <div class="col-3">
+                <img
+                  alt="tovedem logo klein"
+                  src="/assets/tovedem_logo_klein.png"
+                  style="margin-left: 3em; margin-right: 3em; height: 12em"
+                />
+              </div>
+              <div class="col-6" style="align-items: center">
+                <div class="row" style="text-align: center">
+                  <h2 style="font-weight: 200; font-size: 2em">
+                    Gereserveerd voor:
+                  </h2>
+                </div>
+                <div class="row" style="text-align: center">
+                  <h1 style="font-size: 4em">
+                    {{ reservering.achternaam }}
+                  </h1>
+                </div>
+                <div class="row" style="text-align: center">
+                  <h3>
+                    {{
+                      this.selectedVoorstelling()?.titel ?? "Nog geen gekozen"
+                    }}
+                  </h3>
+                </div>
+                <div class="row" style="text-align: center">
+                  <h3>
+                    {{ formattedSelectedDate ?? "Geen datum beschikbaar" }}
+                  </h3>
+                </div>
+              </div>
+              <div class="col-3">
+                <img
+                  alt="tovedem logo klein"
+                  src="/assets/tovedem_logo_klein.png"
+                  style="margin-left: 3em; margin-right: 3em; height: 12em"
+                />
+              </div>
+              <mat-divider class="divider"></mat-divider>
             </div>
-            <div class="col-6" style="align-items: center">
-              <div class="row" style="text-align: center">
-                <h2 style="font-weight: 200; font-size: 2em">
-                  Gereserveerd voor:
-                </h2>
+            } } @for ( item of createListOfAmountOfItems(kidsLabels); track
+            $index ) {
+            <div class="row printable">
+              <mat-divider
+                class="divider"
+                style="margin-top: 3em; margin-bottom: 3em"
+              ></mat-divider>
+              <div class="col-3">
+                <img
+                  alt="tovedem logo klein"
+                  src="/assets/tovedem_logo_klein.png"
+                  style="margin-left: 3em; margin-right: 3em; height: 12em"
+                />
               </div>
-              <div class="row" style="text-align: center">
-                <h1 style="font-size: 4em">
-                  {{ reservering.achternaam }}
-                </h1>
+
+              <div class="col-6" style="align-items: center">
+                <div class="row" style="text-align: center">
+                  <h2 style="font-weight: 200; font-size: 2em">
+                    Gereserveerd voor:
+                  </h2>
+                </div>
+
+                <div class="row" style="text-align: center">
+                  <h1 style="font-size: 4em">-Kinderen-</h1>
+                </div>
+                <div class="row" style="text-align: center">
+                  <h3>""de bende van 4 maal 70"</h3>
+                </div>
               </div>
-              <div class="row" style="text-align: center">
-                <h3>
-                  {{
-                  this.selectedVoorstelling()?.titel ??
-                  "Nog geen gekozen"
-                  }}
-                </h3>
+              <div class="col-3">
+                <img
+                  alt="tovedem logo klein"
+                  src="/assets/tovedem_logo_klein.png"
+                  style="margin-left: 3em; margin-right: 3em; height: 12em"
+                />
               </div>
-              <div class="row" style="text-align: center">
-                <h3>
-                  {{
-                  formattedSelectedDate ?? "Geen datum beschikbaar"
-                  }}
-                </h3>
-              </div>
+              <mat-divider class="divider"></mat-divider>
             </div>
-            <div class="col-3">
-              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png" style="
-                          margin-left: 3em;
-                          margin-right: 3em;
-                          height: 12em;
-                        " />
-            </div>
-            <mat-divider class="divider"></mat-divider>
+            }
+            <!--</mat-paginator>-->
           </div>
-          }
-          }
-
-          @for (
-          item of createListOfAmountOfItems(kidsLabels);
-          track $index
-          ) {
-          <div class="row printable">
-            <mat-divider class="divider" style="margin-top: 3em; margin-bottom: 3em"></mat-divider>
-            <div class="col-3">
-              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
-                style="margin-left: 3em; margin-right: 3em; height: 12em" />
-            </div>
-
-            <div class="col-6" style="align-items: center">
-              <div class="row" style="text-align: center">
-                <h2 style="font-weight: 200; font-size: 2em">
-                  Gereserveerd voor:
-                </h2>
-              </div>
-
-              <div class="row" style="text-align: center">
-                <h1 style="font-size: 4em">-Kinderen-</h1>
-              </div>
-              <div class="row" style="text-align: center">
-                <h3>""de bende van 4 maal 70"</h3>
-              </div>
-            </div>
-            <div class="col-3">
-              <img alt="tovedem logo klein" src="/assets/tovedem_logo_klein.png"
-                style="margin-left: 3em; margin-right: 3em; height: 12em" />
-            </div>
-            <mat-divider class="divider"></mat-divider>
-          </div>
-          }
-          <!--</mat-paginator>-->
         </div>
-      </div>
-    </mat-tab>
-
-  </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
   } @else {
   <div class="center">
     <mat-spinner></mat-spinner>
   </div>
-  }
-  } @placeholder {
+  } } @placeholder {
   <div class="center">
     <mat-spinner></mat-spinner>
   </div>

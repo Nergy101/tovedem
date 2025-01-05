@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
 import { BreakpointService } from '../../../shared/services/breakpoint.service';
 import { Rol } from '../../../models/domain/rol.model';
 
@@ -25,7 +26,8 @@ import { Rol } from '../../../models/domain/rol.model';
         MatIconModule,
         MatButtonModule,
         MatListModule,
-        MatCardModule
+        MatCardModule,
+        NgOptimizedImage
     ],
     templateUrl: './profiel.component.html',
     styleUrl: './profiel.component.scss'
