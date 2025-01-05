@@ -1,98 +1,101 @@
 <div class="container">
-    <div class="container">
-        <div class="row">
-            <p class="display-1">Voorstellingen</p>
-        </div>
-
-        <div class="row">
-            <button mat-fab extended color="primary" (click)="openCreateDialog()">
-                <mat-icon>add_circle</mat-icon>
-                Aanmaken
-            </button>
-        </div>
-
-        <div class="row pt-4">
-            @defer(when items()){
-            <table class="table mat-elevation-z2">
-                <thead>
-                    <tr>
-                        <th scope="col">Aangemaakt</th>
-                        <th scope="col">Titel</th>
-                        <th scope="col">Groep</th>
-                        <th scope="col">Datum Tijd 1 </th>
-                        <th scope="col">Datum Tijd 2 </th>
-                        <th scope="col">Spelers</th>
-                        <th scope="col">Publiceren</th>
-                        <th scope="col"></th>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <th scope="col"></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody> 
-
-                    @for (item of items(); track $index)
-                    {
-                    <tr>
-                        <td>{{item.created | date : 'dd LLLL YYYY' }}</td>
-                        <td>{{item.titel}}</td>
-                        <td>{{item.expand.groep.naam}}</td>
-                        <td>{{item.datum_tijd_1 | date : 'MMM d, Y [HH:mm]'}}</td>
-                        <td>{{item.datum_tijd_2 | date : 'MMM d, Y [HH:mm]'}}</td>
-                        <td>
-                            @if ((item.expand?.spelers?.length || 0) >
-                            0) {
-                            <button mat-button [matMenuTriggerFor]="menu">
-                                <span>
-                                    {{item.expand?.spelers?.length}} Spelers
-                                </span>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                @for (speler of item?.expand?.spelers ?? []; track
-                                $index)
-                                {
-                                <p style="margin: 1em">
-                                    {{speler.naam}}
-                                </p>
-                                }
-                            </mat-menu>
-                            } @else {
-                            <span>
-                                Geen Spelers
-                            </span>
-                            }
-                        </td>
-                        <td>
-                            @if(publicatieActief(item.publicatie_datum)){
-                                <button mat-mini-fab disabled> <mat-icon >share</mat-icon></button>
-                            }
-                            @else {
-                                <button mat-icon-button [matTooltip]="item.publicatie_datum"  style="background-color: rgb(48, 205, 48);" ><mat-icon>share</mat-icon></button>
-                            }
-                        </td>
-                        <td>
-                            <button mat-icon-button (click)="openEditDialog(item)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </td>
-                        @if (!!authService.isGlobalAdmin)
-                        {
-                        <td>
-                            <button mat-icon-button (click)="delete(item.id)" [disabled]="loading()">
-                                <mat-icon color="warn">delete</mat-icon>
-                            </button>
-                        </td>
-                        }
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            } @placeholder {
-            <div class="center">
-                <mat-spinner></mat-spinner>
-            </div>
-            }
-        </div>
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Voorstellingen</p>
     </div>
+
+    <div class="row">
+      <button mat-fab extended color="primary" (click)="openCreateDialog()">
+        <mat-icon>add_circle</mat-icon>
+        Aanmaken
+      </button>
+    </div>
+
+    <div class="row pt-4">
+      @defer(when items()){
+
+      <div class="table-responsive table-width">
+        <table class="table mat-elevation-z2">
+          <thead>
+            <tr>
+              <th scope="col">Aangemaakt</th>
+              <th scope="col">Titel</th>
+              <th scope="col">Groep</th>
+              <th scope="col">Datum Tijd 1</th>
+              <th scope="col">Datum Tijd 2</th>
+              <th scope="col">Spelers</th>
+              <th scope="col">Publiceren</th>
+              <th scope="col"></th>
+              @if (!!authService.isGlobalAdmin) {
+              <th scope="col"></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items(); track $index) {
+            <tr>
+              <td>{{ item.created | date : "dd LLLL YYYY" }}</td>
+              <td>{{ item.titel }}</td>
+              <td>{{ item.expand.groep.naam }}</td>
+              <td>{{ item.datum_tijd_1 | date : "MMM d, Y [HH:mm]" }}</td>
+              <td>{{ item.datum_tijd_2 | date : "MMM d, Y [HH:mm]" }}</td>
+              <td>
+                @if ((item.expand?.spelers?.length || 0) > 0) {
+                <button mat-button [matMenuTriggerFor]="menu">
+                  <span> {{ item.expand?.spelers?.length }} Spelers </span>
+                </button>
+                <mat-menu #menu="matMenu">
+                  @for (speler of item?.expand?.spelers ?? []; track $index) {
+                  <p style="margin: 1em">
+                    {{ speler.naam }}
+                  </p>
+                  }
+                </mat-menu>
+                } @else {
+                <span> Geen Spelers </span>
+                }
+              </td>
+              <td>
+                @if(publicatieActief(item.publicatie_datum)){
+                <button mat-mini-fab disabled>
+                  <mat-icon>share</mat-icon>
+                </button>
+                } @else {
+                <button
+                  mat-icon-button
+                  [matTooltip]="item.publicatie_datum"
+                  style="background-color: rgb(48, 205, 48)"
+                >
+                  <mat-icon>share</mat-icon>
+                </button>
+                }
+              </td>
+              <td>
+                <button mat-icon-button (click)="openEditDialog(item)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(item.id)"
+                  [disabled]="loading()"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      } @placeholder {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      }
+    </div>
+  </div>
 </div>

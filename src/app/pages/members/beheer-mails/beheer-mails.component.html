@@ -7,6 +7,8 @@
     <div class="row">
       <div class="row pt-4">
         @defer (when mailTemplates()) {
+
+        <div class="table-responsive table-width">
           <table class="table mat-elevation-z2">
             <thead>
               <tr>
@@ -17,33 +19,66 @@
             </thead>
             <tbody>
               @for (mailTemplate of mailTemplates(); track $index) {
-                <tr>
-                  <td>{{ mailTemplate.naam }}</td>
-                  <td style="width: 10%;"><button mat-button [matMenuTriggerFor]="menu" [style]="{'background-color': getLabelBackgroundColor(mailTemplate.status)}" style="color: white">{{mailTemplate.status}}</button>
+              <tr>
+                <td>{{ mailTemplate.naam }}</td>
+                <td style="width: 10%">
+                  <button
+                    mat-button
+                    [matMenuTriggerFor]="menu"
+                    [style]="{
+                      'background-color': getLabelBackgroundColor(
+                        mailTemplate.status
+                      )
+                    }"
+                    style="color: white"
+                  >
+                    {{ mailTemplate.status }}
+                  </button>
                   <mat-menu #menu="matMenu">
-                      <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'concept')">Concept</button>
-                      <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'inprogress')">In Progress</button>
-                      <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'done')">Done</button>
-                      <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'verified')">Verified</button>
-                  </mat-menu>
-                  </td>
-                  <td>
                     <button
-                      mat-icon-button
-                      (click)="openEditDialog(mailTemplate)"
-                      [disabled]="loading()"
+                      mat-menu-item
+                      (click)="updateMailStatus(mailTemplate, 'concept')"
                     >
-                      <mat-icon>edit</mat-icon>
+                      Concept
                     </button>
-                  </td>
-                </tr>
+                    <button
+                      mat-menu-item
+                      (click)="updateMailStatus(mailTemplate, 'inprogress')"
+                    >
+                      In Progress
+                    </button>
+                    <button
+                      mat-menu-item
+                      (click)="updateMailStatus(mailTemplate, 'done')"
+                    >
+                      Done
+                    </button>
+                    <button
+                      mat-menu-item
+                      (click)="updateMailStatus(mailTemplate, 'verified')"
+                    >
+                      Verified
+                    </button>
+                  </mat-menu>
+                </td>
+                <td>
+                  <button
+                    mat-icon-button
+                    (click)="openEditDialog(mailTemplate)"
+                    [disabled]="loading()"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </tr>
               }
             </tbody>
           </table>
+        </div>
         } @placeholder {
-          <div class="center">
-            <mat-spinner></mat-spinner>
-          </div>
+        <div class="center">
+          <mat-spinner></mat-spinner>
+        </div>
         }
       </div>
     </div>

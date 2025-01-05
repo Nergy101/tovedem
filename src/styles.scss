@@ -166,3 +166,9 @@ body > ngx-material-timepicker-container {
   border-width: 2px !important;
   border-color: $primary-color !important;
 }
+
+.table-width {
+  @media (max-width: 768px) {
+    width: 80vw;
+  }
+}
