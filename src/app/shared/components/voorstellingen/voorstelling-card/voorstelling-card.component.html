@@ -13,9 +13,7 @@
           <mat-card-subtitle class="d-flex flex-column">
             @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
             <div style="flex: 1; width: 100%">
-              <mat-divider
-                style="margin-top: 1em; margin-bottom: 0.5em"
-              ></mat-divider>
+              <mat-divider class="divider"></mat-divider>
               <div style="font-size: x-large; text-align: center">
                 {{ voorstelling().datum_tijd_1 | date : "d" }}
                 & {{ voorstelling().datum_tijd_2 | date : "d" }}
@@ -25,7 +23,7 @@
               {{ voorstelling().datum_tijd_1 | date : "LLLL" }}
               {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
             </div>
-            <mat-divider></mat-divider>
+            <mat-divider class="divider"></mat-divider>
             }
           </mat-card-subtitle>
         </div>

@@ -7,10 +7,12 @@ mat-expansion-panel {
 }
 
 .action-card {
+  color: var(--mat-sys-primary);
+
   &:hover {
+    color:white;
     cursor: pointer;
-    background-color: #AE1545;
-    color: white;
+    background-color: var(--mat-sys-primary);
     transition: background-color 0.1s ease;
     transition: color 0.1s ease;
   }

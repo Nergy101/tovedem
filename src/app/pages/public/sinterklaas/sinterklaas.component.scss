@@ -24,11 +24,10 @@ li {
   -o-background-size: cover;
   background-size: cover;
   min-height: 14em;
-  width: 100vw;
-  margin-bottom: 2%;
+  min-width: 100%;
+  margin-bottom: 2em;
   margin-top: -2em;
 }
-
 .carousel-item {
   align-content: center;
   text-align: center;

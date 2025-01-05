@@ -18,6 +18,7 @@
 
 .card-image {
   object-fit: cover; // center the image nicely containing aspect ratio
+  object-position: top; // view the top of the image
   max-width: 100%; // fill the flex container
 
   border-radius: 1em;

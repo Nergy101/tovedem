@@ -5,7 +5,7 @@
         class="logo"
         ngSrc="/assets/tovedem_logo.png"
         priority
-        width="300"
+        width="200"
         height="50"
         alt="tovedem logo"
     /></a>
@@ -18,12 +18,12 @@
         (click)="toggleSideDrawer()"
       >
         <div class="d-flex flex-column">
-          <span><mat-icon>menu</mat-icon></span>
+          <span><mat-icon class="navbar-icon">menu</mat-icon></span>
           <span>
             @if(sideDrawerService.isOpen()){
-            <mat-icon>chevron_right</mat-icon>
+            <mat-icon class="navbar-icon">chevron_right</mat-icon>
             } @else {
-            <mat-icon>chevron_left </mat-icon>
+            <mat-icon class="navbar-icon">chevron_left </mat-icon>
             }
           </span>
         </div>
@@ -39,8 +39,8 @@
         aria-label="Toggle navigation"
       >
         <div class="d-flex flex-column">
-          <span><mat-icon>menu</mat-icon></span>
-          <span><mat-icon>expand_more</mat-icon></span>
+          <span><mat-icon class="navbar-icon">menu</mat-icon></span>
+          <span><mat-icon class="navbar-icon">expand_more</mat-icon></span>
         </div>
       </button>
     </div>
@@ -189,7 +189,7 @@
           <li>
             <button
               mat-raised-button
-              class="profiel-button"
+              class="profiel-button w-100"
               data-bs-toggle="collapse"
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"

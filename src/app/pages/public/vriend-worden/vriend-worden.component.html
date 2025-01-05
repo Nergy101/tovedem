@@ -4,13 +4,13 @@
   <div class="display-1 justify-content-center" style="text-align: center">
     Steunen
   </div>
-  <mat-divider style="margin-bottom: 2em"></mat-divider>
+  <mat-divider class="divider" style="margin-bottom: 1rem"></mat-divider>
   @defer (when !!content()) {
   <div class="row">
     <div [innerHTML]="content()"></div>
   </div>
   } @placeholder (minimum 1s) {
-  <div class="center">
+  <div class="center p-4">
     <mat-spinner></mat-spinner>
   </div>
   }

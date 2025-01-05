@@ -17,13 +17,13 @@ li {
   width: 100%;
 
   .active {
-    color: white;
-    background-color: #ae1545;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
   }
 
   :hover {
-    color: white;
-    background-color: #ae1545;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
   }
 }
 

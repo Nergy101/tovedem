@@ -4,9 +4,9 @@
   aankomendeVoorstelling() !== undefined ) {
   <div class="row mat-elevation-z2">
     <span class="text-center display-1">{{ groep()?.naam }}</span>
-    <mat-divider></mat-divider>
+    <mat-divider class="divider"></mat-divider>
     <div class="pt-4 row">
-      <div class="col-lg-3 col-12" >
+      <div class="col-lg-3 col-12">
         @if(firstImg){
         <img
           class="img-fluid groep-image"
@@ -29,10 +29,7 @@
     </div>
   </div>
 
-  <div
-    class="row p-4 mat-elevation-z2"
-    style="margin: 1em; align-items: center"
-  >
+  <div class="row mat-elevation-z2">
     @if(slides.length > 0) {
     <mdb-carousel
       [controls]="false"
@@ -41,11 +38,8 @@
       [interval]="5000"
       [ride]="true"
       [wrap]="true"
-      class="col-12"
-      style="align-content: center"
     >
       @for (slide of slides; track $index) {
-
       <mdb-carousel-item class="carousel-item">
         <img class="carousel-image" [src]="slide.src" [alt]="slide.title" />
         <div class="carousel-caption d-none d-md-block">
@@ -71,12 +65,10 @@
       }
     </mat-list>
   </div>
-  }
-
+  } @if(aankomendeVoorstelling(); as voorstelling){
   <div class="row pt-4">
     <h2 class="mat-elevation-z2 text-center">Aankomende voorstelling</h2>
   </div>
-  @if(aankomendeVoorstelling(); as voorstelling){
   <div class="row">
     <div class="flex justify-content-center">
       <app-voorstelling-card
@@ -87,25 +79,16 @@
     </div>
   </div>
 
-  } @else {
-  <div class="center">
-    <span>Geen aankomende voorstelling om te tonen</span>
-  </div>
-  }
+  } @for (item of afgelopenVoorstellingen(); track $index) {
   <div class="row">
     <h2 class="mat-elevation-z2 text-center">Afgelopen voorstellingen</h2>
   </div>
-  @for (item of afgelopenVoorstellingen(); track $index) {
   <div class="row">
     <app-voorstelling-card
       [voorstelling]="item"
       class="col-12 col-md-6 col-lg-4 mb-4 d-flex flex-grow-1"
     >
     </app-voorstelling-card>
-  </div>
-  } @empty {
-  <div class="center">
-    <span>Geen afgelopen voorstellingen om te tonen</span>
   </div>
   } } @placeholder {
   <div class="center">

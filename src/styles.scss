@@ -85,7 +85,7 @@ html {
 
   // @include mat.button-overrides((// protected-label-text-color: black,));
 }
-
+// --mdc-protected-button-label-text-color
 .darkMode {
   @include mat.theme(
     (

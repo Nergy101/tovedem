@@ -1,15 +1,14 @@
 <div class="container">
   <div class="mat-elevation-z2 text-center">
     <div class="display-1 justify-content-center" style="text-align: center;">Agenda</div>
-    <mat-divider style="margin-bottom: 2em"></mat-divider>
   </div>
 
   @for (key of voorstellingenPerJaar(); track key){ }
 
   <div class="m-2">
-    <mat-divider></mat-divider>
+    <mat-divider class="divider"></mat-divider>
     <span class="align-self-center display-4">2024</span>
-    <mat-divider></mat-divider>
+    <mat-divider class="divider"></mat-divider>
   </div>
 
   @defer (when voorstellingenLong().length > 0) {

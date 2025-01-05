@@ -14,18 +14,15 @@
           height="40"
           alt="main-logo"
         />
+
+        <mat-divider class="divider mb-4"></mat-divider>
       </div>
 
       @defer (when nieuwsToPublish().length > 0){
       <div class="section bottomAnimation">
-        <div class="row">
-          <mat-divider class="divider"></mat-divider>
-          <h2 class="text-center" style="font-size: x-large">
-            <span [matBadge]="nieuwsToPublish().length" matBadgePosition="after"
-              >Nieuws</span
-            >
-          </h2>
-        </div>
+        <h2 class="text-center p-0 m-0">
+          <span>Nieuws</span>
+        </h2>
 
         <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
           @for (nieuws of nieuwsToPublish(); track $index) {

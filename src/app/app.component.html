@@ -2,8 +2,8 @@
   <app-navbar></app-navbar>
 </header>
 
-<mat-drawer-container autosize [hasBackdrop]="false">
-  <mat-drawer #drawer class="sidenav bg-light" [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'">
+<mat-drawer-container class="custom-bg" autosize [hasBackdrop]="false">
+  <mat-drawer #drawer class="sidenav custom-bg" [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'">
     <div class="drawer-content">
       <app-sidenav></app-sidenav>
     </div>

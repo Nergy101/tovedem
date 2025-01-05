@@ -22,7 +22,6 @@
 .router-content {
   display: block;
   padding-top: 4em;
-  margin-bottom: 5em;
   background-color: var(--mat-sys-background);
   color: var(--mat-sys-on-background);
 }
@@ -41,6 +40,10 @@ footer {
   &.container-fluid {
     padding: 0;
   }
+}
+
+.custom-bg {
+  background-color: var(--mat-sys-surface-container-high) !important;
 }
 
 .sidenav {
