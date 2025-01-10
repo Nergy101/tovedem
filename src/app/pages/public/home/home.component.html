@@ -7,19 +7,20 @@
         <h1>Welkom bij</h1>
         <img
           class="img-fluid"
-          style="width: 300px; height: 40px; margin-bottom: 2em"
+          style="width: 300px; margin-bottom: 2em"
           ngSrc="/assets/tovedem_logo.png"
           priority
           width="300"
-          height="40"
+          height="50"
           alt="main-logo"
         />
-
-        <mat-divider class="divider mb-4"></mat-divider>
+        <!--style="width: 300px; height: 50px; margin-bottom: 2em"-->
+        
       </div>
 
       @defer (when nieuwsToPublish().length > 0){
       <div class="section bottomAnimation">
+        <mat-divider class="divider mb-4"></mat-divider>
         <h2 class="text-center p-0 m-0">
           <span>Nieuws</span>
         </h2>
