@@ -23,6 +23,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-beheer-mails',
@@ -35,6 +36,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatInputModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatCardModule,
   ],
   templateUrl: './beheer-mails.component.html',
   styleUrl: './beheer-mails.component.scss',
@@ -105,5 +107,12 @@ export class BeheerMailsComponent implements OnInit, AfterViewChecked {
 
   getLabelBackgroundColor(status: string): string {
     return this.statusColor[status] || '#000000';
+  }
+
+  getMailStatus(status: string): string {
+    if(status == 'inprogress') {
+      return 'In Progress';
+    }
+    return status;
   }
 }

@@ -43,6 +43,15 @@ export class LosseVerkoopCreateDialogComponent {
   aantal: number | null = null;
   datumSelectOption: 'datum1' | 'datum2' | null = null;
 
+
+  getDatum1(): Date {
+    return new Date(this.voorstelling()?.datum_tijd_1 ?? new Date());
+  }
+
+  getDatum2(): Date {
+    return new Date(this.voorstelling()?.datum_tijd_2 ?? new Date());
+  }
+
   formIsValid(): boolean {
     return (
       this.aantal !== null && this.aantal > 0 && this.aantal <= 20 && this.datumSelectOption !== null

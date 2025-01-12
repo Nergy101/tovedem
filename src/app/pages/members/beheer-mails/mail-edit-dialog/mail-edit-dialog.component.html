@@ -11,14 +11,14 @@
 </div>
 
 <div mat-dialog-content class="container p-4">
-  <div class="row">
+  <!-- <div class="row">
     <p>
       <b>
         Gebruikte plaatshouders: <br />
         {{ placeholders }}
       </b>
     </p>
-  </div>
+  </div> -->
   <div class="row">
     <form (ngSubmit)="return()">
       <mat-form-field class="col-12">
@@ -31,7 +31,6 @@
           [(ngModel)]="mail.naam"
         />
       </mat-form-field>
-
 
       <mat-form-field class="col-12">
         <mat-label>Mail Inhoud</mat-label>
@@ -48,21 +47,28 @@
         >
         </textarea>
       </mat-form-field>
-
+      <!-- 
       <h2>Voorbeeld weergave</h2>
       <mat-divider class="divider"></mat-divider>
       <div [innerHTML]="mail.inhoud"></div>
+      <mat-divider class="divider"></mat-divider> -->
+
       <mat-divider class="divider"></mat-divider>
 
-      <button
-        class="col-12"
-        style="height: 4em"
-        mat-flat-button
-        color="primary"
-        type="submit"
-      >
-        <span>Aanpassen</span>
-      </button>
+      <div class="buttons-container">
+        <button mat-button (click)="downloadVoorbeeld()">
+          <mat-icon>download</mat-icon>
+          <span>Download voorbeeld</span>
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+        >
+          <mat-icon>save</mat-icon>
+          <span>Aanpassen</span>
+        </button>
+      </div>
     </form>
   </div>
 </div>

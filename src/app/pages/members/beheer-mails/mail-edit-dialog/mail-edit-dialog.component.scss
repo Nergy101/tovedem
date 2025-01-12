@@ -8,3 +8,10 @@ mat-divider {
   flex-direction: row;
   justify-content: space-between;
 }
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1em;
+}

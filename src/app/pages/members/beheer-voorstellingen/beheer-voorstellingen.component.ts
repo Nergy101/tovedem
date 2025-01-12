@@ -29,6 +29,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -42,6 +43,7 @@ import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edi
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatTooltipModule,
+    MatCardModule,
   ],
   providers: [
     provideNativeDateAdapter(),
