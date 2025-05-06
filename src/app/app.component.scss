@@ -98,6 +98,14 @@ a {
 .links {
   display: flex;
   gap: 0.5em;
-  // align-items: center;
   justify-content: space-evenly;
+}
+
+.demo-alert {
+  background-color: #ae1545;
+  color: white;
+  padding: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  text-align: center;
 }

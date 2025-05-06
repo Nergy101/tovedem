@@ -1,15 +1,31 @@
-<div class="container">
+<div class="container" style="padding-top: 3em;">
   <div class="text-center">
     <div class="display-1 justify-content-center" style="text-align: center;">Agenda</div>
   </div>
 
-  @for (key of voorstellingenPerJaar(); track key){ }
+  @for (key of voorstellingenPerJaar(); track key) {
+    <div class="m-2">
+      <mat-divider class="divider"></mat-divider>
+      <span class="align-self-center display-4">{{key.year}}</span>
+      <mat-divider class="divider"></mat-divider>
+    </div>
 
-  <div class="m-2">
+    <div class="row">
+      @for (item of key.items; track $index) {
+        <div class="col-12 mb-2 row justify-content-center">
+          <app-voorstelling-line
+            [voorstelling]="item"
+            class="line col-12"></app-voorstelling-line>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- <div class="m-2">
     <mat-divider class="divider"></mat-divider>
     <span class="align-self-center display-4">2024</span>
     <mat-divider class="divider"></mat-divider>
-  </div>
+  </div> -->
 
   @defer (when voorstellingenLong().length > 0) {
   <div class="row">
