@@ -12,38 +12,31 @@ on:
     branches: ["main"]
 
 jobs:
-  # Stage 1: Build Angular App
-  BuildAngularApp:
+  # Stage: build-and-push
+  build-angular-app:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps #@TODO: Remove legacy-peer-deps when possible
-
+        run: npm ci --legacy-peer-deps
       - name: Replace Umami Analytics Placeholder with script tag
         run: |
-         sed -i 's|<!--\* Umami Analytics Placeholder -->|<script defer src="https://umami.nergy.space/script.js" data-website-id="bab4204b-062f-4b87-9433-00ff1a6c091f"></script>|' src/index.html
-
+          sed -i 's|<!--\* Umami Analytics Placeholder -->|<script defer src="https://umami.nergy.space/script.js" data-website-id="bab4204b-062f-4b87-9433-00ff1a6c091f"></script>|' src/index.html
       - name: Build Angular App
         run: npm run build:prod
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: dist/
 
-  # Stage 2: Build and Push Docker Image
-  BuildAndPushDockerImage:
-    # only run on push to main branch
+  build-and-push-docker-image:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
-    needs: BuildAngularApp
+    needs: build-angular-app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,16 +44,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
@@ -70,16 +60,14 @@ jobs:
           tags: nergy101/tovedem:latest
           platforms: linux/arm64
 
-  # Stage 3: Deploy to Server
-  DeployDockerImage:
-    # only run on push to main branch
+  # Stage: deploy
+  deploy-docker-image:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
-    needs: BuildAndPushDockerImage
+    needs: build-and-push-docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Get Known Hosts value
         run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST }})" >> $GITHUB_ENV
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -87,15 +75,13 @@ jobs:
           name: github-actions
           known_hosts: ${{ env.KNOWN_HOSTS }}
           if_key_exists: replace
-
       - name: Deploy Docker Image to VM
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker pull nergy101/tovedem:latest
-            docker stop tovedem
-            docker rm tovedem
-            docker run --restart unless-stopped -p 4001:80 -d --name tovedem nergy101/tovedem:latest
+            cd /root/code/tovedem
+            docker compose pull
+            docker compose up -d

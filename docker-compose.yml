@@ -1,0 +1,7 @@
+services:
+  portfolio:
+    image: tovedem:latest
+    container_name: tovedem
+    restart: unless-stopped
+    ports:
+      - "4200:80"
