@@ -1,5 +1,5 @@
 <div class="container header">
-    <h2 mat-dialog-title class="display-4">Losse Verkoop Toevoegen: 
+    <h2 mat-dialog-title class="display-4">Losse verkoop voor: 
        {{ voorstelling().titel }}</h2>
     <button
       mat-icon-button
@@ -31,8 +31,8 @@
           <mat-form-field class="col-md-6 col-12">
             <mat-label>Datum</mat-label>
             <mat-select [(ngModel)]="datumSelectOption" name="datum">
-              <mat-option value="datum1">Datum 1</mat-option>
-              <mat-option value="datum2">Datum 2</mat-option>
+              <mat-option value="datum1">{{ getDatum1() | date: 'dd-MM-yyyy' }}</mat-option>
+              <mat-option value="datum2">{{ getDatum2() | date: 'dd-MM-yyyy' }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -40,8 +40,8 @@
         <div class="row">
           <div class="col-md-6 col-12 d-flex justify-content-center">
             <button mat-stroked-button mat-dialog-close class="flex-grow-1">
-              <mat-icon>arrow_back</mat-icon>
-              Terug
+              <mat-icon>close</mat-icon>
+              Sluiten
             </button>
           </div>
           <div class="col-md-6 col-12 d-flex justify-content-center">

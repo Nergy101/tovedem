@@ -58,10 +58,6 @@ export const routes: Routes = [
     component: ReserveringGeslaagdComponent,
   },
   {
-    path: 'vriend-worden',
-    component: VriendWordenComponent,
-  },
-  {
     path: 'steunen',
     component: VriendWordenComponent,
   },

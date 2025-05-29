@@ -64,7 +64,7 @@ export class AgendaComponent implements OnInit {
 
     const voorstellingenPerJaar = this.groupByYear(
       voorstellingenInDeToekomst
-    ).sort((x, y) => (x.year > y.year ? -1 : 1));
+    ).sort((x, y) => (x.year > y.year ? 1 : -1));
 
     this.voorstellingenPerJaar.set(voorstellingenPerJaar);
 

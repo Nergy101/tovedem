@@ -1,8 +1,11 @@
 :host {
-  margin-top: 4em;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.container {
+  padding: 2em;
 }
 
 .inline-calendar-card {
@@ -14,4 +17,14 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
    -webkit-appearance: none;
+}
+
+.dates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

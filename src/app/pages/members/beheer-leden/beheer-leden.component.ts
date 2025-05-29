@@ -26,6 +26,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -39,6 +40,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatMenuModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatCardModule,
   ],
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',

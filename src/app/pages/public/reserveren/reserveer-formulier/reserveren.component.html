@@ -1,197 +1,172 @@
 @defer (when loaded) {
 <div class="container">
-  <div class="row">
+  <div class="row" style="padding-top: 2em;">
     <mat-card>
       <mat-card-header>
         <mat-card-title>
           <h2>Reserveren voor voorstelling: {{ voorstellingsNaam }}</h2>
         </mat-card-title>
         <mat-card-subtitle>
-          <h3>
+          <h4>
             opgevoerd door: {{ groepsNaam }}, locatie:
             <a href="https://maps.app.goo.gl/dd9fe7p2udocU298A" target="_blank">
               <span>De Schalm</span>
             </a>
-          </h3>
+          </h4>
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="p-4">
-        <div class="container">
-          <div class="row">
-            <mat-form-field class="col-md-6 col-12">
-              <mat-label>Voornaam</mat-label>
-              <input
-                matInput
-                required
-                type="text"
-                [ngModel]="name()"
-                (ngModelChange)="onNameChanged($event)"
-              />
-              @if(!name()) {
-              <mat-error>Voornaam is verplicht</mat-error>
-              }
-            </mat-form-field>
-            <mat-form-field class="col-md-6 col-12">
-              <mat-label>Achternaam</mat-label>
-              <input
-                matInput
-                required
-                type="text"
-                [ngModel]="surname()"
-                (ngModelChange)="onSurnameChanged($event)"
-              />
-              @if(!surname()) {
-              <mat-error>Achternaam is verplicht</mat-error>
-              }
-            </mat-form-field>
-            <mat-form-field class="col-md-6 col-12">
-              <mat-label>E-mail</mat-label>
-              <input
-                matInput
-                required
-                type="email"
-                [ngModel]="email()"
-                (ngModelChange)="onEmailChanged($event)"
-              />
-              @if(!email()) {
-              <mat-error>E-mail is verplicht</mat-error>
-              }
-            </mat-form-field>
-            <mat-form-field class="col-md-6 col-12">
-              <mat-label>Herhaal uw E-mail</mat-label>
-              <input
-                matInput
-                required
-                type="email"
-                [ngModel]="email2()"
-                (ngModelChange)="onEmail2Changed($event)"
-              />
-              @if(!email2()) {
-              <mat-error>E-mail herhaling is verplicht</mat-error>
-              }
-            </mat-form-field>
-            @if(!emailsAreSame()) {
-            <mat-error>De E-Mails moeten hetzelfde zijn</mat-error>
+        <div class="row">
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>Voornaam</mat-label>
+            <input
+              matInput
+              required
+              type="text"
+              [ngModel]="name()"
+              (ngModelChange)="onNameChanged($event)" />
+            @if(!name()) {
+            <mat-error>Voornaam is verplicht</mat-error>
             }
-          </div>
+          </mat-form-field>
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>Achternaam</mat-label>
+            <input
+              matInput
+              required
+              type="text"
+              [ngModel]="surname()"
+              (ngModelChange)="onSurnameChanged($event)" />
+            @if(!surname()) {
+            <mat-error>Achternaam is verplicht</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>E-mail</mat-label>
+            <input
+              matInput
+              required
+              type="email"
+              [ngModel]="email()"
+              (ngModelChange)="onEmailChanged($event)" />
+            @if(!email()) {
+            <mat-error>E-mail is verplicht</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field class="col-md-6 col-12">
+            <mat-label>Herhaal uw E-mail</mat-label>
+            <input
+              matInput
+              required
+              type="email"
+              [ngModel]="email2()"
+              (ngModelChange)="onEmail2Changed($event)" />
+            @if(!email2()) {
+            <mat-error>E-mail herhaling is verplicht</mat-error>
+            }
+          </mat-form-field>
+          @if(!emailsAreSame()) {
+          <mat-error>De E-Mails moeten hetzelfde zijn</mat-error>
+          }
         </div>
         <div class="container">
-          <div class="row justify-content-evenly">
+          <div class="dates-grid">
             @if(!!datum1 && datum1 > today) {
-            <div class="col-md-6 col-12">
-              <div
-                class="flex"
-                style="flex-direction: column; align-items: center"
-              >
-                <mat-card class="inline-calendar-card" style="flex: 1">
-                  <mat-calendar
-                    [startAt]="datum1"
-                    [selected]="datum1"
-                    [minDate]="datum1"
-                    [maxDate]="datum1"
-                    [startView]="'month'"
-                  ></mat-calendar>
-                </mat-card>
-                <h2>
-                  Datum: {{ datum1 | date : "dd LLLL YYYY" }} <br />
-                  Start tijd: {{ datum1 | date : "HH:mm" }}
-                </h2>
-                <div style="display: flex; justify-content: center">
-                  <mat-form-field style="max-width: 20em; text-align: center">
-                    <mat-label>Hoeveel mensen?</mat-label>
-                    <input
-                      matInput
-                      style="text-align: center"
-                      type="number"
-                      min="0"
-                      max="20"
-                      [ngModel]="amountOfPeopleDate1()"
-                      (ngModelChange)="amountOfPeopleDate1Changed($event)"
-                    />
+            <div
+              class="flex"
+              style="flex-direction: column; align-items: center">
+              <mat-card class="inline-calendar-card" style="flex: 1">
+                <mat-calendar
+                  [startAt]="datum1"
+                  [selected]="datum1"
+                  [minDate]="datum1"
+                  [maxDate]="datum1"
+                  [startView]="'month'"></mat-calendar>
+              </mat-card>
+              <h4>
+                Datum: {{ datum1 | date : "dd LLLL YYYY" }} <br />
+                Start tijd: {{ datum1 | date : "HH:mm" }}
+              </h4>
+              <div style="display: flex; justify-content: center">
+                <mat-form-field style="max-width: 20em; text-align: center">
+                  <mat-label>Hoeveel mensen?</mat-label>
+                  <input
+                    matInput
+                    style="text-align: center"
+                    type="number"
+                    min="0"
+                    max="20"
+                    [ngModel]="amountOfPeopleDate1()"
+                    (ngModelChange)="amountOfPeopleDate1Changed($event)" />
 
-                    <button
-                      matPrefix
-                      mat-icon-button
-                      (click)="
-                        amountOfPeopleDate1.set(
-                          amountOfPeopleDate1() - 1 < 0
-                            ? 0
-                            : amountOfPeopleDate1() - 1
-                        )
-                      "
-                    >
-                      <mat-icon>remove</mat-icon>
-                    </button>
-                    <button
-                      matSuffix
-                      mat-icon-button
-                      (click)="
-                        amountOfPeopleDate1.set(amountOfPeopleDate1() + 1)
-                      "
-                    >
-                      <mat-icon>add</mat-icon>
-                    </button>
-                  </mat-form-field>
-                </div>
+                  <button
+                    matPrefix
+                    mat-icon-button
+                    (click)="
+                      amountOfPeopleDate1.set(
+                        amountOfPeopleDate1() - 1 < 0
+                          ? 0
+                          : amountOfPeopleDate1() - 1
+                      )
+                    ">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <button
+                    matSuffix
+                    mat-icon-button
+                    (click)="amountOfPeopleDate1.set(amountOfPeopleDate1() + 1)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </mat-form-field>
               </div>
             </div>
             } @if(!!datum2 && datum2 > today) {
-            <div class="col-md-6 col-12">
-              <div
-                class="flex"
-                style="flex-direction: column; align-items: center"
-              >
-                <mat-card class="inline-calendar-card">
-                  <mat-calendar
-                    [startAt]="datum2"
-                    [selected]="datum2"
-                    [minDate]="datum2"
-                    [maxDate]="datum2"
-                    [startView]="'month'"
-                  ></mat-calendar>
-                </mat-card>
-                <h2>
-                  Datum: {{ datum2 | date : "dd LLLL YYYY" }} <br />
-                  Start tijd: {{ datum2 | date : "HH:mm" }}
-                </h2>
-                <div style="display: flex; justify-content: center">
-                  <mat-form-field style="max-width: 20em">
-                    <mat-label style="text-align: center"
-                      >Hoeveel mensen?</mat-label
-                    >
-                    <input
-                      style="text-align: center"
-                      matInput
-                      type="number"
-                      min="0"
-                      max="20"
-                      [ngModel]="amountOfPeopleDate2()"
-                      (ngModelChange)="amountOfPeopleDate2Changed($event)"
-                    />
-                    <button
-                      matPrefix
-                      mat-icon-button
-                      (click)="
-                        amountOfPeopleDate2.set(
-                          amountOfPeopleDate2() - 1 < 0
-                            ? 0
-                            : amountOfPeopleDate2() - 1
-                        )
-                      "
-                    >
-                      <mat-icon>remove</mat-icon>
-                    </button>
-                    <button
-                      matSuffix
-                      mat-icon-button
-                      (click)="
-                        amountOfPeopleDate2.set(amountOfPeopleDate2() + 1)
-                      "
-                    >
-                      <mat-icon>add</mat-icon>
-                    </button>
-                  </mat-form-field>
-                </div>
+            <div
+              class="flex"
+              style="flex-direction: column; align-items: center">
+              <mat-card class="inline-calendar-card">
+                <mat-calendar
+                  [startAt]="datum2"
+                  [selected]="datum2"
+                  [minDate]="datum2"
+                  [maxDate]="datum2"
+                  [startView]="'month'"></mat-calendar>
+              </mat-card>
+              <h4>
+                Datum: {{ datum2 | date : "dd LLLL YYYY" }} <br />
+                Start tijd: {{ datum2 | date : "HH:mm" }}
+              </h4>
+              <div style="display: flex; justify-content: center">
+                <mat-form-field style="max-width: 20em">
+                  <mat-label style="text-align: center">Hoeveel
+                    mensen?</mat-label>
+                  <input
+                    style="text-align: center"
+                    matInput
+                    type="number"
+                    min="0"
+                    max="20"
+                    [ngModel]="amountOfPeopleDate2()"
+                    (ngModelChange)="amountOfPeopleDate2Changed($event)" />
+                  <button
+                    matPrefix
+                    mat-icon-button
+                    (click)="
+                      amountOfPeopleDate2.set(
+                        amountOfPeopleDate2() - 1 < 0
+                          ? 0
+                          : amountOfPeopleDate2() - 1
+                      )
+                    ">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <button
+                    matSuffix
+                    mat-icon-button
+                    (click)="amountOfPeopleDate2.set(amountOfPeopleDate2() + 1)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </mat-form-field>
               </div>
             </div>
             }
@@ -209,11 +184,9 @@
                       type="opmerking"
                       [ngModel]="opmerking()"
                       (ngModelChange)="onOpmerkingChange($event)"
-                      (input)="onOpmerkingChange2($event)"
-                    ></textarea>
-                    <mat-hint align="end"
-                      >{{ opmerkingLength().length }}/250</mat-hint
-                    >
+                      (input)="onOpmerkingChange2($event)"></textarea>
+                    <mat-hint align="end">{{ opmerkingLength().length
+                      }}/250</mat-hint>
                   </mat-form-field>
                 </div>
                 <div class="d-flex flex-column">
@@ -222,8 +195,7 @@
                     color="primary"
                     (ngModelChange)="vriendVanTovedemChanged($event)"
                     matTooltip="Je bent sponsor of donateur van Tovedem."
-                    [matTooltipPosition]="'left'"
-                  >
+                    [matTooltipPosition]="'left'">
                     <span style="text-decoration: underline dotted gray">
                       Ben je vriend van Tovedem?
                     </span>
@@ -233,8 +205,7 @@
                     color="primary"
                     (ngModelChange)="lidVanTovedemMejotosChanged($event)"
                     matTooltip="Je bent lid van een van de groepen binnen Tovedem."
-                    [matTooltipPosition]="'left'"
-                  >
+                    [matTooltipPosition]="'left'">
                     <span style="text-decoration: underline dotted gray">
                       Ben je lid van Tovedem, Cloos of Mejoto's?
                     </span>
@@ -244,8 +215,7 @@
                     style="flex: 1; min-height: 48px"
                     mat-flat-button
                     [disabled]="saving() || !formIsValid()"
-                    (click)="saveReservering()"
-                  >
+                    (click)="saveReservering()">
                     Reserveer
                   </button>
                 </div>

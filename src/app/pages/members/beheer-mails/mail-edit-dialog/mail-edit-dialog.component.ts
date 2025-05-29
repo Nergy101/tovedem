@@ -45,6 +45,18 @@ export class MailEditDialogComponent implements OnInit {
     this.mail = this.dialogData;
   }
 
+  downloadVoorbeeld(): void {
+    const mailInhoud = this.mail.inhoud!;
+
+    // download mailInhoud as html file for viewing separately
+    const blob = new Blob([mailInhoud], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'voorbeeld.html';
+    a.click();
+  }
+
   return(): void {
     this.dialogRef.close(this.mail);
   }
