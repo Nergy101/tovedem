@@ -63,6 +63,7 @@ h2 {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  margin-top: 4em;
 
   transform: translateY(-100%); /* Start off-screen to the left */
   animation: slideInTop 1.5s ease-out forwards; /* Trigger the slide animation */
