@@ -36,7 +36,7 @@
         <tbody>
           @for (item of items(); track $index) { @if (item.status ===
           statusIndex){
-          <tr>
+          <tr class="table-row">
             <td>
               {{ item.created | date : "dd-LL-YY" }}
             </td>
@@ -78,7 +78,7 @@
                   mat-menu-item
                   (click)="updateStatus(item, 'inbehandeling')"
                 >
-                  inbehandeling
+                  in behandeling
                 </button>
                 <button mat-menu-item (click)="updateStatus(item, 'ingepland')">
                   ingepland
