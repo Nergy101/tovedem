@@ -40,7 +40,8 @@ h2 {
 
 .mainText {
   opacity: 0;
-  animation: fadeIn 3s ease-out 0.5s forwards;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -62,16 +63,16 @@ h2 {
   min-height: 18em;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   margin-top: 4em;
 
-  transform: translateY(-100%); /* Start off-screen to the left */
-  animation: slideInTop 1.5s ease-out forwards; /* Trigger the slide animation */
+  transform: translateY(-50%); /* Start off-screen to the left */
+  animation: slideInTop 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; /* Trigger the slide animation */
 }
 
 @keyframes slideInTop {
   0% {
-    transform: translateY(-100%); /* Image starts off-screen */
+    transform: translateY(-50%); /* Image starts off-screen */
   }
   100% {
     transform: translateY(0); /* Image slides into the frame */
@@ -79,13 +80,13 @@ h2 {
 }
 
 .bottomAnimation {
-  transform: translateY(100%);
-  animation: slideInBottom 4s ease-out 1 forwards;
+  transform: translateY(50%);
+  animation: slideInBottom 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 @keyframes slideInBottom {
   0% {
-    transform: translateY(100%); /* Image starts off-screen */
+    transform: translateY(50%); /* Image starts off-screen */
   }
   100% {
     transform: translateY(0); /* Image slides into the frame */
@@ -99,7 +100,7 @@ h2 {
   margin-right: auto;
   margin-left: auto;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .carousel-item {

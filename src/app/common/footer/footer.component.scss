@@ -27,6 +27,14 @@
   background-color: #232323;
   color: white;
 
+  .service-status {
+    margin-left: auto;
+    color: white;
+    &:hover {
+      color: #ae1545 !important;
+    }
+  }
+
   a {
     color: white;
 

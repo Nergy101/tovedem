@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
-import { NavButtonComponent } from '../../nav-button/nav-button.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { NavButtonComponent } from '../../nav-button/nav-button.component';
 
 @Component({
   selector: 'app-voorstelling-line',
@@ -19,6 +20,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
     MatProgressSpinnerModule,
     MatDividerModule,
     NavButtonComponent,
+    MatTooltipModule,
   ],
 })
 export class VoorstellingLineComponent {
