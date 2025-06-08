@@ -1,4 +1,4 @@
-name: Build Angular WebApp Check Pipeline
+name: 🛠️🚨 Check Angular App
 
 on:
   workflow_dispatch:

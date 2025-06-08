@@ -1,4 +1,4 @@
-name: Replace hooks folder with latest
+name: 🚀 Deploy pb_hooks
 
 on:
   workflow_dispatch:
