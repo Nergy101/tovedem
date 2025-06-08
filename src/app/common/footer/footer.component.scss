@@ -31,7 +31,7 @@
     margin-left: auto;
     color: white;
     &:hover {
-      color: #ae1545 !important;
+      color: #B80301 !important;
     }
   }
 
@@ -44,7 +44,7 @@
   }
   .privacy-link {
     &:hover {
-      color: #ae1545 !important;
+      color: #B80301 !important;
     }
   }
 }
@@ -98,7 +98,7 @@ ul {
     text-decoration: underline;
 
     &:hover {
-      color: #ae1545;
+      color: #B80301;
     }
 
     mat-icon {
@@ -118,13 +118,13 @@ h2 {
   color: white;
   text-decoration: underline;
   &:hover {
-    color: #ae1545 !important;
+    color: #B80301 !important;
   }
 }
 
 button {
   color: white !important;
   &:hover {
-    color: #ae1545 !important;
+    color: #B80301 !important;
   }
 }

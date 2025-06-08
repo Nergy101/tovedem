@@ -53,7 +53,7 @@ export class BeheerMailsComponent implements OnInit, AfterViewChecked {
   themeService = inject(ThemeService);
   statussen = ['concept', 'inprogress', 'done', 'verified'];
   statusColor: Record<string, string> = {
-    concept: '#AE1545',
+    concept: '#B80301',
     inprogress: '#28668F',
     done: '#DFA801',
     verified: '#338450',

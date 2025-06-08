@@ -153,3 +153,7 @@ mat-icon {
     min-width: 20em;
   }
 }
+
+.mat-menu-panel {
+  background-color: white !important; // var(--mat-sys-surface-container-low) !important;
+}

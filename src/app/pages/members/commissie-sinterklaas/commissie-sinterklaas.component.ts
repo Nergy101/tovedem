@@ -72,7 +72,7 @@ export class CommissieSinterklaasComponent implements OnInit {
 
   statussen = ['nieuw', 'inbehandeling', 'ingepland', 'afgerond'];
   statusColor: Record<string, string> = {
-    nieuw: '#AE1545',
+    nieuw: '#B80301',
     inbehandeling: '#28668F',
     ingepland: '#DFA801',
     afgerond: '#338450',
