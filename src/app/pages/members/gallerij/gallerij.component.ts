@@ -45,14 +45,17 @@ export class GallerijComponent implements OnInit {
   fileToken = signal<string | null>(null);
 
   constructor() {
-    effect(async () => {
-      this.page.set(
-        await this.client.getPage<Afbeelding>(
-          'afbeeldingen',
-          this.pageIndex(),
-          this.pageSize()
-        )
-      );
+    effect(() => {
+      const pageIndex = this.pageIndex();
+      const pageSize = this.pageSize();
+      
+      this.client.getPage<Afbeelding>(
+        'afbeeldingen',
+        pageIndex,
+        pageSize
+      ).then((page) => {
+        this.page.set(page);
+      });
     });
   }
 
@@ -94,7 +97,7 @@ export class GallerijComponent implements OnInit {
   }
 
   async onPageChange(event: PageEvent): Promise<void> {
-    this.pageIndex.set(event.pageIndex + 1);
+    this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
   }
 

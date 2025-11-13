@@ -51,16 +51,17 @@ export class CommissieSinterklaasComponent implements OnInit {
   loading = signal(false);
 
   items: WritableSignal<
-    {
-      id: string;
-      status: string;
-      plannedDate: string;
-      message: string;
-      created: string;
-      name: string;
-      email: string;
-      subject: string;
-    }[] | null
+    | {
+        id: string;
+        status: string;
+        plannedDate: string;
+        message: string;
+        created: string;
+        name: string;
+        email: string;
+        subject: string;
+      }[]
+    | null
   > = signal(null);
 
   client = inject(PocketbaseService);
@@ -72,7 +73,7 @@ export class CommissieSinterklaasComponent implements OnInit {
 
   statussen = ['nieuw', 'inbehandeling', 'ingepland', 'afgerond'];
   statusColor: Record<string, string> = {
-    nieuw: '#B80301',
+    nieuw: '#0103B8',
     inbehandeling: '#28668F',
     ingepland: '#DFA801',
     afgerond: '#338450',

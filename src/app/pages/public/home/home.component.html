@@ -1,25 +1,22 @@
 <div class="homepage-wrapper">
   <div class="homepage">
-    <div class="splash-image"></div>
-
     <div class="container">
       <div class="row center text-center mainText" style="object-fit: contain">
         <h1>Welkom bij</h1>
-        <img
-          class="img-fluid"
-          style="width: 300px; margin-bottom: 2em"
-          ngSrc="/assets/tovedem_logo.png"
-          priority
-          width="300"
-          height="50"
-          alt="main-logo"
-        />
-        <!--style="width: 300px; height: 50px; margin-bottom: 2em"-->
-        
+        <div class="logo-card">
+          <img
+            class="img-fluid logo-image"
+            ngSrc="/assets/tovedem_logo.png"
+            priority
+            width="300"
+            height="50"
+            alt="main-logo"
+          />
+        </div>
       </div>
 
       @defer (when nieuwsToPublish().length > 0){
-      <div class="section bottomAnimation">
+      <div class="section">
         <mat-divider class="divider mb-4"></mat-divider>
         <h2 class="text-center p-0 m-0">
           <span>Nieuws</span>
@@ -34,7 +31,7 @@
         </mat-tab-group>
       </div>
       } @defer (when voorstellingen().length > 0) {
-      <div class="section bottomAnimation pt-4">
+      <div class="section pt-4">
         <div>
           <mat-divider class="divider"></mat-divider>
           <h2 class="text-center" style="font-size: x-large">

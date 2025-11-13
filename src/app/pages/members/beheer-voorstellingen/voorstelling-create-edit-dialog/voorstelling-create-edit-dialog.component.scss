@@ -9,3 +9,19 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+// Ensure "Aanmaken" button uses primary blue color
+button[mat-flat-button][color="primary"],
+.mat-mdc-raised-button[color="primary"] {
+  background-color: #7db3e8 !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: #6aa3d8 !important;
+  }
+
+  &:disabled {
+    background-color: rgba(125, 179, 232, 0.3) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+}

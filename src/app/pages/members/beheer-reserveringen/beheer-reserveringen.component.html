@@ -19,7 +19,7 @@
           <mat-form-field class="col-6">
             <mat-label>Voorstelling</mat-label>
             <mat-select (selectionChange)="onVoorstellingChanged($event)">
-              @for (voorstelling of voorstellingen(); track $index) {
+              @for (voorstelling of voorstellingen(); track voorstelling.id) {
               <mat-option [value]="voorstelling">{{
                 voorstelling.titel
               }}</mat-option>
@@ -76,7 +76,7 @@
             <!--get all reserveringen van geselecteerde voorstelling filter op vriend van tovedem actief
         for opgehaalde reservering -> print een label voor het anatal gereserveerde plekken op datum.geselecteerd
         -->
-            @for ( reservering of reserveringenVanVoorstelling(); track $index )
+            @for ( reservering of reserveringenVanVoorstelling(); track reservering.id )
             { @for ( ticketItem of createListOfAmountOfItems(
             amountOfItemsForReservation(reservering) ); track $index ) {
             <div class="row">

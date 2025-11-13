@@ -1,45 +1,45 @@
 <div class="splash-image"></div>
 
 <div class="container mat-elevation-z2">
-  <div class="display-1 justify-content-center" style="text-align: center">
+  <div class="display-1 justify-content-center text-center">
     Contact formulier
   </div>
-  <mat-divider class="divider" style="margin-bottom: 1rem"></mat-divider>
-  <div style="display: flex; flex-flow: row wrap; gap: 2em">
-    <div style="max-width: 75%">
+  <mat-divider class="divider mb-4"></mat-divider>
+  <div class="contact-intro">
+    <div class="intro-text">
       In het volgende formulier kunt u overige vragen stellen die bij het
       algemene e-mail adres van de Tovedem terecht komen. Heeft u een aanvraag
       om lid te worden, tovedem te steunen of voor de sintcommisie kies dan een
       van de andere aanmeldformulieren.
     </div>
 
-    <div style="display: flex; flex-flow: row wrap; gap: 0.5em">
+    <div class="action-buttons">
       <button
-        style="background-color: #B80301; color: white; align-content: center;"
+        class="action-button"
         mat-icon-button
         matTooltip="Ga naar lid worden"
         routerLinkActive="active"
         routerLink="/lid-worden"
       >
-        <div style="margin-top: -4px;"><mat-icon>person_add</mat-icon></div>
+        <mat-icon>person_add</mat-icon>
       </button>
       <button
-        style="background-color: #B80301; color: white"
+        class="action-button"
         matTooltip="Ga naar steunen"
         mat-icon-button
         routerLinkActive="active"
         routerLink="/steunen"
       >
-        <div style="margin-top: -4px;"><mat-icon>volunteer_activism</mat-icon></div>
+        <mat-icon>volunteer_activism</mat-icon>
       </button>
       <button
-        style="background-color: #B80301; color: white"
+        class="action-button"
         matTooltip="Ga naar Sinterklaas"
         mat-icon-button
         routerLinkActive="active"
         routerLink="/sinterklaas"
       >
-        <div style="margin-top: -4px;"><mat-icon>redeem</mat-icon></div>
+        <mat-icon>redeem</mat-icon>
       </button>
     </div>
   </div>
@@ -95,15 +95,21 @@
         ></textarea>
       </mat-form-field>
       <div class="d-flex">
-        <button
-          class="flex"
-          mat-flat-button
-          [color]="'primary'"
-          type="submit"
-          [disabled]="!name || !email || !subject || !message"
+        <span
+          [matTooltip]="(!name || !email || !subject || !message) ? 'Vul het formulier in om te verzenden' : ''"
+          [matTooltipDisabled]="!(!name || !email || !subject || !message)"
+          style="display: flex; flex: 1;"
         >
-          Verzenden
-        </button>
+          <button
+            class="flex"
+            mat-flat-button
+            [color]="'primary'"
+            type="submit"
+            [disabled]="!name || !email || !subject || !message"
+          >
+            Verzenden
+          </button>
+        </span>
       </div>
     </form>
   </div>

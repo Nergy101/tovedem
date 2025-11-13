@@ -56,14 +56,20 @@
       ></textarea>
     </mat-form-field>
     <div class="d-flex">
-      <button
-        class="flex"
-        mat-flat-button
-        (click)="verstuurVriendVanTovedemMail()"
-        [disabled]="!name || !email || !subject || !message"
+      <span
+        [matTooltip]="(!name || !email || !subject || !message) ? 'Vul het formulier in om te verzenden' : ''"
+        [matTooltipDisabled]="!(!name || !email || !subject || !message)"
+        style="display: flex; flex: 1;"
       >
-        Verzenden
-      </button>
+        <button
+          class="flex"
+          mat-flat-button
+          (click)="verstuurVriendVanTovedemMail()"
+          [disabled]="!name || !email || !subject || !message"
+        >
+          Verzenden
+        </button>
+      </span>
     </div>
   </div>
 </div>

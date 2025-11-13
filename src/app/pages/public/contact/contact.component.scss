@@ -1,5 +1,7 @@
 
 
+@use "../../../../variables.scss" as *;
+
 .titel {
   display: flex;
   justify-content: center;
@@ -9,13 +11,15 @@ li {
   list-style: none;
 
   .active {
-    color: B80301;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 
   :hover {
-    color: B80301;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 }
 
@@ -27,4 +31,43 @@ li {
   background-size: cover;
   min-height: 12em;
   min-width: 100%;
+}
+
+.contact-intro {
+  display: flex;
+  flex-flow: row wrap;
+  gap: $spacing-8;
+  margin-bottom: $spacing-4;
+
+  .intro-text {
+    max-width: 75%;
+    
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  gap: $spacing-2;
+}
+
+.action-button {
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, box-shadow $transition-base $ease-out;
+  border-radius: $border-radius-md;
+
+  &:hover {
+    background-color: var(--mat-sys-primary-container) !important;
+    color: var(--mat-sys-on-primary-container) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
 }

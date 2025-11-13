@@ -1,119 +1,213 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@angular/material" as mat;
-@use "variables.scss" as *;
+@use "variables.scss" as vars;
 @use "mdb-angular-ui-kit/assets/scss/mdb.scss" as *;
 @use "ngx-toastr/toastr" as *;
 @use "quill/dist/quill.snow.css";
 @use "tovedem-theme-m3.scss" as *;
-
-// $custom-light-theme: mat.m2-define-light-theme(
-//   (
-//     color: (
-//       primary: (
-//         default: $primary-color,
-//       ),
-//       accent: (
-//         default: #424242,
-//       ),
-//       tovGreen: (
-//         default: #68a357,
-//       ),
-//       tovYellow: (
-//         default: #f4e409,
-//       ),
-//       tovOrange: (
-//         default: #eeba0b,
-//       ),
-//       tovBlue: (
-//         default: #90f1ef,
-//       ),
-//     ),
-//   )
-// );
-
-// $custom-dark-theme: mat.m2-define-dark-theme(
-//   (
-//     color: (
-//       primary: (
-//         default: $primary-color,
-//       ),
-//       accent: (
-//         default: #424242,
-//       ),
-//       tovGreen: (
-//         default: #68a357,
-//       ),
-//       tovYellow: (
-//         default: #f4e409,
-//       ),
-//       tovOrange: (
-//         default: #eeba0b,
-//       ),
-//       tovBlue: (
-//         default: #90f1ef,
-//       ),
-//     ),
-//     background-color: (
-//       default: #000,
-
-//     ),
-//   )
-// );
 
 :root {
   --mdc-elevated-card-container-elevation: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
+// Default to dark theme - professional minimalistic blue pastel
 html {
   @include mat.theme(
     (
-      color: $primary-palette,
+      color: $primary-palette-dark,
       typography: "Roboto",
       density: 0,
-    ),
-    // $overrides: ()
-  );
-
-  // @include mat.theme-overrides(
-  //   (
-  //     "--mat-sys-primary": $primary-color,
-  //     "--mat-sys-on-primary": $primary-color,
-  //   )
-  // );
-
-  // @include mat.button-overrides((// protected-label-text-color: black,));
-}
-// --mdc-protected-button-label-text-color
-.darkMode {
-  @include mat.theme(
-    (
-      color: (
-        primary: $primary-palette,
-        theme-type: dark,
-      ),
+      theme-type: dark,
     )
   );
+
+  // Professional blue pastel dark theme colors
+  --mat-sys-background: #0f1218;
+  --mat-sys-surface-container-lowest: #1a1d24;
+  --mat-sys-surface-container-low: #1f2229;
+  --mat-sys-surface-container: #25282f;
+  --mat-sys-surface-container-high: #2b2e35;
+  --mat-sys-surface: #0f1218;
+  
+  // Override Material Design on-primary colors to ensure white text on blue backgrounds
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-on-primary-container: #ffffff;
+  
+  // CRITICAL: Force ALL text colors to white for dark mode readability
+  --mat-sys-on-background: #ffffff !important;
+  --mat-sys-on-surface: #ffffff !important;
+  --mat-sys-on-surface-variant: #e8e9eb !important;
+  --mat-sys-on-surface-container: #ffffff !important;
+  --mat-sys-on-surface-container-low: #ffffff !important;
+  --mat-sys-on-surface-container-high: #ffffff !important;
+  --mat-sys-on-surface-container-lowest: #ffffff !important;
+  
+  // Form field outline appearance colors
+  --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3) !important;
+  --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
+  --mdc-outlined-text-field-label-text-color: rgba(232, 233, 235, 0.7) !important;
+  --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
+  
+  background-color: #0f1218;
+  color: #ffffff !important;
+  
+  body {
+    background-color: var(--mat-sys-background);
+    color: #ffffff !important;
+  }
 }
 
 html,
 body {
   height: 100%;
 }
+
+html {
+  background-color: #0f1218;
+  transition: background-color vars.$transition-base vars.$ease-out;
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   display: flex;
+  font-size: vars.$font-size-base;
+  line-height: vars.$line-height-normal;
+  color: #ffffff !important;
+  background-color: #0f1218;
+  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: $primary-color;
-  :visited {
-    color: $primary-color;
+// AGGRESSIVE GLOBAL RULE: Force ALL text to white (with specific exceptions)
+// Target all text-containing elements specifically
+*, *::before, *::after {
+  color: #ffffff !important;
+}
+
+// Exceptions for specific elements that should NOT be white
+img, svg, canvas, video, iframe, input[type="image"], 
+.mat-mdc-icon-button[color="primary"] mat-icon,
+.mat-mdc-button[color="primary"] mat-icon,
+.mat-mdc-raised-button[color="primary"] mat-icon {
+  color: inherit !important;
+}
+
+// Ensure links are visible (primary color) - override the universal selector
+a[href], a {
+  color: var(--mat-sys-primary) !important;
+  
+  &:hover {
+    color: var(--mat-sys-primary-container) !important;
+  }
+  
+  &:visited {
+    color: var(--mat-sys-primary) !important;
   }
 }
 
+// Override Bootstrap text utility classes
+.text-dark, .text-black {
+  color: #ffffff !important;
+}
+
+.text-muted, .text-secondary {
+  color: #e8e9eb !important;
+}
+
+// Bootstrap display classes
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+  color: #ffffff !important;
+}
+
+// Typography hierarchy - Force white text
+h1, .h1 {
+  font-size: vars.$font-size-4xl;
+  font-weight: vars.$font-weight-bold;
+  line-height: vars.$line-height-tight;
+  letter-spacing: vars.$letter-spacing-tight;
+  margin-bottom: vars.$spacing-6;
+  color: #ffffff !important;
+}
+
+h2, .h2 {
+  font-size: vars.$font-size-3xl;
+  font-weight: vars.$font-weight-semibold;
+  line-height: vars.$line-height-tight;
+  letter-spacing: vars.$letter-spacing-normal;
+  margin-bottom: vars.$spacing-5;
+  color: #ffffff !important;
+}
+
+h3, .h3 {
+  font-size: vars.$font-size-2xl;
+  font-weight: vars.$font-weight-semibold;
+  line-height: vars.$line-height-normal;
+  letter-spacing: vars.$letter-spacing-normal;
+  margin-bottom: vars.$spacing-4;
+  color: #ffffff !important;
+}
+
+h4, .h4 {
+  font-size: vars.$font-size-xl;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-3;
+  color: #ffffff !important;
+}
+
+h5, .h5 {
+  font-size: vars.$font-size-lg;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-2;
+  color: #ffffff !important;
+}
+
+h6, .h6 {
+  font-size: vars.$font-size-base;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-2;
+  color: #ffffff !important;
+}
+
+p {
+  margin-bottom: vars.$spacing-4;
+  line-height: vars.$line-height-relaxed;
+  color: #ffffff !important;
+}
+
+// Force all text elements to white
+span, div, li, ul, ol, td, th, label, strong, em, b, i, blockquote, pre, code {
+  color: #ffffff !important;
+}
+
+a {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
+  transition: color vars.$transition-base vars.$ease-out;
+  
+  &:hover {
+    color: var(--mat-sys-primary-container);
+    text-decoration: underline;
+  }
+  
+  &:visited {
+    color: var(--mat-sys-primary);
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    border-radius: vars.$border-radius-sm;
+  }
+}
+
+// Utility classes
 .flex {
   flex: 1;
   display: flex;
@@ -123,21 +217,388 @@ a {
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
+// Button utilities
+button {
+  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out, box-shadow vars.$transition-base vars.$ease-out;
+  
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    border-radius: vars.$border-radius-sm;
+  }
+}
+
+// Form field improvements - ensure outline appearance
+mat-form-field {
+  // Force outline appearance for all form fields
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+  }
+  
+  &.mat-focused {
+    .mat-mdc-form-field-outline-thick {
+      color: #7db3e8 !important; // Primary blue when focused
+    }
+  }
+}
+
+// Card improvements - minimalistic theater aesthetic
+mat-card {
+  transition: box-shadow vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
+  background-color: #1a1d24;
+  border: 1px solid rgba(125, 179, 232, 0.1);
+  border-radius: vars.$border-radius-lg;
+  
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(125, 179, 232, 0.2);
+    border-color: rgba(125, 179, 232, 0.3);
+  }
+}
+
+// Container improvements - ensure containers use theme-aware backgrounds
+.container,
+.container-fluid {
+  background-color: transparent;
+}
+
+// Ensure all Material components use theme colors
+.mat-mdc-card {
+  background-color: #1a1d24;
+  color: #ffffff !important;
+  border: 1px solid rgba(125, 179, 232, 0.1);
+  
+  * {
+    color: #ffffff !important;
+  }
+}
+
+// Force Material list items to white
+mat-list-item, mat-list-item * {
+  color: #ffffff !important;
+}
+
+// Force Material dialog content to white
+mat-dialog-container, mat-dialog-container * {
+  color: #ffffff !important;
+}
+
+// Force Material tab labels to white
+mat-tab-label, mat-tab-label * {
+  color: #ffffff !important;
+}
+
+// Force Material expansion panel to white
+mat-expansion-panel, mat-expansion-panel * {
+  color: #ffffff !important;
+}
+
+// Force Material menu to white
+mat-menu, .mat-mdc-menu-panel, .mat-mdc-menu-panel * {
+  color: #ffffff !important;
+}
+
+// Force Material tooltip to white
+mat-tooltip, .mat-mdc-tooltip {
+  color: #ffffff !important;
+}
+
+// Button styling for theater aesthetic
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: vars.$border-radius-md;
+  transition: box-shadow vars.$transition-base vars.$ease-out;
+  
+  &:hover {
+    box-shadow: 0 4px 8px rgba(29, 125, 179, 0.2);
+  }
+  
+  // Ensure primary buttons have white text
+  &[color="primary"] {
+    color: var(--mat-sys-on-primary) !important;
+    
+    .mat-mdc-button-persistent-ripple {
+      color: var(--mat-sys-on-primary);
+    }
+  }
+}
+
+// Ensure all Material buttons with primary color use white text
+.mat-mdc-button[color="primary"],
+.mat-mdc-raised-button[color="primary"],
+.mat-mdc-flat-button[color="primary"],
+.mat-mdc-fab[color="primary"] {
+  color: var(--mat-sys-on-primary) !important;
+  
+  .mdc-button__label {
+    color: var(--mat-sys-on-primary) !important;
+  }
+  
+  mat-icon {
+    color: var(--mat-sys-on-primary) !important;
+  }
+}
+
+// Global rule: Any element with primary background must have white/light text
+[style*="background-color: var(--mat-sys-primary)"],
+[style*="background-color: #7db3e8"],
+[class*="primary"][style*="background"],
+.primary-color,
+[class*="bg-primary"] {
+  color: var(--mat-sys-on-primary) !important;
+  
+  * {
+    color: var(--mat-sys-on-primary) !important;
+  }
+  
+  mat-icon {
+    color: var(--mat-sys-on-primary) !important;
+  }
+}
+
+// Ensure all primary buttons use the primary blue color (#7db3e8)
+button[mat-flat-button][color="primary"],
+button[mat-raised-button][color="primary"],
+button[mat-fab][color="primary"],
+.mat-mdc-raised-button[color="primary"],
+.mat-mdc-flat-button[color="primary"],
+.mat-mdc-fab[color="primary"] {
+  background-color: #7db3e8 !important;
+  color: #ffffff !important;
+
+  &:hover:not(:disabled) {
+    background-color: #6aa3d8 !important;
+  }
+
+  &:disabled {
+    background-color: rgba(125, 179, 232, 0.3) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  mat-icon {
+    color: #ffffff !important;
+  }
+}
+
+// Form fields - Outline style with consistent dark background and blue borders
+.mat-mdc-form-field {
+  // Ensure consistent dark background for all form field types
+  .mat-mdc-text-field-wrapper {
+    background-color: #1a1d24 !important;
+    border-radius: vars.$border-radius-md;
+  }
+  
+  // For fill appearance (if used), ensure dark background
+  .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+    background-color: #1a1d24 !important;
+  }
+  
+  // For outline appearance - blue border styling
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(125, 179, 232, 0.3) !important; // Light blue border when not focused
+      border-width: 1px !important;
+    }
+  }
+  
+  // Focused state - brighter blue border
+  &.mat-focused,
+  &.mdc-text-field--focused {
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #7db3e8 !important; // Primary blue when focused
+        border-width: 2px !important;
+      }
+    }
+  }
+  
+  // Legacy outline support (for older Material versions)
+  .mat-mdc-form-field-outline {
+    color: rgba(125, 179, 232, 0.3) !important; // Light blue border when not focused
+  }
+  
+  .mat-mdc-form-field-outline-thick {
+    color: rgba(125, 179, 232, 0.5) !important; // Medium blue border
+    border-width: 2px !important;
+  }
+  
+  &.mat-focused {
+    .mat-mdc-form-field-outline-thick {
+      color: #7db3e8 !important; // Primary blue when focused
+      border-width: 2px !important;
+    }
+  }
+  
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+  }
+  
+  // Ensure form field text is readable
+  .mat-mdc-input-element,
+  .mat-mdc-form-field-input-control input,
+  .mat-mdc-form-field-textarea-control textarea,
+  .mdc-text-field__input {
+    color: #ffffff !important;
+    
+    // Hide placeholders in Material form fields - Material handles labels instead
+    &::placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+    
+    &::-webkit-input-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+    
+    &::-moz-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+    
+    &:-ms-input-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+  }
+  
+  // Label styling - Material's standard label behavior
+  .mat-mdc-form-field-label,
+  .mdc-floating-label {
+    color: rgba(232, 233, 235, 0.7) !important; // Light gray label when inside field
+    
+    // Label when floating above (when field has value or is focused)
+    &.mdc-floating-label--float-above {
+      color: #7db3e8 !important; // Blue label when floating
+    }
+  }
+  
+  // Ensure label floats correctly when focused
+  &.mat-focused {
+    .mat-mdc-form-field-label,
+    .mdc-floating-label {
+      color: #7db3e8 !important; // Blue label when focused
+    }
+  }
+  
+  // Label color when field has value
+  &.mat-form-field-should-float {
+    .mat-mdc-form-field-label,
+    .mdc-floating-label {
+      color: #7db3e8 !important; // Blue label when field has value
+    }
+  }
+  
+  // Hint text
+  .mat-mdc-form-field-hint {
+    color: rgba(232, 233, 235, 0.6) !important; // Light gray hint
+  }
+  
+  // Error text
+  .mat-mdc-form-field-error {
+    color: var(--mat-sys-error) !important;
+  }
+  
+  // Select dropdown styling
+  .mat-mdc-select-value {
+    color: #ffffff !important;
+  }
+  
+  .mat-mdc-select-arrow {
+    color: rgba(232, 233, 235, 0.7) !important;
+  }
+  
+  // Textarea specific styling
+  .mat-mdc-form-field-textarea-control {
+    background-color: #1a1d24 !important;
+    border-radius: vars.$border-radius-md;
+  }
+}
+
+// Force all input, textarea, select elements to white with light placeholders
+input, textarea, select {
+  color: #ffffff !important;
+  background-color: #1a1d24 !important;
+  
+  // Light placeholder text
+  &::placeholder {
+    color: rgba(232, 233, 235, 0.6) !important;
+    opacity: 1;
+  }
+  
+  &::-webkit-input-placeholder {
+    color: rgba(232, 233, 235, 0.6) !important;
+    opacity: 1;
+  }
+  
+  &::-moz-placeholder {
+    color: rgba(232, 233, 235, 0.6) !important;
+    opacity: 1;
+  }
+  
+  &:-ms-input-placeholder {
+    color: rgba(232, 233, 235, 0.6) !important;
+    opacity: 1;
+  }
+}
+
+// Ensure select elements have consistent styling
+select {
+  border: 1px solid rgba(125, 179, 232, 0.3) !important;
+  border-radius: vars.$border-radius-md;
+  padding: vars.$spacing-2 vars.$spacing-3;
+  
+  &:focus {
+    border-color: #7db3e8 !important;
+    outline: none;
+  }
+}
+
+// Force dynamic HTML content (innerHTML) to white
+[innerHTML], [innerHTML] *, div[innerHTML], div[innerHTML] * {
+  color: #ffffff !important;
+  
+  p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
+    color: #ffffff !important;
+  }
+}
+
+// Force Bootstrap table text to white
+.table, .table td, .table th, .table-dark, .table-dark td, .table-dark th {
+  color: #ffffff !important;
+}
+
+// Utility classes
 .mat-elevation-z3 {
-  padding: 0.5em;
-  border-radius: 1em;
+  padding: vars.$spacing-2;
+  border-radius: vars.$border-radius-xl;
+  transition: box-shadow vars.$transition-base vars.$ease-out;
+  
+  &:hover {
+    box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.15), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .mat-elevation-z2 {
-  padding: 1em;
-  border-radius: 1em;
+  padding: vars.$spacing-4;
+  border-radius: vars.$border-radius-xl;
+  transition: box-shadow vars.$transition-base vars.$ease-out;
+  
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
 }
 
 .mat-elevation-z1 {
-  padding: 0.5em;
-  border-radius: 1em;
+  padding: vars.$spacing-2;
+  border-radius: vars.$border-radius-xl;
+  transition: box-shadow vars.$transition-base vars.$ease-out;
 }
 
 .timepicker-overlay {
@@ -164,7 +625,9 @@ body > ngx-material-timepicker-container {
 
 .divider {
   border-width: 2px !important;
-  border-color: $primary-color !important;
+  border-color: var(--mat-sys-primary) !important;
+  margin: vars.$spacing-4 0;
+  transition: border-color vars.$transition-base vars.$ease-out;
 }
 
 .table-width {

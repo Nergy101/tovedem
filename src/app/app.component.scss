@@ -1,32 +1,40 @@
 
 @use "../styles.scss" as *;
+@use "../variables.scss" as *;
 
 :host {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  background-color: #0f1218;
+  min-height: 100vh;
+  transition: background-color $transition-base $ease-out;
 
   ::ng-deep {
     mat-drawer-container {
       flex: 1;
       display: flex;
       flex-flow: column nowrap;
+      background-color: #0f1218;
     }
 
     .mat-drawer-content {
       flex: 1;
       display: flex;
+      background-color: #0f1218;
     }
   }
 }
 
 .router-content {
   display: block;
-  padding-top: 4em;
-  background-color: var(--mat-sys-background);
-  color: var(--mat-sys-on-background);
+  padding-top: $spacing-16;
+  background-color: #0f1218;
+  color: #e8e9eb;
+  flex: 1;
 
   @media (max-width: 1024px) {
-    padding-top: 6em;
+    padding-top: $spacing-24;
   }
 }
 
@@ -39,7 +47,7 @@ header {
 
 footer {
   margin-top: auto;
-  align-self: flex-end;
+  width: 100%;
 
   &.container-fluid {
     padding: 0;
@@ -51,17 +59,17 @@ footer {
 }
 
 .sidenav {
-  margin-top: 5em;
-  padding: 0.1rem;
+  margin-top: $spacing-20;
+  padding: $spacing-1;
 }
 
 .drawer-content {
   flex: 1;
-
-  padding-top: 1em;
-
+  padding-top: $spacing-4;
   display: flex;
   flex-flow: column nowrap;
+  background-color: #0f1218;
+  min-height: 100vh;
 }
 
 mat-icon {
@@ -82,32 +90,42 @@ li {
   width: 100%;
 
   .active {
-    color: white;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 
   :hover {
-    color: white;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 }
 
 a {
   text-decoration: none;
-  color: black;
+  color: var(--mat-sys-on-background);
+  transition: color $transition-base $ease-out;
+
+  &:hover {
+    color: var(--mat-sys-primary);
+  }
 }
 
 .links {
   display: flex;
-  gap: 0.5em;
+  gap: $spacing-2;
   justify-content: space-evenly;
 }
 
 .demo-alert {
-  background-color: #B80301;
-  color: white;
-  padding: 0.5em;
-  border-bottom-left-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
+  background-color: rgba(29, 125, 179, 0.2);
+  color: #a8c8f0;
+  padding: $spacing-2;
+  border-bottom-left-radius: $border-radius-md;
+  border-bottom-right-radius: $border-radius-md;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.2);
   text-align: center;
+  transition: background-color $transition-base $ease-out;
+  backdrop-filter: blur(8px);
 }

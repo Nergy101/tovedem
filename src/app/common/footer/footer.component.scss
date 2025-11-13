@@ -1,3 +1,5 @@
+@use "../../../variables.scss" as *;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -6,9 +8,11 @@
 }
 
 .links {
-  padding-top: 2em;
-  background-color: black;
-  color: white;
+  padding-top: $spacing-8;
+  background-color: #0f1218;
+  color: #e8e9eb;
+  border-top: 1px solid rgba(125, 179, 232, 0.1);
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
 }
 
 .link-row {
@@ -18,45 +22,61 @@
 }
 
 .privacy {
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: $spacing-8;
+  padding-bottom: $spacing-8;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-
-  background-color: #232323;
-  color: white;
+  background-color: #0a0d12;
+  color: #d4d6da;
+  border-top: 1px solid rgba(125, 179, 232, 0.1);
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
 
   .service-status {
     margin-left: auto;
-    color: white;
+    color: #d4d6da;
+    transition: color $transition-base $ease-out;
+    text-decoration: underline;
+    
     &:hover {
-      color: #B80301 !important;
+      color: #7db3e8 !important;
     }
   }
 
   a {
-    color: white;
+    color: #d4d6da;
+    transition: color $transition-base $ease-out;
+    text-decoration: underline;
 
     :visited {
-      color: white;
+      color: #d4d6da;
     }
   }
+  
   .privacy-link {
+    transition: color $transition-base $ease-out;
+    color: #d4d6da;
+    text-decoration: underline;
+    
     &:hover {
-      color: #B80301 !important;
+      color: #7db3e8 !important;
     }
   }
 }
 
 img {
-  border-radius: 1em;
+  border-radius: $border-radius-xl;
+  transition: opacity $transition-base $ease-out;
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 .sponsors-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1em;
+  gap: $spacing-4;
   place-items: center;
 
   @media (max-width: 1024px) {
@@ -70,18 +90,19 @@ img {
 
 .sponsors {
   flex: 1;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: $spacing-8;
+  padding-bottom: $spacing-8;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background-color: white;
+  background-color: #1a1d24;
+  transition: background-color $transition-base $ease-out;
 }
 
 .sponsor-image {
   flex: 0;
   max-height: 10em;
   width: auto;
-  margin: 0.5em;
+  margin: $spacing-2;
   width: 281px;
   height: 84px;
 }
@@ -93,16 +114,25 @@ img {
 ul {
   list-style-type: none;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
 
   li {
-    text-decoration: underline;
+    margin-bottom: $spacing-2;
+    transition: color $transition-base $ease-out;
 
-    &:hover {
-      color: #B80301;
+    button {
+      color: #a8c8f0 !important;
+      text-decoration: underline;
+      
+      &:hover {
+        color: #7db3e8 !important;
+      }
     }
 
     mat-icon {
-      color: white;
+      color: #a8c8f0;
+      transition: color $transition-base $ease-out;
     }
   }
 }
@@ -111,20 +141,49 @@ h2 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
+  gap: $spacing-2;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-4;
+  color: #a8c8f0;
 }
 
 .adres {
-  color: white;
+  color: #a8c8f0;
   text-decoration: underline;
+  transition: color $transition-base $ease-out;
+  
   &:hover {
-    color: #B80301 !important;
+    color: #7db3e8 !important;
+  }
+  
+  span {
+    color: #a8c8f0;
   }
 }
 
 button {
-  color: white !important;
+  color: #a8c8f0 !important;
+  transition: color $transition-base $ease-out;
+  text-decoration: underline;
+  
   &:hover {
-    color: #B80301 !important;
+    color: #7db3e8 !important;
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #7db3e8;
+    outline-offset: 2px;
+  }
+}
+
+// Material button specific styling
+.mat-mdc-button {
+  color: #a8c8f0 !important;
+  
+  &:hover {
+    color: #7db3e8 !important;
+    background-color: rgba(125, 179, 232, 0.1);
   }
 }

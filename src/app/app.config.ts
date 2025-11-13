@@ -34,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideToastr({
       preventDuplicates: true,
+      positionClass: 'toast-bottom-right',
     }),
     {
       provide: ErrorHandler,

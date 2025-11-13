@@ -34,7 +34,7 @@
         matTooltip="Scoll naar Formulier"
         aria-label="Scroll naar Formulier"
         color="primary"
-        onClick="document.getElementById('scrollPoint').scrollIntoView({ block: 'start',  behavior: 'smooth' });"
+        onClick="document.getElementById('scrollPoint').scrollIntoView({ block: 'start',  behavior: 'smooth'});"
       >
         <mat-icon>keyboard_double_arrow_down</mat-icon>
       </button>
@@ -99,11 +99,11 @@
   </div>
   }
 </div>
-<div id="scrollPoint" style="scroll-margin-top: 1em"></div>
+<div id="scrollPoint" style="scroll-margin-top: 4em"></div>
 <div class="container mat-elevation-z2" style="margin-top: 2em">
   <div class="col-12 d-flex justify-content-center">
     <div class="titel">
-      <h1 style="display: flex; align-items: center; gap: .5rem">
+      <h1 style="display: flex; align-items: center; gap: 0.5rem">
         <mat-icon>person_add</mat-icon>
         Schrijf je nu in!
       </h1>
@@ -181,13 +181,23 @@
     </mat-form-field>
   </div>
   <div class="d-flex">
-    <button
-      class="flex"
-      mat-flat-button
-      (click)="submit()"
-      [disabled]="loading() || !formIsValid()"
+    <span
+      [matTooltip]="
+        loading() || !formIsValid()
+          ? 'Vul het formulier in om te verzenden'
+          : ''
+      "
+      [matTooltipDisabled]="!(loading() || !formIsValid())"
+      style="display: flex; flex: 1"
     >
-      Verzenden
-    </button>
+      <button
+        class="flex"
+        mat-flat-button
+        (click)="submit()"
+        [disabled]="loading() || !formIsValid()"
+      >
+        Verzenden
+      </button>
+    </span>
   </div>
 </div>

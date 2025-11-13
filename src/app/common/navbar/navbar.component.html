@@ -1,13 +1,11 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
   <div class="container-fluid p-2">
-    <a class="navbar-brand" routerLink="/"
+    <a class="navbar-brand" routerLink="/" matTooltip="Naar homepage"
       ><img
         class="logo"
-        ngSrc="/assets/tovedem_logo.png"
-        priority
-        width="200"
-        height="50"
+        src="/assets/TovedemLogo.svg"
         alt="tovedem logo"
+        style="height: 50px; width: auto;"
     /></a>
     <div>
       @if (authService.isLoggedIn()){
@@ -214,17 +212,6 @@
             </button>
           </li>
           }
-          <li class="theme-switch">
-            @if (themeService.isDarkTheme()) {
-            <mat-icon class="light-mode-switch" (click)="themeService.toggleTheme()"
-              >light_mode</mat-icon
-            >
-            } @else {
-            <mat-icon class="dark-mode-switch" (click)="themeService.toggleTheme()"
-              >dark_mode</mat-icon
-            >
-            }
-          </li>
         </ul>
       </div>
     </div>

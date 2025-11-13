@@ -1,5 +1,51 @@
+@use "../../../../variables.scss" as *;
+
+// Force ALL text to white with !important
 .row {
   margin-bottom: 2em;
+  
+  * {
+    color: #ffffff !important;
+  }
+  
+  .display-1 {
+    color: #ffffff !important;
+    font-weight: $font-weight-bold;
+  }
+  
+  h2 {
+    color: #ffffff !important;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.container {
+  color: #ffffff !important;
+  
+  * {
+    color: #ffffff !important;
+  }
+  
+  .display-1 {
+    color: #ffffff !important;
+  }
+  
+  .display-6 {
+    color: #ffffff !important;
+  }
+  
+  // Force innerHTML content to white
+  div[innerHTML], [innerHTML], div[innerHTML] * {
+    color: #ffffff !important;
+    
+    p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
+      color: #ffffff !important;
+    }
+    
+    * {
+      color: #ffffff !important;
+    }
+  }
 }
 
 .splash-image {
@@ -22,6 +68,18 @@
     width: 90vw;
     height: 20em;
   }
+  
+  .carousel-caption {
+    h5 {
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    p {
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  }
 }
 
 .carousel-image {
@@ -39,4 +97,18 @@
   object-fit: contain;
   max-width: 100%;
   border-radius: 1em;
+}
+
+mat-list {
+  mat-list-item {
+    color: #ffffff;
+    
+    span {
+      color: #ffffff;
+      
+      i {
+        color: #ffffff;
+      }
+    }
+  }
 }

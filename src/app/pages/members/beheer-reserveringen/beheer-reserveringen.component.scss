@@ -1,13 +1,13 @@
-
+@use "../../../../variables.scss" as *;
 
 .item-container {
   margin-bottom: 1em;
   padding: 1em;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mat-sys-outline-variant);
 }
 
 .item {
-  background-color: #f9f9f9;
+  background-color: var(--mat-sys-surface-container-low);
   padding: 10px;
 }
 
@@ -22,5 +22,6 @@
 }
 
 .printable {
-  background-color: white;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }

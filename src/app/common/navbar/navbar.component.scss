@@ -1,3 +1,5 @@
+@use "../../../variables.scss" as *;
+
 :host {
   flex: 1;
   display: flex;
@@ -9,15 +11,19 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 4em;
+  min-height: $spacing-16;
   padding: 0 !important;
+  backdrop-filter: blur(12px);
+  background-color: rgba(15, 18, 24, 0.85) !important;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.1);
+  transition: background-color $transition-base $ease-out, border-color $transition-base $ease-out;
 
   .light {
-    background-color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(15, 18, 24, 0.85) !important;
   }
 
   .dark {
-    background-color: rgba(0, 0, 0, 0.8) !important;
+    background-color: rgba(15, 18, 24, 0.85) !important;
   }
 }
 
@@ -40,7 +46,7 @@ ul {
 
 li {
   list-style: none;
-  margin-right: 0.5rem;
+  margin-right: $spacing-2;
 
   @media (max-width: 1024px) {
     min-width: 20em;
@@ -49,14 +55,24 @@ li {
   .active {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 
   :hover {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 
   button {
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    border-radius: $border-radius-md;
+
+    &:focus-visible {
+      outline: 2px solid var(--mat-sys-primary);
+      outline-offset: 2px;
+    }
+
     mat-icon {
       pointer-events: none;
     }
@@ -88,8 +104,17 @@ a {
 
 .links {
   display: flex;
-  gap: 0.5em;
+  gap: $spacing-2;
   justify-content: space-evenly;
+}
+
+.navbar-brand {
+  background-color: #ffffff;
+  padding: $spacing-1 $spacing-2 $spacing-1 $spacing-4;
+  border-radius: $border-radius-md;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
@@ -118,21 +143,11 @@ mat-icon {
 }
 
 .profiel-button {
-  padding: 0 2em;
-}
+  padding: 0 $spacing-8;
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
 
-.theme-switch {
-  display: flex;
-  justify-content: center;
-
-  cursor: pointer;
-  border-radius: 1em;
-  padding: 0.5em;
-
-  :hover {
-    background-color: var(--mat-sys-primary);
-    color: var(--mat-sys-on-primary);
-    border-radius: 1em;
+  @media (max-width: 1024px) {
+    min-width: 20em;
   }
 }
 
@@ -140,20 +155,8 @@ mat-icon {
   color: var(--mat-sys-primary);
 }
 
-.light-mode-switch {
-  color: var(--mat-sys-primary);
-}
-
-.dark-mode-switch {
-  color: var(--mat-sys-primary);
-}
-
-.profiel-button {
-  @media (max-width: 1024px) {
-    min-width: 20em;
-  }
-}
-
 .mat-menu-panel {
-  background-color: white !important; // var(--mat-sys-surface-container-low) !important;
+  background-color: var(--mat-sys-surface-container-low) !important;
+  border-radius: $border-radius-lg !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 }

@@ -12,6 +12,11 @@
     </div>
 
     <div class="row pt-4">
+      @if (loading()) {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      } @else {
       @defer(when items()){
 
       <mat-card class="table-responsive table-width">
@@ -32,20 +37,20 @@
             </tr>
           </thead>
           <tbody>
-            @for (item of items(); track $index) {
+            @for (item of items(); track item.id) {
             <tr>
-              <td>{{ item.created | date : "dd LLLL YYYY" }}</td>
+              <td>{{ item.created | date : "dd LLLL yyyy" }}</td>
               <td>{{ item.titel }}</td>
-              <td>{{ item.expand.groep.naam }}</td>
-              <td>{{ item.datum_tijd_1 | date : "MMM d, Y [HH:mm]" }}</td>
-              <td>{{ item.datum_tijd_2 | date : "MMM d, Y [HH:mm]" }}</td>
+              <td>{{ item.expand?.groep?.naam }}</td>
+              <td>{{ item.datum_tijd_1 | date : "MMM d, yyyy [HH:mm]" }}</td>
+              <td>{{ item.datum_tijd_2 | date : "MMM d, yyyy [HH:mm]" }}</td>
               <td>
                 @if ((item.expand?.spelers?.length || 0) > 0) {
                 <button mat-button [matMenuTriggerFor]="menu">
                   <span> {{ item.expand?.spelers?.length }} Spelers </span>
                 </button>
                 <mat-menu #menu="matMenu">
-                  @for (speler of item?.expand?.spelers ?? []; track $index) {
+                  @for (speler of item.expand.spelers; track speler.id) {
                   <p style="margin: 1em">
                     {{ speler.naam }}
                   </p>
@@ -56,14 +61,14 @@
                 }
               </td>
               <td>
-                @if(publicatieActief(item.publicatie_datum)){
+                @if(item.publicatie_datum && publicatieActief(item.publicatie_datum)){
                 <button mat-mini-fab disabled>
                   <mat-icon>share</mat-icon>
                 </button>
                 } @else {
                 <button
                   mat-icon-button
-                  [matTooltip]="item.publicatie_datum"
+                  [matTooltip]="item.publicatie_datum || 'Geen publicatiedatum'"
                   style="background-color: rgb(48, 205, 48)"
                 >
                   <mat-icon>share</mat-icon>
@@ -95,6 +100,7 @@
       <div class="center">
         <mat-spinner></mat-spinner>
       </div>
+      }
       }
     </div>
   </div>

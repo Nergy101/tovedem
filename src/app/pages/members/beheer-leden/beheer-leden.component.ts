@@ -104,14 +104,10 @@ export class BeheerLedenComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    const isDarkTheme = this.themeService.isDarkTheme$();
-
+    // Always apply dark theme to tables
     const tables = document.getElementsByTagName('table');
-
-    if (isDarkTheme) {
-      tables[0]?.classList.add('table-dark');
-    } else {
-      tables[0]?.classList.remove('table-dark');
+    if (tables[0]) {
+      tables[0].classList.add('table-dark');
     }
   }
 

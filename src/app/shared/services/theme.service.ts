@@ -1,40 +1,21 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  isDarkTheme$ = signal(false);
-
   constructor() {
-    this.isDarkTheme$.set(this.isDarkTheme());
+    // Always apply dark theme
+    this.applyDarkTheme();
+  }
 
-    const theme = localStorage.getItem('theme');
-    if (theme) {
-      this.isDarkTheme$.set(theme === 'dark');
-    }
-
-    effect(() => {
-      const isDarkTheme = this.isDarkTheme$();
-      console.log(isDarkTheme);
-
-      if (!isDarkTheme) {
-        // document.getElementsByTagName('html')[0].classList.remove('dark-theme');
-        document.body.classList.remove('darkMode');
-      } else {
-        // document.getElementsByTagName('html')[0].classList.add('dark-theme');
-        document.body.classList.add('darkMode');
-      }
-
-      localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-    });
+  private applyDarkTheme(): void {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('darkMode');
+    document.body.classList.add('darkMode');
   }
 
   isDarkTheme(): boolean {
-    return document.body.classList.contains('darkMode');
-  }
-
-  toggleTheme(): void {
-    this.isDarkTheme$.set(!this.isDarkTheme());
+    return true; // Always dark theme
   }
 }

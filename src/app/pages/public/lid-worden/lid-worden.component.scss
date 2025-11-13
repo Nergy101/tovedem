@@ -24,3 +24,18 @@
   border-radius: 1em;
   height: 20em;
 }
+
+// Ensure scroll button uses primary blue color
+.mat-mdc-fab[color="primary"],
+button[mat-fab][color="primary"] {
+  background-color: #7db3e8 !important;
+  color: #ffffff !important;
+  
+  mat-icon {
+    color: #ffffff !important;
+  }
+  
+  &:hover {
+    background-color: #6aa3d8 !important;
+  }
+}

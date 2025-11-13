@@ -176,38 +176,38 @@ export class BeheerReserveringenComponent implements OnInit {
         this.selecting.set(false);
       });
 
-    effect(async () => {
+    effect(() => {
       const nieuweGeselecteerdeVoorstelling = this.selectedVoorstelling();
       const nieuweGeselecteerdeDatum = this.selectedDatum();
 
       if (!nieuweGeselecteerdeDatum || !nieuweGeselecteerdeVoorstelling) {
+        this.reserveringenVanVoorstelling.set([]);
         return;
       }
 
-      let reserveringenVoorVoorstelling = await this.client.getAll<Reservering>(
-        'reserveringen',
-        {
-          expand: 'voorstelling',
-          filter: this.client.client.filter(
-            'voorstelling.id = {:voorstellingId} && is_vriend_van_tovedem = true',
-            {
-              voorstellingId: nieuweGeselecteerdeVoorstelling.id,
-            }
-          ),
+      this.client.getAll<Reservering>('reserveringen', {
+        expand: 'voorstelling',
+        filter: this.client.client.filter(
+          'voorstelling.id = {:voorstellingId} && is_vriend_van_tovedem = true',
+          {
+            voorstellingId: nieuweGeselecteerdeVoorstelling.id,
+          }
+        ),
+      }).then((reserveringenVoorVoorstelling) => {
+        let filtered = reserveringenVoorVoorstelling;
+        
+        if (this.selectedDatum() == 'Datum 1') {
+          filtered = reserveringenVoorVoorstelling.filter(
+            (x) => x.datum_tijd_1_aantal > 0
+          );
+        } else {
+          filtered = reserveringenVoorVoorstelling.filter(
+            (x) => x.datum_tijd_2_aantal > 0
+          );
         }
-      );
 
-      if (this.selectedDatum() == 'Datum 1') {
-        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(
-          (x) => x.datum_tijd_1_aantal > 0
-        );
-      } else {
-        reserveringenVoorVoorstelling = reserveringenVoorVoorstelling.filter(
-          (x) => x.datum_tijd_2_aantal > 0
-        );
-      }
-
-      this.reserveringenVanVoorstelling.set(reserveringenVoorVoorstelling);
+        this.reserveringenVanVoorstelling.set(filtered);
+      });
     });
   }
 

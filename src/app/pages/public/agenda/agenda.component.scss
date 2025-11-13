@@ -1,4 +1,73 @@
+@use "../../../../variables.scss" as *;
+
 :host {
   display: flex;
   flex-direction: column;
+}
+
+.container {
+  padding-top: 3em;
+  
+  .text-center {
+    margin-bottom: $spacing-8;
+    
+    .display-1 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: var(--mat-sys-on-background);
+      margin-bottom: $spacing-6;
+    }
+  }
+  
+  .m-2 {
+    margin: $spacing-8 0 $spacing-8 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-4;
+    
+    .display-4 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--mat-sys-primary) 0%, rgba(125, 179, 232, 0.8) 100%);
+      padding: $spacing-3 $spacing-8;
+      border-radius: $border-radius-xl;
+      box-shadow: 0 4px 8px rgba(29, 125, 179, 0.3),
+                  0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(125, 179, 232, 0.3);
+      letter-spacing: 0.05em;
+      text-align: center;
+      min-width: 120px;
+      display: inline-block;
+      
+      @media (max-width: 768px) {
+        font-size: $font-size-3xl;
+        padding: $spacing-2 $spacing-6;
+        min-width: 100px;
+      }
+    }
+    
+    .divider {
+      flex: 1;
+      max-width: 200px;
+      
+      @media (max-width: 768px) {
+        max-width: 100px;
+      }
+    }
+  }
+  
+  .row {
+    margin-top: $spacing-6;
+    margin-bottom: $spacing-6;
+    
+    &:first-of-type {
+      margin-top: $spacing-8;
+    }
+    
+    &:last-of-type {
+      margin-bottom: $spacing-8;
+    }
+  }
 }

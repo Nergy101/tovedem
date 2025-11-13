@@ -6,11 +6,11 @@
         (selectionChange)="setSelectedVoorstelling($event)"
         [value]="selectedVoorstelling()"
       >
-        @for (voorstelling of voorstellingen(); track $index) {
+        @for (voorstelling of voorstellingen(); track voorstelling.id) {
         <mat-option [value]="voorstelling"
           >{{ voorstelling.titel }}:
-          {{ voorstelling.datum_tijd_1 | date : "dd-MM-YYYY" }} en
-          {{ voorstelling.datum_tijd_2 | date : "dd-MM-YYYY" }}</mat-option
+          {{ voorstelling.datum_tijd_1 | date : "dd-MM-yyyy" }} en
+          {{ voorstelling.datum_tijd_2 | date : "dd-MM-yyyy" }}</mat-option
         >
         }
       </mat-select>
@@ -165,7 +165,7 @@
               (selectedDag() === "datum1"
                 ? selectedVoorstelling()?.datum_tijd_1
                 : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-YYYY"
+              ) | date : "dd-MM-yyyy"
             }}
             -
             {{
@@ -195,7 +195,7 @@
               (selectedDag() === "datum1"
                 ? selectedVoorstelling()?.datum_tijd_1
                 : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-YYYY"
+              ) | date : "dd-MM-yyyy"
             }}
           </h2>
         </mat-card-header>
@@ -214,7 +214,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (item of reserveringenOfSelectedVoorstelling(); track $index)
+              @for (item of reserveringenOfSelectedVoorstelling(); track item.id)
               {
               <tr>
                 @if (selectedDag() === "datum1") {
@@ -298,7 +298,7 @@
               (selectedDag() === "datum1"
                 ? selectedVoorstelling()?.datum_tijd_1
                 : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-YYYY"
+              ) | date : "dd-MM-yyyy"
             }}
           </h2>
         </mat-card-header>
@@ -314,14 +314,14 @@
               </thead>
               <tbody>
                 @for (item of losseVerkoopOfSelectedVoorstellingDag(); track
-                $index) {
+                item.id) {
                 <tr>
                   <td>
                     {{
                       (item.datum === "datum1"
                         ? selectedVoorstelling()?.datum_tijd_1
                         : selectedVoorstelling()?.datum_tijd_2
-                      ) | date : "dd-MM-YYYY"
+                      ) | date : "dd-MM-yyyy"
                     }}
                   </td>
                   <td>
@@ -375,13 +375,13 @@
     >
       <mat-button-toggle value="datum1">
         {{
-          selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-YYYY"
+          selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-yyyy"
         }}</mat-button-toggle
       >
       @if(selectedVoorstelling()?.datum_tijd_2) {
       <mat-button-toggle value="datum2">
         {{
-          selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-YYYY"
+          selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-yyyy"
         }}</mat-button-toggle
       >
       }

@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import {
-  AfterViewChecked,
+  AfterViewInit,
   Component,
   OnInit,
   computed,
@@ -61,7 +61,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss',
 })
-export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
+export class ReserveringenInzienComponent implements OnInit, AfterViewInit {
   client = inject(PocketbaseService);
   path = inject(ActivatedRoute);
   router = inject(Router);
@@ -90,6 +90,7 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
   reservatieSearchControl = new FormControl('');
   filteredOptions: Observable<Reservering[]>;
   selectedOption = signal<Reservering | null>(null);
+  private tableDarkApplied = false;
 
   seriesVoorDag = computed(() => {
     return this.selectedDag() === 'datum1'
@@ -161,43 +162,47 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
     this.selectedDag.set('datum1');
 
     // set Reserveringen Of Voorstelling
-    effect(async () => {
+    effect(() => {
       const selectedVoorstelling = this.selectedVoorstelling();
 
-      if (!selectedVoorstelling) return;
+      if (!selectedVoorstelling) {
+        this.reserveringenOfSelectedVoorstelling.set([]);
+        return;
+      }
 
-      const reserveringen = await this.client.getAll<Reservering>(
-        'reserveringen',
-        {
-          filter: this.client.client.filter(
-            'voorstelling.id = {:voorstellingId}',
-            {
-              voorstellingId: selectedVoorstelling.id,
-            }
-          ),
-        }
-      );
-
-      this.reserveringenOfSelectedVoorstelling.set(reserveringen);
+      this.loading.set(true);
+      this.client.getAll<Reservering>('reserveringen', {
+        filter: this.client.client.filter(
+          'voorstelling.id = {:voorstellingId}',
+          {
+            voorstellingId: selectedVoorstelling.id,
+          }
+        ),
+      }).then((reserveringen) => {
+        this.reserveringenOfSelectedVoorstelling.set(reserveringen);
+        this.loading.set(false);
+      }).catch(() => {
+        this.loading.set(false);
+      });
     });
 
     // set losse verkoop of selected voorstelling
-    effect(async () => {
+    effect(() => {
       const selectedVoorstelling = this.selectedVoorstelling();
 
-      if (!selectedVoorstelling) return;
+      if (!selectedVoorstelling) {
+        this.losseVerkoopOfSelectedVoorstelling.set([]);
+        return;
+      }
 
-      const losseVerkoop = await this.client.getAll<LosseVerkoop>(
-        'losse_verkoop',
-        {
-          filter: this.client.client.filter(
-            'voorstelling.id = {:voorstellingId}',
-            { voorstellingId: selectedVoorstelling.id }
-          ),
-        }
-      );
-
-      this.losseVerkoopOfSelectedVoorstelling.set(losseVerkoop);
+      this.client.getAll<LosseVerkoop>('losse_verkoop', {
+        filter: this.client.client.filter(
+          'voorstelling.id = {:voorstellingId}',
+          { voorstellingId: selectedVoorstelling.id }
+        ),
+      }).then((losseVerkoop) => {
+        this.losseVerkoopOfSelectedVoorstelling.set(losseVerkoop);
+      });
     });
 
     this.filteredOptions = this.reservatieSearchControl.valueChanges.pipe(
@@ -227,18 +232,17 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  ngAfterViewChecked(): void {
-    const isDarkTheme = this.themeService.isDarkTheme$();
-
-    const tables = document.getElementsByTagName('table');
-
-    if (isDarkTheme) {
-      tables[0]?.classList.add('table-dark');
-      tables[1]?.classList.add('table-dark');
-    } else {
-      tables[0]?.classList.remove('table-dark');
-      tables[1]?.classList.remove('table-dark');
-    }
+  ngAfterViewInit(): void {
+    // Apply dark theme to tables once after view init
+    setTimeout(() => {
+      const tables = document.getElementsByTagName('table');
+      if (!this.tableDarkApplied) {
+        Array.from(tables).forEach((table) => {
+          table.classList.add('table-dark');
+        });
+        this.tableDarkApplied = true;
+      }
+    }, 0);
   }
 
   setSelectedDag(event: MatButtonToggleChange): void {

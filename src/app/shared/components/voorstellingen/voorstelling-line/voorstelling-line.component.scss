@@ -1,7 +1,23 @@
+@use "../../../../../variables.scss" as *;
+
 .container {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: $border-radius-lg;
+  background-color: var(--mat-sys-surface-container-low);
+  border: 1px solid rgba(125, 179, 232, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.15),
+              0 0 0 1px rgba(125, 179, 232, 0.1);
+  transition: box-shadow $transition-base $ease-out, 
+              border-color $transition-base $ease-out;
+  
+  &:hover {
+    box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.25), 
+                0 4px 6px -1px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(125, 179, 232, 0.2);
+    border-color: rgba(125, 179, 232, 0.25);
+  }
 }
 
 .dateFormat {
@@ -21,16 +37,28 @@
   margin: 0.5rem 0;
 }
 
-.card-image {
-  height: 8em;
-  border-radius: 1em;
-  width: 100%;
-  object-fit: cover;
+.image-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   @media (max-width: 768px) {
-    // height: 12em;
-    // margin-top: 1rem;
-    display: none;
+    margin-bottom: $spacing-3;
+  }
+}
+
+.card-image {
+  height: 12em;
+  border-radius: $border-radius-lg;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(125, 179, 232, 0.1);
+  
+  @media (max-width: 768px) {
+    height: 14em;
+    max-width: 100%;
   }
 }
 

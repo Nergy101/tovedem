@@ -4,13 +4,15 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: #f8f9fa;
+    background-color: #1a1d24;
+    color: #e8e9eb;
     padding: 2em;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid rgba(125, 179, 232, 0.1);
 }
 
 .cookie-banner-content {
@@ -18,6 +20,15 @@
     flex-direction: column;
     gap: 1em;
     justify-content: center;
+    
+    .cookie-banner-text {
+        color: #e8e9eb;
+        
+        p {
+            color: #e8e9eb;
+            margin: 0;
+        }
+    }
 }
 
 .cookie-banner-buttons {

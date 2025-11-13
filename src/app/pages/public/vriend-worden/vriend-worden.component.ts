@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
@@ -40,6 +41,7 @@ import { Subscription } from 'rxjs';
         MatCardModule,
         MatCheckboxModule,
         MatDividerModule,
+        MatTooltipModule,
     ],
     templateUrl: './vriend-worden.component.html',
     styleUrl: './vriend-worden.component.scss'

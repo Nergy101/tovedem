@@ -1,6 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import localeNL from '@angular/common/locales/nl';
-import { Component, LOCALE_ID, ViewChild, effect, inject } from '@angular/core';
+import { Component, LOCALE_ID, ViewChild, effect, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -42,7 +42,7 @@ registerLocaleData(localeNL);
     CookieBannerComponent,
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   authService = inject(AuthService);
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
@@ -69,25 +69,14 @@ export class AppComponent {
         this.drawer?.close();
       }, 100);
     });
+  }
 
-    // theme
-    effect(() => {
-      const isDarkTheme = this.themeService.isDarkTheme$();
-      if (isDarkTheme) {
-        document
-          .getElementsByTagName('mat-drawer')?.[0]
-          ?.classList.add('bg-dark');
-        document
-          .getElementsByTagName('mat-drawer')?.[0]
-          ?.classList.remove('bg-light');
-      } else {
-        document
-          .getElementsByTagName('mat-drawer')?.[0]
-          ?.classList.add('bg-light');
-        document
-          .getElementsByTagName('mat-drawer')?.[0]
-          ?.classList.remove('bg-dark');
-      }
-    });
+  ngOnInit(): void {
+    // Always apply dark theme to drawer
+    const drawer = document.getElementsByTagName('mat-drawer')?.[0];
+    if (drawer) {
+      drawer.classList.add('bg-dark');
+      drawer.classList.remove('bg-light');
+    }
   }
 }

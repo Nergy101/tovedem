@@ -1,3 +1,5 @@
+@use "../../../../variables.scss" as *;
+
 .titel {
   display: flex;
   justify-content: center;
@@ -7,13 +9,15 @@ li {
   list-style: none;
 
   .active {
-    color: B80301;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 
   :hover {
-    color: B80301;
-    background-color: #B80301;
+    color: var(--mat-sys-on-primary);
+    background-color: var(--mat-sys-primary);
+    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
   }
 }
 

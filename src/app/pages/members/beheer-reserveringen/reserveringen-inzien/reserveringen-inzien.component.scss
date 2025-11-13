@@ -1,3 +1,5 @@
+@use "../../../../../variables.scss" as *;
+
 .center-items {
   display: flex;
   flex-direction: column;
@@ -8,4 +10,54 @@
 .pie-chart {
   width: 4em;
   height: 4em;
+}
+
+// Table styling for dark mode
+.table {
+  background-color: #1a1d24 !important;
+  color: #ffffff !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  
+  thead {
+    background-color: #25282f !important;
+    
+    th {
+      color: #ffffff !important;
+      border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
+      padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  tbody {
+    tr {
+      background-color: #1a1d24 !important;
+      color: #ffffff !important;
+      border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
+      transition: background-color $transition-base $ease-out;
+      
+      &:hover {
+        background-color: #25282f !important;
+      }
+      
+      td {
+        color: #ffffff !important;
+        padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.table-responsive {
+  background-color: #1a1d24 !important;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+}
+
+.table-width {
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 }

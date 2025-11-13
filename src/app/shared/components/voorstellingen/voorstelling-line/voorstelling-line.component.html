@@ -1,5 +1,22 @@
 <div class="container mat-elevation-z2">
   <div class="row align-items-center justify-content-evenly g-3">
+    <div class="col-lg-4 col-md-12 col-12 image-column">
+      @if(voorstelling().afbeelding) {
+      <img
+        class="card-image"
+        [matTooltip]="voorstelling().ondertitel"
+        [src]="
+          getImageUrl(
+            voorstelling().collectionId,
+            voorstelling().id,
+            voorstelling().afbeelding!
+          )
+        "
+        alt="voorstelling afbeelding"
+      />
+      }
+    </div>
+
     @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
     <div class="dateFormat col-lg-3 col-md-6 col-12">
       <div class="display-6">
@@ -31,21 +48,5 @@
       Reserveren
     </app-nav-button>
     }
-    <div class="col-lg-2 col-md-12 col-12">
-      @if(voorstelling().afbeelding) {
-      <img
-        class="card-image"
-        [matTooltip]="voorstelling().ondertitel"
-        [src]="
-          getImageUrl(
-            voorstelling().collectionId,
-            voorstelling().id,
-            voorstelling().afbeelding!
-          )
-        "
-        alt="voorstelling afbeelding"
-      />
-      }
-    </div>
   </div>
 </div>

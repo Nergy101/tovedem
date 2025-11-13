@@ -1,14 +1,14 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
 import { ThemeService } from '../../shared/services/theme.service';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -18,39 +18,27 @@ import { NgOptimizedImage } from '@angular/common';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    NgOptimizedImage
+    MatTooltipModule
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   breakpointService = inject(BreakpointService);
   sideDrawerService = inject(SideDrawerService);
   themeService = inject(ThemeService);
 
-  constructor() {
-    effect(() => {
-      const isDarkTheme = this.themeService.isDarkTheme$();
-      if (isDarkTheme) {
-        document.getElementsByTagName('nav')?.[0]?.classList.add('navbar-dark');
-        document.getElementsByTagName('nav')?.[0]?.classList.add('bg-dark');
-        document.getElementsByTagName('nav')?.[0]?.classList.remove('bg-light');
-        document
-          .getElementsByTagName('nav')?.[0]
-          ?.classList.remove('navbar-light');
-      } else {
-        document
-          .getElementsByTagName('nav')?.[0]
-          ?.classList.add('navbar-light');
-        document.getElementsByTagName('nav')?.[0]?.classList.add('bg-light');
-        document.getElementsByTagName('nav')?.[0]?.classList.remove('bg-dark');
-        document
-          .getElementsByTagName('nav')?.[0]
-          ?.classList.remove('navbar-dark');
-      }
-    });
+  ngOnInit(): void {
+    // Always apply dark theme to navbar
+    const nav = document.getElementsByTagName('nav')?.[0];
+    if (nav) {
+      nav.classList.add('navbar-dark');
+      nav.classList.add('bg-dark');
+      nav.classList.remove('bg-light');
+      nav.classList.remove('navbar-light');
+    }
   }
 
   get groepenClass(): string {

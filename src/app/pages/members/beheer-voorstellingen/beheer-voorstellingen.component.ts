@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import {
-  AfterViewChecked,
+  AfterViewInit,
   Component,
   OnInit,
   WritableSignal,
@@ -53,7 +53,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
 })
-export class BeheerVoorstellingenComponent implements OnInit, AfterViewChecked {
+export class BeheerVoorstellingenComponent implements OnInit, AfterViewInit {
   loading = signal(false);
 
   items: WritableSignal<Voorstelling[] | null> = signal(null);
@@ -65,30 +65,35 @@ export class BeheerVoorstellingenComponent implements OnInit, AfterViewChecked {
   themeService = inject(ThemeService);
 
   titleService = inject(Title);
+  private tableDarkApplied = false;
 
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Voorstellingen');
   }
 
   async ngOnInit(): Promise<void> {
-    this.items.set(
-      await this.client.getAll<Voorstelling>('voorstellingen', {
-        expand: 'groep,spelers',
-        sort: '-created',
-      })
-    );
+    this.loading.set(true);
+    try {
+      this.items.set(
+        await this.client.getAll<Voorstelling>('voorstellingen', {
+          expand: 'groep,spelers',
+          sort: '-created',
+        })
+      );
+    } finally {
+      this.loading.set(false);
+    }
   }
 
-  ngAfterViewChecked(): void {
-    const isDarkTheme = this.themeService.isDarkTheme$();
-
-    const tables = document.getElementsByTagName('table');
-
-    if (isDarkTheme) {
-      tables[0]?.classList.add('table-dark');
-    } else {
-      tables[0]?.classList.remove('table-dark');
-    }
+  ngAfterViewInit(): void {
+    // Apply dark theme to tables once after view init
+    setTimeout(() => {
+      const tables = document.getElementsByTagName('table');
+      if (tables[0] && !this.tableDarkApplied) {
+        tables[0].classList.add('table-dark');
+        this.tableDarkApplied = true;
+      }
+    }, 0);
   }
 
   async openCreateDialog(): Promise<void> {
