@@ -93,8 +93,20 @@
                 Datum: {{ datum1 | date : "dd LLLL yyyy" }} <br />
                 Start tijd: {{ datum1 | date : "HH:mm" }}
               </h4>
-              <div style="display: flex; justify-content: center">
-                <mat-form-field style="max-width: 20em; text-align: center">
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  width: 100%;
+                "
+              >
+                <mat-form-field
+                  style="max-width: 20em; text-align: center; width: 100%"
+                  [class.mat-form-field-invalid]="
+                    !canReserveDate1() && amountOfPeopleDate1() > 0
+                  "
+                >
                   <mat-label>Hoeveel mensen?</mat-label>
                   <input
                     matInput
@@ -104,6 +116,9 @@
                     max="20"
                     [ngModel]="amountOfPeopleDate1()"
                     (ngModelChange)="amountOfPeopleDate1Changed($event)"
+                    [class.mat-input-invalid]="
+                      !canReserveDate1() && amountOfPeopleDate1() > 0
+                    "
                   />
 
                   <button
@@ -126,6 +141,34 @@
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+
+                  @if (limitReachedDate1()) {
+                  <mat-error>
+                    <mat-icon
+                      style="
+                        vertical-align: middle;
+                        font-size: 18px;
+                        height: 18px;
+                        width: 18px;
+                      "
+                      >error</mat-icon
+                    >
+                    Maximum bereikt: {{ totalPeopleDate1() }}/100 mensen
+                    gereserveerd voor datum 1
+                  </mat-error>
+                  } @else if (!canReserveDate1() && amountOfPeopleDate1() > 0) {
+                  <mat-error>
+                    Te veel: {{ totalPeopleDate1() }}/100 gereserveerd. Met
+                    {{ amountOfPeopleDate1() }} extra wordt de limiet
+                    overschreden.
+                  </mat-error>
+                  } @if (totalPeopleDate1() > 0 && canReserveDate1() &&
+                  !limitReachedDate1()) {
+                  <mat-hint>
+                    {{ totalPeopleDate1() }}/100 mensen gereserveerd voor datum
+                    1
+                  </mat-hint>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -147,8 +190,20 @@
                 Datum: {{ datum2 | date : "dd LLLL yyyy" }} <br />
                 Start tijd: {{ datum2 | date : "HH:mm" }}
               </h4>
-              <div style="display: flex; justify-content: center">
-                <mat-form-field style="max-width: 20em">
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  width: 100%;
+                "
+              >
+                <mat-form-field
+                  style="max-width: 20em; width: 100%"
+                  [class.mat-form-field-invalid]="
+                    !canReserveDate2() && amountOfPeopleDate2() > 0
+                  "
+                >
                   <mat-label style="text-align: center"
                     >Hoeveel mensen?</mat-label
                   >
@@ -160,6 +215,9 @@
                     max="20"
                     [ngModel]="amountOfPeopleDate2()"
                     (ngModelChange)="amountOfPeopleDate2Changed($event)"
+                    [class.mat-input-invalid]="
+                      !canReserveDate2() && amountOfPeopleDate2() > 0
+                    "
                   />
                   <button
                     matPrefix
@@ -181,6 +239,34 @@
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+
+                  @if (limitReachedDate2()) {
+                  <mat-error>
+                    <mat-icon
+                      style="
+                        vertical-align: middle;
+                        font-size: 18px;
+                        height: 18px;
+                        width: 18px;
+                      "
+                      >error</mat-icon
+                    >
+                    Maximum bereikt: {{ totalPeopleDate2() }}/100 mensen
+                    gereserveerd voor datum 2
+                  </mat-error>
+                  } @else if (!canReserveDate2() && amountOfPeopleDate2() > 0) {
+                  <mat-error>
+                    Te veel: {{ totalPeopleDate2() }}/100 gereserveerd. Met
+                    {{ amountOfPeopleDate2() }} extra wordt de limiet
+                    overschreden.
+                  </mat-error>
+                  } @if (totalPeopleDate2() > 0 && canReserveDate2() &&
+                  !limitReachedDate2()) {
+                  <mat-hint>
+                    {{ totalPeopleDate2() }}/100 mensen gereserveerd voor datum
+                    2
+                  </mat-hint>
+                  }
                 </mat-form-field>
               </div>
             </div>

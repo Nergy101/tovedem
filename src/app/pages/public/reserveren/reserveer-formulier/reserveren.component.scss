@@ -42,3 +42,35 @@ input[type="number"] {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
+// Angular Material error styling enhancements
+::ng-deep {
+  .mat-form-field-invalid {
+    .mat-form-field-outline-thick {
+      color: var(--mat-form-field-error-text-color, #f44336) !important;
+    }
+    
+    .mat-form-field-label {
+      color: var(--mat-form-field-error-text-color, #f44336) !important;
+    }
+    
+    .mat-form-field-label.mat-focused {
+      color: var(--mat-form-field-error-text-color, #f44336) !important;
+    }
+  }
+  
+  .mat-error {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    margin-top: 0.25em;
+    
+    mat-icon {
+      margin-right: 0.25em;
+    }
+  }
+  
+  .mat-hint {
+    color: var(--mat-form-field-label-text-color, rgba(0, 0, 0, 0.6));
+  }
+}
