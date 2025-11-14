@@ -218,6 +218,19 @@ export class PrintenComponent implements OnInit {
     this.selectedDay.set(event.value);
   }
 
+  getReserveringTicketName(reservering: Reservering): string {
+    return `${reservering.voornaam} ${reservering.achternaam}`;
+  }
+
+  getReserveringTicketStatus(reservering: Reservering): string | null {
+    if (reservering.is_lid_van_vereniging) {
+      return 'Lid van Tovedem';
+    } else if (reservering.is_vriend_van_tovedem) {
+      return 'Vriend van Tovedem';
+    }
+    return null;
+  }
+
   async testPdf(): Promise<void> {
     try {
       // Create a new PDF document
@@ -321,10 +334,23 @@ export class PrintenComponent implements OnInit {
           }
         );
 
+        // Parse name and status if they're separated by newline
+        const nameParts = name.split('\n');
+        const displayName = nameParts[0];
+        const status = nameParts.length > 1 ? nameParts[1] : null;
+
         doc.setFontSize(20);
-        doc.text(name, textStartX + textWidth / 2, currentY + 35, {
+        doc.text(displayName, textStartX + textWidth / 2, currentY + 35, {
           align: 'center',
         });
+
+        // Add status on second row if present
+        if (status) {
+          doc.setFontSize(14);
+          doc.text(status, textStartX + textWidth / 2, currentY + 50, {
+            align: 'center',
+          });
+        }
 
         // Move to next ticket position
         currentY += ticketHeight;
@@ -360,9 +386,11 @@ export class PrintenComponent implements OnInit {
           selectedDay === 'datum1'
             ? reservering.datum_tijd_1_aantal
             : reservering.datum_tijd_2_aantal;
-        const personName = `${reservering.voornaam} ${reservering.achternaam}`;
+        const personName = this.getReserveringTicketName(reservering);
+        const status = this.getReserveringTicketStatus(reservering);
+        const ticketName = status ? `${personName}\n${status}` : personName;
         for (let i = 0; i < amount; i++) {
-          addTicket(personName);
+          addTicket(ticketName);
         }
       }
 

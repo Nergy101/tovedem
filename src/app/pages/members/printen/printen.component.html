@@ -384,7 +384,10 @@
           </div>
           <div class="ticket-content">
             <h2>Gereserveerd voor:</h2>
-            <h1>{{ reservering.voornaam }} {{ reservering.achternaam }}</h1>
+            <h1>{{ getReserveringTicketName(reservering) }}</h1>
+            @if (getReserveringTicketStatus(reservering)) {
+            <h3>{{ getReserveringTicketStatus(reservering) }}</h3>
+            }
           </div>
           <div class="ticket-logo">
             <img
@@ -508,7 +511,10 @@
     </div>
     <div class="print-ticket-content">
       <h2>Gereserveerd voor:</h2>
-      <h1>{{ reservering.voornaam }} {{ reservering.achternaam }}</h1>
+      <h1>{{ getReserveringTicketName(reservering) }}</h1>
+      @if (getReserveringTicketStatus(reservering)) {
+      <h3>{{ getReserveringTicketStatus(reservering) }}</h3>
+      }
     </div>
     <div class="print-ticket-logo">
       <img

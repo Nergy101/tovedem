@@ -77,6 +77,13 @@
   line-height: 1.2;
 }
 
+.printable .ticket-content h3 {
+  font-size: 1.5em;
+  margin: 0.5em 0 0 0;
+  font-weight: 400;
+  color: var(--mat-sys-on-surface-variant);
+}
+
 .printable .divider {
   display: none;
 }
@@ -166,6 +173,13 @@
   margin: 0;
   word-wrap: break-word;
   line-height: 1.2;
+}
+
+.print-ticket-content h3 {
+  font-size: 14pt;
+  margin: 3mm 0 0 0;
+  font-weight: 400;
+  color: #666;
 }
 
 /* Reserveringen list styling */
