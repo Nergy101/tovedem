@@ -529,8 +529,38 @@ html.darkMode mat-tooltip, html.darkMode .mat-mdc-tooltip {
   color: #ffffff !important;
 }
 
+html.darkMode .mat-mdc-tooltip__surface,
+html.darkMode .mdc-tooltip__surface {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  color: #ffffff !important;
+  --mdc-plain-tooltip-container-color: rgba(0, 0, 0, 0.9) !important;
+  --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
+}
+
 html.lightMode mat-tooltip, html.lightMode .mat-mdc-tooltip {
   color: #000000 !important;
+}
+
+html.lightMode .mat-mdc-tooltip__surface,
+html.lightMode .mdc-tooltip__surface {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #000000 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
+  --mdc-plain-tooltip-supporting-text-color: #000000 !important;
+}
+
+// Also target the overlay container
+html.lightMode .cdk-overlay-container .mat-mdc-tooltip,
+html.lightMode .cdk-overlay-container .mdc-tooltip {
+  --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
+  --mdc-plain-tooltip-supporting-text-color: #000000 !important;
+}
+
+html.darkMode .cdk-overlay-container .mat-mdc-tooltip,
+html.darkMode .cdk-overlay-container .mdc-tooltip {
+  --mdc-plain-tooltip-container-color: rgba(0, 0, 0, 0.9) !important;
+  --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
 }
 
 // Button styling for theater aesthetic
