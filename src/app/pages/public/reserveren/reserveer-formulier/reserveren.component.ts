@@ -72,7 +72,7 @@ export class ReserverenComponent implements OnInit {
   amountOfPeopleDate1 = signal(0);
   amountOfPeopleDate2 = signal(0);
   saving = signal(false);
-  
+
   // Reservation totals from API (privacy-safe - only numbers)
   totalPeopleDate1 = signal(0);
   totalPeopleDate2 = signal(0);
@@ -81,21 +81,21 @@ export class ReserverenComponent implements OnInit {
   emailsAreSame = computed(() => {
     return this.email() === this.email2();
   });
-  
+
   // Check if reservation is allowed for each date
   canReserveDate1 = computed(() => {
     return this.totalPeopleDate1() + this.amountOfPeopleDate1() <= 100;
   });
-  
+
   canReserveDate2 = computed(() => {
     return this.totalPeopleDate2() + this.amountOfPeopleDate2() <= 100;
   });
-  
+
   // Check if limit is reached (for display purposes)
   limitReachedDate1 = computed(() => {
     return this.totalPeopleDate1() >= 100;
   });
-  
+
   limitReachedDate2 = computed(() => {
     return this.totalPeopleDate2() >= 100;
   });
@@ -147,26 +147,29 @@ export class ReserverenComponent implements OnInit {
       );
 
       this.groepsNaam = groep.naam;
-      
+
       // Fetch reservation totals (privacy-safe API endpoint)
       await this.loadReservationTotals();
     }
   }
-  
+
   async loadReservationTotals(): Promise<void> {
     if (!this.voorstellingId) return;
-    
+
     this.loadingTotals.set(true);
     try {
       const response = await fetch(
-        `${this.client.environment.pocketbase.baseUrl}/api/reserveringen/totals?voorstellingId=${this.voorstellingId}`
+        `${this.client.environment.pocketbase.baseUrl}/reserveringen/totals?voorstellingId=${this.voorstellingId}`
       );
-      
+
       if (!response.ok) {
-        console.error('Failed to load reservation totals:', response.statusText);
+        console.error(
+          'Failed to load reservation totals:',
+          response.statusText
+        );
         return;
       }
-      
+
       const data = await response.json();
       this.totalPeopleDate1.set(data.datum_tijd_1_total || 0);
       this.totalPeopleDate2.set(data.datum_tijd_2_total || 0);
@@ -190,7 +193,7 @@ export class ReserverenComponent implements OnInit {
       );
       return;
     }
-    
+
     this.saving.set(true);
 
     try {
@@ -228,10 +231,11 @@ export class ReserverenComponent implements OnInit {
       });
     } catch (error: any) {
       console.error('Error creating reservation:', error);
-      
+
       // Handle server-side validation errors
-      let errorMessage = 'Er is een fout opgetreden bij het reserveren. Probeer het later opnieuw.';
-      
+      let errorMessage =
+        'Er is een fout opgetreden bij het reserveren. Probeer het later opnieuw.';
+
       // PocketBase errors have different structures
       if (error?.response?.message) {
         errorMessage = error.response.message;
@@ -240,7 +244,7 @@ export class ReserverenComponent implements OnInit {
       } else if (error?.message) {
         errorMessage = error.message;
       }
-      
+
       this.snackBar.open(errorMessage, '❌', {
         duration: 7000,
       });
