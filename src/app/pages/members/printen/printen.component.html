@@ -249,15 +249,8 @@
         }
       </div>
 
-            <!-- Test and Print Buttons -->
+            <!-- Print Button -->
             <div class="d-flex justify-content-center gap-3 mt-4 mb-4">
-              <button
-                mat-raised-button
-                (click)="testPdf()"
-                color="accent"
-              >
-                Test
-              </button>
               @if (generatingPdf()) {
               <div class="d-flex align-items-center gap-3">
                 <mat-spinner diameter="40"></mat-spinner>
