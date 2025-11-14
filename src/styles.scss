@@ -12,8 +12,8 @@
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
-// Default to dark theme - professional minimalistic blue pastel
-html {
+// Dark theme - professional minimalistic blue pastel
+html.darkMode {
   @include mat.theme(
     (
       color: $primary-palette-dark,
@@ -30,11 +30,11 @@ html {
   --mat-sys-surface-container: #25282f;
   --mat-sys-surface-container-high: #2b2e35;
   --mat-sys-surface: #0f1218;
-  
+
   // Override Material Design on-primary colors to ensure white text on blue backgrounds
   --mat-sys-on-primary: #ffffff;
   --mat-sys-on-primary-container: #ffffff;
-  
+
   // CRITICAL: Force ALL text colors to white for dark mode readability
   --mat-sys-on-background: #ffffff !important;
   --mat-sys-on-surface: #ffffff !important;
@@ -43,19 +43,64 @@ html {
   --mat-sys-on-surface-container-low: #ffffff !important;
   --mat-sys-on-surface-container-high: #ffffff !important;
   --mat-sys-on-surface-container-lowest: #ffffff !important;
-  
+
   // Form field outline appearance colors
   --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3) !important;
   --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
   --mdc-outlined-text-field-label-text-color: rgba(232, 233, 235, 0.7) !important;
   --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
-  
+
   background-color: #0f1218;
   color: #ffffff !important;
-  
+
   body {
     background-color: var(--mat-sys-background);
     color: #ffffff !important;
+  }
+}
+
+// Light theme - white backgrounds, black text, same blue accents
+html.lightMode {
+  @include mat.theme(
+    (
+      color: $primary-palette,
+      typography: "Roboto",
+      density: 0,
+      theme-type: light,
+    )
+  );
+
+  // Light theme colors - white backgrounds, black text
+  --mat-sys-background: #ffffff;
+  --mat-sys-surface-container-lowest: #f5f9fe;
+  --mat-sys-surface-container-low: #eaf1fc;
+  --mat-sys-surface-container: #d4e3f8;
+  --mat-sys-surface-container-high: #a8c8f0;
+  --mat-sys-surface: #ffffff;
+
+  // Text colors for light theme - black/dark text
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-on-primary-container: #001d35;
+  --mat-sys-on-background: #000000 !important;
+  --mat-sys-on-surface: #000000 !important;
+  --mat-sys-on-surface-variant: #1a1d24 !important;
+  --mat-sys-on-surface-container: #000000 !important;
+  --mat-sys-on-surface-container-low: #000000 !important;
+  --mat-sys-on-surface-container-high: #000000 !important;
+  --mat-sys-on-surface-container-lowest: #000000 !important;
+
+  // Form field outline appearance colors for light theme
+  --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.5) !important;
+  --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
+  --mdc-outlined-text-field-label-text-color: rgba(0, 0, 0, 0.6) !important;
+  --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
+
+  background-color: #ffffff;
+  color: #000000 !important;
+
+  body {
+    background-color: var(--mat-sys-background);
+    color: #000000 !important;
   }
 }
 
@@ -64,12 +109,17 @@ body {
   height: 100%;
 }
 
-html {
+html.darkMode {
   background-color: #0f1218;
   transition: background-color vars.$transition-base vars.$ease-out;
 }
 
-body {
+html.lightMode {
+  background-color: #ffffff;
+  transition: background-color vars.$transition-base vars.$ease-out;
+}
+
+body.darkMode {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   display: flex;
@@ -82,14 +132,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// AGGRESSIVE GLOBAL RULE: Force ALL text to white (with specific exceptions)
+body.lightMode {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  display: flex;
+  font-size: vars.$font-size-base;
+  line-height: vars.$line-height-normal;
+  color: #000000 !important;
+  background-color: #ffffff;
+  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// AGGRESSIVE GLOBAL RULE: Force ALL text to white for dark mode (with specific exceptions)
 // Target all text-containing elements specifically
-*, *::before, *::after {
+html.darkMode *, html.darkMode *::before, html.darkMode *::after {
   color: #ffffff !important;
 }
 
-// Exceptions for specific elements that should NOT be white
-img, svg, canvas, video, iframe, input[type="image"], 
+// Light mode: Force ALL text to black
+html.lightMode *, html.lightMode *::before, html.lightMode *::after {
+  color: #000000 !important;
+}
+
+// Exceptions for specific elements that should NOT be forced
+img, svg, canvas, video, iframe, input[type="image"],
 .mat-mdc-icon-button[color="primary"] mat-icon,
 .mat-mdc-button[color="primary"] mat-icon,
 .mat-mdc-raised-button[color="primary"] mat-icon {
@@ -99,32 +167,44 @@ img, svg, canvas, video, iframe, input[type="image"],
 // Ensure links are visible (primary color) - override the universal selector
 a[href], a {
   color: var(--mat-sys-primary) !important;
-  
+
   &:hover {
     color: var(--mat-sys-primary-container) !important;
   }
-  
+
   &:visited {
     color: var(--mat-sys-primary) !important;
   }
 }
 
 // Override Bootstrap text utility classes
-.text-dark, .text-black {
+html.darkMode .text-dark, html.darkMode .text-black {
   color: #ffffff !important;
 }
 
-.text-muted, .text-secondary {
+html.lightMode .text-dark, html.lightMode .text-black {
+  color: #000000 !important;
+}
+
+html.darkMode .text-muted, html.darkMode .text-secondary {
   color: #e8e9eb !important;
 }
 
+html.lightMode .text-muted, html.lightMode .text-secondary {
+  color: #666666 !important;
+}
+
 // Bootstrap display classes
-.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+html.darkMode .display-1, html.darkMode .display-2, html.darkMode .display-3, html.darkMode .display-4, html.darkMode .display-5, html.darkMode .display-6 {
   color: #ffffff !important;
 }
 
-// Typography hierarchy - Force white text
-h1, .h1 {
+html.lightMode .display-1, html.lightMode .display-2, html.lightMode .display-3, html.lightMode .display-4, html.lightMode .display-5, html.lightMode .display-6 {
+  color: #000000 !important;
+}
+
+// Typography hierarchy - Dark theme white text
+html.darkMode h1, html.darkMode .h1 {
   font-size: vars.$font-size-4xl;
   font-weight: vars.$font-weight-bold;
   line-height: vars.$line-height-tight;
@@ -133,7 +213,16 @@ h1, .h1 {
   color: #ffffff !important;
 }
 
-h2, .h2 {
+html.lightMode h1, html.lightMode .h1 {
+  font-size: vars.$font-size-4xl;
+  font-weight: vars.$font-weight-bold;
+  line-height: vars.$line-height-tight;
+  letter-spacing: vars.$letter-spacing-tight;
+  margin-bottom: vars.$spacing-6;
+  color: #000000 !important;
+}
+
+html.darkMode h2, html.darkMode .h2 {
   font-size: vars.$font-size-3xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-tight;
@@ -142,7 +231,16 @@ h2, .h2 {
   color: #ffffff !important;
 }
 
-h3, .h3 {
+html.lightMode h2, html.lightMode .h2 {
+  font-size: vars.$font-size-3xl;
+  font-weight: vars.$font-weight-semibold;
+  line-height: vars.$line-height-tight;
+  letter-spacing: vars.$letter-spacing-normal;
+  margin-bottom: vars.$spacing-5;
+  color: #000000 !important;
+}
+
+html.darkMode h3, html.darkMode .h3 {
   font-size: vars.$font-size-2xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-normal;
@@ -151,7 +249,16 @@ h3, .h3 {
   color: #ffffff !important;
 }
 
-h4, .h4 {
+html.lightMode h3, html.lightMode .h3 {
+  font-size: vars.$font-size-2xl;
+  font-weight: vars.$font-weight-semibold;
+  line-height: vars.$line-height-normal;
+  letter-spacing: vars.$letter-spacing-normal;
+  margin-bottom: vars.$spacing-4;
+  color: #000000 !important;
+}
+
+html.darkMode h4, html.darkMode .h4 {
   font-size: vars.$font-size-xl;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -159,7 +266,15 @@ h4, .h4 {
   color: #ffffff !important;
 }
 
-h5, .h5 {
+html.lightMode h4, html.lightMode .h4 {
+  font-size: vars.$font-size-xl;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-3;
+  color: #000000 !important;
+}
+
+html.darkMode h5, html.darkMode .h5 {
   font-size: vars.$font-size-lg;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -167,7 +282,15 @@ h5, .h5 {
   color: #ffffff !important;
 }
 
-h6, .h6 {
+html.lightMode h5, html.lightMode .h5 {
+  font-size: vars.$font-size-lg;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-2;
+  color: #000000 !important;
+}
+
+html.darkMode h6, html.darkMode .h6 {
   font-size: vars.$font-size-base;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -175,31 +298,49 @@ h6, .h6 {
   color: #ffffff !important;
 }
 
-p {
+html.lightMode h6, html.lightMode .h6 {
+  font-size: vars.$font-size-base;
+  font-weight: vars.$font-weight-medium;
+  line-height: vars.$line-height-normal;
+  margin-bottom: vars.$spacing-2;
+  color: #000000 !important;
+}
+
+html.darkMode p {
   margin-bottom: vars.$spacing-4;
   line-height: vars.$line-height-relaxed;
   color: #ffffff !important;
 }
 
-// Force all text elements to white
-span, div, li, ul, ol, td, th, label, strong, em, b, i, blockquote, pre, code {
+html.lightMode p {
+  margin-bottom: vars.$spacing-4;
+  line-height: vars.$line-height-relaxed;
+  color: #000000 !important;
+}
+
+// Force all text elements to white (dark) or black (light)
+html.darkMode span, html.darkMode div, html.darkMode li, html.darkMode ul, html.darkMode ol, html.darkMode td, html.darkMode th, html.darkMode label, html.darkMode strong, html.darkMode em, html.darkMode b, html.darkMode i, html.darkMode blockquote, html.darkMode pre, html.darkMode code {
   color: #ffffff !important;
+}
+
+html.lightMode span, html.lightMode div, html.lightMode li, html.lightMode ul, html.lightMode ol, html.lightMode td, html.lightMode th, html.lightMode label, html.lightMode strong, html.lightMode em, html.lightMode b, html.lightMode i, html.lightMode blockquote, html.lightMode pre, html.lightMode code {
+  color: #000000 !important;
 }
 
 a {
   color: var(--mat-sys-primary);
   text-decoration: none;
   transition: color vars.$transition-base vars.$ease-out;
-  
+
   &:hover {
     color: var(--mat-sys-primary-container);
     text-decoration: underline;
   }
-  
+
   &:visited {
     color: var(--mat-sys-primary);
   }
-  
+
   &:focus-visible {
     outline: 2px solid var(--mat-sys-primary);
     outline-offset: 2px;
@@ -223,7 +364,7 @@ a {
 // Button utilities
 button {
   transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out, box-shadow vars.$transition-base vars.$ease-out;
-  
+
   &:focus-visible {
     outline: 2px solid var(--mat-sys-primary);
     outline-offset: 2px;
@@ -237,7 +378,7 @@ mat-form-field {
   .mat-mdc-form-field-focus-overlay {
     background-color: transparent !important;
   }
-  
+
   &.mat-focused {
     .mat-mdc-form-field-outline-thick {
       color: #7db3e8 !important; // Primary blue when focused
@@ -246,15 +387,25 @@ mat-form-field {
 }
 
 // Card improvements - minimalistic theater aesthetic
-mat-card {
+html.darkMode mat-card {
   transition: box-shadow vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
   background-color: #1a1d24;
   border: 1px solid rgba(125, 179, 232, 0.1);
   border-radius: vars.$border-radius-lg;
-  
+
   &:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(125, 179, 232, 0.2);
-    border-color: rgba(125, 179, 232, 0.3);
+    // Removed hover effects to prevent edge appearance
+  }
+}
+
+html.lightMode mat-card {
+  transition: box-shadow vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
+  background-color: #eaf1fc;
+  border: 1px solid rgba(125, 179, 232, 0.4);
+  border-radius: vars.$border-radius-lg;
+
+  &:hover {
+    // Removed hover effects to prevent edge appearance
   }
 }
 
@@ -264,45 +415,122 @@ mat-card {
   background-color: transparent;
 }
 
+// Add bottom spacing to containers to prevent overlap with footer
+.container.mat-elevation-z2 {
+  margin-bottom: vars.$spacing-12;
+
+  @media (max-width: 768px) {
+    margin-bottom: vars.$spacing-8;
+  }
+}
+
+// Form containers in light theme - add subtle card-like background
+html.lightMode form,
+html.lightMode .contact-form,
+html.lightMode .reservation-form,
+html.lightMode .sinterklaas-form,
+html.lightMode .lid-worden-form,
+html.lightMode .vriend-worden-form {
+  background-color: #f5f9fe;
+  padding: vars.$spacing-4;
+  margin-bottom: vars.$spacing-12;
+  border-radius: vars.$border-radius-lg;
+  border: 1px solid rgba(125, 179, 232, 0.3);
+  transition: background-color vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
+
+  @media (max-width: 768px) {
+    padding: vars.$spacing-3;
+    margin-bottom: vars.$spacing-8;
+  }
+}
+
+// Form containers in dark theme - add bottom margin
+html.darkMode form,
+html.darkMode .contact-form,
+html.darkMode .reservation-form,
+html.darkMode .sinterklaas-form,
+html.darkMode .lid-worden-form,
+html.darkMode .vriend-worden-form {
+  margin-bottom: vars.$spacing-12;
+
+  @media (max-width: 768px) {
+    margin-bottom: vars.$spacing-8;
+  }
+}
+
 // Ensure all Material components use theme colors
-.mat-mdc-card {
+html.darkMode .mat-mdc-card {
   background-color: #1a1d24;
   color: #ffffff !important;
   border: 1px solid rgba(125, 179, 232, 0.1);
-  
+
   * {
     color: #ffffff !important;
   }
 }
 
-// Force Material list items to white
-mat-list-item, mat-list-item * {
+html.lightMode .mat-mdc-card {
+  background-color: #eaf1fc;
+  color: #000000 !important;
+  border: 1px solid rgba(125, 179, 232, 0.4);
+
+  * {
+    color: #000000 !important;
+  }
+}
+
+// Force Material list items to theme colors
+html.darkMode mat-list-item, html.darkMode mat-list-item * {
   color: #ffffff !important;
 }
 
-// Force Material dialog content to white
-mat-dialog-container, mat-dialog-container * {
+html.lightMode mat-list-item, html.lightMode mat-list-item * {
+  color: #000000 !important;
+}
+
+// Force Material dialog content to theme colors
+html.darkMode mat-dialog-container, html.darkMode mat-dialog-container * {
   color: #ffffff !important;
 }
 
-// Force Material tab labels to white
-mat-tab-label, mat-tab-label * {
+html.lightMode mat-dialog-container, html.lightMode mat-dialog-container * {
+  color: #000000 !important;
+}
+
+// Force Material tab labels to theme colors
+html.darkMode mat-tab-label, html.darkMode mat-tab-label * {
   color: #ffffff !important;
 }
 
-// Force Material expansion panel to white
-mat-expansion-panel, mat-expansion-panel * {
+html.lightMode mat-tab-label, html.lightMode mat-tab-label * {
+  color: #000000 !important;
+}
+
+// Force Material expansion panel to theme colors
+html.darkMode mat-expansion-panel, html.darkMode mat-expansion-panel * {
   color: #ffffff !important;
 }
 
-// Force Material menu to white
-mat-menu, .mat-mdc-menu-panel, .mat-mdc-menu-panel * {
+html.lightMode mat-expansion-panel, html.lightMode mat-expansion-panel * {
+  color: #000000 !important;
+}
+
+// Force Material menu to theme colors
+html.darkMode mat-menu, html.darkMode .mat-mdc-menu-panel, html.darkMode .mat-mdc-menu-panel * {
   color: #ffffff !important;
 }
 
-// Force Material tooltip to white
-mat-tooltip, .mat-mdc-tooltip {
+html.lightMode mat-menu, html.lightMode .mat-mdc-menu-panel, html.lightMode .mat-mdc-menu-panel * {
+  color: #000000 !important;
+}
+
+// Force Material tooltip to theme colors
+html.darkMode mat-tooltip, html.darkMode .mat-mdc-tooltip {
   color: #ffffff !important;
+}
+
+html.lightMode mat-tooltip, html.lightMode .mat-mdc-tooltip {
+  color: #000000 !important;
 }
 
 // Button styling for theater aesthetic
@@ -310,15 +538,15 @@ mat-tooltip, .mat-mdc-tooltip {
 .mat-mdc-flat-button {
   border-radius: vars.$border-radius-md;
   transition: box-shadow vars.$transition-base vars.$ease-out;
-  
+
   &:hover {
     box-shadow: 0 4px 8px rgba(29, 125, 179, 0.2);
   }
-  
+
   // Ensure primary buttons have white text
   &[color="primary"] {
     color: var(--mat-sys-on-primary) !important;
-    
+
     .mat-mdc-button-persistent-ripple {
       color: var(--mat-sys-on-primary);
     }
@@ -331,11 +559,11 @@ mat-tooltip, .mat-mdc-tooltip {
 .mat-mdc-flat-button[color="primary"],
 .mat-mdc-fab[color="primary"] {
   color: var(--mat-sys-on-primary) !important;
-  
+
   .mdc-button__label {
     color: var(--mat-sys-on-primary) !important;
   }
-  
+
   mat-icon {
     color: var(--mat-sys-on-primary) !important;
   }
@@ -348,11 +576,11 @@ mat-tooltip, .mat-mdc-tooltip {
 .primary-color,
 [class*="bg-primary"] {
   color: var(--mat-sys-on-primary) !important;
-  
+
   * {
     color: var(--mat-sys-on-primary) !important;
   }
-  
+
   mat-icon {
     color: var(--mat-sys-on-primary) !important;
   }
@@ -382,19 +610,19 @@ button[mat-fab][color="primary"],
   }
 }
 
-// Form fields - Outline style with consistent dark background and blue borders
-.mat-mdc-form-field {
+// Form fields - Outline style with theme-aware backgrounds and blue borders
+html.darkMode .mat-mdc-form-field {
   // Ensure consistent dark background for all form field types
   .mat-mdc-text-field-wrapper {
     background-color: #1a1d24 !important;
     border-radius: vars.$border-radius-md;
   }
-  
+
   // For fill appearance (if used), ensure dark background
   .mat-mdc-text-field-wrapper.mdc-text-field--filled {
     background-color: #1a1d24 !important;
   }
-  
+
   // For outline appearance - blue border styling
   .mdc-notched-outline {
     .mdc-notched-outline__leading,
@@ -404,7 +632,7 @@ button[mat-fab][color="primary"],
       border-width: 1px !important;
     }
   }
-  
+
   // Focused state - brighter blue border
   &.mat-focused,
   &.mdc-text-field--focused {
@@ -417,68 +645,68 @@ button[mat-fab][color="primary"],
       }
     }
   }
-  
+
   // Legacy outline support (for older Material versions)
   .mat-mdc-form-field-outline {
     color: rgba(125, 179, 232, 0.3) !important; // Light blue border when not focused
   }
-  
+
   .mat-mdc-form-field-outline-thick {
     color: rgba(125, 179, 232, 0.5) !important; // Medium blue border
     border-width: 2px !important;
   }
-  
+
   &.mat-focused {
     .mat-mdc-form-field-outline-thick {
       color: #7db3e8 !important; // Primary blue when focused
       border-width: 2px !important;
     }
   }
-  
+
   .mat-mdc-form-field-focus-overlay {
     background-color: transparent !important;
   }
-  
+
   // Ensure form field text is readable
   .mat-mdc-input-element,
   .mat-mdc-form-field-input-control input,
   .mat-mdc-form-field-textarea-control textarea,
   .mdc-text-field__input {
     color: #ffffff !important;
-    
+
     // Hide placeholders in Material form fields - Material handles labels instead
     &::placeholder {
       opacity: 0 !important;
       color: transparent !important;
     }
-    
+
     &::-webkit-input-placeholder {
       opacity: 0 !important;
       color: transparent !important;
     }
-    
+
     &::-moz-placeholder {
       opacity: 0 !important;
       color: transparent !important;
     }
-    
+
     &:-ms-input-placeholder {
       opacity: 0 !important;
       color: transparent !important;
     }
   }
-  
+
   // Label styling - Material's standard label behavior
   .mat-mdc-form-field-label,
   .mdc-floating-label {
     color: rgba(232, 233, 235, 0.7) !important; // Light gray label when inside field
-    
+
     // Label when floating above (when field has value or is focused)
     &.mdc-floating-label--float-above {
       color: #7db3e8 !important; // Blue label when floating
     }
   }
-  
+
   // Ensure label floats correctly when focused
   &.mat-focused {
     .mat-mdc-form-field-label,
@@ -486,7 +714,7 @@ button[mat-fab][color="primary"],
       color: #7db3e8 !important; // Blue label when focused
     }
   }
-  
+
   // Label color when field has value
   &.mat-form-field-should-float {
     .mat-mdc-form-field-label,
@@ -494,26 +722,26 @@ button[mat-fab][color="primary"],
       color: #7db3e8 !important; // Blue label when field has value
     }
   }
-  
+
   // Hint text
   .mat-mdc-form-field-hint {
     color: rgba(232, 233, 235, 0.6) !important; // Light gray hint
   }
-  
+
   // Error text
   .mat-mdc-form-field-error {
     color: var(--mat-sys-error) !important;
   }
-  
+
   // Select dropdown styling
   .mat-mdc-select-value {
     color: #ffffff !important;
   }
-  
+
   .mat-mdc-select-arrow {
     color: rgba(232, 233, 235, 0.7) !important;
   }
-  
+
   // Textarea specific styling
   .mat-mdc-form-field-textarea-control {
     background-color: #1a1d24 !important;
@@ -521,57 +749,244 @@ button[mat-fab][color="primary"],
   }
 }
 
-// Force all input, textarea, select elements to white with light placeholders
-input, textarea, select {
+html.lightMode .mat-mdc-form-field {
+  // Ensure consistent light blue background for all form field types
+  .mat-mdc-text-field-wrapper {
+    background-color: #eaf1fc !important;
+    border-radius: vars.$border-radius-md;
+  }
+
+  // For fill appearance (if used), ensure light blue background
+  .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+    background-color: #eaf1fc !important;
+  }
+
+  // For outline appearance - blue border styling
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(125, 179, 232, 0.5) !important; // Light blue border when not focused
+      border-width: 1px !important;
+    }
+  }
+
+  // Focused state - brighter blue border
+  &.mat-focused,
+  &.mdc-text-field--focused {
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #7db3e8 !important; // Primary blue when focused
+        border-width: 2px !important;
+      }
+    }
+  }
+
+  // Legacy outline support (for older Material versions)
+  .mat-mdc-form-field-outline {
+    color: rgba(125, 179, 232, 0.5) !important; // Light blue border when not focused
+  }
+
+  .mat-mdc-form-field-outline-thick {
+    color: rgba(125, 179, 232, 0.7) !important; // Medium blue border
+    border-width: 2px !important;
+  }
+
+  &.mat-focused {
+    .mat-mdc-form-field-outline-thick {
+      color: #7db3e8 !important; // Primary blue when focused
+      border-width: 2px !important;
+    }
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+  }
+
+  // Ensure form field text is readable
+  .mat-mdc-input-element,
+  .mat-mdc-form-field-input-control input,
+  .mat-mdc-form-field-textarea-control textarea,
+  .mdc-text-field__input {
+    color: #000000 !important;
+
+    // Hide placeholders in Material form fields - Material handles labels instead
+    &::placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+
+    &::-webkit-input-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+
+    &::-moz-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+
+    &:-ms-input-placeholder {
+      opacity: 0 !important;
+      color: transparent !important;
+    }
+  }
+
+  // Label styling - Material's standard label behavior
+  .mat-mdc-form-field-label,
+  .mdc-floating-label {
+    color: rgba(0, 0, 0, 0.6) !important; // Dark gray label when inside field
+
+    // Label when floating above (when field has value or is focused)
+    &.mdc-floating-label--float-above {
+      color: #7db3e8 !important; // Blue label when floating
+    }
+  }
+
+  // Ensure label floats correctly when focused
+  &.mat-focused {
+    .mat-mdc-form-field-label,
+    .mdc-floating-label {
+      color: #7db3e8 !important; // Blue label when focused
+    }
+  }
+
+  // Label color when field has value
+  &.mat-form-field-should-float {
+    .mat-mdc-form-field-label,
+    .mdc-floating-label {
+      color: #7db3e8 !important; // Blue label when field has value
+    }
+  }
+
+  // Hint text
+  .mat-mdc-form-field-hint {
+    color: rgba(0, 0, 0, 0.5) !important; // Dark gray hint
+  }
+
+  // Error text
+  .mat-mdc-form-field-error {
+    color: var(--mat-sys-error) !important;
+  }
+
+  // Select dropdown styling
+  .mat-mdc-select-value {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  // Textarea specific styling
+  .mat-mdc-form-field-textarea-control {
+    background-color: #eaf1fc !important;
+    border-radius: vars.$border-radius-md;
+  }
+}
+
+// Force all input, textarea, select elements to theme colors
+html.darkMode input, html.darkMode textarea, html.darkMode select {
   color: #ffffff !important;
   background-color: #1a1d24 !important;
-  
+
   // Light placeholder text
   &::placeholder {
     color: rgba(232, 233, 235, 0.6) !important;
     opacity: 1;
   }
-  
+
   &::-webkit-input-placeholder {
     color: rgba(232, 233, 235, 0.6) !important;
     opacity: 1;
   }
-  
+
   &::-moz-placeholder {
     color: rgba(232, 233, 235, 0.6) !important;
     opacity: 1;
   }
-  
+
   &:-ms-input-placeholder {
     color: rgba(232, 233, 235, 0.6) !important;
     opacity: 1;
   }
 }
 
+html.lightMode input, html.lightMode textarea, html.lightMode select {
+  color: #000000 !important;
+  background-color: #eaf1fc !important;
+
+  // Dark placeholder text
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+    opacity: 1;
+  }
+
+  &::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+    opacity: 1;
+  }
+
+  &::-moz-placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+    opacity: 1;
+  }
+}
+
 // Ensure select elements have consistent styling
-select {
+html.darkMode select {
   border: 1px solid rgba(125, 179, 232, 0.3) !important;
   border-radius: vars.$border-radius-md;
   padding: vars.$spacing-2 vars.$spacing-3;
-  
+
   &:focus {
     border-color: #7db3e8 !important;
     outline: none;
   }
 }
 
-// Force dynamic HTML content (innerHTML) to white
-[innerHTML], [innerHTML] *, div[innerHTML], div[innerHTML] * {
+html.lightMode select {
+  border: 1px solid rgba(125, 179, 232, 0.5) !important;
+  border-radius: vars.$border-radius-md;
+  padding: vars.$spacing-2 vars.$spacing-3;
+
+  &:focus {
+    border-color: #7db3e8 !important;
+    outline: none;
+  }
+}
+
+// Force dynamic HTML content (innerHTML) to theme colors
+html.darkMode [innerHTML], html.darkMode [innerHTML] *, html.darkMode div[innerHTML], html.darkMode div[innerHTML] * {
   color: #ffffff !important;
-  
+
   p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
     color: #ffffff !important;
   }
 }
 
-// Force Bootstrap table text to white
-.table, .table td, .table th, .table-dark, .table-dark td, .table-dark th {
+html.lightMode [innerHTML], html.lightMode [innerHTML] *, html.lightMode div[innerHTML], html.lightMode div[innerHTML] * {
+  color: #000000 !important;
+
+  p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
+    color: #000000 !important;
+  }
+}
+
+// Force Bootstrap table text to theme colors
+html.darkMode .table, html.darkMode .table td, html.darkMode .table th, html.darkMode .table-dark, html.darkMode .table-dark td, html.darkMode .table-dark th {
   color: #ffffff !important;
+}
+
+html.lightMode .table, html.lightMode .table td, html.lightMode .table th, html.lightMode .table-dark, html.lightMode .table-dark td, html.lightMode .table-dark th {
+  color: #000000 !important;
 }
 
 // Utility classes
@@ -579,9 +994,9 @@ select {
   padding: vars.$spacing-2;
   border-radius: vars.$border-radius-xl;
   transition: box-shadow vars.$transition-base vars.$ease-out;
-  
+
   &:hover {
-    box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.15), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    // Removed hover effects to prevent edge appearance
   }
 }
 
@@ -589,9 +1004,9 @@ select {
   padding: vars.$spacing-4;
   border-radius: vars.$border-radius-xl;
   transition: box-shadow vars.$transition-base vars.$ease-out;
-  
+
   &:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    // Removed hover effects to prevent edge appearance
   }
 }
 

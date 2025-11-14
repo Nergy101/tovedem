@@ -1,6 +1,9 @@
 <div class="splash-image"></div>
 
-<div class="container mat-elevation-z2">
+<div
+  class="container mat-elevation-z2"
+  style="padding-bottom: var(--spacing-4)"
+>
   <div class="display-1 justify-content-center" style="text-align: center">
     Sinterklaas
   </div>
@@ -47,7 +50,7 @@
   </div>
   }
 
-  <div class="row">
+  <form class="row sinterklaas-form">
     <mat-form-field class="col-12 col-md-4">
       <mat-label>Volledige naam</mat-label>
       <input
@@ -90,9 +93,13 @@
     </mat-form-field>
     <div class="d-flex">
       <span
-        [matTooltip]="(!name || !email || !subject || !message) ? 'Vul het formulier in om te verzenden' : ''"
+        [matTooltip]="
+          !name || !email || !subject || !message
+            ? 'Vul het formulier in om te verzenden'
+            : ''
+        "
         [matTooltipDisabled]="!(!name || !email || !subject || !message)"
-        style="display: flex; flex: 1;"
+        style="display: flex; flex: 1"
       >
         <button
           class="flex"
@@ -104,5 +111,5 @@
         </button>
       </span>
     </div>
-  </div>
+  </form>
 </div>

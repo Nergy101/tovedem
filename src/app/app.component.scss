@@ -6,9 +6,13 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: #0f1218;
   min-height: 100vh;
   transition: background-color $transition-base $ease-out;
+}
+
+// Dark theme backgrounds
+:host-context(html.darkMode) {
+  background-color: #0f1218;
 
   ::ng-deep {
     mat-drawer-container {
@@ -26,16 +30,48 @@
   }
 }
 
+// Light theme backgrounds
+:host-context(html.lightMode) {
+  background-color: #ffffff;
+
+  ::ng-deep {
+    mat-drawer-container {
+      flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+      background-color: #ffffff;
+    }
+
+    .mat-drawer-content {
+      flex: 1;
+      display: flex;
+      background-color: #ffffff;
+    }
+  }
+}
+
 .router-content {
   display: block;
   padding-top: $spacing-16;
-  background-color: #0f1218;
-  color: #e8e9eb;
+  padding-bottom: $spacing-16;
   flex: 1;
 
   @media (max-width: 1024px) {
     padding-top: $spacing-24;
+    padding-bottom: $spacing-12;
   }
+}
+
+// Dark theme router content
+:host-context(html.darkMode) .router-content {
+  background-color: #0f1218;
+  color: #e8e9eb;
+}
+
+// Light theme router content
+:host-context(html.lightMode) .router-content {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 header {
@@ -68,8 +104,18 @@ footer {
   padding-top: $spacing-4;
   display: flex;
   flex-flow: column nowrap;
-  background-color: #0f1218;
   min-height: 100vh;
+  transition: background-color $transition-base $ease-out;
+}
+
+// Dark theme drawer content
+:host-context(html.darkMode) .drawer-content {
+  background-color: #0f1218;
+}
+
+// Light theme drawer content
+:host-context(html.lightMode) .drawer-content {
+  background-color: #ffffff;
 }
 
 mat-icon {
@@ -119,13 +165,24 @@ a {
 }
 
 .demo-alert {
-  background-color: rgba(29, 125, 179, 0.2);
-  color: #a8c8f0;
   padding: $spacing-2;
   border-bottom-left-radius: $border-radius-md;
   border-bottom-right-radius: $border-radius-md;
-  border-bottom: 1px solid rgba(125, 179, 232, 0.2);
   text-align: center;
-  transition: background-color $transition-base $ease-out;
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, border-color $transition-base $ease-out;
   backdrop-filter: blur(8px);
+}
+
+// Dark theme demo alert
+:host-context(html.darkMode) .demo-alert {
+  background-color: rgba(29, 125, 179, 0.2);
+  color: #a8c8f0;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.2);
+}
+
+// Light theme demo alert
+:host-context(html.lightMode) .demo-alert {
+  background-color: rgba(125, 179, 232, 0.1);
+  color: #005e93;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.3);
 }

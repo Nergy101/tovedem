@@ -31,18 +31,15 @@ export class NavbarComponent implements OnInit {
   themeService = inject(ThemeService);
 
   ngOnInit(): void {
-    // Always apply dark theme to navbar
-    const nav = document.getElementsByTagName('nav')?.[0];
-    if (nav) {
-      nav.classList.add('navbar-dark');
-      nav.classList.add('bg-dark');
-      nav.classList.remove('bg-light');
-      nav.classList.remove('navbar-light');
-    }
+    // Theme is now managed by ThemeService
   }
 
   get groepenClass(): string {
     return this.router.url.includes('groep') ? 'active' : '';
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 
   toggleSideDrawer(): void {

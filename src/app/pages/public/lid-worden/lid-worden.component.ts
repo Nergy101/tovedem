@@ -47,7 +47,6 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatSelect,
     MatSelectModule,
     MatDividerModule,
     MatTooltipModule,

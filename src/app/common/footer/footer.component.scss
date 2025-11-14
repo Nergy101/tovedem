@@ -9,10 +9,21 @@
 
 .links {
   padding-top: $spacing-8;
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, border-color $transition-base $ease-out;
+}
+
+// Dark theme links section
+:host-context(html.darkMode) .links {
   background-color: #0f1218;
   color: #e8e9eb;
   border-top: 1px solid rgba(125, 179, 232, 0.1);
-  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+}
+
+// Light theme links section
+:host-context(html.lightMode) .links {
+  background-color: #ffffff;
+  color: #000000;
+  border-top: 1px solid rgba(125, 179, 232, 0.3);
 }
 
 .link-row {
@@ -27,17 +38,21 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, border-color $transition-base $ease-out;
+}
+
+// Dark theme privacy section
+:host-context(html.darkMode) .privacy {
   background-color: #0a0d12;
   color: #d4d6da;
   border-top: 1px solid rgba(125, 179, 232, 0.1);
-  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
 
   .service-status {
     margin-left: auto;
     color: #d4d6da;
     transition: color $transition-base $ease-out;
     text-decoration: underline;
-    
+
     &:hover {
       color: #7db3e8 !important;
     }
@@ -52,12 +67,50 @@
       color: #d4d6da;
     }
   }
-  
+
   .privacy-link {
     transition: color $transition-base $ease-out;
     color: #d4d6da;
     text-decoration: underline;
-    
+
+    &:hover {
+      color: #7db3e8 !important;
+    }
+  }
+}
+
+// Light theme privacy section
+:host-context(html.lightMode) .privacy {
+  background-color: #f5f9fe;
+  color: #1a1d24;
+  border-top: 1px solid rgba(125, 179, 232, 0.3);
+
+  .service-status {
+    margin-left: auto;
+    color: #1a1d24;
+    transition: color $transition-base $ease-out;
+    text-decoration: underline;
+
+    &:hover {
+      color: #7db3e8 !important;
+    }
+  }
+
+  a {
+    color: #1a1d24;
+    transition: color $transition-base $ease-out;
+    text-decoration: underline;
+
+    :visited {
+      color: #1a1d24;
+    }
+  }
+
+  .privacy-link {
+    transition: color $transition-base $ease-out;
+    color: #1a1d24;
+    text-decoration: underline;
+
     &:hover {
       color: #7db3e8 !important;
     }
@@ -94,8 +147,17 @@ img {
   padding-bottom: $spacing-8;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background-color: #1a1d24;
   transition: background-color $transition-base $ease-out;
+}
+
+// Dark theme sponsors section
+:host-context(html.darkMode) .sponsors {
+  background-color: #1a1d24;
+}
+
+// Light theme sponsors section
+:host-context(html.lightMode) .sponsors {
+  background-color: #ffffff;
 }
 
 .sponsor-image {
@@ -122,17 +184,42 @@ ul {
     transition: color $transition-base $ease-out;
 
     button {
-      color: #a8c8f0 !important;
       text-decoration: underline;
-      
+      transition: color $transition-base $ease-out;
+
       &:hover {
         color: #7db3e8 !important;
       }
     }
 
     mat-icon {
-      color: #a8c8f0;
       transition: color $transition-base $ease-out;
+    }
+  }
+}
+
+// Dark theme ul
+:host-context(html.darkMode) ul {
+  li {
+    button {
+      color: #a8c8f0 !important;
+    }
+
+    mat-icon {
+      color: #a8c8f0;
+    }
+  }
+}
+
+// Light theme ul
+:host-context(html.lightMode) ul {
+  li {
+    button {
+      color: #005e93 !important;
+    }
+
+    mat-icon {
+      color: #005e93;
     }
   }
 }
@@ -145,28 +232,50 @@ h2 {
   font-size: $font-size-2xl;
   font-weight: $font-weight-semibold;
   margin-bottom: $spacing-4;
+  transition: color $transition-base $ease-out;
+}
+
+// Dark theme h2
+:host-context(html.darkMode) h2 {
   color: #a8c8f0;
 }
 
+// Light theme h2
+:host-context(html.lightMode) h2 {
+  color: #005e93;
+}
+
 .adres {
-  color: #a8c8f0;
   text-decoration: underline;
   transition: color $transition-base $ease-out;
-  
+
   &:hover {
     color: #7db3e8 !important;
   }
-  
+}
+
+// Dark theme adres
+:host-context(html.darkMode) .adres {
+  color: #a8c8f0;
+
   span {
     color: #a8c8f0;
   }
 }
 
+// Light theme adres
+:host-context(html.lightMode) .adres {
+  color: #005e93;
+
+  span {
+    color: #005e93;
+  }
+}
+
 button {
-  color: #a8c8f0 !important;
   transition: color $transition-base $ease-out;
   text-decoration: underline;
-  
+
   &:hover {
     color: #7db3e8 !important;
     text-decoration: underline;
@@ -178,10 +287,29 @@ button {
   }
 }
 
-// Material button specific styling
-.mat-mdc-button {
+// Dark theme buttons
+:host-context(html.darkMode) button {
   color: #a8c8f0 !important;
-  
+}
+
+// Light theme buttons
+:host-context(html.lightMode) button {
+  color: #005e93 !important;
+}
+
+// Material button specific styling
+:host-context(html.darkMode) .mat-mdc-button {
+  color: #a8c8f0 !important;
+
+  &:hover {
+    color: #7db3e8 !important;
+    background-color: rgba(125, 179, 232, 0.1);
+  }
+}
+
+:host-context(html.lightMode) .mat-mdc-button {
+  color: #005e93 !important;
+
   &:hover {
     color: #7db3e8 !important;
     background-color: rgba(125, 179, 232, 0.1);

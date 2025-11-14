@@ -72,11 +72,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Always apply dark theme to drawer
-    const drawer = document.getElementsByTagName('mat-drawer')?.[0];
-    if (drawer) {
-      drawer.classList.add('bg-dark');
-      drawer.classList.remove('bg-light');
-    }
+    // Theme is now managed by ThemeService
   }
 }

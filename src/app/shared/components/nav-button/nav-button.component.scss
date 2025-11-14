@@ -3,4 +3,17 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  color: #ffffff !important;
+}
+
+button {
+  color: #ffffff !important;
+
+  .mdc-button__label {
+    color: #ffffff !important;
+  }
+
+  mat-icon {
+    color: #ffffff !important;
+  }
 }

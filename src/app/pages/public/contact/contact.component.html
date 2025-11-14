@@ -1,6 +1,9 @@
 <div class="splash-image"></div>
 
-<div class="container mat-elevation-z2">
+<div
+  class="container mat-elevation-z2"
+  style="padding-bottom: var(--spacing-4)"
+>
   <div class="display-1 justify-content-center text-center">
     Contact formulier
   </div>
@@ -49,7 +52,7 @@
         <mat-icon>location_on</mat-icon> Schalm Oranjelaan 10, 3454 BT De Meern
       </h1>
     </div>
-    <form (ngSubmit)="verstuurContactMail()" class="row">
+    <form (ngSubmit)="verstuurContactMail()" class="row contact-form">
       <mat-form-field class="col-12 col-md-4">
         <mat-label>Volledige naam</mat-label>
         <input
@@ -94,11 +97,15 @@
           required
         ></textarea>
       </mat-form-field>
-      <div class="d-flex">
+      <div class="d-flex submit-button-container">
         <span
-          [matTooltip]="(!name || !email || !subject || !message) ? 'Vul het formulier in om te verzenden' : ''"
+          [matTooltip]="
+            !name || !email || !subject || !message
+              ? 'Vul het formulier in om te verzenden'
+              : ''
+          "
           [matTooltipDisabled]="!(!name || !email || !subject || !message)"
-          style="display: flex; flex: 1;"
+          style="display: flex; flex: 1"
         >
           <button
             class="flex"

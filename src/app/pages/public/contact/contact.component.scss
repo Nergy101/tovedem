@@ -2,6 +2,16 @@
 
 @use "../../../../variables.scss" as *;
 
+.container {
+  padding: $spacing-8 $spacing-4;
+  margin-bottom: $spacing-12;
+
+  @media (max-width: 768px) {
+    padding: $spacing-6 $spacing-3;
+    margin-bottom: $spacing-8;
+  }
+}
+
 .titel {
   display: flex;
   justify-content: center;
@@ -41,7 +51,7 @@ li {
 
   .intro-text {
     max-width: 75%;
-    
+
     @media (max-width: 768px) {
       max-width: 100%;
     }
@@ -70,4 +80,16 @@ li {
     outline: 2px solid var(--mat-sys-primary);
     outline-offset: 2px;
   }
+}
+
+.contact-form {
+  margin-top: $spacing-4;
+
+  mat-form-field {
+    margin-bottom: $spacing-2;
+  }
+}
+
+.submit-button-container {
+  padding-bottom: $spacing-8;
 }

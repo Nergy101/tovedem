@@ -109,95 +109,98 @@
       </h1>
     </div>
   </div>
-  <div class="row">
-    <mat-form-field class="col-md-4 col-12">
-      <mat-label>Voornaam</mat-label>
-      <input
-        placeholder="Pieter"
-        matInput
-        type="text"
-        required
-        [(ngModel)]="voornaam"
-      />
-    </mat-form-field>
-    <mat-form-field class="col-md-4 col-12">
-      <mat-label>Achternaam</mat-label>
-      <input
-        placeholder="Post"
-        matInput
-        type="text"
-        required
-        [(ngModel)]="achternaam"
-      />
-    </mat-form-field>
-    <mat-form-field class="col-md-4 col-12">
-      <mat-label>Geboortedatum</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker1"
-        [(ngModel)]="geboorteDatum"
-        required
-        name="picker1"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker1"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div class="row">
-    <mat-form-field class="col-md-8 col-12">
-      <mat-label>E-mail</mat-label>
-      <input
-        placeholder="pieter-post@voorbeeld.nl"
-        matInput
-        type="email"
-        required
-        [(ngModel)]="email"
-      />
-    </mat-form-field>
+  <form class="lid-worden-form">
+    <div class="row">
+      <mat-form-field class="col-md-4 col-12">
+        <mat-label>Voornaam</mat-label>
+        <input
+          placeholder="Pieter"
+          matInput
+          type="text"
+          required
+          [(ngModel)]="voornaam"
+        />
+      </mat-form-field>
+      <mat-form-field class="col-md-4 col-12">
+        <mat-label>Achternaam</mat-label>
+        <input
+          placeholder="Post"
+          matInput
+          type="text"
+          required
+          [(ngModel)]="achternaam"
+        />
+      </mat-form-field>
+      <mat-form-field class="col-md-4 col-12">
+        <mat-label>Geboortedatum</mat-label>
+        <input
+          placeholder="14-11-1990"
+          matInput
+          [matDatepicker]="picker1"
+          [(ngModel)]="geboorteDatum"
+          required
+          name="picker1"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-8 col-12">
+        <mat-label>E-mail</mat-label>
+        <input
+          placeholder="pieter-post@voorbeeld.nl"
+          matInput
+          type="email"
+          required
+          [(ngModel)]="email"
+        />
+      </mat-form-field>
 
-    <mat-form-field class="col-md-4 col-12">
-      <mat-label>Groep</mat-label>
-      <mat-select [(value)]="selectedGroep" required>
-        @for (groep of groepen(); track $index) {
-        <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
+      <mat-form-field class="col-md-4 col-12">
+        <mat-label>Groep</mat-label>
+        <mat-select [(value)]="selectedGroep" required>
+          @for (groep of groepen(); track $index) {
+          <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-  <div class="d-flex">
-    <mat-form-field class="flex">
-      <mat-label>Bericht</mat-label>
-      <textarea
-        [(ngModel)]="message"
-        matInput
-        rows="10"
-        required
-        placeholder="Typ hier je bericht"
-      ></textarea>
-    </mat-form-field>
-  </div>
-  <div class="d-flex">
-    <span
-      [matTooltip]="
-        loading() || !formIsValid()
-          ? 'Vul het formulier in om te verzenden'
-          : ''
-      "
-      [matTooltipDisabled]="!(loading() || !formIsValid())"
-      style="display: flex; flex: 1"
-    >
-      <button
-        class="flex"
-        mat-flat-button
-        (click)="submit()"
-        [disabled]="loading() || !formIsValid()"
+    <div class="d-flex">
+      <mat-form-field class="flex">
+        <mat-label>Bericht</mat-label>
+        <textarea
+          [(ngModel)]="message"
+          matInput
+          rows="10"
+          required
+          placeholder="Typ hier je bericht"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div class="d-flex">
+      <span
+        [matTooltip]="
+          loading() || !formIsValid()
+            ? 'Vul het formulier in om te verzenden'
+            : ''
+        "
+        [matTooltipDisabled]="!(loading() || !formIsValid())"
+        style="display: flex; flex: 1"
       >
-        Verzenden
-      </button>
-    </span>
-  </div>
+        <button
+          class="flex"
+          mat-flat-button
+          (click)="submit()"
+          [disabled]="loading() || !formIsValid()"
+        >
+          Verzenden
+        </button>
+      </span>
+    </div>
+  </form>
 </div>

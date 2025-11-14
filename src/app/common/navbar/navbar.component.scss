@@ -14,17 +14,19 @@ nav {
   min-height: $spacing-16;
   padding: 0 !important;
   backdrop-filter: blur(12px);
+  transition: background-color $transition-base $ease-out, border-color $transition-base $ease-out;
+}
+
+// Dark theme navbar
+:host-context(html.darkMode) nav {
   background-color: rgba(15, 18, 24, 0.85) !important;
   border-bottom: 1px solid rgba(125, 179, 232, 0.1);
-  transition: background-color $transition-base $ease-out, border-color $transition-base $ease-out;
+}
 
-  .light {
-    background-color: rgba(15, 18, 24, 0.85) !important;
-  }
-
-  .dark {
-    background-color: rgba(15, 18, 24, 0.85) !important;
-  }
+// Light theme navbar
+:host-context(html.lightMode) nav {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.3);
 }
 
 .p-0 {
