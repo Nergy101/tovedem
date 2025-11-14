@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { lastValueFrom } from 'rxjs';
 import { Afbeelding } from '../../../models/domain/afbeelding.model';
 import { Page } from '../../../models/pocketbase/page.model';
@@ -27,6 +28,7 @@ import { ImagePreviewDialogComponent } from './image-preview-dialog/image-previe
     MatIconButton,
     MatIcon,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './gallerij.component.html',
   styleUrl: './gallerij.component.scss',
@@ -37,37 +39,57 @@ export class GallerijComponent implements OnInit {
   pageSizeOptions = signal([10, 20, 50, 100]);
   pageIndex = signal(0);
   dialog = inject(MatDialog);
+  loading = signal(false);
 
   client = inject(PocketbaseService);
 
   page = signal<Page<Afbeelding> | null>(null);
   items = computed(() => this.page()?.items ?? []);
   fileToken = signal<string | null>(null);
+  private initialized = signal(false);
 
   constructor() {
     effect(() => {
+      // Skip effect on initial load - ngOnInit handles it
+      if (!this.initialized()) return;
+      
       const pageIndex = this.pageIndex();
       const pageSize = this.pageSize();
       
+      this.loading.set(true);
       this.client.getPage<Afbeelding>(
         'afbeeldingen',
         pageIndex,
         pageSize
       ).then((page) => {
         this.page.set(page);
+        this.loading.set(false);
+      }).catch((error) => {
+        console.error('Error loading gallery page:', error);
+        this.loading.set(false);
+        // Don't rethrow - prevent global error handler from showing toast during loading
       });
     });
   }
 
   async ngOnInit(): Promise<void> {
-    this.fileToken.set(await this.client.getFileToken());
-    this.page.set(
-      await this.client.getPage<Afbeelding>(
-        'afbeeldingen',
-        this.pageIndex(),
-        this.pageSize()
-      )
-    );
+    this.loading.set(true);
+    try {
+      this.fileToken.set(await this.client.getFileToken());
+      this.page.set(
+        await this.client.getPage<Afbeelding>(
+          'afbeeldingen',
+          this.pageIndex(),
+          this.pageSize()
+        )
+      );
+      this.initialized.set(true);
+    } catch (error) {
+      console.error('Error initializing gallery:', error);
+      // Don't rethrow - prevent global error handler from showing toast during loading
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async openImage(afbeelding: Afbeelding): Promise<void> {

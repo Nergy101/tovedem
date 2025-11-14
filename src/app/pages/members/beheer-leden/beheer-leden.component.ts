@@ -5,7 +5,6 @@ import {
   WritableSignal,
   inject,
   signal,
-  AfterViewChecked,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -45,7 +44,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',
 })
-export class BeheerLedenComponent implements OnInit, AfterViewChecked {
+export class BeheerLedenComponent implements OnInit {
   loading = signal(false);
 
   gebruikers: WritableSignal<Gebruiker[] | null> = signal(null);
@@ -103,13 +102,6 @@ export class BeheerLedenComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  ngAfterViewChecked(): void {
-    // Always apply dark theme to tables
-    const tables = document.getElementsByTagName('table');
-    if (tables[0]) {
-      tables[0].classList.add('table-dark');
-    }
-  }
 
   onSearchTermChanged(newValue: string): void {
     this.searchTerm.set(newValue);

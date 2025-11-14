@@ -4,7 +4,6 @@ import {
   WritableSignal,
   inject,
   signal,
-  AfterViewChecked,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -37,7 +36,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
   templateUrl: './beheer-spelers.component.html',
   styleUrl: './beheer-spelers.component.scss',
 })
-export class BeheerSpelersComponent implements OnInit, AfterViewChecked {
+export class BeheerSpelersComponent implements OnInit {
   loading = signal(false);
 
   dialog = inject(MatDialog);
@@ -61,13 +60,6 @@ export class BeheerSpelersComponent implements OnInit, AfterViewChecked {
     this.spelers.set(await this.client.getAll<Speler>('spelers'));
   }
 
-  ngAfterViewChecked(): void {
-    // Always apply dark theme to tables
-    const tables = document.getElementsByTagName('table');
-    if (tables[0]) {
-      tables[0].classList.add('table-dark');
-    }
-  }
 
   async createSpeler(): Promise<void> {
     this.loading.set(true);

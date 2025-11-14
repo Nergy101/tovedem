@@ -1,6 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   OnInit,
   computed,
@@ -61,7 +60,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss',
 })
-export class ReserveringenInzienComponent implements OnInit, AfterViewInit {
+export class ReserveringenInzienComponent implements OnInit {
   client = inject(PocketbaseService);
   path = inject(ActivatedRoute);
   router = inject(Router);
@@ -90,7 +89,6 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewInit {
   reservatieSearchControl = new FormControl('');
   filteredOptions: Observable<Reservering[]>;
   selectedOption = signal<Reservering | null>(null);
-  private tableDarkApplied = false;
 
   seriesVoorDag = computed(() => {
     return this.selectedDag() === 'datum1'
@@ -232,18 +230,6 @@ export class ReserveringenInzienComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {
-    // Apply dark theme to tables once after view init
-    setTimeout(() => {
-      const tables = document.getElementsByTagName('table');
-      if (!this.tableDarkApplied) {
-        Array.from(tables).forEach((table) => {
-          table.classList.add('table-dark');
-        });
-        this.tableDarkApplied = true;
-      }
-    }, 0);
-  }
 
   setSelectedDag(event: MatButtonToggleChange): void {
     this.selectedDag.set(event.value);

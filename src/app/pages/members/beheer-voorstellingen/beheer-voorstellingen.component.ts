@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   OnInit,
   WritableSignal,
@@ -53,7 +52,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './beheer-voorstellingen.component.html',
   styleUrl: './beheer-voorstellingen.component.scss',
 })
-export class BeheerVoorstellingenComponent implements OnInit, AfterViewInit {
+export class BeheerVoorstellingenComponent implements OnInit {
   loading = signal(false);
 
   items: WritableSignal<Voorstelling[] | null> = signal(null);
@@ -65,7 +64,6 @@ export class BeheerVoorstellingenComponent implements OnInit, AfterViewInit {
   themeService = inject(ThemeService);
 
   titleService = inject(Title);
-  private tableDarkApplied = false;
 
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Voorstellingen');
@@ -83,17 +81,6 @@ export class BeheerVoorstellingenComponent implements OnInit, AfterViewInit {
     } finally {
       this.loading.set(false);
     }
-  }
-
-  ngAfterViewInit(): void {
-    // Apply dark theme to tables once after view init
-    setTimeout(() => {
-      const tables = document.getElementsByTagName('table');
-      if (tables[0] && !this.tableDarkApplied) {
-        tables[0].classList.add('table-dark');
-        this.tableDarkApplied = true;
-      }
-    }, 0);
   }
 
   async openCreateDialog(): Promise<void> {

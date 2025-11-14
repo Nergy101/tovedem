@@ -5,6 +5,11 @@
     </div>
 
     <mat-card class="gallery" appearance="outlined">
+      @if (loading()) {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      } @else {
       <div class="grid">
         @for (item of items(); track item.id) {
         <mat-card appearance="outlined">
@@ -30,6 +35,7 @@
         (page)="onPageChange($event)"
         [showFirstLastButtons]="true"
       ></mat-paginator>
+      }
     </mat-card>
   </div>
 </div>

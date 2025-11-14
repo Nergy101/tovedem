@@ -5,7 +5,6 @@ import {
   WritableSignal,
   inject,
   signal,
-  AfterViewChecked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,7 +40,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './beheer-mails.component.html',
   styleUrl: './beheer-mails.component.scss',
 })
-export class BeheerMailsComponent implements OnInit, AfterViewChecked {
+export class BeheerMailsComponent implements OnInit {
   loading = signal(false);
   mailTemplates: WritableSignal<Mail[] | null> = signal(null);
 
@@ -67,13 +66,6 @@ export class BeheerMailsComponent implements OnInit, AfterViewChecked {
     this.mailTemplates.set(await this.client.getAll<Mail>('mails'));
   }
 
-  ngAfterViewChecked(): void {
-    // Always apply dark theme to tables
-    const tables = document.getElementsByTagName('table');
-    if (tables[0]) {
-      tables[0].classList.add('table-dark');
-    }
-  }
 
   async openEditDialog(mail: Mail): Promise<void> {
     const dialogRef = this.dialog.open(MailEditDialogComponent, {
