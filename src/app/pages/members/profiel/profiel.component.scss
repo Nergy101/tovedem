@@ -26,3 +26,8 @@ mat-expansion-panel {
     flex-direction: column;
   }
 }
+
+.open-leden-paneel-btn {
+  border: 2px solid var(--mat-sys-primary) !important;
+  border-radius: 4px;
+}

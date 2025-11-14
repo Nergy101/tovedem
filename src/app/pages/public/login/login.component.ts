@@ -14,6 +14,7 @@ import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
 @Component({
     selector: 'app-login',
@@ -37,6 +38,7 @@ export class LoginComponent {
   pocketbase = inject(PocketbaseService);
   authService = inject(AuthService);
   router = inject(Router);
+  sideDrawerService = inject(SideDrawerService);
 
   get formIsValid(): boolean {
     return !!this.usernameOrEmail && !!this.password;
@@ -61,6 +63,7 @@ export class LoginComponent {
 
         if (authData) {
           this.authService.registerUser(authData.record as unknown as Gebruiker);
+          this.sideDrawerService.open();
           this.router.navigate(['profiel']);
         }
       } catch {
@@ -71,6 +74,7 @@ export class LoginComponent {
 
         if (authData.record) {
           this.authService.registerUser(authData.record as unknown as Gebruiker);
+          this.sideDrawerService.open();
           this.router.navigate(['profiel']);
         }
       } finally {

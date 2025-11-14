@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
@@ -30,11 +31,11 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
   selector: 'app-commissie-sinterklaas',
   imports: [
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    DatePipe,
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatTooltipModule,
@@ -73,7 +74,7 @@ export class CommissieSinterklaasComponent implements OnInit {
 
   statussen = ['nieuw', 'inbehandeling', 'ingepland', 'afgerond'];
   statusColor: Record<string, string> = {
-    nieuw: '#0103B8',
+    nieuw: '#7db3e8', // Primary blue color
     inbehandeling: '#28668F',
     ingepland: '#DFA801',
     afgerond: '#338450',
@@ -123,5 +124,33 @@ export class CommissieSinterklaasComponent implements OnInit {
 
   getLabelBackgroundColor(status: string): string {
     return this.statusColor[status] || '#000000';
+  }
+
+  getLabelBackgroundTint(status: string): string {
+    const color = this.statusColor[status] || '#000000';
+    // Convert hex to RGB and add subtle tint
+    const hex = color.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    // Use higher opacity for nieuw and inbehandeling to make them more obvious
+    // Higher for lighter colors (yellow) to maintain visibility
+    let opacity: number;
+    if (status === 'nieuw' || status === 'inbehandeling') {
+      opacity = 0.3; // More obvious for these statuses
+    } else if (status === 'ingepland') {
+      opacity = 0.2;
+    } else {
+      opacity = 0.15;
+    }
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+
+  getLabelBorderWidth(status: string): string {
+    // Make nieuw and inbehandeling borders thicker for more prominence
+    if (status === 'nieuw' || status === 'inbehandeling') {
+      return '6px';
+    }
+    return '4px';
   }
 }

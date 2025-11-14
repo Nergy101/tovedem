@@ -1,3 +1,5 @@
+@use "../../../../variables.scss" as *;
+
 .splash-image {
   background: url("/assets/Sinterklaas_banner.jpg") no-repeat center center;
   -webkit-background-size: cover;
@@ -9,18 +11,170 @@
   margin-bottom: 2%;
 }
 
+.status-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2em;
+  width: 100%;
+}
+
 .section-label {
-  background-color: #90f1ef;
+  padding: 1em $spacing-4;
+  border-left-style: solid;
+  border-left-width: 4px; // Default, can be overridden by inline style
+  border-top-left-radius: $border-radius-lg;
+  border-top-right-radius: $border-radius-lg;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+  margin-top: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  // Base color will be overridden by inline style with tint
+  // Fallback to Material Design surface colors
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+  
+  // Match table-width responsive behavior
+  @media (max-width: 768px) {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+}
+
+.status-table-card {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: $border-radius-lg !important;
+  border-bottom-right-radius: $border-radius-lg !important;
+  margin-top: 0;
+  overflow: hidden;
+  
+  // Override the table-responsive border-radius
+  &.table-responsive {
+    border-radius: 0;
+    border-bottom-left-radius: $border-radius-lg;
+    border-bottom-right-radius: $border-radius-lg;
+  }
 }
 
 .section-text {
   text-align: center;
-  margin-top: 0.5;
-  color: white;
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font-weight: $font-weight-semibold;
+}
+
+// Dark theme adjustments - tint will be applied via inline style
+// but we can enhance it slightly for dark mode
+html.darkMode .section-label {
+  // Inline style will override, but this provides fallback
+  background-color: var(--mat-sys-surface-container);
+}
+
+// Light theme adjustments
+html.lightMode .section-label {
+  // Inline style will override, but this provides fallback
+  background-color: var(--mat-sys-surface-container-low);
 }
 
 .styleGreen {
   background-color: #90f1fe;
+}
+
+// Table styling for both themes
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  
+  thead {
+    th {
+      border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
+      padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
+      transition: background-color $transition-base $ease-out;
+      
+      td {
+        padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// Dark theme table styling
+html.darkMode .table {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+  
+  thead {
+    background-color: var(--mat-sys-surface-container) !important;
+    
+    th {
+      color: var(--mat-sys-on-surface) !important;
+    }
+  }
+  
+  tbody {
+    tr {
+      background-color: var(--mat-sys-surface-container-lowest) !important;
+      color: var(--mat-sys-on-surface) !important;
+      
+      &:hover {
+        background-color: var(--mat-sys-surface-container) !important;
+      }
+    }
+  }
+}
+
+// Light theme table styling
+html.lightMode .table {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+  
+  thead {
+    background-color: var(--mat-sys-surface-container-low) !important;
+    
+    th {
+      color: var(--mat-sys-on-surface) !important;
+    }
+  }
+  
+  tbody {
+    tr {
+      background-color: var(--mat-sys-surface-container-lowest) !important;
+      color: var(--mat-sys-on-surface) !important;
+      
+      &:hover {
+        background-color: var(--mat-sys-surface-container-low) !important;
+      }
+    }
+  }
+}
+
+.table-responsive {
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+}
+
+html.darkMode .table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+}
+
+html.lightMode .table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+}
+
+.table-width {
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 }
 
 .table-row {

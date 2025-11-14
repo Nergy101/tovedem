@@ -1,110 +1,119 @@
 <div class="splash-image"></div>
 
-<div class="container">
-  <div class="row">
-    <p class="display-1">Sinterklaas verzoeken</p>
-  </div>
-  @for(statusIndex of statussen; track $index){
-  <div class="container row d-flex justify-content-center">
-    <div
-      class="col-12 section-label mat-elevation-z2"
-      [style]="{ 'background-color': getLabelBackgroundColor(statusIndex) }"
-    >
-      <h2 class="section-text">
-        {{ statusIndex.charAt(0).toUpperCase() + statusIndex.slice(1) }}
-      </h2>
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Sinterklaas verzoeken</p>
     </div>
-  </div>
-  @if(items()){
-  <div class="row col-12 pb-4">
-    <div class="table-responsive table-width">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Aangemaakt</th>
-            <th scope="col">Naam</th>
-            <th scope="col">email</th>
-            <th scope="col">Onderwerp</th>
-            <th scope="col">Bericht</th>
-            <th scope="col">Status</th>
-            <th scope="col">Ingepland op</th>
-            @if (!!authService.isGlobalAdmin) {
-            <th scope="col"></th>
-            }
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of items(); track $index) { @if (item.status ===
-          statusIndex){
-          <tr class="table-row">
-            <td>
-              {{ item.created | date : "dd-LL-YY" }}
-            </td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.subject }}</td>
-            <td>
-              @if (item.message === null || item.message === '') {
-              <button mat-fab disabled>
-                <mat-icon>description</mat-icon>
-              </button>
-              } @else {
-              <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
-                <mat-icon color>description</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu" xPosition="before">
-                <div>
-                  <h3><b>Bericht: </b></h3>
-                  {{ item.message }}
-                </div>
-              </mat-menu>
+    @for(statusIndex of statussen; track $index){ @if(items()){
+    <div class="row col-12 pb-4 status-section">
+      <div
+        class="col-12 section-label"
+        [style]="{
+          'border-left-color': getLabelBackgroundColor(statusIndex),
+          'background-color': getLabelBackgroundTint(statusIndex),
+          'border-left-width': getLabelBorderWidth(statusIndex)
+        }"
+      >
+        <h2 class="section-text">
+          {{ statusIndex.charAt(0).toUpperCase() + statusIndex.slice(1) }}
+        </h2>
+      </div>
+      <mat-card class="table-responsive table-width status-table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Aangemaakt</th>
+              <th scope="col">Naam</th>
+              <th scope="col">email</th>
+              <th scope="col">Onderwerp</th>
+              <th scope="col">Bericht</th>
+              <th scope="col">Status</th>
+              <th scope="col">Ingepland op</th>
+              @if (!!authService.isGlobalAdmin) {
+              <th scope="col"></th>
               }
-            </td>
-            <td>
-              <button
-                mat-flat-button
-                [matMenuTriggerFor]="menu"
-                [style]="{
-                  'background-color': getLabelBackgroundColor(statusIndex)
-                }"
-              >
-                {{ item.status }}
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="updateStatus(item, 'nieuw')">
-                  nieuw
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items(); track $index) { @if (item.status ===
+            statusIndex){
+            <tr class="table-row">
+              <td>
+                {{ item.created | date : yy" }}
+              </td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.subject }}</td>
+              <td>
+                @if (item.message === null || item.message === '') {
+                <button mat-fab disabled>
+                  <mat-icon>description</mat-icon>
                 </button>
+                } @else {
+                <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
+                  <mat-icon color>description</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <div>
+                    <h3><b>Bericht: </b></h3>
+                    {{ item.message }}
+                  </div>
+                </mat-menu>
+                }
+              </td>
+              <td>
                 <button
-                  mat-menu-item
-                  (click)="updateStatus(item, 'inbehandeling')"
+                  mat-flat-button
+                  [matMenuTriggerFor]="menu"
+                  [style]="{
+                    'background-color': getLabelBackgroundColor(statusIndex)
+                  }"
                 >
-                  in behandeling
+                  {{ item.status }}
                 </button>
-                <button mat-menu-item (click)="updateStatus(item, 'ingepland')">
-                  ingepland
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="updateStatus(item, 'nieuw')">
+                    nieuw
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="updateStatus(item, 'inbehandeling')"
+                  >
+                    in behandeling
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="updateStatus(item, 'ingepland')"
+                  >
+                    ingepland
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="updateStatus(item, 'afgerond')"
+                  >
+                    afgerond
+                  </button>
+                </mat-menu>
+              </td>
+              <td>{{ item.plannedDate }}</td>
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button mat-icon-button (click)="delete(item.id)">
+                  <mat-icon color="warn">delete</mat-icon>
                 </button>
-                <button mat-menu-item (click)="updateStatus(item, 'afgerond')">
-                  afgerond
-                </button>
-              </mat-menu>
-            </td>
-            <td>{{ item.plannedDate }}</td>
-            @if (!!authService.isGlobalAdmin) {
-            <td>
-              <button mat-icon-button (click)="delete(item.id)">
-                <mat-icon color="warn">delete</mat-icon>
-              </button>
-            </td>
-            }
-          </tr>
-          }}
-        </tbody>
-      </table>
+              </td>
+              }
+            </tr>
+            }}
+          </tbody>
+        </table>
+      </mat-card>
     </div>
+    } @else {
+    <div class="center">
+      <mat-spinner></mat-spinner>
+    </div>
+    } }
   </div>
-  } @else {
-  <div class="center">
-    <mat-spinner></mat-spinner>
-  </div>
-  } }
 </div>
