@@ -206,3 +206,4 @@ Based on models and usage:
 6. Keep styling consistent with Material Design 3 theme
 7. Test responsive behavior (uses Bootstrap breakpoints)
 
+
