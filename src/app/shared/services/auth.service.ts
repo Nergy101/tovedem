@@ -16,7 +16,8 @@ import { SideDrawerService } from './side-drawer.service';
 })
 export class AuthService {
   sideDrawerService = inject(SideDrawerService);
-  client = inject(PocketbaseService).client;
+  pocketbaseService = inject(PocketbaseService);
+  client = this.pocketbaseService.directClient; // Use directClient to bypass caching for auth-related operations
 
   public userRecord: WritableSignal<Gebruiker | null | undefined> =
     signal<Gebruiker | null | undefined>(undefined);

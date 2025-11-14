@@ -86,9 +86,11 @@ export class CommissieSinterklaasComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.items.set(
-      await this.client.getAll('sinterklaas_verzoeken', {
-        sort: '-created',
-      })
+      await this.client.directClient
+        .collection('sinterklaas_verzoeken')
+        .getFullList({
+          sort: '-created',
+        })
     );
   }
 

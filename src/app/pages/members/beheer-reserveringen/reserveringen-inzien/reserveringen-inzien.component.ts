@@ -169,15 +169,15 @@ export class ReserveringenInzienComponent implements OnInit {
       }
 
       this.loading.set(true);
-      this.client.getAll<Reservering>('reserveringen', {
-        filter: this.client.client.filter(
+      this.client.directClient.collection('reserveringen').getFullList({
+        filter: this.client.directClient.filter(
           'voorstelling.id = {:voorstellingId}',
           {
             voorstellingId: selectedVoorstelling.id,
           }
         ),
       }).then((reserveringen) => {
-        this.reserveringenOfSelectedVoorstelling.set(reserveringen);
+        this.reserveringenOfSelectedVoorstelling.set(reserveringen as unknown as Reservering[]);
         this.loading.set(false);
       }).catch(() => {
         this.loading.set(false);
@@ -193,13 +193,13 @@ export class ReserveringenInzienComponent implements OnInit {
         return;
       }
 
-      this.client.getAll<LosseVerkoop>('losse_verkoop', {
-        filter: this.client.client.filter(
+      this.client.directClient.collection('losse_verkoop').getFullList({
+        filter: this.client.directClient.filter(
           'voorstelling.id = {:voorstellingId}',
           { voorstellingId: selectedVoorstelling.id }
         ),
       }).then((losseVerkoop) => {
-        this.losseVerkoopOfSelectedVoorstelling.set(losseVerkoop);
+        this.losseVerkoopOfSelectedVoorstelling.set(losseVerkoop as unknown as LosseVerkoop[]);
       });
     });
 
@@ -224,7 +224,7 @@ export class ReserveringenInzienComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.voorstellingen.set(
-      await this.client.getAll<Voorstelling>('voorstellingen', {
+      await this.client.directClient.collection('voorstellingen').getFullList({
         sort: '-datum_tijd_1',
       })
     );

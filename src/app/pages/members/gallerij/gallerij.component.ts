@@ -57,11 +57,17 @@ export class GallerijComponent implements OnInit {
       const pageSize = this.pageSize();
       
       this.loading.set(true);
-      this.client.getPage<Afbeelding>(
-        'afbeeldingen',
+      this.client.directClient.collection('afbeeldingen').getList(
         pageIndex,
         pageSize
-      ).then((page) => {
+      ).then((pbPage) => {
+        const page = {
+          page: pageIndex,
+          perPage: pageSize,
+          items: pbPage.items as unknown as Afbeelding[],
+          totalItems: pbPage.totalItems,
+          totalPages: pbPage.totalPages,
+        } as Page<Afbeelding>;
         this.page.set(page);
         this.loading.set(false);
       }).catch((error) => {
@@ -76,13 +82,18 @@ export class GallerijComponent implements OnInit {
     this.loading.set(true);
     try {
       this.fileToken.set(await this.client.getFileToken());
-      this.page.set(
-        await this.client.getPage<Afbeelding>(
-          'afbeeldingen',
-          this.pageIndex(),
-          this.pageSize()
-        )
+      const pbPage = await this.client.directClient.collection('afbeeldingen').getList(
+        this.pageIndex(),
+        this.pageSize()
       );
+      const page = {
+        page: this.pageIndex(),
+        perPage: this.pageSize(),
+        items: pbPage.items as unknown as Afbeelding[],
+        totalItems: pbPage.totalItems,
+        totalPages: pbPage.totalPages,
+      } as Page<Afbeelding>;
+      this.page.set(page);
       this.initialized.set(true);
     } catch (error) {
       console.error('Error initializing gallery:', error);
@@ -125,7 +136,7 @@ export class GallerijComponent implements OnInit {
 
   getFileUrl(afbeelding: Afbeelding): string {
     if (!this.fileToken()) return 'assets/Place-Holder-Image.jpg';
-    return this.client.client.files.getURL(afbeelding, afbeelding.bestand, {
+    return this.client.directClient.files.getURL(afbeelding, afbeelding.bestand, {
       token: this.fileToken(),
       thumb: '100x100',
     });

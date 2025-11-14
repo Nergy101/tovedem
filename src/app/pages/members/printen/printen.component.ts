@@ -85,9 +85,9 @@ export class PrintenComponent implements OnInit {
       }
 
       this.loadingReserveringen.set(true);
-      this.client
-        .getAll<Reservering>('reserveringen', {
-          filter: this.client.client.filter(
+      this.client.directClient
+        .collection('reserveringen').getFullList({
+          filter: this.client.directClient.filter(
             'voorstelling.id = {:voorstellingId}',
             {
               voorstellingId: selectedVoorstelling.id,
@@ -95,7 +95,7 @@ export class PrintenComponent implements OnInit {
           ),
         })
         .then((reserveringen) => {
-          this.reserveringenFromVoorstelling.set(reserveringen);
+          this.reserveringenFromVoorstelling.set(reserveringen as unknown as Reservering[]);
           this.loadingReserveringen.set(false);
         })
         .catch(() => {
@@ -106,7 +106,7 @@ export class PrintenComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.voorstellingen.set(
-      await this.client.getAll<Voorstelling>('voorstellingen', {
+      await this.client.directClient.collection('voorstellingen').getFullList({
         sort: '-datum_tijd_1',
       })
     );

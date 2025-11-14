@@ -60,17 +60,17 @@ export class ProductieInfoComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     const voorstellingen = (
-      await this.client.getAll<Voorstelling>('voorstellingen', {
+      await this.client.directClient.collection('voorstellingen').getFullList({
         sort: '-created',
         expand: 'groep',
       })
-    ).filter((x: Voorstelling) => x.groep.includes(this.groepsNaam.substring(0, 3)));
+    ).filter((x) => (x as unknown as Voorstelling).groep.includes(this.groepsNaam.substring(0, 3))) as unknown as Voorstelling[];
 
     const groep = (
-      await this.client.getAll<Groep>('groepen', {
+      await this.client.directClient.collection('groepen').getFullList({
         sort: '-created',
       })
-    ).filter((x: Groep) => x.naam.includes(this.groepsNaam.substring(0, 2)))[0];
+    ).filter((x) => (x as unknown as Groep).naam.includes(this.groepsNaam.substring(0, 2)))[0] as unknown as Groep;
 
     this.groep.set(groep);
     this.voorstellingen.set(voorstellingen);
@@ -80,17 +80,16 @@ export class ProductieInfoComponent implements OnInit {
     const laatstAangemaakteVoorstelling = voorstellingen.shift() ?? null;
 
     const eerstVolgendeVoorstelling = (
-      await this.client.getAll<Voorstelling>('voorstellingen')
-    ).sort((x, y) => (new Date(x.created) < new Date(y.created) ? 1 : -1))[0];
+      await this.client.directClient.collection('voorstellingen').getFullList()
+    ).sort((x, y) => (new Date((x as unknown as Voorstelling).created) < new Date((y as unknown as Voorstelling).created) ? 1 : -1))[0] as unknown as Voorstelling;
 
     const eerstVolgendeVoorstellingMetSpelers =
-      await this.client.getOne<Voorstelling>(
-        'voorstellingen',
+      await this.client.directClient.collection('voorstellingen').getOne(
         eerstVolgendeVoorstelling.id,
         {
           expand: 'spelers',
         }
-      );
+      ) as unknown as Voorstelling;
 
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling ?? null);

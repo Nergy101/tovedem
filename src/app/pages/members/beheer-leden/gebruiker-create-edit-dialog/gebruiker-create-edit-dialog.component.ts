@@ -92,9 +92,9 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
       this.gebruiker = existing;
     }
 
-    this.spelers.set(await this.client.getAll<Speler>('spelers'));
-    this.groepen.set(await this.client.getAll<Groep>('groepen'));
-    this.rollen.set(await this.client.getAll<Rol>('rollen'));
+    this.spelers.set(await this.client.directClient.collection('spelers').getFullList());
+    this.groepen.set(await this.client.directClient.collection('groepen').getFullList());
+    this.rollen.set(await this.client.directClient.collection('rollen').getFullList());
   }
 
   async submit(): Promise<void> {

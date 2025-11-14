@@ -63,7 +63,7 @@ export class BeheerMailsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.mailTemplates.set(await this.client.getAll<Mail>('mails'));
+    this.mailTemplates.set(await this.client.directClient.collection('mails').getFullList());
   }
 
 

@@ -65,15 +65,15 @@ export class BeheerReserveringenComponent {
       .subscribe(async (newSearchTerm: string) => {
         if (!newSearchTerm || newSearchTerm == '') {
           this.items.set(
-            await this.client.getAll<Reservering>('reserveringen', {
+            await this.client.directClient.collection('reserveringen').getFullList({
               expand: 'voorstelling',
             })
           );
         } else {
           this.items.set(
-            await this.client.getAll<Reservering>('reserveringen', {
+            await this.client.directClient.collection('reserveringen').getFullList({
               expand: 'voorstelling',
-              filter: this.client.client.filter(
+              filter: this.client.directClient.filter(
                 'email ~ {:search} || voornaam ~ {:search} || achternaam ~ {:search} || voorstelling.titel ~ {:search}',
                 {
                   search: newSearchTerm,

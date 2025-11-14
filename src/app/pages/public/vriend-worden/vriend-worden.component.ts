@@ -56,7 +56,8 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   message: string | null = null;
 
   toastr = inject(ToastrService);
-  client = inject(PocketbaseService).client;
+  pocketbaseService = inject(PocketbaseService);
+  client = this.pocketbaseService.client; // Keep for create operations
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
   environment = inject(Environment);
@@ -110,8 +111,9 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    const { tekst_1 } = (await this.client.collection('vriend_worden').getList(1, 1))
-      .items[0];
+    // Use cached service method instead of direct client access
+    const page = await this.pocketbaseService.getPage<any>('vriend_worden', 1, 1);
+    const { tekst_1 } = page.items[0];
     this.content.set(tekst_1);
   }
 

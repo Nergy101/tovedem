@@ -73,7 +73,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
     this.loading.set(true);
     try {
       this.items.set(
-        await this.client.getAll<Voorstelling>('voorstellingen', {
+        await this.client.directClient.collection('voorstellingen').getFullList({
           expand: 'groep,spelers',
           sort: '-created',
         })

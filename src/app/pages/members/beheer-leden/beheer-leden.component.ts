@@ -72,15 +72,15 @@ export class BeheerLedenComponent implements OnInit {
       .subscribe(async (newSearchTerm: string) => {
         if (!newSearchTerm || newSearchTerm == '') {
           this.gebruikers.set(
-            await this.client.getAll<Gebruiker>('users', {
+            await this.client.directClient.collection('users').getFullList({
               expand: 'rollen,groep,speler',
             })
           );
         } else {
           this.gebruikers.set(
-            await this.client.getAll<Gebruiker>('users', {
+            await this.client.directClient.collection('users').getFullList({
               expand: 'rollen,groep,speler',
-              filter: this.client.client.filter(
+              filter: this.client.directClient.filter(
                 'email ~ {:search} || username ~ {:search} || name ~ {:search}',
                 {
                   search: newSearchTerm,
@@ -96,7 +96,7 @@ export class BeheerLedenComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.gebruikers.set(
-      await this.client.getAll<Gebruiker>('users', {
+      await this.client.directClient.collection('users').getFullList({
         expand: 'rollen,groep,speler',
       })
     );

@@ -57,7 +57,7 @@ export class BeheerSpelersComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.spelers.set(await this.client.getAll<Speler>('spelers'));
+    this.spelers.set(await this.client.directClient.collection('spelers').getFullList());
   }
 
 

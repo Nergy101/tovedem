@@ -65,7 +65,8 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
   toastr = inject(ToastrService);
   router = inject(Router);
-  client = inject(PocketbaseService).client;
+  pocketbaseService = inject(PocketbaseService);
+  client = this.pocketbaseService.client; // Keep for create operations
   environment = inject(Environment);
   recaptchaV3Service = inject(ReCaptchaV3Service);
   subscriptions: Subscription[] = [];
@@ -129,8 +130,9 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    const record = (await this.client.collection('sinterklaas').getList(1, 1))
-      .items[0];
+    // Use cached service method instead of direct client access
+    const page = await this.pocketbaseService.getPage<any>('sinterklaas', 1, 1);
+    const record = page.items[0];
 
     this.content.set(record.tekst_1);
 

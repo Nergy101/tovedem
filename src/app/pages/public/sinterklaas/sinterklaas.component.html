@@ -44,7 +44,7 @@
   <div class="row" style="margin-top: 1em">
     <div [innerHTML]="content()"></div>
   </div>
-  } @placeholder (minimum 1s) {
+  } @placeholder {
   <div class="center">
     <mat-spinner></mat-spinner>
   </div>
@@ -58,6 +58,7 @@
         matInput
         type="text"
         required
+        name="name"
         [(ngModel)]="name"
       />
     </mat-form-field>
@@ -68,6 +69,7 @@
         matInput
         type="email"
         required
+        name="email"
         [(ngModel)]="email"
       />
     </mat-form-field>
@@ -78,6 +80,7 @@
         matInput
         type="text"
         required
+        name="subject"
         [(ngModel)]="subject"
       />
     </mat-form-field>
@@ -88,6 +91,7 @@
         matInput
         rows="10"
         required
+        name="message"
         placeholder="Typ hier je bericht"
       ></textarea>
     </mat-form-field>
