@@ -168,5 +168,23 @@
   line-height: 1.2;
 }
 
+/* Reserveringen list styling */
+.reserveringen-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5em;
+  background-color: var(--mat-sys-surface-container-low);
+  border-radius: 4px;
+}
+
+.reservering-item {
+  padding: 0.5em;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.reservering-item:last-child {
+  border-bottom: none;
+}
+
 /* Note: Print styles for PDF generation using jsPDF */
 

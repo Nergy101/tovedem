@@ -7,6 +7,92 @@
   <div class="row mt-2">
     <!-- Input Controls Section -->
     <div class="col-12 no-print">
+      <!-- Voorstelling Selection -->
+      <h2>Selecteer voorstelling</h2>
+      <div class="mb-4">
+        <mat-form-field class="col-12">
+          <mat-label>Selecteer een voorstelling</mat-label>
+          <mat-select
+            (selectionChange)="setSelectedVoorstelling($event)"
+            [value]="selectedVoorstelling()"
+          >
+            @for (voorstelling of voorstellingen(); track voorstelling.id) {
+            <mat-option [value]="voorstelling">
+              {{ voorstelling.titel }}:
+              {{ voorstelling.datum_tijd_1 | date : "dd-MM-yyyy" }}
+              @if (voorstelling.datum_tijd_2) {
+              en {{ voorstelling.datum_tijd_2 | date : "dd-MM-yyyy" }}
+              }
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (selectedVoorstelling()) {
+        <div class="mb-3">
+          <mat-label class="mb-2" style="display: block; font-size: large">
+            Selecteer dag:
+          </mat-label>
+          <mat-button-toggle-group
+            [value]="selectedDay()"
+            (change)="setSelectedDay($event)"
+            appearance="standard"
+          >
+            <mat-button-toggle value="datum1">
+              Dag 1 ({{
+                selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-yyyy"
+              }})
+            </mat-button-toggle>
+            @if (selectedVoorstelling()?.datum_tijd_2) {
+            <mat-button-toggle value="datum2">
+              Dag 2 ({{
+                selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-yyyy"
+              }})
+            </mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+        </div>
+
+        @if (loadingReserveringen()) {
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <mat-spinner diameter="30"></mat-spinner>
+          <span>Reserveringen laden...</span>
+        </div>
+        } @else if (reserveringenFromVoorstelling().length > 0) {
+        <div class="mb-3">
+          <h3>Geladen reserveringen ({{ selectedDay() === 'datum1' ? 'Dag 1' : 'Dag 2' }}):</h3>
+          <div class="reserveringen-list">
+            @for (reservering of reserveringenFromVoorstelling(); track
+            reservering.id) {
+            @if (
+              (selectedDay() === 'datum1' &&
+                reservering.datum_tijd_1_aantal > 0) ||
+              (selectedDay() === 'datum2' &&
+                reservering.datum_tijd_2_aantal > 0)
+            ) {
+            <div class="reservering-item mb-2">
+              <strong>{{ reservering.voornaam }} {{ reservering.achternaam }}</strong>
+              - Aantal:
+              {{
+                selectedDay() === 'datum1'
+                  ? reservering.datum_tijd_1_aantal
+                  : reservering.datum_tijd_2_aantal
+              }}
+            </div>
+            }
+            }
+          </div>
+        </div>
+        } @else if (selectedVoorstelling()) {
+        <div class="mb-3">
+          <p>Geen reserveringen gevonden voor deze voorstelling.</p>
+        </div>
+        }
+        }
+
+        <mat-divider class="my-4"></mat-divider>
+      </div>
+
       <h2>Configureer tickets</h2>
 
       <!-- Kinderen -->
@@ -287,6 +373,34 @@
           </div>
         </div>
         } }
+
+        <!-- Reserveringen tickets -->
+        @for (reservering of reserveringenFromVoorstelling(); track
+        reservering.id) {
+        @for (item of createListOfAmountOfItems(
+          selectedDay() === 'datum1'
+            ? reservering.datum_tijd_1_aantal
+            : reservering.datum_tijd_2_aantal
+        ); track $index) {
+        <div class="printable">
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+          <div class="ticket-content">
+            <h2>Gereserveerd voor:</h2>
+            <h1>{{ reservering.voornaam }} {{ reservering.achternaam }}</h1>
+          </div>
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+        </div>
+        } }
       </div>
     </div>
   </div>
@@ -375,6 +489,33 @@
     <div class="print-ticket-content">
       <h2>Gereserveerd voor:</h2>
       <h1>-{{ customName.name }}-</h1>
+    </div>
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+  </div>
+  } }
+
+  <!-- Reserveringen tickets -->
+  @for (reservering of reserveringenFromVoorstelling(); track reservering.id) {
+  @for (item of createListOfAmountOfItems(
+    selectedDay() === 'datum1'
+      ? reservering.datum_tijd_1_aantal
+      : reservering.datum_tijd_2_aantal
+  ); track $index) {
+  <div class="print-ticket">
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+    <div class="print-ticket-content">
+      <h2>Gereserveerd voor:</h2>
+      <h1>{{ reservering.voornaam }} {{ reservering.achternaam }}</h1>
     </div>
     <div class="print-ticket-logo">
       <img
