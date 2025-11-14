@@ -103,4 +103,9 @@ export class BeheerMailsComponent implements OnInit {
     }
     return status;
   }
+
+  getPrimaryTintColor(): string {
+    // Primary blue (#7db3e8) with 0.3 opacity for consistency
+    return 'rgba(125, 179, 232, 0.3)';
+  }
 }

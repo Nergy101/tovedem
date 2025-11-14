@@ -200,5 +200,46 @@
   border-bottom: none;
 }
 
+/* Improve contrast for +/- buttons in dark theme */
+html.darkMode {
+  :host button[mat-mini-fab] {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+    
+    mat-icon {
+      color: var(--mat-sys-on-primary) !important;
+    }
+    
+    &:hover:not(:disabled) {
+      background-color: #6aa3d8 !important;
+    }
+    
+    &:disabled {
+      background-color: rgba(125, 179, 232, 0.3) !important;
+      color: rgba(255, 255, 255, 0.5) !important;
+      
+      mat-icon {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+  }
+}
+
+/* Light theme - ensure good contrast too */
+html.lightMode {
+  :host button[mat-mini-fab] {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+    
+    mat-icon {
+      color: var(--mat-sys-on-primary) !important;
+    }
+    
+    &:hover:not(:disabled) {
+      background-color: #6aa3d8 !important;
+    }
+  }
+}
+
 /* Note: Print styles for PDF generation using jsPDF */
 

@@ -67,6 +67,7 @@
                     mat-icon-button
                     (click)="openEditDialog(mailTemplate)"
                     [disabled]="loading()"
+                    [style.background-color]="getPrimaryTintColor()"
                   >
                     <mat-icon>edit</mat-icon>
                   </button>

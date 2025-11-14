@@ -140,4 +140,9 @@ export class BeheerVoorstellingenComponent implements OnInit {
 
     return currentDate.setHours(0, 0, 0, 0) < publishDate.setHours(0, 0, 0, 0);
   }
+
+  getPrimaryTintColor(): string {
+    // Primary blue (#7db3e8) with 0.3 opacity for consistency with 'nieuw' status
+    return 'rgba(125, 179, 232, 0.3)';
+  }
 }

@@ -98,3 +98,16 @@ html.lightMode .table-responsive {
     width: 100vw;
   }
 }
+
+// Center icons in tinted edit buttons
+button[mat-icon-button][style*="background-color"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  mat-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

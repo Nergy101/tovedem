@@ -51,7 +51,12 @@
                   <mat-icon>description</mat-icon>
                 </button>
                 } @else {
-                <button mat-fab [matMenuTriggerFor]="menu" xPosition="before">
+                <button
+                  mat-fab
+                  [matMenuTriggerFor]="menu"
+                  xPosition="before"
+                  [style.background-color]="getLabelBackgroundTint(item.status)"
+                >
                   <mat-icon color>description</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before">

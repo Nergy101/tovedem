@@ -182,3 +182,16 @@ html.lightMode .table-responsive {
     vertical-align: middle;
   }
 }
+
+// Center icons in tinted bericht buttons
+button[mat-fab][style*="background-color"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  mat-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}

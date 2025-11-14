@@ -68,8 +68,8 @@
                 } @else {
                 <button
                   mat-icon-button
-                  color="primary"
                   [matTooltip]="item.publicatie_datum || 'Geen publicatiedatum'"
+                  [style.background-color]="getPrimaryTintColor()"
                 >
                   <mat-icon>share</mat-icon>
                 </button>
