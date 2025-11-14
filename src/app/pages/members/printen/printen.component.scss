@@ -1,0 +1,172 @@
+@use "../../../../variables.scss" as *;
+
+.splash-image {
+  background: url("/assets/Tovedem_achtergrond.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 14em;
+  min-width: 100%;
+  margin-bottom: 2em;
+  margin-top: -2em;
+}
+
+.amount-editor {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.preview-section {
+  margin-top: 2em;
+  padding: 1em;
+  background-color: var(--mat-sys-surface-container);
+  border-radius: 8px;
+}
+
+.printable {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  padding: 2em 1.5em;
+  margin-bottom: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5em;
+  min-height: 180px;
+}
+
+.printable .ticket-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5em;
+}
+
+.printable .ticket-logo img {
+  height: 8em;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.printable .ticket-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1.5em;
+}
+
+.printable .ticket-content h2 {
+  font-weight: 200;
+  font-size: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.printable .ticket-content h1 {
+  font-size: 3em;
+  margin: 0;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+.printable .divider {
+  display: none;
+}
+
+/* Print-only section - hidden by default */
+.print-only-section {
+  display: none;
+  width: 210mm; /* A4 width */
+  background: white;
+  position: relative;
+}
+
+/* When visible for PDF generation, use pixel-based sizing */
+.print-only-section.pdf-generating {
+  width: 794px !important; /* A4 width in pixels at 96 DPI (210mm) */
+}
+
+/* Ensure print section is properly sized for PDF generation */
+.print-only-section .print-ticket {
+  margin: 0;
+}
+
+/* Print ticket styling - sized for 4 per A4 page */
+.print-ticket {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 74.25mm; /* A4 height (297mm) / 4 tickets = exactly 74.25mm */
+  width: 210mm; /* A4 width */
+  padding: 2mm 8mm;
+  page-break-inside: avoid;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+/* When visible for PDF generation, use pixel-based sizing */
+.print-only-section.pdf-generating .print-ticket {
+  height: 280px !important; /* A4 height (1123px) / 4 tickets ≈ 280px */
+  width: 794px !important; /* A4 width in pixels at 96 DPI */
+  padding: 8px 30px !important;
+}
+
+.print-ticket:last-child {
+  border-bottom: none;
+}
+
+.print-ticket-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5mm;
+}
+
+.print-ticket-logo img {
+  height: 45mm;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* When visible for PDF generation, use pixel-based sizing */
+.print-only-section.pdf-generating .print-ticket-logo img {
+  height: 170px !important; /* Approximately 45mm in pixels */
+}
+
+.print-ticket-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 8mm;
+}
+
+.print-ticket-content h2 {
+  font-weight: 200;
+  font-size: 14pt;
+  margin-bottom: 5mm;
+  margin-top: 0;
+}
+
+.print-ticket-content h1 {
+  font-size: 24pt;
+  margin: 0;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+/* Note: Print styles for PDF generation using jsPDF */
+

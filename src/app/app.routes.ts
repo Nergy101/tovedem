@@ -23,6 +23,7 @@ import { SinterklaasComponent } from './pages/public/sinterklaas/sinterklaas.com
 import { VriendWordenComponent } from './pages/public/vriend-worden/vriend-worden.component';
 import { AuthService } from './shared/services/auth.service';
 import { GallerijComponent } from './pages/members/gallerij/gallerij.component';
+import { PrintenComponent } from './pages/members/printen/printen.component';
 
 export const routes: Routes = [
   {
@@ -85,6 +86,11 @@ export const routes: Routes = [
   {
     path: 'beheer-reserveringen',
     component: BeheerReserveringenComponent,
+    canActivate: [loggedInGuard(['admin'])],
+  },
+  {
+    path: 'printen',
+    component: PrintenComponent,
     canActivate: [loggedInGuard(['admin'])],
   },
   {

@@ -1,0 +1,388 @@
+<div class="splash-image"></div>
+
+<div class="container mat-elevation-z2" style="padding-bottom: var(--spacing-4)">
+  <div class="display-1 justify-content-center text-center">Printen</div>
+  <mat-divider class="divider mb-4"></mat-divider>
+
+  <div class="row mt-2">
+    <!-- Input Controls Section -->
+    <div class="col-12 no-print">
+      <h2>Configureer tickets</h2>
+
+      <!-- Kinderen -->
+      <div class="amount-editor mb-3">
+        <mat-label class="col-6" style="margin: 1em; font-size: large">
+          Aantal Kinderen:
+        </mat-label>
+        <button mat-mini-fab (click)="decrementKinderen()">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field
+          class="col-2"
+          appearance="outline"
+          style="margin-inline: 1em; padding-top: 20px"
+        >
+          <input
+            matInput
+            type="number"
+            [ngModel]="kinderenQuantity()"
+            (ngModelChange)="kinderenQuantity.set($event)"
+            min="0"
+          />
+        </mat-form-field>
+        <button mat-mini-fab (click)="incrementKinderen()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <!-- Vriend van tovedem -->
+      <div class="amount-editor mb-3">
+        <mat-label class="col-6" style="margin: 1em; font-size: large">
+          Aantal Vriend van tovedem:
+        </mat-label>
+        <button mat-mini-fab (click)="decrementVriend()">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field
+          class="col-2"
+          appearance="outline"
+          style="margin-inline: 1em; padding-top: 20px"
+        >
+          <input
+            matInput
+            type="number"
+            [ngModel]="vriendVanTovedemQuantity()"
+            (ngModelChange)="vriendVanTovedemQuantity.set($event)"
+            min="0"
+          />
+        </mat-form-field>
+        <button mat-mini-fab (click)="incrementVriend()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <!-- Sponsoring -->
+      <div class="amount-editor mb-3">
+        <mat-label class="col-6" style="margin: 1em; font-size: large">
+          Aantal Sponsoring:
+        </mat-label>
+        <button mat-mini-fab (click)="decrementSponsoring()">
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field
+          class="col-2"
+          appearance="outline"
+          style="margin-inline: 1em; padding-top: 20px"
+        >
+          <input
+            matInput
+            type="number"
+            [ngModel]="sponsoringQuantity()"
+            (ngModelChange)="sponsoringQuantity.set($event)"
+            min="0"
+          />
+        </mat-form-field>
+        <button mat-mini-fab (click)="incrementSponsoring()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <!-- Custom Names -->
+      <div class="mb-3">
+        <h3>Aangepaste namen</h3>
+        <div class="row mb-2">
+          <mat-form-field class="col-6">
+            <mat-label>Naam</mat-label>
+            <input
+              matInput
+              type="text"
+              [ngModel]="newCustomName()"
+              (ngModelChange)="newCustomName.set($event)"
+              placeholder="Voer naam in"
+            />
+          </mat-form-field>
+          <mat-form-field class="col-3">
+            <mat-label>Aantal</mat-label>
+            <input
+              matInput
+              type="number"
+              [ngModel]="newCustomQuantity()"
+              (ngModelChange)="newCustomQuantity.set($event)"
+              min="1"
+            />
+          </mat-form-field>
+          <div class="col-3 d-flex align-items-center">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addCustomName()"
+              [disabled]="!newCustomName().trim()"
+            >
+              <mat-icon>add</mat-icon>
+              Toevoegen
+            </button>
+          </div>
+        </div>
+
+        @for (customName of customNames(); track $index) {
+        <div class="row mb-2 align-items-center">
+          <div class="col-6">
+            <strong>{{ customName.name }}</strong>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <button mat-mini-fab (click)="decrementCustomQuantity($index)">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field
+              class="col-4"
+              appearance="outline"
+              style="margin-inline: 1em; padding-top: 20px"
+            >
+              <input
+                matInput
+                type="number"
+                [ngModel]="customName.quantity"
+                (ngModelChange)="updateCustomQuantity($index, $event)"
+                min="0"
+              />
+            </mat-form-field>
+            <button mat-mini-fab (click)="incrementCustomQuantity($index)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div class="col-3">
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="removeCustomName($index)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+
+            <!-- Test and Print Buttons -->
+            <div class="d-flex justify-content-center gap-3 mt-4 mb-4">
+              <button
+                mat-raised-button
+                (click)="testPdf()"
+                color="accent"
+              >
+                Test
+              </button>
+              @if (generatingPdf()) {
+              <div class="d-flex align-items-center gap-3">
+                <mat-spinner diameter="40"></mat-spinner>
+                <span>PDF wordt gegenereerd...</span>
+              </div>
+              } @else {
+              <button
+                mat-fab
+                extended
+                [disabled]="!hasTickets || generatingPdf()"
+                (click)="printTickets()"
+                color="primary"
+              >
+                <mat-icon>print</mat-icon>
+                Printen
+              </button>
+              }
+            </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="col-12">
+      <h2>Preview</h2>
+      <div id="printSection" class="preview-section">
+        <!-- Kinderen tickets -->
+        @for (item of createListOfAmountOfItems(kinderenQuantity()); track
+        $index) {
+        <div class="printable">
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+          <div class="ticket-content">
+            <h2>Gereserveerd voor:</h2>
+            <h1>-Kinderen-</h1>
+          </div>
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+        </div>
+        }
+
+        <!-- Vriend van tovedem tickets -->
+        @for (item of createListOfAmountOfItems(vriendVanTovedemQuantity());
+        track $index) {
+        <div class="printable">
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+          <div class="ticket-content">
+            <h2>Gereserveerd voor:</h2>
+            <h1>-Vriend van tovedem-</h1>
+          </div>
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+        </div>
+        }
+
+        <!-- Sponsoring tickets -->
+        @for (item of createListOfAmountOfItems(sponsoringQuantity()); track
+        $index) {
+        <div class="printable">
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+          <div class="ticket-content">
+            <h2>Gereserveerd voor:</h2>
+            <h1>-Sponsoring-</h1>
+          </div>
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+        </div>
+        }
+
+        <!-- Custom name tickets -->
+        @for (customName of customNames(); track $index) { @for (item of
+        createListOfAmountOfItems(customName.quantity); track $index) {
+        <div class="printable">
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+          <div class="ticket-content">
+            <h2>Gereserveerd voor:</h2>
+            <h1>-{{ customName.name }}-</h1>
+          </div>
+          <div class="ticket-logo">
+            <img
+              alt="tovedem logo klein"
+              src="/assets/tovedem_logo_klein.png"
+            />
+          </div>
+        </div>
+        } }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Print-only section -->
+<div id="print-only-section" class="print-only-section">
+  <!-- Kinderen tickets -->
+  @for (item of createListOfAmountOfItems(kinderenQuantity()); track $index) {
+  <div class="print-ticket">
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+    <div class="print-ticket-content">
+      <h2>Gereserveerd voor:</h2>
+      <h1>-Kinderen-</h1>
+    </div>
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+  </div>
+  }
+
+  <!-- Vriend van tovedem tickets -->
+  @for (item of createListOfAmountOfItems(vriendVanTovedemQuantity()); track
+  $index) {
+  <div class="print-ticket">
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+    <div class="print-ticket-content">
+      <h2>Gereserveerd voor:</h2>
+      <h1>-Vriend van tovedem-</h1>
+    </div>
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+  </div>
+  }
+
+  <!-- Sponsoring tickets -->
+  @for (item of createListOfAmountOfItems(sponsoringQuantity()); track $index)
+  {
+  <div class="print-ticket">
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+    <div class="print-ticket-content">
+      <h2>Gereserveerd voor:</h2>
+      <h1>-Sponsoring-</h1>
+    </div>
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+  </div>
+  }
+
+  <!-- Custom name tickets -->
+  @for (customName of customNames(); track $index) { @for (item of
+  createListOfAmountOfItems(customName.quantity); track $index) {
+  <div class="print-ticket">
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+    <div class="print-ticket-content">
+      <h2>Gereserveerd voor:</h2>
+      <h1>-{{ customName.name }}-</h1>
+    </div>
+    <div class="print-ticket-logo">
+      <img
+        alt="tovedem logo klein"
+        src="/assets/tovedem_logo_klein.png"
+      />
+    </div>
+  </div>
+  } }
+</div>
+

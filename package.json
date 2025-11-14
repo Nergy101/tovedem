@@ -28,6 +28,8 @@
     "bootstrap": "^5.3.2",
     "canvas-confetti": "^1.9.2",
     "jquery": "^3.7.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "luxon": "^3.4.4",
     "mdb-angular-ui-kit": "^7.1.0",
     "ng-apexcharts": "^1.15.0",
