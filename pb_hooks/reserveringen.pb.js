@@ -9,33 +9,24 @@ routerAdd("GET", "/reserveringen/totals", (e) => {
             throw new BadRequestError("voorstellingId query parameter is required");
         }
         
-        // Query all reservations for this voorstelling
-        // We'll only use the numeric fields we need (privacy-safe)
-        const collection = $app.dao().findCollectionByNameOrId("reserveringen");
-        
-        if (!collection) {
-            throw new BadRequestError("Collection 'reserveringen' not found");
-        }
-        
-        // Use string filter directly - voorstelling is a relation field
-        const filter = `voorstelling = "${voorstellingId}"`;
-        
-        // Get all records matching the filter
-        const reservations = $app.dao().findRecordsByFilter(
-            collection.id,
-            filter,
+        // Fetch records using Record operations API
+        // Per PocketBase docs: https://pocketbase.io/docs/js-records/
+        // Use findRecordsByFilter with parameter binding to prevent injection
+        const reservations = $app.findRecordsByFilter(
+            "reserveringen",
+            "voorstelling = {:voorstellingId}",
             "-created",
-            500, // max records
-            0    // offset
+            500, // limit
+            0,   // offset
+            { voorstellingId: voorstellingId } // filter params
         );
         
-        // Calculate totals - only access the numeric fields we need
-        // This ensures no personal data (names, emails, etc.) is exposed
+        // Calculate totals - only access numeric fields (privacy-safe)
+        // No personal data exposed - we only sum the amount fields
         let datum_tijd_1_total = 0;
         let datum_tijd_2_total = 0;
         
         for (const reservation of reservations) {
-            // Only access the numeric fields - no personal data
             datum_tijd_1_total += reservation.getInt("datum_tijd_1_aantal") || 0;
             datum_tijd_2_total += reservation.getInt("datum_tijd_2_aantal") || 0;
         }
@@ -68,19 +59,18 @@ onRecordBeforeCreateRequest((e) => {
         return;
     }
     
-    // Query all existing reservations for this voorstelling
-    const collection = $app.dao().findCollectionByNameOrId("reserveringen");
-    const filter = `voorstelling = "${voorstellingId}"`;
-    
-    const existingReservations = $app.dao().findRecordsByFilter(
-        collection.id,
-        filter,
+    // Fetch existing reservations using Record operations API
+    // Per PocketBase docs: https://pocketbase.io/docs/js-records/
+    const existingReservations = $app.findRecordsByFilter(
+        "reserveringen",
+        "voorstelling = {:voorstellingId}",
         "-created",
-        500,
-        0
+        500, // limit
+        0,   // offset
+        { voorstellingId: voorstellingId } // filter params
     );
     
-    // Calculate existing totals
+    // Calculate existing totals - only access numeric fields
     let existingTotalDate1 = 0;
     let existingTotalDate2 = 0;
     
