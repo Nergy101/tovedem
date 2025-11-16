@@ -50,6 +50,7 @@
   </div>
   }
 
+  @if (!submitted()) {
   <form class="row sinterklaas-form">
     <mat-form-field class="col-12 col-md-4">
       <mat-label>Volledige naam</mat-label>
@@ -116,4 +117,15 @@
       </span>
     </div>
   </form>
+  }
+  @if (submitted()) {
+  <mat-card class="success-card" style="text-align: center; padding: 2em; margin-top: 2em">
+    <mat-card-content>
+      <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
+      <button mat-flat-button color="primary" (click)="resetForm()">
+        Nog een maken?
+      </button>
+    </mat-card-content>
+  </mat-card>
+  }
 </div>

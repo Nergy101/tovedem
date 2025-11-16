@@ -62,6 +62,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   images: { id: number; title: string; description: string; src: string }[] =
     [];
   status: string | null = null;
+  submitted = signal(false);
 
   toastr = inject(ToastrService);
   router = inject(Router);
@@ -108,6 +109,8 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
               this.email = null;
               this.subject = null;
               this.message = null;
+              
+              this.submitted.set(true);
             } catch (error) {
               console.error(error);
               this.toastr.error(
@@ -140,6 +143,10 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
       id: img,
       src: this.getImageUrl(record.collectionId, record.id, img),
     }));
+  }
+
+  resetForm(): void {
+    this.submitted.set(false);
   }
 
   ngOnDestroy(): void {

@@ -54,6 +54,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
+  submitted = signal(false);
 
   toastr = inject(ToastrService);
   pocketbaseService = inject(PocketbaseService);
@@ -96,6 +97,8 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
                 this.email = null;
                 this.subject = null;
                 this.message = null;
+                
+                this.submitted.set(true);
               } catch (error) {
                 console.error(error);
                 this.toastr.error('Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.');
@@ -115,6 +118,10 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
     const page = await this.pocketbaseService.getPage<any>('vriend_worden', 1, 1);
     const { tekst_1 } = page.items[0];
     this.content.set(tekst_1);
+  }
+
+  resetForm(): void {
+    this.submitted.set(false);
   }
 
   ngOnDestroy(): void {

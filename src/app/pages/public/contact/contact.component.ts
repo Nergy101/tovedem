@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -46,6 +46,7 @@ export class ContactComponent implements OnDestroy {
   email: string | null = null;
   subject: string | null = null;
   message: string | null = null;
+  submitted = signal(false);
 
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
@@ -92,6 +93,8 @@ export class ContactComponent implements OnDestroy {
                 this.email = null;
                 this.subject = null;
                 this.message = null;
+                
+                this.submitted.set(true);
               }
               catch (error) {
                 console.error('Error sending contact form', error);
@@ -106,6 +109,10 @@ export class ContactComponent implements OnDestroy {
             console.error('Error executing captcha', error);
           }
         }));
+  }
+
+  resetForm(): void {
+    this.submitted.set(false);
   }
 
   ngOnDestroy(): void {

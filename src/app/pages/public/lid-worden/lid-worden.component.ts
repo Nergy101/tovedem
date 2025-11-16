@@ -80,6 +80,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   groepen: WritableSignal<Groep[]> = signal([]);
 
   loading = signal(false);
+  submitted = signal(false);
 
   seoService = inject(SeoService);
   client = inject(PocketbaseService);
@@ -168,6 +169,8 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               this.message = null;
               this.geboorteDatum = undefined;
               this.selectedGroep = null;
+              
+              this.submitted.set(true);
             } catch (error) {
               console.error(error);
               this.toastr.error(
@@ -196,6 +199,10 @@ export class LidWordenComponent implements OnInit, OnDestroy {
       !!this.message &&
       this.message != ''
     );
+  }
+
+  resetForm(): void {
+    this.submitted.set(false);
   }
 
   ngOnDestroy(): void {

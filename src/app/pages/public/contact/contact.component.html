@@ -52,6 +52,7 @@
         <mat-icon>location_on</mat-icon> Schalm Oranjelaan 10, 3454 BT De Meern
       </h1>
     </div>
+    @if (!submitted()) {
     <form (ngSubmit)="verstuurContactMail()" class="row contact-form">
       <mat-form-field class="col-12 col-md-4">
         <mat-label>Volledige naam</mat-label>
@@ -119,5 +120,16 @@
         </span>
       </div>
     </form>
+    }
+    @if (submitted()) {
+    <mat-card class="success-card" style="text-align: center; padding: 2em; margin-top: 2em">
+      <mat-card-content>
+        <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
+        <button mat-flat-button color="primary" (click)="resetForm()">
+          Nog een maken?
+        </button>
+      </mat-card-content>
+    </mat-card>
+    }
   </div>
 </div>
