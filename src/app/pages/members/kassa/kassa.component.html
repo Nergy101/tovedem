@@ -1,0 +1,182 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="d-flex align-items-center">
+      <p class="display-1 mb-0">De Kassa</p>
+      <button
+        mat-stroked-button
+        class="ms-3 info-button"
+        (click)="openInformatieDialog()"
+        aria-label="Informatie over De Kassa"
+      >
+        <mat-icon>info</mat-icon>
+        <span class="ms-2">Klik hier voor info</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  @if (loading()) {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+  } @else if (voorstellingenVoorVandaag().length === 0) {
+  <div class="row">
+    <div class="col-12">
+      <mat-card appearance="outlined" class="mb-3 kassa-card">
+        <mat-card-header>
+          <div class="w-100 d-flex flex-column">
+            <h2 class="mb-3">Er zijn vandaag geen voorstellingen.</h2>
+            @if (isAdmin()) {
+            <div class="pt-3 border-top">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="selectEerstvolgendeVoorstelling()"
+                [disabled]="loading()"
+              >
+                <mat-icon>event</mat-icon>
+                <span class="ms-2">Selecteer eerstvolgende voorstelling</span>
+              </button>
+            </div>
+            }
+          </div>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+  } @else {
+  <div class="row">
+    <div class="col-12">
+      <mat-card appearance="outlined" class="mb-3 kassa-card">
+        <mat-card-header>
+          <div class="w-100 d-flex flex-column">
+            <div class="d-flex align-items-center mb-3">
+              <mat-icon class="me-2" color="primary">event</mat-icon>
+              <h3 class="mb-0">
+                @if (voorstellingenVoorVandaag().length === 1) {
+                  Voorstelling vandaag
+                } @else {
+                  Voorstellingen vandaag
+                }
+              </h3>
+            </div>
+            <div class="ms-4 mb-3">
+              @for (voorstelling of voorstellingenVoorVandaag(); track
+              voorstelling.id) {
+              <div class="mb-2">
+                <strong class="me-2">{{ voorstelling.titel }}</strong>
+                @if (isVoorstellingToday(voorstelling)) {
+                  @if (voorstelling.datum_tijd_1) {
+                  <span class="badge bg-primary me-2"
+                    >{{ voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                    }}</span
+                  >
+                  }
+                  @if (voorstelling.datum_tijd_2) {
+                  <span class="badge bg-primary me-2"
+                    >{{ voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                    }}</span
+                  >
+                  }
+                } @else {
+                  @if (selectedDag() === 'datum1' && voorstelling.datum_tijd_1) {
+                  <span class="badge bg-primary me-2"
+                    >{{ voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                    }}</span
+                  >
+                  }
+                  @if (selectedDag() === 'datum2' && voorstelling.datum_tijd_2) {
+                  <span class="badge bg-primary me-2"
+                    >{{ voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                    }}</span
+                  >
+                  }
+                }
+              </div>
+              }
+            </div>
+            @if (isAdmin() && shouldShowEerstvolgendeButton()) {
+            <div class="pt-3 border-top">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="selectEerstvolgendeVoorstelling()"
+                [disabled]="loading()"
+              >
+                <mat-icon>event</mat-icon>
+                <span class="ms-2">Selecteer eerstvolgende voorstelling</span>
+              </button>
+            </div>
+            }
+          </div>
+        </mat-card-header>
+      </mat-card>
+    </div>
+
+    <div class="col-12 mb-3">
+      <mat-form-field class="w-100">
+        <mat-label>Zoek op naam of email</mat-label>
+        <input
+          matInput
+          [value]="searchTerm()"
+          (input)="onSearchTermChanged($any($event.target).value)"
+          placeholder="Voornaam, achternaam of email"
+        />
+        @if (searchTerm()) {
+        <button
+          matPrefix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="onSearchTermChanged('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        } @else {
+        <mat-icon matPrefix>search</mat-icon>
+        }
+        @if (searching()) {
+        <mat-spinner matSuffix diameter="20"></mat-spinner>
+        }
+      </mat-form-field>
+    </div>
+
+    @if (filteredReserveringen().length > 0) {
+    <div class="col-12">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <h2>
+            Reserveringen voor vandaag ({{
+              filteredReserveringen().length
+            }})
+          </h2>
+        </mat-card-header>
+        <app-reserveringen-table
+          [reserveringen]="filteredReserveringen()"
+          [selectedVoorstelling]="selectedVoorstelling()"
+          [selectedDag]="selectedDag()"
+          [sponsors]="sponsors()"
+          [showEditButton]="true"
+          (checkboxChange)="onCheckboxChange($event)"
+          (editClick)="openEditDialog($event)"
+          (verificationClick)="openVerificatieDialog($event)"
+        ></app-reserveringen-table>
+      </mat-card>
+    </div>
+    } @else if (reserveringen().length === 0) {
+    <div class="row">
+      <mat-card class="center-items m-3 p-3" appearance="outlined">
+        Er zijn nog geen reserveringen voor vandaag.
+      </mat-card>
+    </div>
+    } @else {
+    <div class="row">
+      <mat-card class="center-items m-3 p-3" appearance="outlined">
+        Geen reserveringen gevonden die overeenkomen met de zoekterm.
+      </mat-card>
+    </div>
+    }
+  </div>
+  }
+</div>
+

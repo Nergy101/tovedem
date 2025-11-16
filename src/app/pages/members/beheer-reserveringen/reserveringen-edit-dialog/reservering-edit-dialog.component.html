@@ -69,13 +69,13 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-12">
-          <mat-label>Lid van Tovedem</mat-label>
-          <mat-checkbox matInput [checked]="is_lid_van_tovedem" disabled>
+          <mat-checkbox [(ngModel)]="is_lid_van_tovedem" name="is_lid_van_tovedem">
+            Vriend van Tovedem
           </mat-checkbox>
         </div>
         <div class="col-md-6 col-12">
-          <mat-label>Speler van tovedem</mat-label>
-          <mat-checkbox matInput [checked]="is_lid_van_vereniging" disabled>
+          <mat-checkbox [(ngModel)]="is_lid_van_vereniging" name="is_lid_van_vereniging">
+            Lid van vereniging
           </mat-checkbox>
         </div>
       </div>

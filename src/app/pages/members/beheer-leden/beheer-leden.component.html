@@ -4,14 +4,54 @@
       <p class="display-1">Leden</p>
     </div>
 
-    <div class="row">
-      <ul>
-        <!-- <li>Algemeen-lid (gekoppeld aan bepaalde 'speler')</li> -->
-        <li>Bestuurs-lid</li>
-        <li>Ere-lid (gratis naar binnen)</li>
-        <li>Donateurs (Lid Van Tovedem)</li>
-        <li>Sponsoren (Sponsoren van Tovedem)</li>
-      </ul>
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 col-lg-3 mb-3">
+        <mat-card appearance="outlined" class="lid-type-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">groups</mat-icon>
+            <mat-card-title>Bestuurs-lid</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Leden die deel uitmaken van het bestuur van Tovedem. Zij hebben extra verantwoordelijkheden en bevoegdheden binnen de vereniging.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+      <div class="col-12 col-md-6 col-lg-3 mb-3">
+        <mat-card appearance="outlined" class="lid-type-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="accent">star</mat-icon>
+            <mat-card-title>Ere-lid</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Ere-leden hebben gratis toegang tot alle voorstellingen. Dit is een eretitel voor mensen die een bijzondere bijdrage hebben geleverd aan Tovedem.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+      <div class="col-12 col-md-6 col-lg-3 mb-3">
+        <mat-card appearance="outlined" class="lid-type-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">favorite</mat-icon>
+            <mat-card-title>Donateurs</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Donateurs zijn leden van Tovedem die de vereniging financieel steunen. Zij dragen bij aan de continuïteit en groei van onze theatergroep.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+      <div class="col-12 col-md-6 col-lg-3 mb-3">
+        <mat-card appearance="outlined" class="lid-type-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">business</mat-icon>
+            <mat-card-title>Sponsoren</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Sponsoren zijn bedrijven of organisaties die Tovedem ondersteunen. Zij maken onze voorstellingen mogelijk door financiële bijdragen.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
 
     @if (!!authService.isGlobalAdmin) {

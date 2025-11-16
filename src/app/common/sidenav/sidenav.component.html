@@ -137,6 +137,19 @@
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
+            routerLink="/kassa"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            De Kassa <mat-icon>point_of_sale</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
             routerLink="/printen"
             [routerLinkActiveOptions]="{ exact: true }"
           >

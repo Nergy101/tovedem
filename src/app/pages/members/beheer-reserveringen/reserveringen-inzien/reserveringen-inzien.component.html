@@ -94,7 +94,7 @@
                 <tr>
                   <td>
                     <mat-checkbox
-                      (change)="onCheckboxChange(item, 1)"
+                      (change)="onCheckboxChange({ reservering: item, dag: 1 })"
                       [color]="'primary'"
                       [checked]="item.aanwezig_datum_1"
                     >
@@ -102,7 +102,7 @@
                   </td>
                   <td>
                     <mat-checkbox
-                      (change)="onCheckboxChange(item, 2)"
+                      (change)="onCheckboxChange({ reservering: item, dag: 2 })"
                       [color]="'primary'"
                       [checked]="item.aanwezig_datum_2"
                     >
@@ -145,30 +145,32 @@
                     </mat-checkbox>
                   </td>
                   <td>
-                    @if (getVerificationStatus(item) === 'verified') {
+                    @if (verificationService.getVerificationStatus(item,
+                    sponsors()) === 'verified') {
                     <mat-icon
                       class="verification-flag verified"
                       matTooltip="Geverifieerd - klik om aan te passen"
                       (click)="openVerificatieDialog(item)"
                       >flag</mat-icon
                     >
-                    } @else if (getVerificationStatus(item) ===
-                    'verified_no_membership') {
+                    } @else if (verificationService.getVerificationStatus(item,
+                    sponsors()) === 'verified_no_membership') {
                     <mat-icon
                       class="verification-flag verified-no-membership"
                       matTooltip="Geverifieerd maar geen lid/vriend status - klik om aan te passen"
                       (click)="openVerificatieDialog(item)"
                       >flag</mat-icon
                     >
-                    } @else if (getVerificationStatus(item) === 'partial') {
+                    } @else if (verificationService.getVerificationStatus(item,
+                    sponsors()) === 'partial') {
                     <mat-icon
                       class="verification-flag partial"
                       matTooltip="Gedeeltelijke match - klik voor details"
                       (click)="openVerificatieDialog(item)"
                       >flag</mat-icon
                     >
-                    } @else if (getVerificationStatus(item) ===
-                    'unverified_no_membership') {
+                    } @else if (verificationService.getVerificationStatus(item,
+                    sponsors()) === 'unverified_no_membership') {
                     <mat-icon
                       class="verification-flag unverified-no-membership"
                       matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
@@ -240,134 +242,16 @@
             }}
           </h2>
         </mat-card-header>
-        <div class="table-responsive table-width">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Aanwezig</th>
-                <th scope="col">Voornaam</th>
-                <th scope="col">Achternaam</th>
-                <th scope="col">Email</th>
-                <th scope="col">Aantal</th>
-                <th scope="col">Vriend</th>
-                <th scope="col">Lid</th>
-                <th scope="col">Verificatie</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of reserveringenOfSelectedVoorstelling(); track
-              item.id) {
-              <tr>
-                @if (selectedDag() === "datum1") {
-                <td>
-                  <mat-checkbox
-                    (change)="onCheckboxChange(item, 1)"
-                    [color]="'primary'"
-                    [checked]="item.aanwezig_datum_1"
-                  >
-                  </mat-checkbox>
-                </td>
-                } @if (selectedDag() === "datum2") {
-                <td>
-                  <mat-checkbox
-                    (change)="onCheckboxChange(item, 2)"
-                    [color]="'primary'"
-                    [checked]="item.aanwezig_datum_2"
-                  >
-                  </mat-checkbox>
-                </td>
-                }
-
-                <td>{{ item.voornaam }}</td>
-                <td>{{ item.achternaam }}</td>
-                <td>{{ item.email }}</td>
-                @if (selectedDag() === "datum1") {
-                <td>
-                  {{ item.datum_tijd_1_aantal }} ({{
-                    item.datum_tijd_1_aantal *
-                      (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
-                      | currency : "EUR"
-                  }})
-                </td>
-                } @if (selectedDag() === "datum2") {
-                <td>
-                  {{ item.datum_tijd_2_aantal }} ({{
-                    item.datum_tijd_2_aantal *
-                      (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
-                      | currency : "EUR"
-                  }})
-                </td>
-                }
-
-                <td>
-                  <mat-checkbox
-                    [color]="'primary'"
-                    [checked]="item.is_vriend_van_tovedem"
-                    disabled
-                  >
-                  </mat-checkbox>
-                </td>
-                <td>
-                  <mat-checkbox
-                    [color]="'primary'"
-                    [checked]="item.is_lid_van_vereniging"
-                    disabled
-                  >
-                  </mat-checkbox>
-                </td>
-
-                <td>
-                  @if (getVerificationStatus(item) === 'verified') {
-                  <mat-icon
-                    class="verification-flag verified"
-                    matTooltip="Geverifieerd - klik om aan te passen"
-                    (click)="openVerificatieDialog(item)"
-                    >flag</mat-icon
-                  >
-                  } @else if (getVerificationStatus(item) ===
-                  'verified_no_membership') {
-                  <mat-icon
-                    class="verification-flag verified-no-membership"
-                    matTooltip="Geverifieerd maar geen lid/vriend status - klik om aan te passen"
-                    (click)="openVerificatieDialog(item)"
-                    >flag</mat-icon
-                  >
-                  } @else if (getVerificationStatus(item) === 'partial') {
-                  <mat-icon
-                    class="verification-flag partial"
-                    matTooltip="Gedeeltelijke match - klik voor details"
-                    (click)="openVerificatieDialog(item)"
-                    >flag</mat-icon
-                  >
-                  } @else if (getVerificationStatus(item) ===
-                  'unverified_no_membership') {
-                  <mat-icon
-                    class="verification-flag unverified-no-membership"
-                    matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
-                    (click)="openVerificatieDialog(item)"
-                    >flag</mat-icon
-                  >
-                  } @else {
-                  <mat-icon
-                    class="verification-flag unverified"
-                    matTooltip="Geen match gevonden (wel lid/vriend aangegeven) - klik om aan te passen"
-                    (click)="openVerificatieDialog(item)"
-                    >flag</mat-icon
-                  >
-                  }
-                </td>
-
-                <td class="d-flex justify-content-end">
-                  <button mat-icon-button (click)="openEditDialog(item)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+        <app-reserveringen-table
+          [reserveringen]="reserveringenOfSelectedVoorstelling()"
+          [selectedVoorstelling]="selectedVoorstelling()"
+          [selectedDag]="selectedDag()"
+          [sponsors]="sponsors()"
+          [showEditButton]="true"
+          (checkboxChange)="onCheckboxChange($event)"
+          (editClick)="openEditDialog($event)"
+          (verificationClick)="openVerificatieDialog($event)"
+        ></app-reserveringen-table>
       </mat-card>
     </div>
 

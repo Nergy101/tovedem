@@ -1,0 +1,109 @@
+<div class="table-responsive table-width">
+  <table class="table" matSort (matSortChange)="onSortChange($event)">
+    <thead>
+      <tr>
+        <th scope="col">Aanwezig</th>
+        <th scope="col" mat-sort-header="voornaam">Voornaam</th>
+        <th scope="col" mat-sort-header="achternaam">Achternaam</th>
+        <th scope="col">Email</th>
+        <th scope="col">Aantal</th>
+        <th scope="col">Vriend</th>
+        <th scope="col">Lid</th>
+        <th scope="col">Verificatie</th>
+        @if (showEditButton()) {
+        <th scope="col"></th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of sortedReserveringen(); track item.id) {
+      <tr [class.aanwezig-row]="getAanwezig(item)">
+        <td>
+          <mat-checkbox
+            (change)="onCheckboxChange(item, selectedDag() === 'datum1' ? 1 : 2)"
+            [color]="'primary'"
+            [checked]="getAanwezig(item)"
+          >
+          </mat-checkbox>
+        </td>
+
+        <td>{{ item.voornaam }}</td>
+        <td>{{ item.achternaam }}</td>
+        <td>{{ item.email }}</td>
+        <td>
+          {{ getAantal(item) }} ({{
+            getAantal(item) * getPrijsPerKaartje() | currency : "EUR"
+          }})
+        </td>
+
+        <td>
+          <mat-checkbox
+            [color]="'primary'"
+            [checked]="item.is_vriend_van_tovedem"
+            disabled
+          >
+          </mat-checkbox>
+        </td>
+        <td>
+          <mat-checkbox
+            [color]="'primary'"
+            [checked]="item.is_lid_van_vereniging"
+            disabled
+          >
+          </mat-checkbox>
+        </td>
+
+        <td>
+          @if (getVerificationStatus(item) === 'verified') {
+          <mat-icon
+            class="verification-flag verified"
+            matTooltip="Geverifieerd - klik om aan te passen"
+            (click)="onVerificationClick(item)"
+            >flag</mat-icon
+          >
+          } @else if (getVerificationStatus(item) === 'verified_no_membership')
+          {
+          <mat-icon
+            class="verification-flag verified-no-membership"
+            matTooltip="Geverifieerd maar geen lid/vriend status - klik om aan te passen"
+            (click)="onVerificationClick(item)"
+            >flag</mat-icon
+          >
+          } @else if (getVerificationStatus(item) === 'partial') {
+          <mat-icon
+            class="verification-flag partial"
+            matTooltip="Gedeeltelijke match - klik voor details"
+            (click)="onVerificationClick(item)"
+            >flag</mat-icon
+          >
+          } @else if (getVerificationStatus(item) === 'unverified_no_membership')
+          {
+          <mat-icon
+            class="verification-flag unverified-no-membership"
+            matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
+            (click)="onVerificationClick(item)"
+            >flag</mat-icon
+          >
+          } @else {
+          <mat-icon
+            class="verification-flag unverified"
+            matTooltip="Geen match gevonden (wel lid/vriend aangegeven) - klik om aan te passen"
+            (click)="onVerificationClick(item)"
+            >flag</mat-icon
+          >
+          }
+        </td>
+
+        @if (showEditButton()) {
+        <td class="d-flex justify-content-end">
+          <button mat-icon-button (click)="onEditClick(item)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+

@@ -1,14 +1,10 @@
 @use "../../../../variables.scss" as *;
 
-.active {
-  background-color: rgba(125, 179, 232, 0.2) !important;
-}
-
 // Table styling for both themes
 .table {
   border-collapse: separate;
   border-spacing: 0;
-  
+
   thead {
     th {
       border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
@@ -16,20 +12,12 @@
       font-weight: $font-weight-semibold;
     }
   }
-  
+
   tbody {
     tr {
       border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
       transition: background-color $transition-base $ease-out;
-      
-      &.active {
-        background-color: rgba(125, 179, 232, 0.2) !important;
-        
-        &:hover {
-          background-color: rgba(125, 179, 232, 0.3) !important;
-        }
-      }
-      
+
       td {
         padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
         vertical-align: middle;
@@ -42,20 +30,20 @@
 html.darkMode .table {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   thead {
     background-color: var(--mat-sys-surface-container) !important;
-    
+
     th {
       color: var(--mat-sys-on-surface) !important;
     }
   }
-  
+
   tbody {
     tr {
       background-color: var(--mat-sys-surface-container-lowest) !important;
       color: var(--mat-sys-on-surface) !important;
-      
+
       &:hover {
         background-color: var(--mat-sys-surface-container) !important;
       }
@@ -67,20 +55,20 @@ html.darkMode .table {
 html.lightMode .table {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   thead {
     background-color: var(--mat-sys-surface-container-low) !important;
-    
+
     th {
       color: var(--mat-sys-on-surface) !important;
     }
   }
-  
+
   tbody {
     tr {
       background-color: var(--mat-sys-surface-container-lowest) !important;
       color: var(--mat-sys-on-surface) !important;
-      
+
       &:hover {
         background-color: var(--mat-sys-surface-container-low) !important;
       }
@@ -90,15 +78,63 @@ html.lightMode .table {
 
 .table-responsive {
   border-radius: $border-radius-lg;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  
+  .table {
+    min-width: 800px; // Ensure table has minimum width for scrolling
+  }
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
 }
 
 html.darkMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
 }
 
 html.lightMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
 }
 
 .table-width {
@@ -107,93 +143,55 @@ html.lightMode .table-responsive {
   }
 }
 
-// Ensure "Aanmaken" button uses primary blue color
-button[mat-fab][color="primary"],
-button[mat-fab][color="primary"] .mat-mdc-fab {
-  background-color: #7db3e8 !important;
-  color: #ffffff !important;
+// Row styling for aanwezig status
+.aanwezig-row {
+  background-color: rgba(76, 175, 80, 0.1) !important; // Light green background
 
   &:hover {
-    background-color: #6aa3d8 !important;
-  }
-
-  mat-icon {
-    color: #ffffff !important;
+    background-color: rgba(76, 175, 80, 0.15) !important; // Slightly darker on hover
   }
 }
 
-// Center icons in tinted edit buttons
-button[mat-icon-button][style*="background-color"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  
-  mat-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-}
+// Dark theme - aanwezig row
+html.darkMode .aanwezig-row {
+  background-color: rgba(76, 175, 80, 0.15) !important;
 
-// Lid type cards styling
-.lid-type-card {
-  height: 100%;
-  transition: transform 0.2s, box-shadow 0.2s;
-  
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  mat-card-header {
-    padding-bottom: 0.5rem;
-    
-    ::ng-deep .mat-mdc-card-avatar {
-      border-radius: 0 !important;
-      overflow: visible !important;
-      width: auto !important;
-      height: auto !important;
-      margin-right: 1rem;
-    }
-    
-    ::ng-deep mat-icon[mat-card-avatar] {
-      font-size: 2.5rem;
-      width: auto !important;
-      height: auto !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 0 !important;
-      overflow: visible !important;
-    }
-    
-    mat-card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0;
-    }
-  }
-  
-  mat-card-content {
-    padding-top: 0.5rem;
-    
-    p {
-      margin: 0;
-      line-height: 1.6;
-      color: var(--mat-sys-on-surface-variant);
-    }
+    background-color: rgba(76, 175, 80, 0.2) !important;
   }
 }
 
-html.darkMode .lid-type-card {
-  mat-card-content p {
-    color: var(--mat-sys-on-surface-variant);
+// Light theme - aanwezig row
+html.lightMode .aanwezig-row {
+  background-color: rgba(76, 175, 80, 0.08) !important;
+
+  &:hover {
+    background-color: rgba(76, 175, 80, 0.12) !important;
   }
 }
 
-html.lightMode .lid-type-card {
-  mat-card-content p {
-    color: var(--mat-sys-on-surface);
-    opacity: 0.8;
+// Verification flag styling
+.verification-flag {
+  cursor: pointer;
+
+  &.verified {
+    color: #4caf50 !important; // Green
+  }
+
+  &.verified-no-membership {
+    color: #2196f3 !important; // Blue
+  }
+
+  &.partial {
+    color: #ff9800 !important; // Orange
+  }
+
+  &.unverified {
+    color: #f44336 !important; // Red
+  }
+
+  &.unverified-no-membership {
+    color: #9e9e9e !important; // Gray
   }
 }
+
