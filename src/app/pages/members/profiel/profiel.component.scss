@@ -31,3 +31,22 @@ mat-expansion-panel {
   border: 2px solid var(--mat-sys-primary) !important;
   border-radius: 4px;
 }
+
+mat-list {
+  mat-list-item.reservering-item {
+    height: auto !important;
+    min-height: 120px;
+    padding: 1rem 0 !important;
+    display: block !important;
+    
+    .mat-mdc-list-item-content {
+      padding: 0 !important;
+      width: 100%;
+      display: block;
+    }
+  }
+  
+  mat-divider {
+    margin: 0.5rem 0;
+  }
+}

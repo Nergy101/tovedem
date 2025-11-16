@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Inloggen Vereist</h2>
+<mat-dialog-content>
+  <p>Beste bezoeker, om een Reservering aan te mogen passen moet u ingelogd zijn.</p>
+  <p>Log in of maak een account als u deze nog niet heeft.</p>
+  <p>Zorg dat het email adres van het account hetzelfde is als van de reservering.</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Sluiten</button>
+  <button mat-flat-button color="primary" (click)="navigateToLogin()">Log in</button>
+  <button mat-flat-button color="accent" (click)="navigateToSignup()">Account Aanmaken</button>
+</mat-dialog-actions>
+

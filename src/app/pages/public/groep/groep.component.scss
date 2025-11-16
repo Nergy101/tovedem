@@ -1,49 +1,143 @@
 @use "../../../../variables.scss" as *;
 
-// Force ALL text to white with !important
-.row {
-  margin-bottom: 2em;
-  
-  * {
-    color: #ffffff !important;
+// Dark mode: Force ALL text to white with !important
+html.darkMode {
+  .row {
+    margin-bottom: 2em;
+
+    * {
+      color: #ffffff !important;
+    }
+
+    .display-1 {
+      color: #ffffff !important;
+      font-weight: $font-weight-bold;
+    }
+
+    h2 {
+      color: #ffffff !important;
+      font-weight: $font-weight-semibold;
+    }
   }
-  
-  .display-1 {
+
+  .container {
     color: #ffffff !important;
-    font-weight: $font-weight-bold;
-  }
-  
-  h2 {
-    color: #ffffff !important;
-    font-weight: $font-weight-semibold;
+
+    * {
+      color: #ffffff !important;
+    }
+
+    .display-1 {
+      color: #ffffff !important;
+    }
+
+    .display-6 {
+      color: #ffffff !important;
+    }
+
+    // Force innerHTML content to white
+    div[innerHTML],
+    [innerHTML],
+    div[innerHTML] * {
+      color: #ffffff !important;
+
+      p,
+      div,
+      span,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      ul,
+      ol,
+      td,
+      th,
+      strong,
+      em,
+      b,
+      i,
+      a,
+      blockquote {
+        color: #ffffff !important;
+      }
+
+      * {
+        color: #ffffff !important;
+      }
+    }
   }
 }
 
-.container {
-  color: #ffffff !important;
-  
-  * {
-    color: #ffffff !important;
-  }
-  
-  .display-1 {
-    color: #ffffff !important;
-  }
-  
-  .display-6 {
-    color: #ffffff !important;
-  }
-  
-  // Force innerHTML content to white
-  div[innerHTML], [innerHTML], div[innerHTML] * {
-    color: #ffffff !important;
-    
-    p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
-      color: #ffffff !important;
-    }
-    
+// Light mode: Force ALL text to black with !important
+html.lightMode {
+  .row {
+    margin-bottom: 2em;
+
     * {
-      color: #ffffff !important;
+      color: #000000 !important;
+    }
+
+    .display-1 {
+      color: #000000 !important;
+      font-weight: $font-weight-bold;
+    }
+
+    h2 {
+      color: #000000 !important;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  .container {
+    color: #000000 !important;
+
+    * {
+      color: #000000 !important;
+    }
+
+    .display-1 {
+      color: #000000 !important;
+    }
+
+    .display-6 {
+      color: #000000 !important;
+    }
+
+    // Force innerHTML content to black
+    div[innerHTML],
+    [innerHTML],
+    div[innerHTML] * {
+      color: #000000 !important;
+
+      p,
+      div,
+      span,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      ul,
+      ol,
+      td,
+      th,
+      strong,
+      em,
+      b,
+      i,
+      a,
+      blockquote {
+        color: #000000 !important;
+      }
+
+      * {
+        color: #000000 !important;
+      }
     }
   }
 }
@@ -68,16 +162,42 @@
     width: 90vw;
     height: 20em;
   }
-  
+
   .carousel-caption {
     h5 {
-      color: #ffffff;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
-    
+
     p {
-      color: #ffffff;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+html.darkMode {
+  .carousel-item {
+    .carousel-caption {
+      h5 {
+        color: #ffffff;
+      }
+
+      p {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+html.lightMode {
+  .carousel-item {
+    .carousel-caption {
+      h5 {
+        color: #000000;
+      }
+
+      p {
+        color: #000000;
+      }
     }
   }
 }
@@ -99,15 +219,33 @@
   border-radius: 1em;
 }
 
-mat-list {
-  mat-list-item {
-    color: #ffffff;
-    
-    span {
+html.darkMode {
+  mat-list {
+    mat-list-item {
       color: #ffffff;
-      
-      i {
+
+      span {
         color: #ffffff;
+
+        i {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+html.lightMode {
+  mat-list {
+    mat-list-item {
+      color: #000000;
+
+      span {
+        color: #000000;
+
+        i {
+          color: #000000;
+        }
       }
     }
   }

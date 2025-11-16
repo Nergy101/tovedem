@@ -1,0 +1,116 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Sponsoren</p>
+    </div>
+
+    <div class="row">
+      <ul>
+        <li>Sponsor</li>
+        <li>Vriend</li>
+        <li>Ere-lid</li>
+        <li>Ere-Mejoto</li>
+      </ul>
+    </div>
+
+    @if (!!authService.isGlobalAdmin) {
+    <div class="row">
+      <button mat-fab extended color="primary" (click)="openCreateDialog()">
+        <mat-icon>add_circle</mat-icon>
+        Aanmaken
+      </button>
+      <input
+        type="file"
+        accept=".csv"
+        (change)="onFileSelected($event)"
+        style="display: none"
+        #fileInput
+      />
+      <button
+        mat-fab
+        extended
+        color="accent"
+        (click)="fileInput.click()"
+        style="margin-left: 1em"
+      >
+        <mat-icon>upload</mat-icon>
+        CSV Uploaden
+      </button>
+    </div>
+    }
+
+    <div class="row pt-4">
+      @defer (when sponsors()) {
+      <div class="row" style="margin-top: 1em">
+        <mat-form-field class="col-12" appearance="outline">
+          <mat-label>Zoek op voornaam, achternaam, email of type</mat-label>
+          <input
+            matInput
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchTermChanged($event)"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        @if (searching()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      </div>
+
+      <mat-card class="table-responsive table-width">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Voornaam</th>
+              <th scope="col">Achternaam</th>
+              <th scope="col">Type</th>
+              <th scope="col">Email</th>
+              @if (!!authService.isGlobalAdmin) {
+              <th></th>
+              <th></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (sponsor of sponsors(); track $index) {
+            <tr>
+              <td>{{ sponsor.voornaam }}</td>
+              <td>{{ sponsor.achternaam }}</td>
+              <td>{{ sponsor.type }}</td>
+              <td>{{ sponsor.email || '-' }}</td>
+
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="openEditDialog(sponsor)"
+                  [disabled]="loading()"
+                  [style.background-color]="getPrimaryTintColor()"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(sponsor.id)"
+                  [disabled]="loading()"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+      } @placeholder {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+

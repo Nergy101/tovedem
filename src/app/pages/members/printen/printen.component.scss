@@ -84,6 +84,27 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
+.printable .ticket-content .voorstelling-info-bottom {
+  margin-top: 0.5em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.printable .ticket-content .voorstelling-info-bottom .voorstelling-titel {
+  font-size: 0.9em;
+  font-weight: 400;
+  margin-bottom: 0.2em;
+}
+
+.printable .ticket-content .voorstelling-info-bottom .voorstelling-datum {
+  font-size: 0.85em;
+  font-weight: 300;
+}
+
+/* Dark mode support */
+html.darkMode .printable .ticket-content .voorstelling-info-bottom {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .printable .divider {
   display: none;
 }

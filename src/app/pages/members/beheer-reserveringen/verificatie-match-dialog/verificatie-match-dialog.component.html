@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Verificatie beheren</h2>
+<mat-dialog-content>
+  <p>
+    Reservering van
+    <strong>{{ reservering.voornaam }} {{ reservering.achternaam }}</strong>
+    ({{ reservering.email }})
+  </p>
+
+  @if (hasManualVerification) {
+  <div class="manual-verification-notice">
+    <mat-icon>info</mat-icon>
+    <span
+      >Deze verificatie is handmatig ingesteld en kan worden aangepast.</span
+    >
+  </div>
+  } @if (currentStatus === 'verified_no_membership') {
+  <div class="no-membership-notice">
+    <mat-icon>info</mat-icon>
+    <div>
+      <strong>Geverifieerd als sponsor, maar geen lid/vriend status.</strong>
+      <p>
+        Deze persoon komt voor in de sponsorslijst maar heeft bij de reservering
+        niet aangegeven dat hij/zij vriend of lid is.
+      </p>
+    </div>
+  </div>
+  } @if (matchingSponsors.length > 0) {
+  <p class="matches-title">
+    De volgende sponsors lijken overeen te komen (op basis van naam):
+  </p>
+
+  <div class="sponsor-matches">
+    @for (sponsor of matchingSponsors; track sponsor.id) {
+    <mat-card appearance="outlined" class="sponsor-card">
+      <mat-card-content>
+        <div class="sponsor-info">
+          <div>
+            <strong>{{ sponsor.voornaam }} {{ sponsor.achternaam }}</strong>
+          </div>
+          <div>Type: {{ sponsor.type }}</div>
+          <div>Email: {{ sponsor.email }}</div>
+        </div>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="approve(sponsor)"
+          class="approve-button"
+        >
+          <mat-icon>check</mat-icon>
+          Goedkeuren
+        </button>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  } @else {
+  <p class="no-matches">
+    Geen sponsors gevonden die overeenkomen op basis van naam.
+  </p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (currentStatus === 'verified_no_membership') {
+  <button mat-flat-button color="primary" (click)="confirmVriend()">
+    <mat-icon>check_circle</mat-icon>
+    Vriend bevestigen
+  </button>
+  } @if (hasManualVerification) {
+  <button mat-button (click)="reset()" color="accent">
+    <mat-icon>refresh</mat-icon>
+    Reset (automatisch berekenen)
+  </button>
+  }
+  <button mat-button (click)="cancel()">Annuleren</button>
+  <button mat-flat-button color="warn" (click)="reject()">
+    <mat-icon>close</mat-icon>
+    Afkeuren
+  </button>
+</mat-dialog-actions>

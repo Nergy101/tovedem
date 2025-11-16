@@ -92,13 +92,16 @@ export class ReserveringEditDialogComponent implements OnInit {
   client = inject(PocketbaseService).client;
   datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<ReserveringEditDialogComponent>);
-  existingReserveringData: { reservering: Reservering; voorstelling: Voorstelling } = inject(MAT_DIALOG_DATA);
+  existingReserveringData: {
+    reservering: Reservering;
+    voorstelling: Voorstelling;
+  } = inject(MAT_DIALOG_DATA);
   existingReservering!: Reservering;
   existingVoorstelling!: Voorstelling;
 
   async ngOnInit(): Promise<void> {
     this.existingReservering = this.existingReserveringData.reservering;
-    this.existingVoorstelling = this.existingReserveringData.voorstelling;;
+    this.existingVoorstelling = this.existingReserveringData.voorstelling;
 
     if (this.existingReservering) {
       this.voornaam = this.existingReservering.voornaam;
@@ -138,6 +141,8 @@ export class ReserveringEditDialogComponent implements OnInit {
       aanwezig_datum_1: this.existingReservering?.aanwezig_datum_1,
       aanwezig_datum_2: this.existingReservering?.aanwezig_datum_2,
       guid: this.existingReservering?.guid,
+      verificatie_status: this.existingReservering?.verificatie_status,
+      verificatie_sponsor_id: this.existingReservering?.verificatie_sponsor_id,
     } as Reservering;
 
     const formData = this.objectToFormData(reservering);
@@ -146,7 +151,7 @@ export class ReserveringEditDialogComponent implements OnInit {
       .collection('reserveringen')
       .update(this.existingReservering!.id, formData);
 
-    this.dialogRef.close({updatedReservering: upserted});
+    this.dialogRef.close({ updatedReservering: upserted });
     this.loading.set(false);
   }
 

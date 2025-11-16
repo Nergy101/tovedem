@@ -87,6 +87,7 @@
                   </th>
                   <th scope="col">Vriend</th>
                   <th scope="col">Lid</th>
+                  <th scope="col">Verificatie</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,6 +144,46 @@
                     >
                     </mat-checkbox>
                   </td>
+                  <td>
+                    @if (getVerificationStatus(item) === 'verified') {
+                    <mat-icon
+                      class="verification-flag verified"
+                      matTooltip="Geverifieerd - klik om aan te passen"
+                      (click)="openVerificatieDialog(item)"
+                      >flag</mat-icon
+                    >
+                    } @else if (getVerificationStatus(item) ===
+                    'verified_no_membership') {
+                    <mat-icon
+                      class="verification-flag verified-no-membership"
+                      matTooltip="Geverifieerd maar geen lid/vriend status - klik om aan te passen"
+                      (click)="openVerificatieDialog(item)"
+                      >flag</mat-icon
+                    >
+                    } @else if (getVerificationStatus(item) === 'partial') {
+                    <mat-icon
+                      class="verification-flag partial"
+                      matTooltip="Gedeeltelijke match - klik voor details"
+                      (click)="openVerificatieDialog(item)"
+                      >flag</mat-icon
+                    >
+                    } @else if (getVerificationStatus(item) ===
+                    'unverified_no_membership') {
+                    <mat-icon
+                      class="verification-flag unverified-no-membership"
+                      matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
+                      (click)="openVerificatieDialog(item)"
+                      >flag</mat-icon
+                    >
+                    } @else {
+                    <mat-icon
+                      class="verification-flag unverified"
+                      matTooltip="Geen match gevonden (wel lid/vriend aangegeven) - klik om aan te passen"
+                      (click)="openVerificatieDialog(item)"
+                      >flag</mat-icon
+                    >
+                    }
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -156,7 +197,7 @@
     <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
 
     <div class="col-12">
-      <mat-card  appearance="outlined">
+      <mat-card appearance="outlined">
         <div
           class="d-flex flex-column align-items-center justify-content-center"
         >
@@ -210,12 +251,13 @@
                 <th scope="col">Aantal</th>
                 <th scope="col">Vriend</th>
                 <th scope="col">Lid</th>
+                <th scope="col">Verificatie</th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              @for (item of reserveringenOfSelectedVoorstelling(); track item.id)
-              {
+              @for (item of reserveringenOfSelectedVoorstelling(); track
+              item.id) {
               <tr>
                 @if (selectedDag() === "datum1") {
                 <td>
@@ -273,6 +315,47 @@
                     disabled
                   >
                   </mat-checkbox>
+                </td>
+
+                <td>
+                  @if (getVerificationStatus(item) === 'verified') {
+                  <mat-icon
+                    class="verification-flag verified"
+                    matTooltip="Geverifieerd - klik om aan te passen"
+                    (click)="openVerificatieDialog(item)"
+                    >flag</mat-icon
+                  >
+                  } @else if (getVerificationStatus(item) ===
+                  'verified_no_membership') {
+                  <mat-icon
+                    class="verification-flag verified-no-membership"
+                    matTooltip="Geverifieerd maar geen lid/vriend status - klik om aan te passen"
+                    (click)="openVerificatieDialog(item)"
+                    >flag</mat-icon
+                  >
+                  } @else if (getVerificationStatus(item) === 'partial') {
+                  <mat-icon
+                    class="verification-flag partial"
+                    matTooltip="Gedeeltelijke match - klik voor details"
+                    (click)="openVerificatieDialog(item)"
+                    >flag</mat-icon
+                  >
+                  } @else if (getVerificationStatus(item) ===
+                  'unverified_no_membership') {
+                  <mat-icon
+                    class="verification-flag unverified-no-membership"
+                    matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
+                    (click)="openVerificatieDialog(item)"
+                    >flag</mat-icon
+                  >
+                  } @else {
+                  <mat-icon
+                    class="verification-flag unverified"
+                    matTooltip="Geen match gevonden (wel lid/vriend aangegeven) - klik om aan te passen"
+                    (click)="openVerificatieDialog(item)"
+                    >flag</mat-icon
+                  >
+                  }
                 </td>
 
                 <td class="d-flex justify-content-end">

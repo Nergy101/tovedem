@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, signal, WritableSignal } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
@@ -10,11 +10,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { BreakpointService } from '../../../shared/services/breakpoint.service';
 import { Rol } from '../../../models/domain/rol.model';
+import { Reservering } from '../../../models/domain/reservering.model';
+import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 
 @Component({
     selector: 'app-profiel',
@@ -27,6 +32,9 @@ import { Rol } from '../../../models/domain/rol.model';
         MatButtonModule,
         MatListModule,
         MatCardModule,
+        MatProgressSpinnerModule,
+        MatDividerModule,
+        MatPaginatorModule,
         NgOptimizedImage
     ],
     templateUrl: './profiel.component.html',
@@ -37,6 +45,7 @@ export class ProfielComponent implements OnInit {
   router: Router = inject(Router);
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
+  pocketbaseService = inject(PocketbaseService);
 
   userRoles = computed(() => {
     const rollen = this.user()?.expand?.rollen;
@@ -48,8 +57,32 @@ export class ProfielComponent implements OnInit {
     return '';
   });
 
+  isOnlyBezoeker = computed(() => {
+    const rollen = this.user()?.expand?.rollen;
+    if (!rollen || rollen.length === 0) {
+      return false;
+    }
+    const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
+    return mappedRollen.length === 1 && mappedRollen[0] === 'bezoeker' && !this.authService.userHasAllRoles(['lid']);
+  });
+
   user = this.authService?.userData;
   userRecord = this.authService?.userRecord;
+
+  reserveringen: WritableSignal<Reservering[] | null> = signal(null);
+  loadingReserveringen = signal(false);
+  pageIndex = signal(0);
+  pageSize = signal(5);
+
+  paginatedReserveringen = computed(() => {
+    const allReserveringen = this.reserveringen();
+    if (!allReserveringen || allReserveringen.length === 0) {
+      return [];
+    }
+    const startIndex = this.pageIndex() * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    return allReserveringen.slice(startIndex, endIndex);
+  });
 
   titleService = inject(Title);
 
@@ -57,9 +90,46 @@ export class ProfielComponent implements OnInit {
     this.titleService.setTitle('Tovedem - Profiel');
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/']);
+      return;
+    }
+
+    // Close side drawer if user is only bezoeker
+    if (this.isOnlyBezoeker()) {
+      this.sideDrawerService.close();
+    }
+
+    // Load reserveringen for bezoekers
+    if (this.isOnlyBezoeker() && this.user()?.email) {
+      await this.loadReserveringen();
+    }
+  }
+
+  async loadReserveringen(): Promise<void> {
+    if (!this.user()?.email) {
+      return;
+    }
+
+    this.loadingReserveringen.set(true);
+    try {
+      const reserveringen = await this.pocketbaseService.directClient
+        .collection('reserveringen')
+        .getFullList({
+          filter: this.pocketbaseService.directClient.filter('email = {:email}', {
+            email: this.user()!.email,
+          }),
+          expand: 'voorstelling',
+          sort: '-created',
+        });
+
+      this.reserveringen.set(reserveringen as unknown as Reservering[]);
+    } catch (error) {
+      console.error('Error loading reserveringen:', error);
+      this.reserveringen.set([]);
+    } finally {
+      this.loadingReserveringen.set(false);
     }
   }
 
@@ -73,6 +143,11 @@ export class ProfielComponent implements OnInit {
 
   closeSideDrawer(): void {
     this.sideDrawerService.close();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
   
   logout(): void {

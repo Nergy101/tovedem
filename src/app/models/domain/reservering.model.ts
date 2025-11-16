@@ -13,4 +13,12 @@ export interface Reservering extends BaseModel {
   guid: string;
   aanwezig_datum_1: boolean;
   aanwezig_datum_2: boolean;
+  verificatie_status?:
+    | 'verified'
+    | 'partial'
+    | 'unverified'
+    | 'verified_no_membership'
+    | 'unverified_no_membership'
+    | null;
+  verificatie_sponsor_id?: string | null;
 }

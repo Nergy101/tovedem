@@ -1,49 +1,16 @@
 <div class="container-fluid sponsors">
-  <h2 class="text-center justify-content-center">
-    Sponsoren
-  </h2>
+  <h2 class="text-center justify-content-center">Sponsoren</h2>
   <div class="row sponsors-container">
+    @for (sponsorLogo of sponsorLogos(); track sponsorLogo.id) {
     <img
       mat-card-image
       class="sponsor-image"
-      ngSrc="assets/sponsors/Logo-kringkoop.jpg"
-      priority=""
+      [ngSrc]="getImageUrl(sponsorLogo)"
       width="281"
       height="84"
-      alt="sponsor kringkoop"
+      [alt]="'sponsor ' + sponsorLogo.id"
     />
-    <img
-      mat-card-image
-      class="sponsor-image"
-      ngSrc="assets/sponsors/crossmotion.png"
-      width="281"
-      height="84"
-      alt="sponsor crossmotion"
-    />
-    <img
-      mat-card-image
-      class="sponsor-image"
-      ngSrc="assets/sponsors/digistate.png"
-      width="281"
-      height="84"
-      alt="sponsor digistate"
-    />
-    <img
-      mat-card-image
-      class="sponsor-image"
-      ngSrc="assets/sponsors/hazenveld_camping.png"
-      width="281"
-      height="84"
-      alt="sponsor hazenveld camping"
-    />
-    <img
-      mat-card-image
-      class="sponsor-image"
-      ngSrc="assets/sponsors/logo-wawollie.png"
-      width="281"
-      height="84"
-      alt="sponsor wawollie"
-    />
+    }
   </div>
 </div>
 

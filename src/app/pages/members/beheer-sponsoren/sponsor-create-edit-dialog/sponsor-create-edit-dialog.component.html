@@ -1,0 +1,84 @@
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">
+    {{ isUpdate ? 'Sponsor Aanpassen' : 'Sponsor Aanmaken' }}
+  </h2>
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    tabindex="-1"
+    mat-dialog-close
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="container p-4">
+  <div class="row">
+    <form (ngSubmit)="submit()">
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Voornaam</mat-label>
+          <input
+            matInput
+            type="text"
+            name="voornaam"
+            required
+            [(ngModel)]="sponsor.voornaam"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Achternaam</mat-label>
+          <input
+            matInput
+            type="text"
+            name="achternaam"
+            required
+            [(ngModel)]="sponsor.achternaam"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Type</mat-label>
+          <mat-select [(value)]="sponsor.type" required>
+            @for (type of sponsorTypes; track type) {
+              <mat-option [value]="type">{{ type }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            name="email"
+            [(ngModel)]="sponsor.email"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button mat-stroked-button mat-dialog-close class="flex-grow-1">
+            <mat-icon>arrow_back</mat-icon>
+            Terug
+          </button>
+        </div>
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="flex-grow-1"
+            [disabled]="loading() || !formIsValid()"
+            (click)="submit()"
+          >
+            {{ isUpdate ? 'Aanpassen' : 'Aanmaken' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

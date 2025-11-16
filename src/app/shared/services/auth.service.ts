@@ -3,6 +3,7 @@ import {
   Signal,
   WritableSignal,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -46,6 +47,23 @@ export class AuthService {
         this.unregisterUser();
       }
     }
+
+    // Automatically close side drawer for bezoekers
+    effect(() => {
+      const user = this.userData();
+      if (user && this.isOnlyBezoeker()) {
+        this.sideDrawerService.close();
+      }
+    });
+  }
+
+  isOnlyBezoeker(): boolean {
+    const rollen = this.userData()?.expand?.rollen;
+    if (!rollen || rollen.length === 0) {
+      return false;
+    }
+    const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
+    return mappedRollen.length === 1 && mappedRollen[0] === 'bezoeker' && !this.userHasAllRoles(['lid']);
   }
 
   userHasAllRoles(roles: string[]): boolean {

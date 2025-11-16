@@ -9,8 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
+import { Rol } from '../../../models/domain/rol.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -25,6 +26,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
         MatCardModule,
         MatButtonModule,
         MatFormFieldModule,
+        RouterModule,
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
@@ -63,7 +65,15 @@ export class LoginComponent {
 
         if (authData) {
           this.authService.registerUser(authData.record as unknown as Gebruiker);
-          this.sideDrawerService.open();
+          
+          // Only open side drawer if user is not just a 'bezoeker'
+          const userRoles = (authData.record as unknown as Gebruiker).expand?.rollen?.map((r: Rol) => r.rol) || [];
+          const isOnlyBezoeker = userRoles.length === 1 && userRoles[0] === 'bezoeker';
+          
+          if (!isOnlyBezoeker) {
+            this.sideDrawerService.open();
+          }
+          
           this.router.navigate(['profiel']);
         }
       } catch {

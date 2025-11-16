@@ -5,6 +5,7 @@ import { BeheerLedenComponent } from './pages/members/beheer-leden/beheer-leden.
 import { BeheerMailsComponent } from './pages/members/beheer-mails/beheer-mails.component';
 import { BeheerReserveringenComponent } from './pages/members/beheer-reserveringen/beheer-reserveringen.component';
 import { BeheerSpelersComponent } from './pages/members/beheer-spelers/beheer-spelers.component';
+import { BeheerSponsorenComponent } from './pages/members/beheer-sponsoren/beheer-sponsoren.component';
 import { BeheerVoorstellingenComponent } from './pages/members/beheer-voorstellingen/beheer-voorstellingen.component';
 import { CommissieSinterklaasComponent } from './pages/members/commissie-sinterklaas/commissie-sinterklaas.component';
 import { ProductieInfoComponent } from './pages/members/productie-info/productie-info.component';
@@ -15,6 +16,7 @@ import { GroepComponent } from './pages/public/groep/groep.component';
 import { HomePaginaComponent } from './pages/public/home/home.component';
 import { LidWordenComponent } from './pages/public/lid-worden/lid-worden.component';
 import { LoginComponent } from './pages/public/login/login.component';
+import { SignupComponent } from './pages/public/signup/signup.component';
 import { PrivacyBeleidComponent } from './pages/public/privacy-beleid/privacy-beleid.component';
 import { ReserverenComponent } from './pages/public/reserveren/reserveer-formulier/reserveren.component';
 import { ReserveringAanpassenComponent } from './pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component';
@@ -37,6 +39,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
   },
   {
     path: 'groep/Tovedem',
@@ -118,19 +124,24 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(['admin'])],
   },
   {
+    path: 'beheer-sponsoren',
+    component: BeheerSponsorenComponent,
+    canActivate: [loggedInGuard(['admin'])],
+  },
+  {
     path: 'productie-info/Tovedem',
     component: ProductieInfoComponent,
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard(['lid'])],
   },
   {
     path: 'productie-info/Cloos',
     component: ProductieInfoComponent,
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard(['lid'])],
   },
   {
     path: 'productie-info/Mejotos',
     component: ProductieInfoComponent,
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard(['lid'])],
   },
   {
     path: 'commissie-sinterklaas',
