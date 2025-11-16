@@ -14,7 +14,8 @@ nav {
   min-height: $spacing-16;
   padding: 0 !important;
   backdrop-filter: blur(12px);
-  transition: background-color $transition-base $ease-out, border-color $transition-base $ease-out;
+  transition: background-color $transition-base $ease-out,
+    border-color $transition-base $ease-out;
 }
 
 // Dark theme navbar
@@ -57,17 +58,20 @@ li {
   .active {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
-    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    transition: background-color $transition-base $ease-out,
+      color $transition-base $ease-out;
   }
 
   :hover {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
-    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    transition: background-color $transition-base $ease-out,
+      color $transition-base $ease-out;
   }
 
   button {
-    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    transition: background-color $transition-base $ease-out,
+      color $transition-base $ease-out;
     border-radius: $border-radius-md;
 
     &:focus-visible {
@@ -146,7 +150,8 @@ mat-icon {
 
 .profiel-button {
   padding: 0 $spacing-8;
-  transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+  transition: background-color $transition-base $ease-out,
+    color $transition-base $ease-out;
 
   @media (max-width: 1024px) {
     min-width: 20em;
@@ -160,5 +165,6 @@ mat-icon {
 .mat-menu-panel {
   background-color: var(--mat-sys-surface-container-low) !important;
   border-radius: $border-radius-lg !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 }

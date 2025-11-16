@@ -36,4 +36,13 @@ a {
   display: flex;
   gap: 0.5em;
   justify-content: space-evenly;
+  @media screen and (max-width: 428px) {
+    padding-top: 4em;
+  }
+  @media screen and (max-width: 768px) {
+    padding-top: 4em;
+  }
+  @media screen and (max-width: 1200px) {
+    padding-top: 2em;
+  }
 }

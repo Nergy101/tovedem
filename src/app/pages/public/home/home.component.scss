@@ -48,6 +48,10 @@ h2 {
 
 .mainText {
   overflow: hidden;
+  @media screen and (max-width: 768px) {
+    padding-top: 2em;
+    
+  }
 }
 
 .logo-card {
