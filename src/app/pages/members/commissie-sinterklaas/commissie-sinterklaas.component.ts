@@ -120,11 +120,14 @@ export class CommissieSinterklaasComponent implements OnInit {
     email: string;
     subject: string;
   }): Promise<void> {
-    const dialogRef = this.dialog.open(SinterklaasVerzoekCreateDialogComponent, {
-      data: {
-        existingVerzoek: item,
-      },
-    });
+    const dialogRef = this.dialog.open(
+      SinterklaasVerzoekCreateDialogComponent,
+      {
+        data: {
+          existingVerzoek: item,
+        },
+      }
+    );
 
     const dialogResult = await lastValueFrom(dialogRef.afterClosed());
 
