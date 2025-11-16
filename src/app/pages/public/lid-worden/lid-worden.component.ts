@@ -27,6 +27,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { BaseModel } from 'pocketbase';
 import { Subscription } from 'rxjs';
+import confetti from 'canvas-confetti';
 import { Environment } from '../../../../environment';
 import { Groep } from '../../../models/domain/groep.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
@@ -150,6 +151,16 @@ export class LidWordenComponent implements OnInit, OnDestroy {
                 `Bedankt voor de aanmelding, ${this.voornaam}.`,
                 'Aanvraag verzonden!'
               );
+
+              // Fire confetti!
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+              });
+
+              // Clear confetti after a certain duration
+              setTimeout(() => confetti.reset(), 3000);
 
               this.voornaam = null;
               this.achternaam = null;

@@ -26,6 +26,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { SinterklaasVerzoekCreateDialogComponent } from './sinterklaas-verzoek-create-dialog/sinterklaas-verzoek-create-dialog.component';
 
 @Component({
   selector: 'app-commissie-sinterklaas',
@@ -39,6 +40,7 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatTooltipModule,
+    DatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -85,6 +87,10 @@ export class CommissieSinterklaasComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    await this.loadItems();
+  }
+
+  async loadItems(): Promise<void> {
     this.items.set(
       await this.client.directClient
         .collection('sinterklaas_verzoeken')
@@ -92,6 +98,39 @@ export class CommissieSinterklaasComponent implements OnInit {
           sort: '-created',
         })
     );
+  }
+
+  async createVerzoek(): Promise<void> {
+    const dialogRef = this.dialog.open(SinterklaasVerzoekCreateDialogComponent);
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (dialogResult) {
+      await this.loadItems();
+    }
+  }
+
+  async editVerzoek(item: {
+    id: string;
+    status: string;
+    plannedDate: string;
+    message: string;
+    created: string;
+    name: string;
+    email: string;
+    subject: string;
+  }): Promise<void> {
+    const dialogRef = this.dialog.open(SinterklaasVerzoekCreateDialogComponent, {
+      data: {
+        existingVerzoek: item,
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (dialogResult) {
+      await this.loadItems();
+    }
   }
 
   async delete(id: string): Promise<void> {

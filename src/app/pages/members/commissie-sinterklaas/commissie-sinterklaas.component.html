@@ -3,7 +3,13 @@
 <div class="container mt-4">
   <div class="container">
     <div class="row">
-      <p class="display-1">Sinterklaas verzoeken</p>
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <p class="display-1 mb-0">Sinterklaas verzoeken</p>
+        <button mat-flat-button color="primary" (click)="createVerzoek()">
+          <mat-icon>add</mat-icon>
+          Nieuw verzoek
+        </button>
+      </div>
     </div>
     @for(statusIndex of statussen; track $index){ @if(items()){
     <div class="row col-12 pb-4 status-section">
@@ -30,6 +36,7 @@
               <th scope="col">Bericht</th>
               <th scope="col">Status</th>
               <th scope="col">Ingepland op</th>
+              <th scope="col"></th>
               @if (!!authService.isGlobalAdmin) {
               <th scope="col"></th>
               }
@@ -40,7 +47,7 @@
             statusIndex){
             <tr class="table-row">
               <td>
-                {{ item.created | date : yy" }}
+                {{ item.created | date : "dd-MM-yyyy HH:mm" }}
               </td>
               <td>{{ item.name }}</td>
               <td>{{ item.email }}</td>
@@ -102,6 +109,15 @@
                 </mat-menu>
               </td>
               <td>{{ item.plannedDate }}</td>
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="editVerzoek(item)"
+                  color="primary"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
               @if (!!authService.isGlobalAdmin) {
               <td>
                 <button mat-icon-button (click)="delete(item.id)">

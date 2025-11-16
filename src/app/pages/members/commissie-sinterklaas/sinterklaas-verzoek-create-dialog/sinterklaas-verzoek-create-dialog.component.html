@@ -1,0 +1,124 @@
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">
+    {{ isUpdate ? 'Sinterklaas verzoek aanpassen' : 'Sinterklaas verzoek aanmaken' }}
+  </h2>
+  <button
+    mat-icon-button
+    aria-label="close dialog"
+    tabindex="-1"
+    mat-dialog-close
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content class="container p-4">
+  <div class="row">
+    <form (ngSubmit)="submit()">
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Naam</mat-label>
+          <input
+            matInput
+            type="text"
+            name="name"
+            tabindex="0"
+            required
+            [(ngModel)]="name"
+            placeholder="Volledige naam"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>E-mail</mat-label>
+          <input
+            matInput
+            type="email"
+            name="email"
+            required
+            [(ngModel)]="email"
+            placeholder="email@voorbeeld.nl"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Onderwerp</mat-label>
+          <input
+            matInput
+            type="text"
+            name="subject"
+            required
+            [(ngModel)]="subject"
+            placeholder="Onderwerp van het verzoek"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="status" name="status">
+            @for (statusOption of statussen; track statusOption) {
+            <mat-option [value]="statusOption">{{
+              statusOption.charAt(0).toUpperCase() + statusOption.slice(1)
+            }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-12">
+          <mat-label>Bericht</mat-label>
+          <textarea
+            matInput
+            rows="6"
+            name="message"
+            required
+            [(ngModel)]="message"
+            placeholder="Typ hier het bericht"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-12">
+          <mat-label>Ingepland op (optioneel)</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="plannedDate"
+            name="plannedDate"
+            placeholder="Selecteer een datum"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button mat-stroked-button mat-dialog-close class="flex-grow-1">
+            <mat-icon>close</mat-icon>
+            Sluiten
+          </button>
+        </div>
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="flex-grow-1"
+            [disabled]="loading() || !formIsValid()"
+          >
+            @if (loading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+            {{ isUpdate ? 'Aanpassen' : 'Aanmaken' }}
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
