@@ -20,6 +20,7 @@ Voor de `reserveringen` collectie in PocketBase, stel de volgende **Update Rule*
 **Vervang `"ADMIN_ROL_ID"` met de daadwerkelijke ID van de admin rol uit de `rollen` collectie.**
 
 Om de admin rol ID te vinden:
+
 1. Ga naar PocketBase Admin Panel
 2. Open de `rollen` collectie
 3. Zoek de rol met `rol = "admin"`
@@ -29,6 +30,7 @@ Om de admin rol ID te vinden:
 ## Voorbeeld
 
 Als de admin rol ID `"xyz789abc"` is, wordt de rule:
+
 ```
 @request.auth.id != "" && (@request.auth.email = email || @request.auth.collectionName = "_superusers" || "xyz789abc" in @request.auth.rollen)
 ```
@@ -38,4 +40,3 @@ Als de admin rol ID `"xyz789abc"` is, wordt de rule:
 - PocketBase doet automatisch case-insensitive matching tussen `@request.auth.email` en `email` veld
 - Deze rule geldt alleen voor UPDATE operaties
 - Voor CREATE en DELETE operaties kunnen aparte rules nodig zijn (afhankelijk van je requirements)
-

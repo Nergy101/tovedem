@@ -4,7 +4,7 @@
 .table {
   border-collapse: separate;
   border-spacing: 0;
-  
+
   thead {
     th {
       border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
@@ -12,12 +12,12 @@
       font-weight: $font-weight-semibold;
     }
   }
-  
+
   tbody {
     tr {
       border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
       transition: background-color $transition-base $ease-out;
-      
+
       td {
         padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
         vertical-align: middle;
@@ -30,20 +30,20 @@
 html.darkMode .table {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   thead {
     background-color: var(--mat-sys-surface-container) !important;
-    
+
     th {
       color: var(--mat-sys-on-surface) !important;
     }
   }
-  
+
   tbody {
     tr {
       background-color: var(--mat-sys-surface-container-lowest) !important;
       color: var(--mat-sys-on-surface) !important;
-      
+
       &:hover {
         background-color: var(--mat-sys-surface-container) !important;
       }
@@ -55,20 +55,20 @@ html.darkMode .table {
 html.lightMode .table {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   thead {
     background-color: var(--mat-sys-surface-container-low) !important;
-    
+
     th {
       color: var(--mat-sys-on-surface) !important;
     }
   }
-  
+
   tbody {
     tr {
       background-color: var(--mat-sys-surface-container-lowest) !important;
       color: var(--mat-sys-on-surface) !important;
-      
+
       &:hover {
         background-color: var(--mat-sys-surface-container-low) !important;
       }
@@ -115,7 +115,7 @@ button[mat-icon-button][style*="background-color"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  
+
   mat-icon {
     display: flex !important;
     align-items: center !important;
@@ -129,4 +129,3 @@ button[mat-icon-button][style*="background-color"] {
   align-items: center;
   padding: 2em;
 }
-

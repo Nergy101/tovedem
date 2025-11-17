@@ -6,4 +6,3 @@ export interface Sponsor extends BaseModel {
   type: 'sponsor' | 'vriend' | 'ere-lid' | 'ere-mejoto';
   email: string;
 }
-

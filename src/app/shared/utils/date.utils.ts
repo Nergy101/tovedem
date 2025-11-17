@@ -30,10 +30,7 @@ export function findVoorstellingenForToday(
     if (voorstelling.datum_tijd_1 && isDateToday(voorstelling.datum_tijd_1)) {
       return true;
     }
-    if (
-      voorstelling.datum_tijd_2 &&
-      isDateToday(voorstelling.datum_tijd_2)
-    ) {
+    if (voorstelling.datum_tijd_2 && isDateToday(voorstelling.datum_tijd_2)) {
       return true;
     }
     return false;
@@ -66,4 +63,3 @@ export function getVoorstellingDagForDate(
 
   return null;
 }
-

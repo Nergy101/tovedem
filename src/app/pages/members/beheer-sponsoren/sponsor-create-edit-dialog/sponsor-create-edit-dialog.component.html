@@ -1,6 +1,6 @@
 <div class="container header">
   <h2 mat-dialog-title class="display-4">
-    {{ isUpdate ? 'Sponsor Aanpassen' : 'Sponsor Aanmaken' }}
+    {{ isUpdate ? "Sponsor Aanpassen" : "Sponsor Aanmaken" }}
   </h2>
   <button
     mat-icon-button
@@ -43,7 +43,7 @@
           <mat-label>Type</mat-label>
           <mat-select [(value)]="sponsor.type" required>
             @for (type of sponsorTypes; track type) {
-              <mat-option [value]="type">{{ type }}</mat-option>
+            <mat-option [value]="type">{{ type }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -74,11 +74,10 @@
             [disabled]="loading() || !formIsValid()"
             (click)="submit()"
           >
-            {{ isUpdate ? 'Aanpassen' : 'Aanmaken' }}
+            {{ isUpdate ? "Aanpassen" : "Aanmaken" }}
           </button>
         </div>
       </div>
     </form>
   </div>
 </div>
-
