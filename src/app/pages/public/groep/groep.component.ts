@@ -56,7 +56,10 @@ export class GroepComponent implements OnInit {
     effect(() => {
       const groepsNaam = this.groep()?.naam;
       if (groepsNaam) {
-        this.seoService.update(`Tovedem - Groep - ${groepsNaam}`);
+        this.seoService.update(
+          `Tovedem - Groep - ${groepsNaam}`,
+          `Informatie over ${groepsNaam}, een toneelgroep binnen Tovedem.`
+        );
       }
     });
   }
@@ -107,6 +110,33 @@ export class GroepComponent implements OnInit {
       src: this.getImageUrl(groep.collectionId, groep.id, img),
     })) ?? [];
     this.firstImg = this.slides[0]?.src ?? '';
+
+    // Add Organization structured data
+    if (groep) {
+      const groupUrl = `https://tovedem.nergy.space/groep/${groep.naam}`;
+      const images = this.slides.map((slide) => slide.src);
+
+      this.seoService.updateOpenGraphTags({
+        title: `Tovedem - Groep - ${groep.naam}`,
+        description: groep.omschrijving || `Informatie over ${groep.naam}, een toneelgroep binnen Tovedem.`,
+        url: groupUrl,
+        type: 'website',
+        siteName: 'Tovedem',
+        ...(images.length > 0 && { image: images[0] }),
+      });
+
+      this.seoService.updateStructuredDataForOrganization({
+        name: groep.naam,
+        description: groep.omschrijving,
+        url: groupUrl,
+        ...(images.length > 0 && { logo: images[0] }),
+        ...(images.length > 0 && { image: images }),
+        sameAs: [
+          'https://www.facebook.com/tovedem',
+          'https://www.instagram.com/tovedem.demeern/',
+        ],
+      });
+    }
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {

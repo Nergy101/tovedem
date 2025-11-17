@@ -3,7 +3,7 @@
     <div class="card-image-wrapper">
       @if(!!voorstelling().afbeelding){
       <img
-        alt="voorstelling image"
+        [alt]="'Afbeelding van voorstelling ' + voorstelling().titel"
         class="card-image"
         [src]="
           getImageUrl(
@@ -15,7 +15,7 @@
       />
       } @else {
       <img
-        alt="voorstelling image"
+        [alt]="'Afbeelding van voorstelling ' + voorstelling().titel"
         class="card-image"
         src="/assets/Place-Holder-Image.jpg"
       />

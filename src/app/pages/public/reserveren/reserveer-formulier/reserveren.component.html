@@ -16,8 +16,27 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="p-4">
+        <!-- Form Progress Indicator -->
+        <div class="form-progress-container mb-3" aria-live="polite" aria-atomic="true">
+          <div class="form-progress-label">
+            <span>Formulier voltooiing: {{ formProgress() }}%</span>
+          </div>
+          <div class="form-progress-bar" role="progressbar" [attr.aria-valuenow]="formProgress()" aria-valuemin="0" aria-valuemax="100" [attr.aria-label]="'Formulier is ' + formProgress() + ' procent voltooid'">
+            <div class="form-progress-fill" [style.width.%]="formProgress()"></div>
+          </div>
+        </div>
+
+        <!-- Aria-live region for reservation totals -->
+        <div aria-live="polite" aria-atomic="true" class="sr-only">
+          @if(loadingTotals()) {
+          <span>Reservering totalen worden geladen...</span>
+          } @else {
+          <span>Datum 1: {{ totalPeopleDate1() }} van 100 mensen gereserveerd. Datum 2: {{ totalPeopleDate2() }} van 100 mensen gereserveerd.</span>
+          }
+        </div>
+
         <div class="row">
-          <mat-form-field class="col-md-6 col-12">
+          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="nameValid() && name().length > 0">
             <mat-label>Voornaam</mat-label>
             <input
               matInput
@@ -25,12 +44,25 @@
               type="text"
               [ngModel]="name()"
               (ngModelChange)="onNameChanged($event)"
+              [class.mat-input-invalid]="name().length > 0 && !nameValid()"
+              id="voornaam-input"
+              aria-describedby="voornaam-error voornaam-hint"
+              aria-required="true"
             />
-            @if(!name()) {
-            <mat-error>Voornaam is verplicht</mat-error>
+            @if(name().length > 0 && nameValid()) {
+            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
+            }
+            @if(name().length > 0 && !nameValid()) {
+            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
+            }
+            @if(name().length > 0 && !nameValid()) {
+            <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
+            }
+            @if(name().length === 0) {
+            <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
+          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="surnameValid() && surname().length > 0">
             <mat-label>Achternaam</mat-label>
             <input
               matInput
@@ -38,12 +70,25 @@
               type="text"
               [ngModel]="surname()"
               (ngModelChange)="onSurnameChanged($event)"
+              [class.mat-input-invalid]="surname().length > 0 && !surnameValid()"
+              id="achternaam-input"
+              aria-describedby="achternaam-error achternaam-hint"
+              aria-required="true"
             />
-            @if(!surname()) {
-            <mat-error>Achternaam is verplicht</mat-error>
+            @if(surname().length > 0 && surnameValid()) {
+            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
+            }
+            @if(surname().length > 0 && !surnameValid()) {
+            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
+            }
+            @if(surname().length > 0 && !surnameValid()) {
+            <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
+            }
+            @if(surname().length === 0) {
+            <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
+          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="emailValid() && email().length > 0">
             <mat-label>E-mail</mat-label>
             <input
               matInput
@@ -51,12 +96,26 @@
               type="email"
               [ngModel]="email()"
               (ngModelChange)="onEmailChanged($event)"
+              [class.mat-input-invalid]="email().length > 0 && !emailValid()"
+              id="email-input"
+              aria-describedby="email-error email-hint"
+              aria-required="true"
+              autocomplete="email"
             />
-            @if(!email()) {
-            <mat-error>E-mail is verplicht</mat-error>
+            @if(email().length > 0 && emailValid()) {
+            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
+            }
+            @if(email().length > 0 && !emailValid()) {
+            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
+            }
+            @if(email().length > 0 && !emailValid()) {
+            <mat-error id="email-error">Voer een geldig e-mailadres in</mat-error>
+            }
+            @if(email().length === 0) {
+            <mat-error id="email-error">E-mail is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
+          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="email2Valid() && emailMatchStatus() === 'match'">
             <mat-label>Herhaal uw E-mail</mat-label>
             <input
               matInput
@@ -64,14 +123,36 @@
               type="email"
               [ngModel]="email2()"
               (ngModelChange)="onEmail2Changed($event)"
+              [class.mat-input-invalid]="email2().length > 0 && (emailMatchStatus() === 'mismatch' || !email2Valid())"
+              id="email2-input"
+              aria-describedby="email2-error email2-hint email-match-status"
+              aria-required="true"
+              autocomplete="email"
             />
-            @if(!email2()) {
-            <mat-error>E-mail herhaling is verplicht</mat-error>
+            @if(emailMatchStatus() === 'match' && email2Valid()) {
+            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
+            }
+            @if(emailMatchStatus() === 'mismatch' || (email2().length > 0 && !email2Valid())) {
+            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
+            }
+            @if(emailMatchStatus() === 'mismatch') {
+            <mat-error id="email2-error">E-mailadressen komen niet overeen</mat-error>
+            }
+            @if(email2().length > 0 && !email2Valid() && emailMatchStatus() !== 'mismatch') {
+            <mat-error id="email2-error">Voer een geldig e-mailadres in</mat-error>
+            }
+            @if(email2().length === 0) {
+            <mat-error id="email2-error">E-mail herhaling is verplicht</mat-error>
             }
           </mat-form-field>
-          @if(!emailsAreSame()) {
-          <mat-error>De E-Mails moeten hetzelfde zijn</mat-error>
-          }
+          <!-- Email match status indicator -->
+          <div id="email-match-status" aria-live="polite" class="sr-only">
+            @if(emailMatchStatus() === 'match') {
+            <span>E-mailadressen komen overeen</span>
+            } @else if(emailMatchStatus() === 'mismatch') {
+            <span>E-mailadressen komen niet overeen</span>
+            }
+          </div>
         </div>
         <div class="container">
           <div class="dates-grid">
@@ -119,11 +200,15 @@
                     [class.mat-input-invalid]="
                       !canReserveDate1() && amountOfPeopleDate1() > 0
                     "
+                    id="aantal-datum1-input"
+                    aria-describedby="aantal-datum1-error aantal-datum1-hint"
+                    [attr.aria-label]="'Aantal mensen voor datum 1: ' + (datum1 | date: 'dd LLLL yyyy')"
                   />
 
                   <button
                     matPrefix
                     mat-icon-button
+                    type="button"
                     (click)="
                       amountOfPeopleDate1.set(
                         amountOfPeopleDate1() - 1 < 0
@@ -131,19 +216,22 @@
                           : amountOfPeopleDate1() - 1
                       )
                     "
+                    aria-label="Verminder aantal mensen met 1"
                   >
-                    <mat-icon>remove</mat-icon>
+                    <mat-icon aria-hidden="true">remove</mat-icon>
                   </button>
                   <button
                     matSuffix
                     mat-icon-button
+                    type="button"
                     (click)="amountOfPeopleDate1.set(amountOfPeopleDate1() + 1)"
+                    aria-label="Verhoog aantal mensen met 1"
                   >
-                    <mat-icon>add</mat-icon>
+                    <mat-icon aria-hidden="true">add</mat-icon>
                   </button>
 
                   @if (limitReachedDate1()) {
-                  <mat-error>
+                  <mat-error id="aantal-datum1-error">
                     <mat-icon
                       style="
                         vertical-align: middle;
@@ -151,20 +239,21 @@
                         height: 18px;
                         width: 18px;
                       "
+                      aria-hidden="true"
                       >error</mat-icon
                     >
                     Maximum bereikt: {{ totalPeopleDate1() }}/100 mensen
                     gereserveerd voor datum 1
                   </mat-error>
                   } @else if (!canReserveDate1() && amountOfPeopleDate1() > 0) {
-                  <mat-error>
+                  <mat-error id="aantal-datum1-error">
                     Te veel: {{ totalPeopleDate1() }}/100 gereserveerd. Met
                     {{ amountOfPeopleDate1() }} extra wordt de limiet
                     overschreden.
                   </mat-error>
                   } @if (totalPeopleDate1() > 0 && canReserveDate1() &&
                   !limitReachedDate1()) {
-                  <mat-hint>
+                  <mat-hint id="aantal-datum1-hint">
                     {{ totalPeopleDate1() }}/100 mensen gereserveerd voor datum
                     1
                   </mat-hint>
@@ -218,10 +307,14 @@
                     [class.mat-input-invalid]="
                       !canReserveDate2() && amountOfPeopleDate2() > 0
                     "
+                    id="aantal-datum2-input"
+                    aria-describedby="aantal-datum2-error aantal-datum2-hint"
+                    [attr.aria-label]="'Aantal mensen voor datum 2: ' + (datum2 | date: 'dd LLLL yyyy')"
                   />
                   <button
                     matPrefix
                     mat-icon-button
+                    type="button"
                     (click)="
                       amountOfPeopleDate2.set(
                         amountOfPeopleDate2() - 1 < 0
@@ -229,19 +322,22 @@
                           : amountOfPeopleDate2() - 1
                       )
                     "
+                    aria-label="Verminder aantal mensen met 1"
                   >
-                    <mat-icon>remove</mat-icon>
+                    <mat-icon aria-hidden="true">remove</mat-icon>
                   </button>
                   <button
                     matSuffix
                     mat-icon-button
+                    type="button"
                     (click)="amountOfPeopleDate2.set(amountOfPeopleDate2() + 1)"
+                    aria-label="Verhoog aantal mensen met 1"
                   >
-                    <mat-icon>add</mat-icon>
+                    <mat-icon aria-hidden="true">add</mat-icon>
                   </button>
 
                   @if (limitReachedDate2()) {
-                  <mat-error>
+                  <mat-error id="aantal-datum2-error">
                     <mat-icon
                       style="
                         vertical-align: middle;
@@ -249,20 +345,21 @@
                         height: 18px;
                         width: 18px;
                       "
+                      aria-hidden="true"
                       >error</mat-icon
                     >
                     Maximum bereikt: {{ totalPeopleDate2() }}/100 mensen
                     gereserveerd voor datum 2
                   </mat-error>
                   } @else if (!canReserveDate2() && amountOfPeopleDate2() > 0) {
-                  <mat-error>
+                  <mat-error id="aantal-datum2-error">
                     Te veel: {{ totalPeopleDate2() }}/100 gereserveerd. Met
                     {{ amountOfPeopleDate2() }} extra wordt de limiet
                     overschreden.
                   </mat-error>
                   } @if (totalPeopleDate2() > 0 && canReserveDate2() &&
                   !limitReachedDate2()) {
-                  <mat-hint>
+                  <mat-hint id="aantal-datum2-hint">
                     {{ totalPeopleDate2() }}/100 mensen gereserveerd voor datum
                     2
                   </mat-hint>
@@ -286,8 +383,11 @@
                       [ngModel]="opmerking()"
                       (ngModelChange)="onOpmerkingChange($event)"
                       (input)="onOpmerkingChange2($event)"
+                      id="opmerking-input"
+                      aria-describedby="opmerking-hint"
+                      aria-label="Optionele opmerking voor de reservering"
                     ></textarea>
-                    <mat-hint align="end"
+                    <mat-hint align="end" id="opmerking-hint"
                       >{{ opmerkingLength().length }}/250</mat-hint
                     >
                   </mat-form-field>
@@ -299,6 +399,8 @@
                     (ngModelChange)="vriendVanTovedemChanged($event)"
                     matTooltip="Je bent sponsor of donateur van Tovedem."
                     [matTooltipPosition]="'left'"
+                    id="vriend-checkbox"
+                    aria-label="Ben je vriend van Tovedem? Je bent sponsor of donateur van Tovedem."
                   >
                     <span style="text-decoration: underline dotted gray">
                       Ben je vriend van Tovedem?
@@ -310,6 +412,8 @@
                     (ngModelChange)="lidVanTovedemMejotosChanged($event)"
                     matTooltip="Je bent lid van een van de groepen binnen Tovedem."
                     [matTooltipPosition]="'left'"
+                    id="lid-checkbox"
+                    aria-label="Ben je lid van Tovedem, Cloos of Mejoto's? Je bent lid van een van de groepen binnen Tovedem."
                   >
                     <span style="text-decoration: underline dotted gray">
                       Ben je lid van Tovedem, Cloos of Mejoto's?
@@ -321,9 +425,20 @@
                     mat-flat-button
                     [disabled]="saving() || !formIsValid()"
                     (click)="saveReservering()"
+                    aria-label="Verstuur reservering"
+                    [attr.aria-busy]="saving()"
                   >
+                    @if(saving()) {
+                    <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;" aria-hidden="true"></mat-spinner>
+                    }
                     Reserveer
                   </button>
+                  @if(!formIsValid() && (name().length > 0 || email().length > 0)) {
+                  <div class="form-validation-summary mt-2" role="alert" aria-live="polite">
+                    <mat-icon class="error-icon" aria-hidden="true">info</mat-icon>
+                    <span>Controleer de bovenstaande velden om door te gaan</span>
+                  </div>
+                  }
                 </div>
               </div>
             </div>

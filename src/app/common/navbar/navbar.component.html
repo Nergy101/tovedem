@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
   <div class="container-fluid p-2">
-    <a class="navbar-brand" routerLink="/" matTooltip="Naar homepage"
+    <a class="navbar-brand" routerLink="/" matTooltip="Naar homepage" aria-label="Tovedem homepage"
       ><img
         class="logo"
         src="/assets/TovedemLogo.svg"
-        alt="tovedem logo"
+        alt="Tovedem logo"
         style="height: 50px; width: auto;"
     /></a>
     <div class="d-flex align-items-center gap-2">
@@ -42,8 +42,8 @@
         data-bs-toggle="collapse"
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        [attr.aria-expanded]="false"
+        aria-label="Open of sluit navigatiemenu"
       >
         <div class="d-flex flex-column">
           <span><mat-icon class="navbar-icon">menu</mat-icon></span>
@@ -63,8 +63,9 @@
               routerLinkActive="active"
               routerLink="/"
               [routerLinkActiveOptions]="{ exact: true }"
+              aria-label="Ga naar homepage"
             >
-              Home <mat-icon>cottage</mat-icon>
+              Home <mat-icon aria-hidden="true">cottage</mat-icon>
             </button>
           </li>
           <li>
@@ -75,8 +76,9 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/agenda"
+              aria-label="Ga naar agenda"
             >
-              Agenda <mat-icon>calendar_month</mat-icon>
+              Agenda <mat-icon aria-hidden="true">calendar_month</mat-icon>
             </button>
           </li>
           <li>
@@ -84,44 +86,53 @@
               mat-raised-button
               [matMenuTriggerFor]="menu"
               class="w-100 {{ groepenClass }}"
+              aria-label="Open groepen menu"
+              [attr.aria-expanded]="false"
+              aria-haspopup="true"
             >
-              Groepen<mat-icon>groups</mat-icon>
+              Groepen<mat-icon aria-hidden="true">groups</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" class="mat-menu-panel">
-              <ul class="links navbar-nav nav-pills nav-fill p-2">
-                <li class="groepsnaam">
+            <mat-menu #menu="matMenu" class="mat-menu-panel" aria-label="Groepen submenu">
+              <ul class="links navbar-nav nav-pills nav-fill p-2" role="menu">
+                <li class="groepsnaam" role="none">
                   <button
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Tovedem"
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
+                    role="menuitem"
+                    aria-label="Ga naar Tovedem groep pagina"
                   >
-                    <mat-icon> diversity_1 </mat-icon>
+                    <mat-icon aria-hidden="true"> diversity_1 </mat-icon>
                     <span>Tovedem</span>
                   </button>
                 </li>
-                <li class="groepsnaam">
+                <li class="groepsnaam" role="none">
                   <button
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Cloos"
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
+                    role="menuitem"
+                    aria-label="Ga naar Cloos groep pagina"
                   >
-                    <mat-icon> diversity_2 </mat-icon>
+                    <mat-icon aria-hidden="true"> diversity_2 </mat-icon>
                     <span>Cloos</span>
                   </button>
                 </li>
-                <li class="groepsnaam">
+                <li class="groepsnaam" role="none">
                   <button
                     mat-raised-button
                     routerLinkActive="active"
                     routerLink="/groep/Mejotos"
                     data-bs-toggle="collapse"
                     data-bs-target=".navbar-collapse.show"
+                    role="menuitem"
+                    aria-label="Ga naar Mejotos groep pagina"
                   >
-                    <mat-icon> diversity_3 </mat-icon>
+                    <mat-icon aria-hidden="true"> diversity_3 </mat-icon>
                     <span>Mejoto's</span>
                   </button>
                 </li>
@@ -136,9 +147,10 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/lid-worden"
+              aria-label="Ga naar lid worden pagina"
             >
               <span>Lid worden</span>
-              <mat-icon>person_add</mat-icon>
+              <mat-icon aria-hidden="true">person_add</mat-icon>
             </button>
           </li>
           <li>
@@ -149,8 +161,9 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/steunen"
+              aria-label="Ga naar steunen pagina"
             >
-              Steunen <mat-icon>volunteer_activism</mat-icon>
+              Steunen <mat-icon aria-hidden="true">volunteer_activism</mat-icon>
             </button>
           </li>
           <li>
@@ -161,8 +174,9 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/sinterklaas"
+              aria-label="Ga naar Sinterklaas pagina"
             >
-              Sinterklaas <mat-icon>redeem</mat-icon>
+              Sinterklaas <mat-icon aria-hidden="true">redeem</mat-icon>
             </button>
           </li>
           <li>
@@ -173,8 +187,9 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/contact"
+              aria-label="Ga naar contact pagina"
             >
-              Contact <mat-icon>mail</mat-icon>
+              Contact <mat-icon aria-hidden="true">mail</mat-icon>
             </button>
           </li>
 
@@ -187,9 +202,10 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/login"
+              aria-label="Ga naar login pagina"
             >
               Login
-              <mat-icon>login</mat-icon>
+              <mat-icon aria-hidden="true">login</mat-icon>
             </button>
           </li>
           } @else {
@@ -201,20 +217,20 @@
               data-bs-target=".navbar-collapse.show"
               routerLinkActive="active"
               routerLink="/profiel"
+              aria-label="Ga naar profiel pagina"
             >
               <div
                 class="d-flex w-100 justify-content-center align-items-center gap-2"
                 style="pointer-events: none"
               >
                 <img
-                  alt="avatar"
+                  [alt]="'Avatar van ' + (authService.userData()?.name || 'gebruiker')"
                   style="max-height: 2em; border-radius: 0.2em"
                   [src]="
                     'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
                     authService.userData()?.name +
                     '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
                   "
-                  alt="avatar"
                 />
                 Profiel
               </div>

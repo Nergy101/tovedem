@@ -16,12 +16,12 @@
           <img
             mat-card-image
             [src]="getFileUrl(item)"
-            alt="Afbeelding"
+            [alt]="'Galerij afbeelding ' + ($index + 1)"
             placeholder="assets/Place-Holder-Image.jpg"
           />
           <mat-card-actions class="d-flex justify-content-center">
-            <button mat-icon-button (click)="openImage(item)">
-              <mat-icon>visibility</mat-icon>
+            <button mat-icon-button (click)="openImage(item)" aria-label="Bekijk afbeelding in volledig scherm">
+              <mat-icon aria-hidden="true">visibility</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>

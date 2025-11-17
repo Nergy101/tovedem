@@ -17,7 +17,7 @@
             <div class="col-12 p-4 center-image">
               @if(!!nieuws().afbeelding){
               <img
-                alt="voorstelling image"
+                [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
                 class="card-image"
                 [src]="
                   getImageUrl(
@@ -28,7 +28,7 @@
                 "
               />} @else {
               <img
-                alt="voorstelling image"
+                [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
                 class="card-image"
                 src="/assets/Place-Holder-Image.jpg"
               />

@@ -41,7 +41,10 @@ export class HomePaginaComponent implements OnInit {
   nieuwsToPublish: WritableSignal<Nieuws[]> = signal([]);
 
   constructor() {
-    this.seoService.update('Tovedem - Home');
+    this.seoService.update(
+      'Tovedem - Home',
+      'Welkom bij Tovedem De Meern! Een toneelgroep in De Meern, Utrecht. Hier vind je informatie over de voorstellingen, toneelgroepen en meer.'
+    );
   }
 
   async ngOnInit(): Promise<void> {
@@ -63,37 +66,145 @@ export class HomePaginaComponent implements OnInit {
     this.voorstellingen.set(voorstellingen);
     this.nieuws.set(nieuws);
 
-    this.seoService.updateStructuredData({
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: 'Tovedem',
+    // Update Open Graph tags
+    this.seoService.updateOpenGraphTags({
+      title: 'Tovedem - Home',
+      description: 'Welkom bij Tovedem De Meern! Een toneelgroep in De Meern, Utrecht. Hier vind je informatie over de voorstellingen, toneelgroepen en meer.',
       url: 'https://tovedem.nergy.space',
-      description: 'Tovedem is een toneelvereniging in de Meern',
-      audience: {
-        '@type': 'Audience',
-        audienceType: 'Liefhebbers van Theater en Toneel',
-      },
-      address: {
-        '@type': 'PostalAddress',
-        addressCountry: 'NL',
-        addressLocality: 'De Meern',
-        addressRegion: 'BT',
-        postalCode: '3454',
-        streetAddress: 'De Schalm, Orangjelaan 10',
-      },
-      theaterEvent: {
-        '@type': 'TheaterEvent',
-        name: this.voorstellingen()[0].titel,
-        startDate: this.voorstellingen()[0].datum_tijd_1,
-        endDate:
-          this.voorstellingen()[0].datum_tijd_2 ??
-          this.voorstellingen()[0].datum_tijd_1,
-        director: this.voorstellingen()[0].regie,
-        url: `https://tovedem.nergy.space/reserveren?voorstellingid=${
-          this.voorstellingen()[0].id
-        }`,
-      },
+      type: 'website',
+      siteName: 'Tovedem',
     });
+
+    // Enhanced structured data
+    const structuredData: any = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': 'https://tovedem.nergy.space/#website',
+          url: 'https://tovedem.nergy.space',
+          name: 'Tovedem',
+          description: 'Tovedem is een toneelvereniging in De Meern',
+          publisher: {
+            '@id': 'https://tovedem.nergy.space/#organization',
+          },
+          inLanguage: 'nl-NL',
+        },
+        {
+          '@type': 'Organization',
+          '@id': 'https://tovedem.nergy.space/#organization',
+          name: 'Tovedem',
+          url: 'https://tovedem.nergy.space',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://tovedem.nergy.space/assets/tovedem_logo.png',
+          },
+          description: 'Tovedem is een toneelvereniging in De Meern',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Orangjelaan 10',
+            addressLocality: 'De Meern',
+            postalCode: '3454 BT',
+            addressCountry: 'NL',
+          },
+          sameAs: [
+            'https://www.facebook.com/tovedem',
+            'https://www.instagram.com/tovedem.demeern/',
+          ],
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': 'https://tovedem.nergy.space/#breadcrumb',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://tovedem.nergy.space',
+            },
+          ],
+        },
+      ],
+    };
+
+    // Add upcoming event if available
+    if (voorstellingen.length > 0 && voorstellingen[0]) {
+      const firstVoorstelling = voorstellingen[0];
+      structuredData['@graph'].push({
+        '@type': 'TheaterEvent',
+        name: firstVoorstelling.titel,
+        startDate: firstVoorstelling.datum_tijd_1,
+        endDate: firstVoorstelling.datum_tijd_2 || firstVoorstelling.datum_tijd_1,
+        location: {
+          '@type': 'Place',
+          name: 'De Schalm',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Orangjelaan 10',
+            addressLocality: 'De Meern',
+            postalCode: '3454 BT',
+            addressCountry: 'NL',
+          },
+        },
+        organizer: {
+          '@id': 'https://tovedem.nergy.space/#organization',
+        },
+        ...(firstVoorstelling.omschrijving && {
+          description: firstVoorstelling.omschrijving,
+        }),
+        ...(firstVoorstelling.prijs_per_kaartje && {
+          offers: {
+            '@type': 'Offer',
+            price: firstVoorstelling.prijs_per_kaartje,
+            priceCurrency: 'EUR',
+            availability: 'https://schema.org/InStock',
+            url: `https://tovedem.nergy.space/reserveren?voorstellingid=${firstVoorstelling.id}`,
+          },
+        }),
+      });
+    }
+
+    // Add Article structured data for published news items
+    if (this.nieuwsToPublish().length > 0) {
+      const articles = this.nieuwsToPublish().map((item): any => {
+        const articleUrl = `https://tovedem.nergy.space`;
+        const imageUrl = item.afbeelding
+          ? `https://pocketbase.nergy.space/api/files/${item.collectionId}/${item.id}/${item.afbeelding}`
+          : undefined;
+
+        return {
+          '@type': 'NewsArticle',
+          headline: item.titel || 'Nieuws',
+          datePublished: item.publishDate || item.created,
+          dateModified: item.updated || item.publishDate || item.created,
+          author: {
+            '@type': 'Organization',
+            name: 'Tovedem',
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'Tovedem',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://tovedem.nergy.space/assets/tovedem_logo.png',
+            },
+          },
+          ...(imageUrl && { image: imageUrl }),
+          ...(item.inhoud && {
+            description: item.inhoud.replace(/<[^>]*>/g, '').substring(0, 200),
+          }),
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': articleUrl,
+          },
+        };
+      });
+
+      // Add articles to structured data
+      structuredData['@graph'].push(...articles);
+    }
+
+    this.seoService.updateStructuredData(structuredData);
   }
   publiceren(nieuws: Nieuws): boolean {
     return (

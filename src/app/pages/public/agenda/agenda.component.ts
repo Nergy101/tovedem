@@ -44,7 +44,10 @@ export class AgendaComponent implements OnInit {
     signal([]);
 
   constructor() {
-    this.seoService.update('Tovedem - Agenda');
+    this.seoService.update(
+      'Tovedem - Agenda',
+      'Bekijk de agenda van Tovedem met alle aankomende voorstellingen en evenementen.'
+    );
   }
 
   async ngOnInit(): Promise<void> {
@@ -73,6 +76,74 @@ export class AgendaComponent implements OnInit {
 
     this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6);
     this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6);
+
+    // Update Open Graph tags
+    this.seoService.updateOpenGraphTags({
+      title: 'Tovedem - Agenda',
+      description: 'Bekijk de agenda van Tovedem met alle aankomende voorstellingen en evenementen.',
+      url: 'https://tovedem.nergy.space/agenda',
+      type: 'website',
+      siteName: 'Tovedem',
+    });
+
+    // Add EventSeries structured data
+    if (voorstellingenInDeToekomst.length > 0) {
+      const events = voorstellingenInDeToekomst.map((voorstelling) => {
+        const eventData: any = {
+          '@type': 'TheaterEvent',
+          name: voorstelling.titel,
+          startDate: voorstelling.datum_tijd_1,
+          endDate: voorstelling.datum_tijd_2 || voorstelling.datum_tijd_1,
+          location: {
+            '@type': 'Place',
+            name: 'De Schalm',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: 'Orangjelaan 10',
+              addressLocality: 'De Meern',
+              postalCode: '3454 BT',
+              addressCountry: 'NL',
+            },
+          },
+          organizer: {
+            '@type': 'Organization',
+            name: 'Tovedem',
+            url: 'https://tovedem.nergy.space',
+          },
+        };
+
+        if (voorstelling.omschrijving) {
+          eventData.description = voorstelling.omschrijving;
+        }
+
+        if (voorstelling.prijs_per_kaartje) {
+          eventData.offers = {
+            '@type': 'Offer',
+            price: voorstelling.prijs_per_kaartje,
+            priceCurrency: 'EUR',
+            availability: 'https://schema.org/InStock',
+            url: `https://tovedem.nergy.space/reserveren?voorstellingid=${voorstelling.id}`,
+          };
+        }
+
+        return eventData;
+      });
+
+      const structuredData = {
+        '@context': 'https://schema.org',
+        '@type': 'EventSeries',
+        name: 'Tovedem Voorstellingen',
+        description: 'Aankomende voorstellingen van Tovedem',
+        organizer: {
+          '@type': 'Organization',
+          name: 'Tovedem',
+          url: 'https://tovedem.nergy.space',
+        },
+        event: events,
+      };
+
+      this.seoService.updateStructuredData(structuredData);
+    }
   }
 
   groupByYear(fullList: Voorstelling[]): { year: number; items: Voorstelling[] }[] {

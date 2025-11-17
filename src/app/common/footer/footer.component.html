@@ -8,7 +8,7 @@
       [ngSrc]="getImageUrl(sponsorLogo)"
       width="281"
       height="84"
-      [alt]="'sponsor ' + sponsorLogo.id"
+      [alt]="'Logo van sponsor ' + sponsorLogo.id"
     />
     }
   </div>
@@ -20,12 +20,13 @@
 >
   <div class="col-4 link-row d-flex">
     <div class="justify-content-center d-flex row">
-      <h2><mat-icon>pin_drop</mat-icon> Adres</h2>
+      <h2><mat-icon aria-hidden="true">pin_drop</mat-icon> Adres</h2>
       <a
         href="https://maps.app.goo.gl/dd9fe7p2udocU298A"
         target="_blank"
         class="adres"
         matTooltip="Open Google Maps"
+        aria-label="Open adres in Google Maps"
       >
         <span>
           De Schalm<br />
@@ -38,34 +39,37 @@
   </div>
   <div class="col-4 link-row d-flex">
     <div class="justify-content-center d-flex row">
-      <h2><mat-icon>map</mat-icon> Links</h2>
-      <ul>
-        <li>
+      <h2><mat-icon aria-hidden="true">map</mat-icon> Links</h2>
+      <ul role="list">
+        <li role="listitem">
           <button
             mat-button
             (click)="navigateTo(['/'])"
             (keydown.enter)="navigateTo(['/'])"
             role="link"
+            aria-label="Ga naar reserveren pagina"
           >
             Reserveren
           </button>
         </li>
-        <li>
+        <li role="listitem">
           <button
             mat-button
             (click)="navigateTo(['/lid-worden'])"
             (keydown.enter)="navigateTo(['/lid-worden'])"
             role="link"
+            aria-label="Ga naar lid worden pagina"
           >
             Lid worden
           </button>
         </li>
-        <li>
+        <li role="listitem">
           <button
             mat-button
             (click)="navigateTo(['/contact'])"
             (keydown.enter)="navigateTo(['/contact'])"
             role="link"
+            aria-label="Ga naar contact pagina"
           >
             Contact
           </button>
@@ -75,24 +79,26 @@
   </div>
   <div class="col-4 link-row d-flex">
     <div class="justify-content-center d-flex row">
-      <h2><mat-icon>language</mat-icon> Social Media</h2>
-      <ul>
-        <li>
+      <h2><mat-icon aria-hidden="true">language</mat-icon> Social Media</h2>
+      <ul role="list">
+        <li role="listitem">
           <button
             mat-button
             (click)="navigateToInstagram()"
             (keydown.enter)="navigateToInstagram()"
             role="link"
+            aria-label="Ga naar Tovedem Instagram pagina (opent in nieuw tabblad)"
           >
             Instagram
           </button>
         </li>
-        <li>
+        <li role="listitem">
           <button
             mat-button
             (click)="navigateToFaceBook()"
             (keydown.enter)="navigateToFaceBook()"
             role="link"
+            aria-label="Ga naar Tovedem Facebook pagina (opent in nieuw tabblad)"
           >
             Facebook
           </button>
@@ -103,13 +109,14 @@
 </div>
 
 <div class="container-fluid privacy">
-  <a class="privacy-link" href="/PrivacyBeleid"
+  <a class="privacy-link" href="/PrivacyBeleid" aria-label="Ga naar privacybeleid pagina"
     ><span>Privacybeleid / &#64;{{ currentYear }} Tovedem</span></a
   >
   <a
     class="service-status"
     href="https://kuma.nergy.space/status/tovedem"
     target="_blank"
+    aria-label="Bekijk service status (opent in nieuw tabblad)"
     >Service status</a
   >
 </div>

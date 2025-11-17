@@ -25,9 +25,8 @@
 
       <mdb-carousel-item sclass="carousel-item">
         <img
-          alt="sinterklaas image"
+          [alt]="slide.title || 'Sinterklaas afbeelding'"
           [src]="slide.src"
-          [alt]="slide.title"
           class="carousel-image"
         />
         <div class="carousel-caption d-none d-md-block">

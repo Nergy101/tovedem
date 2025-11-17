@@ -28,6 +28,7 @@ import { Groep } from '../../../../models/domain/groep.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { SeoService } from '../../../../shared/services/seo.service';
 
 @Component({
   selector: 'app-reserveren',
@@ -57,6 +58,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 export class ReserverenComponent implements OnInit {
   client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
+  seoService = inject(SeoService);
 
   router = inject(Router);
   name = signal('');
@@ -79,7 +81,36 @@ export class ReserverenComponent implements OnInit {
   loadingTotals = signal(false);
 
   emailsAreSame = computed(() => {
-    return this.email() === this.email2();
+    const email1 = this.email();
+    const email2 = this.email2();
+    // Only return true if both emails are non-empty and match
+    return email1.length > 0 && email2.length > 0 && email1 === email2;
+  });
+
+  // Validation state signals
+  nameValid = computed(() => !!this.name() && this.name().trim().length > 0);
+  surnameValid = computed(() => !!this.surname() && this.surname().trim().length > 0);
+  emailValid = computed(() => {
+    const emailValue = this.email();
+    if (!emailValue || emailValue.trim().length === 0) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailValue);
+  });
+  email2Valid = computed(() => {
+    const email2Value = this.email2();
+    if (!email2Value || email2Value.trim().length === 0) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email2Value);
+  });
+
+  // Email match status: 'match', 'mismatch', or 'empty'
+  emailMatchStatus = computed(() => {
+    const email1 = this.email();
+    const email2 = this.email2();
+    if (!email1 || !email2 || email1.trim().length === 0 || email2.trim().length === 0) {
+      return 'empty';
+    }
+    return email1 === email2 ? 'match' : 'mismatch';
   });
 
   // Check if reservation is allowed for each date
@@ -100,13 +131,37 @@ export class ReserverenComponent implements OnInit {
     return this.totalPeopleDate2() >= 100;
   });
 
+  // Form progress indicator (0-100%)
+  formProgress = computed(() => {
+    // Only count progress if user has started filling the form
+    const hasStarted = this.name().length > 0 || this.surname().length > 0 || 
+                       this.email().length > 0 || this.email2().length > 0 ||
+                       this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0;
+    
+    if (!hasStarted) {
+      return 0;
+    }
+    
+    // Count completed required fields
+    const requiredFields = [
+      this.nameValid(),
+      this.surnameValid(),
+      this.emailValid(),
+      this.email2Valid(),
+      this.emailsAreSame(), // Only true when both emails are filled and match
+      this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0,
+    ];
+    const completedFields = requiredFields.filter(Boolean).length;
+    return Math.round((completedFields / requiredFields.length) * 100);
+  });
+
   formIsValid = computed(() => {
     return (
-      !!this.name() &&
-      !!this.email() &&
-      !!this.email2() &&
+      this.nameValid() &&
+      this.emailValid() &&
+      this.email2Valid() &&
       this.emailsAreSame() &&
-      !!this.surname() &&
+      this.surnameValid() &&
       (this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0) &&
       this.canReserveDate1() &&
       this.canReserveDate2()
@@ -147,6 +202,43 @@ export class ReserverenComponent implements OnInit {
       );
 
       this.groepsNaam = groep.naam;
+
+      // Add TheaterEvent structured data
+      this.seoService.updateOpenGraphTags({
+        title: `Reserveren - ${voorstelling.titel}`,
+        description: voorstelling.omschrijving || `Reserveer voor ${voorstelling.titel} door ${groep.naam}`,
+        url: `https://tovedem.nergy.space/reserveren?voorstellingid=${voorstelling.id}`,
+        type: 'website',
+        siteName: 'Tovedem',
+      });
+
+      this.seoService.updateStructuredDataForEvent({
+        name: voorstelling.titel,
+        startDate: voorstelling.datum_tijd_1,
+        endDate: voorstelling.datum_tijd_2 || voorstelling.datum_tijd_1,
+        location: {
+          name: 'De Schalm',
+          address: {
+            streetAddress: 'Orangjelaan 10',
+            addressLocality: 'De Meern',
+            postalCode: '3454 BT',
+            addressCountry: 'NL',
+          },
+        },
+        description: voorstelling.omschrijving,
+        organizer: {
+          name: groep.naam,
+          url: `https://tovedem.nergy.space/groep/${groep.naam}`,
+        },
+        ...(voorstelling.prijs_per_kaartje && {
+          offers: {
+            price: voorstelling.prijs_per_kaartje,
+            priceCurrency: 'EUR',
+            availability: 'https://schema.org/InStock',
+            url: `https://tovedem.nergy.space/reserveren?voorstellingid=${voorstelling.id}`,
+          },
+        }),
+      });
 
       // Fetch reservation totals (privacy-safe API endpoint)
       await this.loadReservationTotals();

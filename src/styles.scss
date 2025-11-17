@@ -342,9 +342,10 @@ a {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--mat-sys-primary);
-    outline-offset: 2px;
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 3px;
     border-radius: vars.$border-radius-sm;
+    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.3);
   }
 }
 
@@ -366,7 +367,30 @@ button {
   transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out, box-shadow vars.$transition-base vars.$ease-out;
 
   &:focus-visible {
-    outline: 2px solid var(--mat-sys-primary);
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 3px;
+    border-radius: vars.$border-radius-sm;
+    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.3);
+  }
+  
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+// Enhanced focus indicators for all interactive elements
+input, textarea, select {
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    border-radius: vars.$border-radius-sm;
+    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.2);
+  }
+}
+
+mat-checkbox, mat-radio-button {
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
     border-radius: vars.$border-radius-sm;
   }

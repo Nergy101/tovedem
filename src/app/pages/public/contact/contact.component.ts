@@ -58,7 +58,31 @@ export class ContactComponent implements OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor() {
-    this.seoService.update('Tovedem - Contact');
+    this.seoService.update(
+      'Tovedem - Contact',
+      'Neem contact op met Tovedem. Wij zijn gevestigd in De Schalm, Orangjelaan 10, 3454 BT De Meern.'
+    );
+
+    // Add LocalBusiness structured data
+    this.seoService.updateStructuredDataForLocalBusiness({
+      name: 'Tovedem',
+      address: {
+        streetAddress: 'Orangjelaan 10',
+        addressLocality: 'De Meern',
+        postalCode: '3454 BT',
+        addressCountry: 'NL',
+      },
+      url: 'https://tovedem.nergy.space',
+    });
+
+    // Update Open Graph tags
+    this.seoService.updateOpenGraphTags({
+      title: 'Tovedem - Contact',
+      description: 'Neem contact op met Tovedem. Wij zijn gevestigd in De Schalm, Orangjelaan 10, 3454 BT De Meern.',
+      url: 'https://tovedem.nergy.space/contact',
+      type: 'website',
+      siteName: 'Tovedem',
+    });
   }
 
   verstuurContactMail(): void {

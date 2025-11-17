@@ -2,6 +2,26 @@
 @use "../styles.scss" as *;
 @use "../variables.scss" as *;
 
+// Skip to content link
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 10000;
+  border-radius: 0 0 4px 0;
+  font-weight: 500;
+  
+  &:focus {
+    top: 0;
+    outline: 2px solid var(--mat-sys-primary-container);
+    outline-offset: 2px;
+  }
+}
+
 :host {
   display: flex;
   flex-direction: column;
