@@ -45,6 +45,10 @@ export class SeoService {
     };
     description?: string;
     image?: string;
+    performer?: {
+      name: string;
+      '@type'?: string;
+    };
     organizer?: {
       name: string;
       url?: string;
@@ -77,6 +81,12 @@ export class SeoService {
       },
       ...(event.description && { description: event.description }),
       ...(event.image && { image: event.image }),
+      ...(event.performer && {
+        performer: {
+          '@type': event.performer['@type'] || 'TheaterGroup',
+          name: event.performer.name,
+        },
+      }),
       ...(event.organizer && {
         organizer: {
           '@type': 'Organization',

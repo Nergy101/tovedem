@@ -94,6 +94,7 @@ export class AgendaComponent implements OnInit {
           name: voorstelling.titel,
           startDate: voorstelling.datum_tijd_1,
           endDate: voorstelling.datum_tijd_2 || voorstelling.datum_tijd_1,
+          eventStatus: 'https://schema.org/EventScheduled',
           location: {
             '@type': 'Place',
             name: 'De Schalm',
@@ -114,6 +115,17 @@ export class AgendaComponent implements OnInit {
 
         if (voorstelling.omschrijving) {
           eventData.description = voorstelling.omschrijving;
+        }
+
+        if (voorstelling.afbeelding) {
+          eventData.image = `https://pocketbase.nergy.space/api/files/${voorstelling.collectionId}/${voorstelling.id}/${voorstelling.afbeelding}`;
+        }
+
+        if (voorstelling.expand?.groep?.naam) {
+          eventData.performer = {
+            '@type': 'TheaterGroup',
+            name: voorstelling.expand.groep.naam,
+          };
         }
 
         if (voorstelling.prijs_per_kaartje) {

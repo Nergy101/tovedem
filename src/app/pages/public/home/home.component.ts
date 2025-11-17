@@ -130,11 +130,12 @@ export class HomePaginaComponent implements OnInit {
     // Add upcoming event if available
     if (voorstellingen.length > 0 && voorstellingen[0]) {
       const firstVoorstelling = voorstellingen[0];
-      structuredData['@graph'].push({
+      const eventData: any = {
         '@type': 'TheaterEvent',
         name: firstVoorstelling.titel,
         startDate: firstVoorstelling.datum_tijd_1,
         endDate: firstVoorstelling.datum_tijd_2 || firstVoorstelling.datum_tijd_1,
+        eventStatus: 'https://schema.org/EventScheduled',
         location: {
           '@type': 'Place',
           name: 'De Schalm',
@@ -149,19 +150,34 @@ export class HomePaginaComponent implements OnInit {
         organizer: {
           '@id': 'https://tovedem.nergy.space/#organization',
         },
-        ...(firstVoorstelling.omschrijving && {
-          description: firstVoorstelling.omschrijving,
-        }),
-        ...(firstVoorstelling.prijs_per_kaartje && {
-          offers: {
-            '@type': 'Offer',
-            price: firstVoorstelling.prijs_per_kaartje,
-            priceCurrency: 'EUR',
-            availability: 'https://schema.org/InStock',
-            url: `https://tovedem.nergy.space/reserveren?voorstellingid=${firstVoorstelling.id}`,
-          },
-        }),
-      });
+      };
+
+      if (firstVoorstelling.omschrijving) {
+        eventData.description = firstVoorstelling.omschrijving;
+      }
+
+      if (firstVoorstelling.afbeelding) {
+        eventData.image = `https://pocketbase.nergy.space/api/files/${firstVoorstelling.collectionId}/${firstVoorstelling.id}/${firstVoorstelling.afbeelding}`;
+      }
+
+      if (firstVoorstelling.expand?.groep?.naam) {
+        eventData.performer = {
+          '@type': 'TheaterGroup',
+          name: firstVoorstelling.expand.groep.naam,
+        };
+      }
+
+      if (firstVoorstelling.prijs_per_kaartje) {
+        eventData.offers = {
+          '@type': 'Offer',
+          price: firstVoorstelling.prijs_per_kaartje,
+          priceCurrency: 'EUR',
+          availability: 'https://schema.org/InStock',
+          url: `https://tovedem.nergy.space/reserveren?voorstellingid=${firstVoorstelling.id}`,
+        };
+      }
+
+      structuredData['@graph'].push(eventData);
     }
 
     // Add Article structured data for published news items

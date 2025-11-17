@@ -92,7 +92,10 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor() {
-    this.seoService.update('Tovedem - Lid Worden');
+    this.seoService.update(
+      'Tovedem - Lid Worden',
+      'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.'
+    );
   }
 
   async ngOnInit(): Promise<void> {
@@ -110,6 +113,15 @@ export class LidWordenComponent implements OnInit, OnDestroy {
     this.content1.set(record.tekst_1);
     this.content2.set(record.tekst_2);
     this.content3.set(record.tekst_3);
+
+    // Update Open Graph tags
+    this.seoService.updateOpenGraphTags({
+      title: 'Tovedem - Lid Worden',
+      description: 'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.',
+      url: 'https://tovedem.nergy.space/lid-worden',
+      type: 'website',
+      siteName: 'Tovedem',
+    });
   }
 
   getImageUrl(collectionId: string, recordId: string, imageId: string): string {

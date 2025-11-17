@@ -226,6 +226,13 @@ export class ReserverenComponent implements OnInit {
           },
         },
         description: voorstelling.omschrijving,
+        ...(voorstelling.afbeelding && {
+          image: `https://pocketbase.nergy.space/api/files/${voorstelling.collectionId}/${voorstelling.id}/${voorstelling.afbeelding}`,
+        }),
+        performer: {
+          name: groep.naam,
+          '@type': 'TheaterGroup',
+        },
         organizer: {
           name: groep.naam,
           url: `https://tovedem.nergy.space/groep/${groep.naam}`,
