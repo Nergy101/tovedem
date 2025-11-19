@@ -8,7 +8,7 @@
     "source=tovedem_node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   ],
   "features": {
-    "ghcr.io/devcontainers-contrib/features/angular-cli:2": {},
+    "ghcr.io/devcontainers-extra/features/angular-cli:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   // Features to add to the dev container. More info: https://containers.dev/features.

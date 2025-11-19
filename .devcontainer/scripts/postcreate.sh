@@ -13,4 +13,4 @@ echo -e "${BLUE}Configuring Git Repository...${NC}"
 git config --global --add safe.directory '*'
 
 echo -e "${BLUE}Run npm install...${NC}"
-npm install
+npm install --legacy-peer-deps
