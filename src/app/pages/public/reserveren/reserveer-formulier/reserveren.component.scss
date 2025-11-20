@@ -62,37 +62,37 @@ input[type="number"] {
     .mat-form-field-outline-thick {
       color: var(--mat-form-field-error-text-color, #f44336) !important;
     }
-    
+
     .mat-form-field-label {
       color: var(--mat-form-field-error-text-color, #f44336) !important;
     }
-    
+
     .mat-form-field-label.mat-focused {
       color: var(--mat-form-field-error-text-color, #f44336) !important;
     }
   }
-  
+
   .mat-form-field-valid {
     .mat-form-field-outline-thick {
       color: #4caf50 !important;
     }
-    
+
     .mat-form-field-label.mat-focused {
       color: #4caf50 !important;
     }
   }
-  
+
   .mat-error {
     display: flex;
     align-items: center;
     gap: 0.25em;
     margin-top: 0.25em;
-    
+
     mat-icon {
       margin-right: 0.25em;
     }
   }
-  
+
   .mat-hint {
     color: var(--mat-form-field-label-text-color, rgba(0, 0, 0, 0.6));
   }
@@ -109,4 +109,22 @@ input[type="number"] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+// Reservering gesloten styling
+.reservering-gesloten {
+  color: #d32f2f !important;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+// Override dark mode for reservering gesloten
+::ng-deep {
+  html.darkMode .mat-mdc-card .reservering-gesloten,
+  html.darkMode .mat-mdc-card * .reservering-gesloten,
+  html.darkMode .reservering-gesloten {
+    color: #d32f2f !important;
+  }
 }

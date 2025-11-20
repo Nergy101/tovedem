@@ -165,6 +165,26 @@ export class ReserveringenInzienComponent implements OnInit {
     return ['Aanwezig', 'Losse Verkoop', 'Gereserveerd', 'Leeg'];
   });
 
+  totalUsedDatum1 = computed(() => {
+    const series = this.seriesDatum1();
+    // Total used = aanwezig + losseVerkoop + gereserveerd (exclude vrij)
+    return series[0] + series[1] + series[2];
+  });
+
+  totalUsedDatum2 = computed(() => {
+    const series = this.seriesDatum2();
+    // Total used = aanwezig + losseVerkoop + gereserveerd (exclude vrij)
+    return series[0] + series[1] + series[2];
+  });
+
+  totalAvailableDatum1 = computed(() => {
+    return this.selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1 ?? 0;
+  });
+
+  totalAvailableDatum2 = computed(() => {
+    return this.selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2 ?? 0;
+  });
+
   constructor() {
     this.selectedDag.set('datum1');
 
@@ -245,7 +265,8 @@ export class ReserveringenInzienComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.voorstellingen.set(
       await this.client.directClient.collection('voorstellingen').getFullList({
-        sort: '-datum_tijd_1',
+        sort: 'datum_tijd_1',
+        filter: 'gearchiveerd != true',
       })
     );
 
@@ -332,6 +353,7 @@ export class ReserveringenInzienComponent implements OnInit {
     const dialogRef = this.dialog.open(LosseVerkoopCreateDialogComponent, {
       data: {
         voorstelling: selectedVoorstelling,
+        selectedDag: this.selectedDag(),
       },
     });
 

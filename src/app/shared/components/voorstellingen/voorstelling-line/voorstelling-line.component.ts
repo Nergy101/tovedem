@@ -35,6 +35,16 @@ export class VoorstellingLineComponent {
     return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
+  hasDatumTijd2(): boolean {
+    const datum2 = this.voorstelling().datum_tijd_2;
+    if (!datum2 || datum2.trim() === '') {
+      return false;
+    }
+    // Check if it's a valid date
+    const date = new Date(datum2);
+    return !isNaN(date.getTime());
+  }
+
   inToekomst(): boolean {
     return (
       new Date(this.voorstelling().datum_tijd_1 ?? '') > new Date() ||

@@ -17,17 +17,17 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
-    selector: 'app-agenda',
-    templateUrl: './agenda.component.html',
-    styleUrl: './agenda.component.scss',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        VoorstellingLineComponent,
-        MatProgressSpinnerModule,
-        MatDividerModule,
-    ]
+  selector: 'app-agenda',
+  templateUrl: './agenda.component.html',
+  styleUrl: './agenda.component.scss',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    VoorstellingLineComponent,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+  ],
 })
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
@@ -40,8 +40,9 @@ export class AgendaComponent implements OnInit {
   voorstellingenLong: WritableSignal<Voorstelling[]> = signal([]);
   groepen: WritableSignal<Groep[]> = signal([]);
 
-  voorstellingenPerJaar: WritableSignal<{ year: number; items: Voorstelling[] }[]> =
-    signal([]);
+  voorstellingenPerJaar: WritableSignal<
+    { year: number; items: Voorstelling[] }[]
+  > = signal([]);
 
   constructor() {
     this.seoService.update(
@@ -54,8 +55,8 @@ export class AgendaComponent implements OnInit {
     const voorstellingenInDeToekomst = await this.client.getAll<Voorstelling>(
       'voorstellingen',
       {
-        sort: '-datum_tijd_1',
-        filter: `datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}"`,
+        sort: 'datum_tijd_1',
+        filter: `(datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}") && gearchiveerd != true`,
         expand: 'groep',
       }
     );
@@ -80,7 +81,8 @@ export class AgendaComponent implements OnInit {
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({
       title: 'Tovedem - Agenda',
-      description: 'Bekijk de agenda van Tovedem met alle aankomende voorstellingen en evenementen.',
+      description:
+        'Bekijk de agenda van Tovedem met alle aankomende voorstellingen en evenementen.',
       url: 'https://tovedem.nergy.space/agenda',
       type: 'website',
       siteName: 'Tovedem',
@@ -158,7 +160,9 @@ export class AgendaComponent implements OnInit {
     }
   }
 
-  groupByYear(fullList: Voorstelling[]): { year: number; items: Voorstelling[] }[] {
+  groupByYear(
+    fullList: Voorstelling[]
+  ): { year: number; items: Voorstelling[] }[] {
     return Object.values(
       fullList.reduce((result, item) => {
         const year = new Date(item.datum_tijd_1).getFullYear();

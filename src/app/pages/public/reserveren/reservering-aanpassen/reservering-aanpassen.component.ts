@@ -80,15 +80,27 @@ export class ReserveringAanpassenComponent {
   saving = signal(false);
 
   isPastDate = computed(() => {
-    const now = new Date();
-    const isDatum1Past = this.datum1 && this.datum1 <= now;
-    const isDatum2Past = this.datum2 && this.datum2 <= now;
-    // If both dates exist and both are past, or if only datum1 exists and it's past
+    // Use the new 8-hour-before logic
+    // If both dates exist and both are past the 8-hour threshold, or if only datum1 exists and it's past
     if (this.datum1 && this.datum2) {
-      return isDatum1Past && isDatum2Past;
+      return this.isDatum1Past() && this.isDatum2Past();
     }
-    // If only datum1 exists and it's past
-    return isDatum1Past;
+    // If only datum1 exists and it's past the 8-hour threshold
+    return this.isDatum1Past();
+  });
+
+  isDatum1Past = computed(() => {
+    if (!this.datum1) return false;
+    // Check if current time is 8 hours or more before the performance time
+    const eightHoursBefore = new Date(this.datum1.getTime() - 8 * 60 * 60 * 1000);
+    return this.today >= eightHoursBefore;
+  });
+
+  isDatum2Past = computed(() => {
+    if (!this.datum2) return false;
+    // Check if current time is 8 hours or more before the performance time
+    const eightHoursBefore = new Date(this.datum2.getTime() - 8 * 60 * 60 * 1000);
+    return this.today >= eightHoursBefore;
   });
 
   formIsValid = computed(() => {

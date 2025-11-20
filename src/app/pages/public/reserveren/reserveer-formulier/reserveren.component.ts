@@ -115,13 +115,22 @@ export class ReserverenComponent implements OnInit {
     return email1 === email2 ? 'match' : 'mismatch';
   });
 
-  // Check if reservation is allowed for each date
+  // Check if reservation is allowed for each date (100 total limit)
   canReserveDate1 = computed(() => {
     return this.totalPeopleDate1() + this.amountOfPeopleDate1() <= 100;
   });
 
   canReserveDate2 = computed(() => {
     return this.totalPeopleDate2() + this.amountOfPeopleDate2() <= 100;
+  });
+
+  // Check if 20 ticket per day limit is exceeded
+  exceeds20LimitDate1 = computed(() => {
+    return this.amountOfPeopleDate1() > 20;
+  });
+
+  exceeds20LimitDate2 = computed(() => {
+    return this.amountOfPeopleDate2() > 20;
   });
 
   // Check if limit is reached (for display purposes)
@@ -134,6 +143,14 @@ export class ReserverenComponent implements OnInit {
   });
 
   formIsValid = computed(() => {
+    // Don't allow submission if both dates are in the past
+    if (this.isDatum1Past() && (!this.datum2 || this.isDatum2Past())) {
+      return false;
+    }
+    if (this.datum2 && this.isDatum2Past() && (!this.datum1 || this.isDatum1Past())) {
+      return false;
+    }
+    
     return (
       this.nameValid() &&
       this.emailValid() &&
@@ -142,7 +159,9 @@ export class ReserverenComponent implements OnInit {
       this.surnameValid() &&
       (this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0) &&
       this.canReserveDate1() &&
-      this.canReserveDate2()
+      this.canReserveDate2() &&
+      !this.exceeds20LimitDate1() &&
+      !this.exceeds20LimitDate2()
     );
   });
 
@@ -154,6 +173,20 @@ export class ReserverenComponent implements OnInit {
   datum1: Date | null = null;
   datum2: Date | null = null;
   today = new Date();
+
+  isDatum1Past = computed(() => {
+    if (!this.datum1) return false;
+    // Check if current time is 8 hours or more before the performance time
+    const eightHoursBefore = new Date(this.datum1.getTime() - 8 * 60 * 60 * 1000);
+    return this.today >= eightHoursBefore;
+  });
+
+  isDatum2Past = computed(() => {
+    if (!this.datum2) return false;
+    // Check if current time is 8 hours or more before the performance time
+    const eightHoursBefore = new Date(this.datum2.getTime() - 8 * 60 * 60 * 1000);
+    return this.today >= eightHoursBefore;
+  });
 
   @Input()
   voorstellingId: string | null = null;
@@ -343,11 +376,33 @@ export class ReserverenComponent implements OnInit {
   }
 
   amountOfPeopleDate1Changed(newValue: number): void {
-    this.amountOfPeopleDate1.set(newValue);
+    if (newValue > 20) {
+      this.amountOfPeopleDate1.set(20);
+      this.snackBar.open(
+        'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
+        '⚠️',
+        {
+          duration: 5000,
+        }
+      );
+    } else {
+      this.amountOfPeopleDate1.set(newValue);
+    }
   }
 
   amountOfPeopleDate2Changed(newValue: number): void {
-    this.amountOfPeopleDate2.set(newValue);
+    if (newValue > 20) {
+      this.amountOfPeopleDate2.set(20);
+      this.snackBar.open(
+        'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
+        '⚠️',
+        {
+          duration: 5000,
+        }
+      );
+    } else {
+      this.amountOfPeopleDate2.set(newValue);
+    }
   }
 
   onOpmerkingChange(newValue: string): void {

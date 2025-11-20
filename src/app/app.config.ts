@@ -20,12 +20,14 @@ import { provideToastr } from 'ngx-toastr';
 import { Environment } from '../environment';
 import { environment } from '../environment/environment.dev';
 import { routes } from './app.routes';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimationsAsync(),
     provideRouter(
       routes,
       withComponentInputBinding(),

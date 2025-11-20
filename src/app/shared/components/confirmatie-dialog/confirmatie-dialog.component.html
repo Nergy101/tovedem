@@ -4,5 +4,8 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Annuleren</button>
+  @if (showArchiveButton) {
+    <button mat-flat-button (click)="archive()" style="background-color: #ff9800; color: white;">Archiveren</button>
+  }
   <button mat-flat-button color="primary" [mat-dialog-close]="true">Bevestigen</button>
 </mat-dialog-actions>

@@ -63,6 +63,7 @@ export class ProductieInfoComponent implements OnInit {
       await this.client.directClient.collection('voorstellingen').getFullList({
         sort: '-created',
         expand: 'groep',
+        filter: 'gearchiveerd != true',
       })
     ).filter((x) => (x as unknown as Voorstelling).groep.includes(this.groepsNaam.substring(0, 3))) as unknown as Voorstelling[];
 
@@ -80,7 +81,9 @@ export class ProductieInfoComponent implements OnInit {
     const laatstAangemaakteVoorstelling = voorstellingen.shift() ?? null;
 
     const eerstVolgendeVoorstelling = (
-      await this.client.directClient.collection('voorstellingen').getFullList()
+      await this.client.directClient.collection('voorstellingen').getFullList({
+        filter: 'gearchiveerd != true',
+      })
     ).sort((x, y) => (new Date((x as unknown as Voorstelling).created) < new Date((y as unknown as Voorstelling).created) ? 1 : -1))[0] as unknown as Voorstelling;
 
     const eerstVolgendeVoorstellingMetSpelers =

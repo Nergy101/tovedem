@@ -30,10 +30,11 @@
           </mat-form-field>
           <mat-form-field class="col-md-6 col-12">
             <mat-label>Datum</mat-label>
-            <mat-select [(ngModel)]="datumSelectOption" name="datum">
-              <mat-option value="datum1">{{ getDatum1() | date: 'dd-MM-yyyy' }}</mat-option>
-              <mat-option value="datum2">{{ getDatum2() | date: 'dd-MM-yyyy' }}</mat-option>
-            </mat-select>
+            <input
+              matInput
+              [value]="getSelectedDatum() | date: 'dd-MM-yyyy'"
+              readonly
+            />
           </mat-form-field>
         </div>
   

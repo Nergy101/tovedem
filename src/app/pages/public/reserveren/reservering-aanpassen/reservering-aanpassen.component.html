@@ -51,7 +51,7 @@
         </div>
         <div class="container">
           <div class="row justify-content-evenly">
-            @if(!!datum1 && datum1 > today) {
+            @if(!!datum1) {
             <div class="col-md-6 col-12">
               <div
                 class="flex"
@@ -70,6 +70,11 @@
                   Datum: {{ datum1 | date : "dd LLLL yyyy" }} <br />
                   Start tijd: {{ datum1 | date : "HH:mm" }}
                 </h2>
+                @if(isDatum1Past()) {
+                <p class="reservering-gesloten">
+                  Reservering gesloten
+                </p>
+                } @else {
                 <div style="display: flex; justify-content: center">
                   <button
                     class="amount-button"
@@ -104,9 +109,10 @@
                     ➕
                   </button>
                 </div>
+                }
               </div>
             </div>
-            } @if(!!datum2 && datum2 > today) {
+            } @if(!!datum2) {
             <div class="col-md-6 col-12">
               <div
                 class="flex"
@@ -125,6 +131,11 @@
                   Datum: {{ datum2 | date : "dd LLLL yyyy" }} <br />
                   Start tijd: {{ datum2 | date : "HH:mm" }}
                 </h2>
+                @if(isDatum2Past()) {
+                <p class="reservering-gesloten">
+                  Reservering gesloten
+                </p>
+                } @else {
                 <div style="display: flex; justify-content: center">
                   <button
                     class="amount-button"
@@ -161,6 +172,7 @@
                     ➕
                   </button>
                 </div>
+                }
               </div>
             </div>
             }

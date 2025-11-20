@@ -14,6 +14,7 @@ export interface Voorstelling extends BaseModel {
   beschikbare_stoelen_datum_tijd_2: number;
   publicatie_datum: string;
   prijs_per_kaartje: number;
+  gearchiveerd?: boolean;
 };
 
 export function voorstellingIsInToekomst(date: Date): boolean {

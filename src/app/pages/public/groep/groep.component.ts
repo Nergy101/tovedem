@@ -69,6 +69,7 @@ export class GroepComponent implements OnInit {
       await this.client.getAll<Voorstelling>('voorstellingen', {
         sort: '-created',
         expand: 'groep',
+        filter: 'gearchiveerd != true',
       })
     ).filter((x: Voorstelling) =>
       x.groep.includes(this.groepsNaam.substring(0, 3))
@@ -88,7 +89,9 @@ export class GroepComponent implements OnInit {
     const laatstAangemaakteVoorstelling = voorstellingen.shift() ?? null;
 
     const eerstVolgendeVoorstelling = (
-      await this.client.getAll<Voorstelling>('voorstellingen')
+      await this.client.getAll<Voorstelling>('voorstellingen', {
+        filter: 'gearchiveerd != true',
+      })
     ).sort((x, y) => (new Date(x.created) < new Date(y.created) ? 1 : -1))[0];
 
     const eerstVolgendeVoorstellingMetSpelers =

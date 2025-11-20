@@ -48,16 +48,16 @@ export class HomePaginaComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    const today = new Date().toISOString();
     const voorstellingen = await this.client.getAll<Voorstelling>(
       'voorstellingen',
       {
-        sort: '-datum_tijd_1',
+        sort: 'datum_tijd_1',
         expand: 'groep',
+        filter: `gearchiveerd != true && (datum_tijd_1 >= "${today}" || datum_tijd_2 >= "${today}")`,
       }
     );
-    const nieuws = await this.client.getAll<Nieuws>('nieuws', {
-      sort: '-publishDate',
-    });
+    const nieuws = await this.client.getAll<Nieuws>('nieuws');
 
     nieuws.forEach((item) => {
       if (this.publiceren(item)) this.nieuwsToPublish().push(item);

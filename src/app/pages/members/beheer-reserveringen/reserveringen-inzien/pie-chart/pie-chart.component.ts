@@ -35,8 +35,10 @@ export class PieChartComponent implements AfterContentChecked {
 
   series = model.required<number[]>();
   labels = model.required<string[]>();
+  totalUsed = model<number>();
+  totalAvailable = model<number>();
 
-  colors = ['#01E396', '#008FFB', '#FEB019', '#FF4560'];
+  colors = ['#01E396', '#008FFB', '#FEB019', '#D3D3D3'];
 
   legend: ApexLegend = {
     show: true,

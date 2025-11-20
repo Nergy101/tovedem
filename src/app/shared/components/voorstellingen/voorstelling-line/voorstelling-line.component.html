@@ -17,16 +17,18 @@
       }
     </div>
 
-    @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
+    @if(!!voorstelling().datum_tijd_1){
     <div class="dateFormat col-lg-3 col-md-6 col-12">
       <div class="display-6">
         <span>
           {{ voorstelling().datum_tijd_1 | date : "dd" }}
         </span>
+        @if(hasDatumTijd2()) {
         <mat-divider class="divider"></mat-divider>
         <span>
           {{ voorstelling().datum_tijd_2 | date : "dd" }}
         </span>
+        }
       </div>
       <span class="display-6">
         {{ voorstelling().datum_tijd_1 | date : "LLLL" }}
@@ -34,10 +36,6 @@
       </span>
     </div>
     }
-
-    <span class="col-lg-3 col-md-4 col-12 display-6">
-      {{ voorstelling().ondertitel }}
-    </span>
 
     @if(inToekomst()) {
     <app-nav-button

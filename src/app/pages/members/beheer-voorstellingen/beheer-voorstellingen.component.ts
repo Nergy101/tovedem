@@ -23,10 +23,13 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { Reservering } from '../../../models/domain/reservering.model';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { InformatieDialogComponent } from '../../../shared/components/informatie-dialog/informatie-dialog.component';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { ErrorService } from '../../../shared/services/error.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 
@@ -62,6 +65,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
   themeService = inject(ThemeService);
+  errorService = inject(ErrorService);
 
   titleService = inject(Title);
 
@@ -73,10 +77,13 @@ export class BeheerVoorstellingenComponent implements OnInit {
     this.loading.set(true);
     try {
       this.items.set(
-        await this.client.directClient.collection('voorstellingen').getFullList({
-          expand: 'groep,spelers',
-          sort: '-created',
-        })
+        await this.client.directClient
+          .collection('voorstellingen')
+          .getFullList({
+            expand: 'groep,spelers',
+            sort: '-created',
+            filter: 'gearchiveerd != true',
+          })
       );
     } finally {
       this.loading.set(false);
@@ -114,10 +121,85 @@ export class BeheerVoorstellingenComponent implements OnInit {
   }
 
   async delete(id: string): Promise<void> {
+    // Check if there are related reserveringen before attempting deletion
+    this.loading.set(true);
+    let hasReserveringen = false;
+    let reserveringenCount = 0;
+
+    try {
+      const reserveringen = await this.client.directClient
+        .collection('reserveringen')
+        .getFullList<Reservering>({
+          filter: this.client.directClient.filter(
+            'voorstelling = {:voorstellingId}',
+            {
+              voorstellingId: id,
+            }
+          ),
+        });
+
+      reserveringenCount = reserveringen.length;
+      hasReserveringen = reserveringenCount > 0;
+    } catch (error) {
+      console.error('Error checking for related reserveringen:', error);
+      // Continue with deletion attempt even if check fails
+    } finally {
+      this.loading.set(false);
+    }
+
+    // If there are reserveringen, show information dialog with archive option
+    if (hasReserveringen) {
+      const dialogRef = this.dialog.open(InformatieDialogComponent, {
+        data: {
+          title: 'Kan niet verwijderen',
+          content:
+            `Deze voorstelling heeft <strong>${reserveringenCount}</strong> gerelateerde reservering(en). ` +
+            `De voorstelling kan niet worden verwijderd zolang er reserveringen zijn.<br><br>` +
+            `U kunt de voorstelling wel archiveren, waardoor deze verborgen wordt maar de reserveringen behouden blijven.`,
+          showArchiveButton: true,
+        },
+      });
+
+      const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+      // Handle archive action
+      if (dialogResult === 'archive') {
+        this.loading.set(true);
+        try {
+          const voorstelling = await this.client.getOne<Voorstelling>(
+            'voorstellingen',
+            id
+          );
+          await this.client.update<Voorstelling>('voorstellingen', {
+            ...voorstelling,
+            gearchiveerd: true,
+          });
+          this.items.update((x) =>
+            x!.filter((y: { id: string }) => y.id != id)
+          );
+          this.toastr.success('Voorstelling succesvol gearchiveerd', 'Gelukt!');
+        } catch (error: unknown) {
+          const errorMessage = this.errorService.getErrorMessage(
+            error,
+            'Voorstelling archiveren'
+          );
+          this.toastr.error(errorMessage, 'Fout bij archiveren', {
+            positionClass: 'toast-bottom-right',
+            timeOut: 7000,
+          });
+        } finally {
+          this.loading.set(false);
+        }
+      }
+      return;
+    }
+
+    // Show confirmation dialog for deletion with archive option
     const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
       data: {
         title: 'Voorstelling verwijderen',
         message: 'Weet je zeker dat je de voorstelling wilt verwijderen?',
+        showArchiveButton: true,
       },
     });
 
@@ -125,13 +207,54 @@ export class BeheerVoorstellingenComponent implements OnInit {
 
     if (!dialogResult) return;
 
-    this.loading.set(true);
-
-    if (await this.client.delete('voorstellingen', id)) {
-      this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
+    // Handle archive action
+    if (dialogResult === 'archive') {
+      this.loading.set(true);
+      try {
+        const voorstelling = await this.client.getOne<Voorstelling>(
+          'voorstellingen',
+          id
+        );
+        await this.client.update<Voorstelling>('voorstellingen', {
+          ...voorstelling,
+          gearchiveerd: true,
+        });
+        this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
+        this.toastr.success('Voorstelling succesvol gearchiveerd', 'Gelukt!');
+      } catch (error: unknown) {
+        const errorMessage = this.errorService.getErrorMessage(
+          error,
+          'Voorstelling archiveren'
+        );
+        this.toastr.error(errorMessage, 'Fout bij archiveren', {
+          positionClass: 'toast-bottom-right',
+          timeOut: 7000,
+        });
+      } finally {
+        this.loading.set(false);
+      }
+      return;
     }
 
-    this.loading.set(false);
+    // Handle delete action
+    this.loading.set(true);
+
+    try {
+      await this.client.delete('voorstellingen', id);
+      this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
+      this.toastr.success('Voorstelling succesvol verwijderd', 'Gelukt!');
+    } catch (error: unknown) {
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        'Voorstelling verwijderen'
+      );
+      this.toastr.error(errorMessage, 'Fout bij verwijderen', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 7000,
+      });
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   publicatieActief(publishDateString: string): boolean {

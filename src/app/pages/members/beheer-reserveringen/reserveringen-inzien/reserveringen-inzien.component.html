@@ -223,6 +223,8 @@
               selectedDag() === 'datum1' ? seriesDatum1() : seriesDatum2()
             "
             [labels]="labels()"
+            [totalUsed]="selectedDag() === 'datum1' ? totalUsedDatum1() : totalUsedDatum2()"
+            [totalAvailable]="selectedDag() === 'datum1' ? totalAvailableDatum1() : totalAvailableDatum2()"
           ></app-pie-chart>
         </div>
       </mat-card>
@@ -252,69 +254,6 @@
           (editClick)="openEditDialog($event)"
           (verificationClick)="openVerificatieDialog($event)"
         ></app-reserveringen-table>
-      </mat-card>
-    </div>
-
-    <div class="col-12 pt-2">
-      <ng-container *ngTemplateOutlet="dagSelector"></ng-container>
-      <mat-card appearance="outlined">
-        <mat-card-header>
-          <h2>
-            Losse verkoop
-            {{
-              (selectedDag() === "datum1"
-                ? selectedVoorstelling()?.datum_tijd_1
-                : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-yyyy"
-            }}
-          </h2>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="table-responsive table-width">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Datum</th>
-                  <th scope="col">Aantal</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of losseVerkoopOfSelectedVoorstellingDag(); track
-                item.id) {
-                <tr>
-                  <td>
-                    {{
-                      (item.datum === "datum1"
-                        ? selectedVoorstelling()?.datum_tijd_1
-                        : selectedVoorstelling()?.datum_tijd_2
-                      ) | date : "dd-MM-yyyy"
-                    }}
-                  </td>
-                  <td>
-                    {{ item.aantal }} ({{
-                      item.aantal *
-                        (selectedVoorstelling()?.prijs_per_kaartje ?? 0)
-                        | currency : "EUR"
-                    }})
-                  </td>
-                  <td class="d-flex justify-content-end">
-                    <button mat-icon-button (click)="deleteLosseVerkoop(item)">
-                      <mat-icon color="warn">delete</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        </mat-card-content>
-        <mat-card-actions class="d-flex justify-content-end">
-          <button mat-fab extended color="primary" (click)="addLosseVerkoop()">
-            <mat-icon>add_circle</mat-icon>
-            Toevoegen
-          </button>
-        </mat-card-actions>
       </mat-card>
     </div>
     } @else if (!!selectedVoorstelling() &&

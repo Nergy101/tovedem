@@ -101,14 +101,18 @@ export class ProfielComponent implements OnInit {
       this.sideDrawerService.close();
     }
 
-    // Load reserveringen for bezoekers
-    if (this.isOnlyBezoeker() && this.user()?.email) {
+    // Load reserveringen for bezoekers or superusers with matching email
+    const userEmail = this.user()?.email || this.authService.client?.authStore?.model?.email;
+    if ((this.isOnlyBezoeker() || this.authService.isGlobalAdmin) && userEmail) {
       await this.loadReserveringen();
     }
   }
 
   async loadReserveringen(): Promise<void> {
-    if (!this.user()?.email) {
+    // Get email from user record or from superuser authStore
+    const userEmail = this.user()?.email || this.authService.client?.authStore?.model?.email;
+    
+    if (!userEmail) {
       return;
     }
 
@@ -118,7 +122,7 @@ export class ProfielComponent implements OnInit {
         .collection('reserveringen')
         .getFullList({
           filter: this.pocketbaseService.directClient.filter('email = {:email}', {
-            email: this.user()!.email,
+            email: userEmail,
           }),
           expand: 'voorstelling',
           sort: '-created',

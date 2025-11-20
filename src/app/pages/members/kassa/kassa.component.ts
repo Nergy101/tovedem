@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -12,11 +12,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, tap } from 'rxjs';
+import { LosseVerkoop } from '../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { Sponsor } from '../../../models/domain/sponsor.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { ReserveringenTableComponent } from '../../../shared/components/reserveringen-table/reserveringen-table.component';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { InformatieDialogComponent } from '../../../shared/components/informatie-dialog/informatie-dialog.component';
+import { PieChartComponent } from '../beheer-reserveringen/reserveringen-inzien/pie-chart/pie-chart.component';
+import { LosseVerkoopCreateDialogComponent } from '../beheer-reserveringen/losse-verkoop-create-dialog/losse-verkoop-create-dialog.component';
 import { ReserveringEditDialogComponent } from '../beheer-reserveringen/reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { VerificatieMatchDialogComponent } from '../beheer-reserveringen/verificatie-match-dialog/verificatie-match-dialog.component';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -41,7 +45,9 @@ import { lastValueFrom } from 'rxjs';
     MatIconModule,
     MatButtonModule,
     DatePipe,
+    CurrencyPipe,
     ReserveringenTableComponent,
+    PieChartComponent,
   ],
   templateUrl: './kassa.component.html',
   styleUrl: './kassa.component.scss',
@@ -67,6 +73,106 @@ export class KassaComponent implements OnInit {
   reserveringen = signal<Reservering[]>([]);
   filteredReserveringen = signal<Reservering[]>([]);
   sponsors = signal<Sponsor[]>([]);
+  losseVerkoop = signal<LosseVerkoop[]>([]);
+  losseVerkoopOfSelectedVoorstellingDag = computed(() => {
+    const selectedVoorstelling = this.selectedVoorstelling();
+    if (!selectedVoorstelling) return [];
+    return this.losseVerkoop().filter(
+      (losseVerkoop) =>
+        losseVerkoop.voorstelling === selectedVoorstelling.id &&
+        losseVerkoop.datum === this.selectedDag()
+    );
+  });
+
+  seriesDatum1 = computed(() => {
+    const reserveringen = this.reserveringen();
+    const voorstelling = this.selectedVoorstelling();
+
+    let aanwezig = 0;
+    let gereserveerd = 0;
+    let vrij = voorstelling?.beschikbare_stoelen_datum_tijd_1 ?? 0;
+    let losseVerkoopAantal = 0;
+
+    reserveringen.forEach((reservering) => {
+      if (reservering.aanwezig_datum_1) {
+        aanwezig += reservering.datum_tijd_1_aantal;
+      } else {
+        gereserveerd += reservering.datum_tijd_1_aantal;
+      }
+      vrij -= reservering.datum_tijd_1_aantal;
+    });
+
+    this.losseVerkoop().forEach((losseVerkoop) => {
+      const selectedVoorstelling = this.selectedVoorstelling();
+      if (
+        selectedVoorstelling &&
+        losseVerkoop.voorstelling === selectedVoorstelling.id &&
+        losseVerkoop.datum === 'datum1'
+      ) {
+        losseVerkoopAantal += losseVerkoop.aantal;
+        vrij -= losseVerkoop.aantal;
+      }
+    });
+
+    return [aanwezig, losseVerkoopAantal, gereserveerd, vrij];
+  });
+
+  seriesDatum2 = computed(() => {
+    const reserveringen = this.reserveringen();
+    const voorstelling = this.selectedVoorstelling();
+
+    let aanwezig = 0;
+    let gereserveerd = 0;
+    let vrij = voorstelling?.beschikbare_stoelen_datum_tijd_2 ?? 0;
+    let losseVerkoopAantal = 0;
+
+    reserveringen.forEach((reservering) => {
+      if (reservering.aanwezig_datum_2) {
+        aanwezig += reservering.datum_tijd_2_aantal;
+      } else {
+        gereserveerd += reservering.datum_tijd_2_aantal;
+      }
+      vrij -= reservering.datum_tijd_2_aantal;
+    });
+
+    this.losseVerkoop().forEach((losseVerkoop) => {
+      const selectedVoorstelling = this.selectedVoorstelling();
+      if (
+        selectedVoorstelling &&
+        losseVerkoop.voorstelling === selectedVoorstelling.id &&
+        losseVerkoop.datum === 'datum2'
+      ) {
+        losseVerkoopAantal += losseVerkoop.aantal;
+        vrij -= losseVerkoop.aantal;
+      }
+    });
+
+    return [aanwezig, losseVerkoopAantal, gereserveerd, vrij];
+  });
+
+  labels = computed<string[]>(() => {
+    return ['Aanwezig', 'Losse Verkoop', 'Gereserveerd', 'Leeg'];
+  });
+
+  totalUsedDatum1 = computed(() => {
+    const series = this.seriesDatum1();
+    // Total used = aanwezig + losseVerkoop + gereserveerd (exclude vrij)
+    return series[0] + series[1] + series[2];
+  });
+
+  totalUsedDatum2 = computed(() => {
+    const series = this.seriesDatum2();
+    // Total used = aanwezig + losseVerkoop + gereserveerd (exclude vrij)
+    return series[0] + series[1] + series[2];
+  });
+
+  totalAvailableDatum1 = computed(() => {
+    return this.selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_1 ?? 0;
+  });
+
+  totalAvailableDatum2 = computed(() => {
+    return this.selectedVoorstelling()?.beschikbare_stoelen_datum_tijd_2 ?? 0;
+  });
 
   isAdmin = computed(() => {
     // Check if user is logged in first
@@ -104,6 +210,7 @@ export class KassaComponent implements OnInit {
         this.client.directClient.collection('voorstellingen');
       const alleVoorstellingen = (await voorstellingenCollection.getFullList({
         sort: '-datum_tijd_1',
+        filter: 'gearchiveerd != true',
       })) as Voorstelling[];
       this.voorstellingen.set(alleVoorstellingen);
 
@@ -136,6 +243,9 @@ export class KassaComponent implements OnInit {
 
       // Load reserveringen for all voorstellingen today
       await this.loadReserveringenVoorVandaag();
+      
+      // Load losse verkoop for selected voorstelling
+      await this.loadLosseVerkoop();
     } catch (error) {
       console.error('Error loading data:', error);
       this.toastr.error('Fout bij het laden van gegevens');
@@ -185,6 +295,28 @@ export class KassaComponent implements OnInit {
 
     this.reserveringen.set(alleReserveringen);
     this.filterReserveringen();
+  }
+
+  async loadLosseVerkoop(): Promise<void> {
+    const selectedVoorstelling = this.selectedVoorstelling();
+    if (!selectedVoorstelling) {
+      this.losseVerkoop.set([]);
+      return;
+    }
+
+    try {
+      const losseVerkoopCollection =
+        this.client.directClient.collection('losse_verkoop');
+      const alleLosseVerkoop = (await losseVerkoopCollection.getFullList({
+        filter: this.client.directClient.filter(
+          'voorstelling.id = {:voorstellingId}',
+          { voorstellingId: selectedVoorstelling.id }
+        ),
+      })) as LosseVerkoop[];
+      this.losseVerkoop.set(alleLosseVerkoop);
+    } catch (error) {
+      console.error('Error loading losse verkoop:', error);
+    }
   }
 
   async selectEerstvolgendeVoorstelling(): Promise<void> {
@@ -238,6 +370,9 @@ export class KassaComponent implements OnInit {
       eerstvolgendeDatum,
       geselecteerdeDag
     );
+
+    // Load losse verkoop for selected voorstelling
+    await this.loadLosseVerkoop();
 
     this.toastr.success(
       `Eerstvolgende voorstelling geselecteerd: ${
@@ -477,9 +612,46 @@ export class KassaComponent implements OnInit {
     if (voorstellingen.length === 0) {
       return true;
     }
-    // Als er voorstellingen zijn, check of ze vandaag zijn
-    // Als ze niet vandaag zijn, betekent het dat de eerstvolgende al is geselecteerd
-    return voorstellingen.some((v) => this.isVoorstellingToday(v));
+    // Als er voorstellingen zijn vandaag, verberg de knop
+    return !voorstellingen.some((v) => this.isVoorstellingToday(v));
+  }
+
+  async addLosseVerkoop(): Promise<void> {
+    const selectedVoorstelling = this.selectedVoorstelling();
+
+    if (!selectedVoorstelling) return;
+
+    const dialogRef = this.dialog.open(LosseVerkoopCreateDialogComponent, {
+      data: {
+        voorstelling: selectedVoorstelling,
+        selectedDag: this.selectedDag(),
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (dialogResult) {
+      await this.loadLosseVerkoop();
+      this.toastr.success('Losse verkoop succesvol toegevoegd');
+    }
+  }
+
+  async deleteLosseVerkoop(losseVerkoopToDelete: LosseVerkoop): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Losse verkoop verwijderen',
+        message: 'Weet je zeker dat je de losse verkoop wilt verwijderen?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+
+    await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
+    await this.loadLosseVerkoop();
+
+    this.toastr.success('Losse verkoop succesvol verwijderd');
   }
 
   openInformatieDialog(): void {

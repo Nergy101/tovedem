@@ -18,20 +18,26 @@ import { MatIconModule } from '@angular/material/icon';
 export class InformatieDialogComponent {
   dialogRef = inject(MatDialogRef<InformatieDialogComponent>);
   sanitizer = inject(DomSanitizer);
-  data: { title: string; content: string } = inject(MAT_DIALOG_DATA);
+  data: { title: string; content: string; showArchiveButton?: boolean } = inject(MAT_DIALOG_DATA);
 
   title: string;
   safeContent: SafeHtml;
+  showArchiveButton: boolean;
 
   constructor() {
     this.title = this.data.title || 'Informatie';
     this.safeContent = this.sanitizer.bypassSecurityTrustHtml(
       this.data.content || ''
     );
+    this.showArchiveButton = this.data.showArchiveButton || false;
   }
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  archive(): void {
+    this.dialogRef.close('archive');
   }
 }
 

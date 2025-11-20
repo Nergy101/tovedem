@@ -15,6 +15,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
+  @if (showArchiveButton) {
+    <button mat-flat-button (click)="archive()" style="background-color: #ff9800; color: white;">Archiveren</button>
+  }
   <button mat-flat-button color="primary" (click)="close()">Sluiten</button>
 </mat-dialog-actions>
 

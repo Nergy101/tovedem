@@ -178,6 +178,7 @@ export class PrintenComponent implements OnInit {
     this.voorstellingen.set(
       await this.client.directClient.collection('voorstellingen').getFullList({
         sort: '-datum_tijd_1',
+        filter: 'gearchiveerd != true',
       })
     );
 

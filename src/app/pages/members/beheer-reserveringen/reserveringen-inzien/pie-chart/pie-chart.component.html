@@ -1,4 +1,9 @@
 <div id="chart">
+  @if(totalUsed() !== undefined && totalAvailable() !== undefined) {
+  <div class="total-display">
+    <h3>{{ totalUsed() }}/{{ totalAvailable() }} stoelen</h3>
+  </div>
+  }
   <apx-chart
     [colors]="colors!"
     [legend]="legend!"

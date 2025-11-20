@@ -26,3 +26,21 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+// Reservering gesloten styling
+.reservering-gesloten {
+  color: #d32f2f !important;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+// Override dark mode for reservering gesloten
+::ng-deep {
+  html.darkMode .mat-mdc-card .reservering-gesloten,
+  html.darkMode .mat-mdc-card * .reservering-gesloten,
+  html.darkMode .reservering-gesloten {
+    color: #d32f2f !important;
+  }
+}
