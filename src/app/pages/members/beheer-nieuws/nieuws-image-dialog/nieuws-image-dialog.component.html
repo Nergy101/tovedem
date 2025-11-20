@@ -1,0 +1,39 @@
+<div class="container">
+  <mat-dialog-content class="d-flex justify-content-center align-items-center">
+    <img
+      [src]="getFileUrl()"
+      [alt]="'Afbeelding bij nieuwsbericht: ' + (data.nieuws.titel || 'Nieuws')"
+      (load)="loading.set(false)"
+    />
+
+    @if(loading()){
+    <mat-spinner aria-label="Afbeelding wordt geladen"></mat-spinner>
+    }
+  </mat-dialog-content>
+  @if(!loading()){
+  <mat-dialog-actions class="d-flex justify-content-between actions">
+    <div></div>
+
+    <div>
+      <button
+        mat-button
+        mat-dialog-close
+        (click)="onEscapeDown()"
+        aria-label="Sluit afbeelding weergave"
+      >
+        <mat-icon aria-hidden="true">close</mat-icon> Sluiten - escape toets
+      </button>
+      <button
+        mat-button
+        (click)="onEnterDown()"
+        aria-label="Open afbeelding in nieuw tabblad"
+      >
+        <mat-icon aria-hidden="true">aspect_ratio</mat-icon> Openen - enter toets
+      </button>
+    </div>
+
+    <div></div>
+  </mat-dialog-actions>
+  }
+</div>
+

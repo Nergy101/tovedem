@@ -21,12 +21,18 @@
           @if(loadingTotals()) {
           <span>Reservering totalen worden geladen...</span>
           } @else {
-          <span>Datum 1: {{ totalPeopleDate1() }} van 100 mensen gereserveerd. Datum 2: {{ totalPeopleDate2() }} van 100 mensen gereserveerd.</span>
+          <span
+            >Datum 1: {{ totalPeopleDate1() }} van 100 mensen gereserveerd.
+            Datum 2: {{ totalPeopleDate2() }} van 100 mensen gereserveerd.</span
+          >
           }
         </div>
 
         <div class="row">
-          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="nameValid() && name().length > 0">
+          <mat-form-field
+            class="col-md-6 col-12"
+            [class.mat-form-field-valid]="nameValid() && name().length > 0"
+          >
             <mat-label>Voornaam</mat-label>
             <input
               matInput
@@ -41,12 +47,16 @@
             />
             @if(name().length > 0 && !nameValid()) {
             <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
-            }
-            @if(name().length === 0) {
+            } @if(name().length === 0) {
             <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="surnameValid() && surname().length > 0">
+          <mat-form-field
+            class="col-md-6 col-12"
+            [class.mat-form-field-valid]="
+              surnameValid() && surname().length > 0
+            "
+          >
             <mat-label>Achternaam</mat-label>
             <input
               matInput
@@ -54,19 +64,23 @@
               type="text"
               [ngModel]="surname()"
               (ngModelChange)="onSurnameChanged($event)"
-              [class.mat-input-invalid]="surname().length > 0 && !surnameValid()"
+              [class.mat-input-invalid]="
+                surname().length > 0 && !surnameValid()
+              "
               id="achternaam-input"
               aria-describedby="achternaam-error achternaam-hint"
               aria-required="true"
             />
             @if(surname().length > 0 && !surnameValid()) {
             <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
-            }
-            @if(surname().length === 0) {
+            } @if(surname().length === 0) {
             <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="emailValid() && email().length > 0">
+          <mat-form-field
+            class="col-md-6 col-12"
+            [class.mat-form-field-valid]="emailValid() && email().length > 0"
+          >
             <mat-label>E-mail</mat-label>
             <input
               matInput
@@ -81,13 +95,19 @@
               autocomplete="email"
             />
             @if(email().length > 0 && !emailValid()) {
-            <mat-error id="email-error">Voer een geldig e-mailadres in</mat-error>
-            }
-            @if(email().length === 0) {
+            <mat-error id="email-error"
+              >Voer een geldig e-mailadres in</mat-error
+            >
+            } @if(email().length === 0) {
             <mat-error id="email-error">E-mail is verplicht</mat-error>
             }
           </mat-form-field>
-          <mat-form-field class="col-md-6 col-12" [class.mat-form-field-valid]="email2Valid() && emailMatchStatus() === 'match'">
+          <mat-form-field
+            class="col-md-6 col-12"
+            [class.mat-form-field-valid]="
+              email2Valid() && emailMatchStatus() === 'match'
+            "
+          >
             <mat-label>Herhaal uw E-mail</mat-label>
             <input
               matInput
@@ -95,20 +115,28 @@
               type="email"
               [ngModel]="email2()"
               (ngModelChange)="onEmail2Changed($event)"
-              [class.mat-input-invalid]="email2().length > 0 && (emailMatchStatus() === 'mismatch' || !email2Valid())"
+              [class.mat-input-invalid]="
+                email2().length > 0 &&
+                (emailMatchStatus() === 'mismatch' || !email2Valid())
+              "
               id="email2-input"
               aria-describedby="email2-error email2-hint email-match-status"
               aria-required="true"
               autocomplete="email"
             />
             @if(emailMatchStatus() === 'mismatch') {
-            <mat-error id="email2-error">E-mailadressen komen niet overeen</mat-error>
-            }
-            @if(email2().length > 0 && !email2Valid() && emailMatchStatus() !== 'mismatch') {
-            <mat-error id="email2-error">Voer een geldig e-mailadres in</mat-error>
-            }
-            @if(email2().length === 0) {
-            <mat-error id="email2-error">E-mail herhaling is verplicht</mat-error>
+            <mat-error id="email2-error"
+              >E-mailadressen komen niet overeen</mat-error
+            >
+            } @if(email2().length > 0 && !email2Valid() && emailMatchStatus()
+            !== 'mismatch') {
+            <mat-error id="email2-error"
+              >Voer een geldig e-mailadres in</mat-error
+            >
+            } @if(email2().length === 0) {
+            <mat-error id="email2-error"
+              >E-mail herhaling is verplicht</mat-error
+            >
             }
           </mat-form-field>
           <!-- Email match status indicator -->
@@ -141,9 +169,7 @@
                 Start tijd: {{ datum1 | date : "HH:mm" }}
               </h4>
               @if(isDatum1Past()) {
-              <p class="reservering-gesloten">
-                Reservering gesloten
-              </p>
+              <p class="reservering-gesloten">Reservering gesloten</p>
               } @else {
               <div
                 style="
@@ -156,7 +182,8 @@
                 <mat-form-field
                   style="max-width: 20em; text-align: center; width: 100%"
                   [class.mat-form-field-invalid]="
-                    (!canReserveDate1() && amountOfPeopleDate1() > 0) || exceeds20LimitDate1()
+                    (!canReserveDate1() && amountOfPeopleDate1() > 0) ||
+                    exceeds20LimitDate1()
                   "
                 >
                   <mat-label>Hoeveel mensen?</mat-label>
@@ -169,11 +196,15 @@
                     [ngModel]="amountOfPeopleDate1()"
                     (ngModelChange)="amountOfPeopleDate1Changed($event)"
                     [class.mat-input-invalid]="
-                      (!canReserveDate1() && amountOfPeopleDate1() > 0) || exceeds20LimitDate1()
+                      (!canReserveDate1() && amountOfPeopleDate1() > 0) ||
+                      exceeds20LimitDate1()
                     "
                     id="aantal-datum1-input"
                     aria-describedby="aantal-datum1-error aantal-datum1-hint"
-                    [attr.aria-label]="'Aantal mensen voor datum 1: ' + (datum1 | date: 'dd LLLL yyyy')"
+                    [attr.aria-label]="
+                      'Aantal mensen voor datum 1: ' +
+                      (datum1 | date : 'dd LLLL yyyy')
+                    "
                   />
 
                   <button
@@ -203,7 +234,8 @@
 
                   @if (exceeds20LimitDate1()) {
                   <mat-error id="aantal-datum1-error">
-                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag
+                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor
+                    1 dag
                   </mat-error>
                   } @else if (limitReachedDate1()) {
                   <mat-error id="aantal-datum1-error">
@@ -246,9 +278,7 @@
                 Start tijd: {{ datum2 | date : "HH:mm" }}
               </h4>
               @if(isDatum2Past()) {
-              <p class="reservering-gesloten">
-                Reservering gesloten
-              </p>
+              <p class="reservering-gesloten">Reservering gesloten</p>
               } @else {
               <div
                 style="
@@ -261,7 +291,8 @@
                 <mat-form-field
                   style="max-width: 20em; width: 100%"
                   [class.mat-form-field-invalid]="
-                    (!canReserveDate2() && amountOfPeopleDate2() > 0) || exceeds20LimitDate2()
+                    (!canReserveDate2() && amountOfPeopleDate2() > 0) ||
+                    exceeds20LimitDate2()
                   "
                 >
                   <mat-label style="text-align: center"
@@ -276,11 +307,15 @@
                     [ngModel]="amountOfPeopleDate2()"
                     (ngModelChange)="amountOfPeopleDate2Changed($event)"
                     [class.mat-input-invalid]="
-                      (!canReserveDate2() && amountOfPeopleDate2() > 0) || exceeds20LimitDate2()
+                      (!canReserveDate2() && amountOfPeopleDate2() > 0) ||
+                      exceeds20LimitDate2()
                     "
                     id="aantal-datum2-input"
                     aria-describedby="aantal-datum2-error aantal-datum2-hint"
-                    [attr.aria-label]="'Aantal mensen voor datum 2: ' + (datum2 | date: 'dd LLLL yyyy')"
+                    [attr.aria-label]="
+                      'Aantal mensen voor datum 2: ' +
+                      (datum2 | date : 'dd LLLL yyyy')
+                    "
                   />
                   <button
                     matPrefix
@@ -309,7 +344,8 @@
 
                   @if (exceeds20LimitDate2()) {
                   <mat-error id="aantal-datum2-error">
-                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag
+                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor
+                    1 dag
                   </mat-error>
                   } @else if (limitReachedDate2()) {
                   <mat-error id="aantal-datum2-error">
@@ -395,13 +431,23 @@
                     [attr.aria-busy]="saving()"
                   >
                     @if(saving()) {
-                    <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;" aria-hidden="true"></mat-spinner>
-                    }
-                    Reserveer
+                    <mat-spinner
+                      diameter="20"
+                      style="display: inline-block; margin-right: 8px"
+                      aria-hidden="true"
+                    ></mat-spinner>
+                    } Reserveer
                   </button>
-                  @if(!formIsValid() && (name().length > 0 || email().length > 0)) {
-                  <div class="form-validation-summary mt-2" role="alert" aria-live="polite">
-                    <span>Controleer de bovenstaande velden om door te gaan</span>
+                  @if(!formIsValid() && (name().length > 0 || email().length >
+                  0)) {
+                  <div
+                    class="form-validation-summary mt-2"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    <span
+                      >Controleer de bovenstaande velden om door te gaan</span
+                    >
                   </div>
                   }
                 </div>

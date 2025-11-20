@@ -6,6 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -30,6 +31,7 @@ import { SeoService } from '../../../shared/services/seo.service';
     NieuwsCardComponent,
     MdbCarouselModule,
     NgOptimizedImage,
+    DatePipe,
   ],
 })
 export class HomePaginaComponent implements OnInit {
@@ -69,7 +71,8 @@ export class HomePaginaComponent implements OnInit {
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({
       title: 'Tovedem - Home',
-      description: 'Welkom bij Tovedem De Meern! Een toneelgroep in De Meern, Utrecht. Hier vind je informatie over de voorstellingen, toneelgroepen en meer.',
+      description:
+        'Welkom bij Tovedem De Meern! Een toneelgroep in De Meern, Utrecht. Hier vind je informatie over de voorstellingen, toneelgroepen en meer.',
       url: 'https://tovedem.nergy.space',
       type: 'website',
       siteName: 'Tovedem',
@@ -134,7 +137,8 @@ export class HomePaginaComponent implements OnInit {
         '@type': 'TheaterEvent',
         name: firstVoorstelling.titel,
         startDate: firstVoorstelling.datum_tijd_1,
-        endDate: firstVoorstelling.datum_tijd_2 || firstVoorstelling.datum_tijd_1,
+        endDate:
+          firstVoorstelling.datum_tijd_2 || firstVoorstelling.datum_tijd_1,
         eventStatus: 'https://schema.org/EventScheduled',
         location: {
           '@type': 'Place',

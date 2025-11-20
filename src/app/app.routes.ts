@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './shared/services/auth.service';
+import { Rol } from './models/domain/rol.model';
 
 export const routes: Routes = [
   {
@@ -221,6 +222,14 @@ export const routes: Routes = [
       ),
     canActivate: [loggedInGuard],
   },
+  {
+    path: 'beheer-nieuws',
+    loadComponent: () =>
+      import('./pages/members/beheer-nieuws/beheer-nieuws.component').then(
+        (m) => m.BeheerNieuwsComponent
+      ),
+    canActivate: [loggedInGuardNieuwsCommissie],
+  },
 ];
 
 function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
@@ -241,6 +250,41 @@ function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
       if (authService.userHasAllRoles(requiredRoles)) {
         return true;
       }
+    }
+
+    toastr.error('Deze pagina bestaat niet');
+    return router.createUrlTree([]);
+  };
+}
+
+function loggedInGuardNieuwsCommissie(): CanActivateFn {
+  return () => {
+    const router = inject(Router);
+    const toastr = inject(ToastrService);
+    const authService = inject(AuthService);
+
+    // Allow superusers
+    if (authService.isGlobalAdmin) {
+      return true;
+    }
+
+    // Check if user is logged in
+    if (!authService.isLoggedIn()) {
+      toastr.error('Deze pagina bestaat niet');
+      return router.createUrlTree([]);
+    }
+
+    // Check if user has one of the required roles: admin, commissie, or beheer
+    const userRoles = authService.userData()?.expand?.rollen?.map(
+      (r: Rol) => r.rol
+    ) || [];
+
+    if (
+      userRoles.includes('admin') ||
+      userRoles.includes('commissie') ||
+      userRoles.includes('beheer')
+    ) {
+      return true;
     }
 
     toastr.error('Deze pagina bestaat niet');

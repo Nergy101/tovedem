@@ -59,6 +59,8 @@
     authService.userHasAllRoles(['bestuur']) ||
     authService.userHasAllRoles(['sint_commissie']) ||
     authService.userHasAllRoles(['lees_commissie']) ||
+    authService.userHasAllRoles(['commissie']) ||
+    authService.userHasAllRoles(['beheer']) ||
     authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
@@ -100,6 +102,26 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             Lees Commissie <mat-icon>auto_stories</mat-icon>
+          </button>
+        </li>
+      </p>
+      } @if( authService.userHasAllRoles(['admin']) ||
+      authService.userHasAllRoles(['bestuur']) ||
+      authService.userHasAllRoles(['commissie']) ||
+      authService.userHasAllRoles(['beheer']) ||
+      authService.isGlobalAdmin) {
+      <p>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-nieuws"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Nieuws Commissie <mat-icon>article</mat-icon>
           </button>
         </li>
       </p>

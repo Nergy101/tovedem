@@ -5,7 +5,7 @@ import {
   ViewChild,
   computed,
   effect,
-  model
+  model,
 } from '@angular/core';
 import {
   ApexChart,

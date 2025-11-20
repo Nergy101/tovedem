@@ -1,0 +1,192 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Nieuws</p>
+    </div>
+
+    <div class="row">
+      <button mat-fab extended color="primary" (click)="openCreateDialog()">
+        <mat-icon>add_circle</mat-icon>
+        Aanmaken
+      </button>
+    </div>
+
+    <div class="row pt-4">
+      @if (loading()) {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      } @else { @defer(when allItems()){
+
+      <!-- Actieve nieuwsberichten -->
+      <mat-card class="table-responsive table-width mb-4">
+        <mat-card-header>
+          <mat-card-title>Actieve Nieuwsberichten</mat-card-title>
+        </mat-card-header>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Titel</th>
+              <th scope="col">Publicatiedatum</th>
+              <th scope="col">Archiveringsdatum</th>
+              <th scope="col">Afbeelding</th>
+              <th scope="col"></th>
+              @if (!!authService.isGlobalAdmin) {
+              <th scope="col"></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of actieveItems(); track item.id) {
+            <tr>
+              <td>
+                <mat-icon [style.color]="'#4caf50'">circle</mat-icon>
+              </td>
+              <td>{{ item.titel }}</td>
+              <td>
+                @if (item.publishDate) {
+                {{ item.publishDate | date : "dd-MM-yyyy" }}
+                } @else {
+                <span>-</span>
+                }
+              </td>
+              <td>
+                @if (item.archiveDate) {
+                {{ item.archiveDate | date : "dd-MM-yyyy" }}
+                } @else {
+                <span>-</span>
+                }
+              </td>
+              <td>
+                @if (item.afbeelding) {
+                <button
+                  mat-icon-button
+                  (click)="openImageDialog(item)"
+                  aria-label="Bekijk afbeelding"
+                >
+                  <mat-icon>image</mat-icon>
+                </button>
+                } @else {
+                <span>Geen afbeelding</span>
+                }
+              </td>
+              <td>
+                <button mat-icon-button (click)="openEditDialog(item)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(item.id)"
+                  [disabled]="loading()"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="7" class="text-center">Geen actieve nieuwsberichten</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+
+      <!-- Toekomstig en gearchiveerde nieuwsberichten -->
+      <mat-card class="table-responsive table-width">
+        <mat-card-header>
+          <mat-card-title>Toekomstig en Gearchiveerde Nieuwsberichten</mat-card-title>
+        </mat-card-header>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Titel</th>
+              <th scope="col">Publicatiedatum</th>
+              <th scope="col">Archiveringsdatum</th>
+              <th scope="col">Afbeelding</th>
+              <th scope="col"></th>
+              @if (!!authService.isGlobalAdmin) {
+              <th scope="col"></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of toekomstigEnGearchiveerdItems(); track item.id) {
+            <tr>
+              <td>
+                @if (isToekomstig(item)) {
+                <mat-icon [style.color]="'#2196f3'">circle</mat-icon>
+                } @else if (isGearchiveerd(item)) {
+                <mat-icon [style.color]="'#ff9800'">circle</mat-icon>
+                } @else {
+                <mat-icon>circle</mat-icon>
+                }
+              </td>
+              <td>{{ item.titel }}</td>
+              <td>
+                @if (item.publishDate) {
+                {{ item.publishDate | date : "dd-MM-yyyy" }}
+                } @else {
+                <span>-</span>
+                }
+              </td>
+              <td>
+                @if (item.archiveDate) {
+                {{ item.archiveDate | date : "dd-MM-yyyy" }}
+                } @else {
+                <span>-</span>
+                }
+              </td>
+              <td>
+                @if (item.afbeelding) {
+                <button
+                  mat-icon-button
+                  (click)="openImageDialog(item)"
+                  aria-label="Bekijk afbeelding"
+                >
+                  <mat-icon>image</mat-icon>
+                </button>
+                } @else {
+                <span>Geen afbeelding</span>
+                }
+              </td>
+              <td>
+                <button mat-icon-button (click)="openEditDialog(item)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(item.id)"
+                  [disabled]="loading()"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="7" class="text-center">Geen toekomstige of gearchiveerde nieuwsberichten</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+      } @placeholder {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      } }
+    </div>
+  </div>
+</div>
+
