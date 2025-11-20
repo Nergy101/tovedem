@@ -1,3 +1,20 @@
+:host {
+  ::ng-deep .container,
+  ::ng-deep .container.mat-elevation-z2 {
+    max-width: 1000px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    
+    @media (max-width: 1024px) {
+      max-width: 900px !important;
+    }
+    
+    @media (max-width: 768px) {
+      max-width: 100% !important;
+    }
+  }
+}
+
 .splash-image {
   background: url("/assets/lidworden_banner.jpg") no-repeat center center;
   -webkit-background-size: cover;

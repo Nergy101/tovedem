@@ -16,7 +16,7 @@
       </div>
 
       @defer (when nieuwsToPublish().length > 0){
-      <div class="">
+      <div class="nieuws-section">
         <mat-divider class="divider mb-4"></mat-divider>
 
         <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
@@ -30,10 +30,10 @@
       } @defer (when voorstellingen().length > 0) {
       <div class="section pt-4">
         <div>
-          <mat-divider class="divider"></mat-divider>
           <h2 class="text-center" style="font-size: x-large">
             Aankomende voorstellingen
           </h2>
+          <mat-divider class="divider"></mat-divider>
         </div>
         <div class="row voorstellingen-cards mb-4">
           @for (item of voorstellingen(); track $index) {

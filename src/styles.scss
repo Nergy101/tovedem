@@ -47,7 +47,12 @@ html.darkMode {
   // Form field outline appearance colors
   --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3) !important;
   --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
-  --mdc-outlined-text-field-label-text-color: rgba(232, 233, 235, 0.7) !important;
+  --mdc-outlined-text-field-label-text-color: rgba(
+    232,
+    233,
+    235,
+    0.7
+  ) !important;
   --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
 
   background-color: #0f1218;
@@ -116,7 +121,29 @@ html.darkMode {
 
 html.lightMode {
   background-color: #ffffff;
+  position: relative;
   transition: background-color vars.$transition-base vars.$ease-out;
+
+  // Blurred background image using pseudo-element
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/assets/tovedem_pattern_background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+    transform: translateZ(0);
+    will-change: transform;
+    z-index: -1;
+    pointer-events: none;
+  }
 }
 
 body.darkMode {
@@ -127,7 +154,8 @@ body.darkMode {
   line-height: vars.$line-height-normal;
   color: #ffffff !important;
   background-color: #0f1218;
-  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out;
+  transition: background-color vars.$transition-base vars.$ease-out,
+    color vars.$transition-base vars.$ease-out;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -139,25 +167,35 @@ body.lightMode {
   font-size: vars.$font-size-base;
   line-height: vars.$line-height-normal;
   color: #000000 !important;
-  background-color: #ffffff;
-  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out;
+  background-color: transparent !important;
+  transition: background-color vars.$transition-base vars.$ease-out,
+    color vars.$transition-base vars.$ease-out;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 // AGGRESSIVE GLOBAL RULE: Force ALL text to white for dark mode (with specific exceptions)
 // Target all text-containing elements specifically
-html.darkMode *, html.darkMode *::before, html.darkMode *::after {
+html.darkMode *,
+html.darkMode *::before,
+html.darkMode *::after {
   color: #ffffff !important;
 }
 
 // Light mode: Force ALL text to black
-html.lightMode *, html.lightMode *::before, html.lightMode *::after {
+html.lightMode *,
+html.lightMode *::before,
+html.lightMode *::after {
   color: #000000 !important;
 }
 
 // Exceptions for specific elements that should NOT be forced
-img, svg, canvas, video, iframe, input[type="image"],
+img,
+svg,
+canvas,
+video,
+iframe,
+input[type="image"],
 .mat-mdc-icon-button[color="primary"] mat-icon,
 .mat-mdc-button[color="primary"] mat-icon,
 .mat-mdc-raised-button[color="primary"] mat-icon {
@@ -165,7 +203,8 @@ img, svg, canvas, video, iframe, input[type="image"],
 }
 
 // Ensure links are visible (primary color) - override the universal selector
-a[href], a {
+a[href],
+a {
   color: var(--mat-sys-primary) !important;
 
   &:hover {
@@ -178,33 +217,48 @@ a[href], a {
 }
 
 // Override Bootstrap text utility classes
-html.darkMode .text-dark, html.darkMode .text-black {
+html.darkMode .text-dark,
+html.darkMode .text-black {
   color: #ffffff !important;
 }
 
-html.lightMode .text-dark, html.lightMode .text-black {
+html.lightMode .text-dark,
+html.lightMode .text-black {
   color: #000000 !important;
 }
 
-html.darkMode .text-muted, html.darkMode .text-secondary {
+html.darkMode .text-muted,
+html.darkMode .text-secondary {
   color: #e8e9eb !important;
 }
 
-html.lightMode .text-muted, html.lightMode .text-secondary {
+html.lightMode .text-muted,
+html.lightMode .text-secondary {
   color: #666666 !important;
 }
 
 // Bootstrap display classes
-html.darkMode .display-1, html.darkMode .display-2, html.darkMode .display-3, html.darkMode .display-4, html.darkMode .display-5, html.darkMode .display-6 {
+html.darkMode .display-1,
+html.darkMode .display-2,
+html.darkMode .display-3,
+html.darkMode .display-4,
+html.darkMode .display-5,
+html.darkMode .display-6 {
   color: #ffffff !important;
 }
 
-html.lightMode .display-1, html.lightMode .display-2, html.lightMode .display-3, html.lightMode .display-4, html.lightMode .display-5, html.lightMode .display-6 {
+html.lightMode .display-1,
+html.lightMode .display-2,
+html.lightMode .display-3,
+html.lightMode .display-4,
+html.lightMode .display-5,
+html.lightMode .display-6 {
   color: #000000 !important;
 }
 
 // Typography hierarchy - Dark theme white text
-html.darkMode h1, html.darkMode .h1 {
+html.darkMode h1,
+html.darkMode .h1 {
   font-size: vars.$font-size-4xl;
   font-weight: vars.$font-weight-bold;
   line-height: vars.$line-height-tight;
@@ -213,7 +267,8 @@ html.darkMode h1, html.darkMode .h1 {
   color: #ffffff !important;
 }
 
-html.lightMode h1, html.lightMode .h1 {
+html.lightMode h1,
+html.lightMode .h1 {
   font-size: vars.$font-size-4xl;
   font-weight: vars.$font-weight-bold;
   line-height: vars.$line-height-tight;
@@ -222,7 +277,8 @@ html.lightMode h1, html.lightMode .h1 {
   color: #000000 !important;
 }
 
-html.darkMode h2, html.darkMode .h2 {
+html.darkMode h2,
+html.darkMode .h2 {
   font-size: vars.$font-size-3xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-tight;
@@ -231,7 +287,8 @@ html.darkMode h2, html.darkMode .h2 {
   color: #ffffff !important;
 }
 
-html.lightMode h2, html.lightMode .h2 {
+html.lightMode h2,
+html.lightMode .h2 {
   font-size: vars.$font-size-3xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-tight;
@@ -240,7 +297,8 @@ html.lightMode h2, html.lightMode .h2 {
   color: #000000 !important;
 }
 
-html.darkMode h3, html.darkMode .h3 {
+html.darkMode h3,
+html.darkMode .h3 {
   font-size: vars.$font-size-2xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-normal;
@@ -249,7 +307,8 @@ html.darkMode h3, html.darkMode .h3 {
   color: #ffffff !important;
 }
 
-html.lightMode h3, html.lightMode .h3 {
+html.lightMode h3,
+html.lightMode .h3 {
   font-size: vars.$font-size-2xl;
   font-weight: vars.$font-weight-semibold;
   line-height: vars.$line-height-normal;
@@ -258,7 +317,8 @@ html.lightMode h3, html.lightMode .h3 {
   color: #000000 !important;
 }
 
-html.darkMode h4, html.darkMode .h4 {
+html.darkMode h4,
+html.darkMode .h4 {
   font-size: vars.$font-size-xl;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -266,7 +326,8 @@ html.darkMode h4, html.darkMode .h4 {
   color: #ffffff !important;
 }
 
-html.lightMode h4, html.lightMode .h4 {
+html.lightMode h4,
+html.lightMode .h4 {
   font-size: vars.$font-size-xl;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -274,7 +335,8 @@ html.lightMode h4, html.lightMode .h4 {
   color: #000000 !important;
 }
 
-html.darkMode h5, html.darkMode .h5 {
+html.darkMode h5,
+html.darkMode .h5 {
   font-size: vars.$font-size-lg;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -282,7 +344,8 @@ html.darkMode h5, html.darkMode .h5 {
   color: #ffffff !important;
 }
 
-html.lightMode h5, html.lightMode .h5 {
+html.lightMode h5,
+html.lightMode .h5 {
   font-size: vars.$font-size-lg;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -290,7 +353,8 @@ html.lightMode h5, html.lightMode .h5 {
   color: #000000 !important;
 }
 
-html.darkMode h6, html.darkMode .h6 {
+html.darkMode h6,
+html.darkMode .h6 {
   font-size: vars.$font-size-base;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -298,7 +362,8 @@ html.darkMode h6, html.darkMode .h6 {
   color: #ffffff !important;
 }
 
-html.lightMode h6, html.lightMode .h6 {
+html.lightMode h6,
+html.lightMode .h6 {
   font-size: vars.$font-size-base;
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
@@ -319,11 +384,39 @@ html.lightMode p {
 }
 
 // Force all text elements to white (dark) or black (light)
-html.darkMode span, html.darkMode div, html.darkMode li, html.darkMode ul, html.darkMode ol, html.darkMode td, html.darkMode th, html.darkMode label, html.darkMode strong, html.darkMode em, html.darkMode b, html.darkMode i, html.darkMode blockquote, html.darkMode pre, html.darkMode code {
+html.darkMode span,
+html.darkMode div,
+html.darkMode li,
+html.darkMode ul,
+html.darkMode ol,
+html.darkMode td,
+html.darkMode th,
+html.darkMode label,
+html.darkMode strong,
+html.darkMode em,
+html.darkMode b,
+html.darkMode i,
+html.darkMode blockquote,
+html.darkMode pre,
+html.darkMode code {
   color: #ffffff !important;
 }
 
-html.lightMode span, html.lightMode div, html.lightMode li, html.lightMode ul, html.lightMode ol, html.lightMode td, html.lightMode th, html.lightMode label, html.lightMode strong, html.lightMode em, html.lightMode b, html.lightMode i, html.lightMode blockquote, html.lightMode pre, html.lightMode code {
+html.lightMode span,
+html.lightMode div,
+html.lightMode li,
+html.lightMode ul,
+html.lightMode ol,
+html.lightMode td,
+html.lightMode th,
+html.lightMode label,
+html.lightMode strong,
+html.lightMode em,
+html.lightMode b,
+html.lightMode i,
+html.lightMode blockquote,
+html.lightMode pre,
+html.lightMode code {
   color: #000000 !important;
 }
 
@@ -364,7 +457,9 @@ a {
 
 // Button utilities
 button {
-  transition: background-color vars.$transition-base vars.$ease-out, color vars.$transition-base vars.$ease-out, box-shadow vars.$transition-base vars.$ease-out;
+  transition: background-color vars.$transition-base vars.$ease-out,
+    color vars.$transition-base vars.$ease-out,
+    box-shadow vars.$transition-base vars.$ease-out;
 
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
@@ -372,7 +467,7 @@ button {
     border-radius: vars.$border-radius-sm;
     box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.3);
   }
-  
+
   &:focus:not(:focus-visible) {
     outline: none;
   }
@@ -392,7 +487,9 @@ button {
   outline: none;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
@@ -401,7 +498,8 @@ input, textarea, select {
   }
 }
 
-mat-checkbox, mat-radio-button {
+mat-checkbox,
+mat-radio-button {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
@@ -410,7 +508,10 @@ mat-checkbox, mat-radio-button {
 }
 
 // Focus indicators for Material components
-.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button, .mat-mdc-fab {
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button,
+.mat-mdc-fab {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
@@ -429,7 +530,8 @@ a {
 }
 
 // Focus indicators for menu items
-.mat-mdc-menu-item, .mat-mdc-list-item {
+.mat-mdc-menu-item,
+.mat-mdc-list-item {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: -2px;
@@ -463,24 +565,30 @@ mat-form-field {
 
 // Card improvements - minimalistic theater aesthetic
 html.darkMode mat-card {
-  transition: box-shadow vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
-  background-color: #1a1d24;
+  transition: box-shadow vars.$transition-base vars.$ease-out,
+    border-color vars.$transition-base vars.$ease-out,
+    background-color vars.$transition-base vars.$ease-out;
+  background-color: #1a1d24 !important;
   border: 1px solid rgba(125, 179, 232, 0.1);
   border-radius: vars.$border-radius-lg;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 
   &:hover {
-    // Removed hover effects to prevent edge appearance
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
   }
 }
 
 html.lightMode mat-card {
-  transition: box-shadow vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
-  background-color: #eaf1fc;
+  transition: box-shadow vars.$transition-base vars.$ease-out,
+    border-color vars.$transition-base vars.$ease-out,
+    background-color vars.$transition-base vars.$ease-out;
+  background-color: #eaf1fc !important;
   border: 1px solid rgba(125, 179, 232, 0.4);
   border-radius: vars.$border-radius-lg;
+  box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
 
   &:hover {
-    // Removed hover effects to prevent edge appearance
+    box-shadow: 0 12px 40px 0 rgba(125, 179, 232, 0.2);
   }
 }
 
@@ -511,7 +619,8 @@ html.lightMode .vriend-worden-form {
   margin-bottom: vars.$spacing-12;
   border-radius: vars.$border-radius-lg;
   border: 1px solid rgba(125, 179, 232, 0.3);
-  transition: background-color vars.$transition-base vars.$ease-out, border-color vars.$transition-base vars.$ease-out;
+  transition: background-color vars.$transition-base vars.$ease-out,
+    border-color vars.$transition-base vars.$ease-out;
 
   @media (max-width: 768px) {
     padding: vars.$spacing-3;
@@ -535,72 +644,138 @@ html.darkMode .vriend-worden-form {
 
 // Ensure all Material components use theme colors
 html.darkMode .mat-mdc-card {
-  background-color: #1a1d24;
+  background-color: #1a1d24 !important;
   color: #ffffff !important;
   border: 1px solid rgba(125, 179, 232, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 
   * {
     color: #ffffff !important;
   }
+
+  &:hover {
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+  }
 }
 
 html.lightMode .mat-mdc-card {
-  background-color: #eaf1fc;
+  background-color: #eaf1fc !important;
   color: #000000 !important;
   border: 1px solid rgba(125, 179, 232, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
 
   * {
     color: #000000 !important;
   }
+
+  &:hover {
+    box-shadow: 0 12px 40px 0 rgba(125, 179, 232, 0.2);
+  }
 }
 
 // Force Material list items to theme colors
-html.darkMode mat-list-item, html.darkMode mat-list-item * {
+html.darkMode mat-list-item,
+html.darkMode mat-list-item * {
   color: #ffffff !important;
 }
 
-html.lightMode mat-list-item, html.lightMode mat-list-item * {
+html.lightMode mat-list-item,
+html.lightMode mat-list-item * {
   color: #000000 !important;
 }
 
 // Force Material dialog content to theme colors
-html.darkMode mat-dialog-container, html.darkMode mat-dialog-container * {
+html.darkMode mat-dialog-container,
+html.darkMode mat-dialog-container * {
   color: #ffffff !important;
 }
 
-html.lightMode mat-dialog-container, html.lightMode mat-dialog-container * {
+html.lightMode mat-dialog-container,
+html.lightMode mat-dialog-container * {
   color: #000000 !important;
 }
 
 // Force Material tab labels to theme colors
-html.darkMode mat-tab-label, html.darkMode mat-tab-label * {
+html.darkMode mat-tab-label,
+html.darkMode mat-tab-label * {
   color: #ffffff !important;
 }
 
-html.lightMode mat-tab-label, html.lightMode mat-tab-label * {
+html.lightMode mat-tab-label,
+html.lightMode mat-tab-label * {
   color: #000000 !important;
+}
+
+// Ensure Material tabs have solid backgrounds
+html.lightMode mat-tab-group {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-mdc-tab-group {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-mdc-tab-header {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-mdc-tab-body-wrapper {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-mdc-tab-body {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-mdc-tab-body-content {
+  background-color: #eaf1fc !important;
+}
+
+// Ensure sections have solid backgrounds
+html.lightMode .section {
+  background-color: #eaf1fc !important;
+}
+
+html.darkMode .section {
+  background-color: #1a1d24 !important;
 }
 
 // Force Material expansion panel to theme colors
-html.darkMode mat-expansion-panel, html.darkMode mat-expansion-panel * {
+html.darkMode mat-expansion-panel,
+html.darkMode mat-expansion-panel * {
   color: #ffffff !important;
 }
 
-html.lightMode mat-expansion-panel, html.lightMode mat-expansion-panel * {
+html.lightMode mat-expansion-panel,
+html.lightMode mat-expansion-panel * {
   color: #000000 !important;
 }
 
+// Ensure Material expansion panels have solid backgrounds
+html.lightMode mat-expansion-panel {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-expansion-panel-body {
+  background-color: #eaf1fc !important;
+}
+
 // Force Material menu to theme colors
-html.darkMode mat-menu, html.darkMode .mat-mdc-menu-panel, html.darkMode .mat-mdc-menu-panel * {
+html.darkMode mat-menu,
+html.darkMode .mat-mdc-menu-panel,
+html.darkMode .mat-mdc-menu-panel * {
   color: #ffffff !important;
 }
 
-html.lightMode mat-menu, html.lightMode .mat-mdc-menu-panel, html.lightMode .mat-mdc-menu-panel * {
+html.lightMode mat-menu,
+html.lightMode .mat-mdc-menu-panel,
+html.lightMode .mat-mdc-menu-panel * {
   color: #000000 !important;
 }
 
 // Force Material tooltip to theme colors
-html.darkMode mat-tooltip, html.darkMode .mat-mdc-tooltip {
+html.darkMode mat-tooltip,
+html.darkMode .mat-mdc-tooltip {
   color: #ffffff !important;
 }
 
@@ -612,7 +787,8 @@ html.darkMode .mdc-tooltip__surface {
   --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
 }
 
-html.lightMode mat-tooltip, html.lightMode .mat-mdc-tooltip {
+html.lightMode mat-tooltip,
+html.lightMode .mat-mdc-tooltip {
   color: #000000 !important;
 }
 
@@ -733,7 +909,12 @@ html.darkMode .mat-mdc-form-field {
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
-      border-color: rgba(125, 179, 232, 0.3) !important; // Light blue border when not focused
+      border-color: rgba(
+        125,
+        179,
+        232,
+        0.3
+      ) !important; // Light blue border when not focused
       border-width: 1px !important;
     }
   }
@@ -753,7 +934,12 @@ html.darkMode .mat-mdc-form-field {
 
   // Legacy outline support (for older Material versions)
   .mat-mdc-form-field-outline {
-    color: rgba(125, 179, 232, 0.3) !important; // Light blue border when not focused
+    color: rgba(
+      125,
+      179,
+      232,
+      0.3
+    ) !important; // Light blue border when not focused
   }
 
   .mat-mdc-form-field-outline-thick {
@@ -804,7 +990,12 @@ html.darkMode .mat-mdc-form-field {
   // Label styling - Material's standard label behavior
   .mat-mdc-form-field-label,
   .mdc-floating-label {
-    color: rgba(232, 233, 235, 0.7) !important; // Light gray label when inside field
+    color: rgba(
+      232,
+      233,
+      235,
+      0.7
+    ) !important; // Light gray label when inside field
 
     // Label when floating above (when field has value or is focused)
     &.mdc-floating-label--float-above {
@@ -871,7 +1062,12 @@ html.lightMode .mat-mdc-form-field {
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
-      border-color: rgba(125, 179, 232, 0.5) !important; // Light blue border when not focused
+      border-color: rgba(
+        125,
+        179,
+        232,
+        0.5
+      ) !important; // Light blue border when not focused
       border-width: 1px !important;
     }
   }
@@ -891,7 +1087,12 @@ html.lightMode .mat-mdc-form-field {
 
   // Legacy outline support (for older Material versions)
   .mat-mdc-form-field-outline {
-    color: rgba(125, 179, 232, 0.5) !important; // Light blue border when not focused
+    color: rgba(
+      125,
+      179,
+      232,
+      0.5
+    ) !important; // Light blue border when not focused
   }
 
   .mat-mdc-form-field-outline-thick {
@@ -993,7 +1194,9 @@ html.lightMode .mat-mdc-form-field {
 }
 
 // Force all input, textarea, select elements to theme colors
-html.darkMode input, html.darkMode textarea, html.darkMode select {
+html.darkMode input,
+html.darkMode textarea,
+html.darkMode select {
   color: #ffffff !important;
   background-color: #1a1d24 !important;
 
@@ -1019,7 +1222,9 @@ html.darkMode input, html.darkMode textarea, html.darkMode select {
   }
 }
 
-html.lightMode input, html.lightMode textarea, html.lightMode select {
+html.lightMode input,
+html.lightMode textarea,
+html.lightMode select {
   color: #000000 !important;
   background-color: #eaf1fc !important;
 
@@ -1069,28 +1274,82 @@ html.lightMode select {
 }
 
 // Force dynamic HTML content (innerHTML) to theme colors
-html.darkMode [innerHTML], html.darkMode [innerHTML] *, html.darkMode div[innerHTML], html.darkMode div[innerHTML] * {
+html.darkMode [innerHTML],
+html.darkMode [innerHTML] *,
+html.darkMode div[innerHTML],
+html.darkMode div[innerHTML] * {
   color: #ffffff !important;
 
-  p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
+  p,
+  div,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  ul,
+  ol,
+  td,
+  th,
+  strong,
+  em,
+  b,
+  i,
+  a,
+  blockquote {
     color: #ffffff !important;
   }
 }
 
-html.lightMode [innerHTML], html.lightMode [innerHTML] *, html.lightMode div[innerHTML], html.lightMode div[innerHTML] * {
+html.lightMode [innerHTML],
+html.lightMode [innerHTML] *,
+html.lightMode div[innerHTML],
+html.lightMode div[innerHTML] * {
   color: #000000 !important;
 
-  p, div, span, h1, h2, h3, h4, h5, h6, li, ul, ol, td, th, strong, em, b, i, a, blockquote {
+  p,
+  div,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  ul,
+  ol,
+  td,
+  th,
+  strong,
+  em,
+  b,
+  i,
+  a,
+  blockquote {
     color: #000000 !important;
   }
 }
 
 // Force Bootstrap table text to theme colors
-html.darkMode .table, html.darkMode .table td, html.darkMode .table th, html.darkMode .table-dark, html.darkMode .table-dark td, html.darkMode .table-dark th {
+html.darkMode .table,
+html.darkMode .table td,
+html.darkMode .table th,
+html.darkMode .table-dark,
+html.darkMode .table-dark td,
+html.darkMode .table-dark th {
   color: #ffffff !important;
 }
 
-html.lightMode .table, html.lightMode .table td, html.lightMode .table th, html.lightMode .table-dark, html.lightMode .table-dark td, html.lightMode .table-dark th {
+html.lightMode .table,
+html.lightMode .table td,
+html.lightMode .table th,
+html.lightMode .table-dark,
+html.lightMode .table-dark td,
+html.lightMode .table-dark th {
   color: #000000 !important;
 }
 
@@ -1099,20 +1358,25 @@ html.lightMode .table, html.lightMode .table td, html.lightMode .table th, html.
   padding: vars.$spacing-2;
   border-radius: vars.$border-radius-xl;
   transition: box-shadow vars.$transition-base vars.$ease-out;
+}
 
-  &:hover {
-    // Removed hover effects to prevent edge appearance
-  }
+// Ensure elevation classes have solid backgrounds in light mode
+html.lightMode .mat-elevation-z3 {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-elevation-z2 {
+  background-color: #eaf1fc !important;
+}
+
+html.lightMode .mat-elevation-z1 {
+  background-color: #eaf1fc !important;
 }
 
 .mat-elevation-z2 {
   padding: vars.$spacing-4;
   border-radius: vars.$border-radius-xl;
   transition: box-shadow vars.$transition-base vars.$ease-out;
-
-  &:hover {
-    // Removed hover effects to prevent edge appearance
-  }
 }
 
 .mat-elevation-z1 {

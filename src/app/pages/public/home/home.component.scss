@@ -39,10 +39,25 @@ h2 {
 
 .section {
   margin-bottom: $spacing-12;
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+  padding: $spacing-6;
+  
+  @media (max-width: 768px) {
+    padding: $spacing-4;
+  }
   
   :not(:last-child) {
     display: block;
     margin-bottom: $spacing-8;
+  }
+}
+
+.nieuws-section {
+  margin-bottom: $spacing-16;
+  
+  @media (max-width: 768px) {
+    margin-bottom: $spacing-12;
   }
 }
 
@@ -59,12 +74,17 @@ h2 {
   align-items: center;
   justify-content: center;
   background-color: #fff;
- max-width: fit-content;  
+  max-width: fit-content;  
   padding: $spacing-4 $spacing-6;
   border-radius: $border-radius-xl;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15),
               0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: $spacing-8;
+  transition: box-shadow $transition-base $ease-out;
+  
+  &:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
   
   @media (max-width: 768px) {
     padding: $spacing-3 $spacing-4;
@@ -86,12 +106,27 @@ h2 {
 
 .container {
   margin-top: $spacing-8;
-  padding-right: $spacing-4;
-  padding-left: $spacing-4;
+  padding-right: $spacing-16;
+  padding-left: $spacing-16;
   margin-right: auto;
   margin-left: auto;
   max-width: 100%;
   overflow: hidden;
+
+  @media (max-width: 1024px) {
+    padding-right: $spacing-12;
+    padding-left: $spacing-12;
+  }
+
+  @media (max-width: 768px) {
+    padding-right: $spacing-6;
+    padding-left: $spacing-6;
+  }
+
+  @media (max-width: 480px) {
+    padding-right: $spacing-4;
+    padding-left: $spacing-4;
+  }
 }
 
 .carousel-item {

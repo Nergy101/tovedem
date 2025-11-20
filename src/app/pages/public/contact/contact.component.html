@@ -1,7 +1,7 @@
-<div class="splash-image"></div>
+<div class="splash-image mb-4"></div>
 
 <div
-  class="container mat-elevation-z2"
+  class="container mat-elevation-z2 pt-2"
   style="padding-bottom: var(--spacing-4)"
 >
   <div class="display-1 justify-content-center text-center">
@@ -120,9 +120,11 @@
         </span>
       </div>
     </form>
-    }
-    @if (submitted()) {
-    <mat-card class="success-card" style="text-align: center; padding: 2em; margin-top: 2em">
+    } @if (submitted()) {
+    <mat-card
+      class="success-card"
+      style="text-align: center; padding: 2em; margin-top: 2em"
+    >
       <mat-card-content>
         <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
         <button mat-flat-button color="primary" (click)="resetForm()">

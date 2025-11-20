@@ -1,5 +1,25 @@
 @use "../../../../variables.scss" as *;
 
+.container {
+  padding-left: $spacing-16;
+  padding-right: $spacing-16;
+
+  @media (max-width: 1024px) {
+    padding-left: $spacing-12;
+    padding-right: $spacing-12;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: $spacing-6;
+    padding-right: $spacing-6;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: $spacing-4;
+    padding-right: $spacing-4;
+  }
+}
+
 // Dark mode: Force ALL text to white with !important
 html.darkMode {
   .row {

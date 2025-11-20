@@ -1,5 +1,37 @@
 @use "../../../../variables.scss" as *;
 
+:host {
+  ::ng-deep .container,
+  ::ng-deep .container.mat-elevation-z2 {
+    max-width: 1000px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: $spacing-24 !important;
+    padding-right: $spacing-24 !important;
+    padding-bottom: $spacing-16 !important;
+
+    @media (max-width: 1024px) {
+      max-width: 900px !important;
+      padding-left: $spacing-20 !important;
+      padding-right: $spacing-20 !important;
+      padding-bottom: $spacing-12 !important;
+    }
+
+    @media (max-width: 768px) {
+      max-width: 100% !important;
+      padding-left: $spacing-12 !important;
+      padding-right: $spacing-12 !important;
+      padding-bottom: $spacing-8 !important;
+    }
+
+    @media (max-width: 480px) {
+      padding-left: $spacing-8 !important;
+      padding-right: $spacing-8 !important;
+      padding-bottom: $spacing-6 !important;
+    }
+  }
+}
+
 .titel {
   display: flex;
   justify-content: center;
@@ -11,13 +43,15 @@ li {
   .active {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
-    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    transition: background-color $transition-base $ease-out,
+      color $transition-base $ease-out;
   }
 
   :hover {
     color: var(--mat-sys-on-primary);
     background-color: var(--mat-sys-primary);
-    transition: background-color $transition-base $ease-out, color $transition-base $ease-out;
+    transition: background-color $transition-base $ease-out,
+      color $transition-base $ease-out;
   }
 }
 

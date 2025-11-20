@@ -3,12 +3,25 @@
 @use "../../../../variables.scss" as *;
 
 .container {
-  padding: $spacing-8 $spacing-4;
+  padding: $spacing-8 $spacing-16;
   margin-bottom: $spacing-12;
+  max-width: 1000px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  @media (max-width: 1024px) {
+    padding: $spacing-8 $spacing-12;
+    max-width: 900px !important;
+  }
 
   @media (max-width: 768px) {
-    padding: $spacing-6 $spacing-3;
+    padding: $spacing-6 $spacing-6;
     margin-bottom: $spacing-8;
+    max-width: 100% !important;
+  }
+
+  @media (max-width: 480px) {
+    padding: $spacing-6 $spacing-4;
   }
 }
 
@@ -84,6 +97,11 @@ li {
 
 .contact-form {
   margin-top: $spacing-4;
+  padding-top: $spacing-8;
+
+  @media (max-width: 768px) {
+    padding-top: $spacing-6;
+  }
 
   mat-form-field {
     margin-bottom: $spacing-2;
