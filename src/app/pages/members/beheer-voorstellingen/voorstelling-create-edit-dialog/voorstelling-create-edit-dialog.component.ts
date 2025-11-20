@@ -28,7 +28,6 @@ import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { DateTime } from 'luxon';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Speler } from '../../../../models/domain/speler.model';
@@ -52,7 +51,6 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatInput,
     MatSelect,
     QuillModule,
-    NgxMaterialTimepickerModule,
     MatOption,
     TovedemFilePickerComponent,
   ],
@@ -137,16 +135,18 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
         this.existingVoorstelling.publicatie_datum
       );
 
-      this.tijd1 = this.formatDateTo12HourString(
+      this.tijd1 = this.formatDateTo24HourString(
         new Date(this.existingVoorstelling.datum_tijd_1)
       );
       this.tijd2 = this.existingVoorstelling.datum_tijd_2
-        ? this.formatDateTo12HourString(
+        ? this.formatDateTo24HourString(
             new Date(this.existingVoorstelling.datum_tijd_2)
           )
         : undefined;
-      this.beschikbare_stoelen_datum_tijd_1 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1;
-      this.beschikbare_stoelen_datum_tijd_2 = this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2;
+      this.beschikbare_stoelen_datum_tijd_1 =
+        this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1;
+      this.beschikbare_stoelen_datum_tijd_2 =
+        this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2;
       this.prijs_per_kaartje = this.existingVoorstelling.prijs_per_kaartje;
     }
   }
@@ -273,21 +273,13 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
 
-    // Use a regular expression to parse the hours, minutes, and AM/PM
-    const timePattern = /^(\d+):(\d+)\s*(AM|PM)$/;
+    // Parse HH:MM format (24-hour format from HTML time input)
+    const timePattern = /^(\d{2}):(\d{2})$/;
     const match = time.match(timePattern);
 
     if (match) {
-      let hours = parseInt(match[1], 10);
+      const hours = parseInt(match[1], 10);
       const minutes = parseInt(match[2], 10);
-      const period = match[3];
-
-      // Convert to 24-hour format if needed
-      if (period === 'PM' && hours < 12) {
-        hours += 12;
-      } else if (period === 'AM' && hours === 12) {
-        hours = 0;
-      }
 
       // Set the parsed hours and minutes
       date.setHours(hours, minutes);
@@ -296,18 +288,14 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     return date;
   }
 
-  formatDateTo12HourString(date: Date): string {
-    let hours = date.getHours();
+  formatDateTo24HourString(date: Date): string {
+    const hours = date.getHours();
     const minutes = date.getMinutes();
-    const period = hours >= 12 ? 'PM' : 'AM';
 
-    // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-
-    // Pad minutes with leading zero if needed
+    // Pad hours and minutes with leading zero if needed
+    const hoursStr = hours < 10 ? `0${hours}` : hours.toString();
     const minutesStr = minutes < 10 ? `0${minutes}` : minutes.toString();
 
-    return `${hours}:${minutesStr} ${period}`;
+    return `${hoursStr}:${minutesStr}`;
   }
 }

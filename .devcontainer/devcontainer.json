@@ -23,7 +23,11 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "settings": {},
+      "settings": {
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "files.trimFinalNewlines": true
+      },
       "extensions": [
         "Angular.ng-template",
         "aaron-bond.better-comments",

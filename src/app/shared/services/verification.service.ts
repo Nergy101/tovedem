@@ -192,6 +192,3 @@ export class VerificationService {
     return allMatchingSponsors;
   }
 }
-
-
-

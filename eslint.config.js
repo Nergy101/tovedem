@@ -14,7 +14,6 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      
       "@angular-eslint/directive-selector": [
         "error",
         {
@@ -33,12 +32,12 @@ module.exports = tseslint.config(
       ],
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { 
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_"
-        }
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
       ],
-      "@typescript-eslint/explicit-function-return-type": "error"
+      "@typescript-eslint/explicit-function-return-type": "error",
     },
   },
   {
