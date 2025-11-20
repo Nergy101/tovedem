@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #fff;
+        color: #000;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: Arial, sans-serif;
+      }
+      .center {
+        display: table;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+      .message-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 15px;
+        margin: 10px 0;
+      }
+      .button {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table width="100%" height="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="middle">
+          <table
+            class="center"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td align="center">
+                <img
+                  src="https://tovedem.nergy.space/assets/stoelen_banner.jpeg"
+                  alt="Stoelen banner"
+                  style="
+                    width: 100%;
+                    border-bottom-right-radius: 1em;
+                    border-bottom-left-radius: 1em;
+                    margin-bottom: 20px;
+                  "
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h1>Beste Secretariaat,</h1>
+                <p>
+                  Er is een nieuwe aanmelding voor de vrienden groep van
+                  Tovedem.
+                </p>
+                <p>Het bericht komt van: {naam}, {email}</p>
+                <p>Het bericht luidt als volgt:</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table
+                  class="message-card"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="width: 100%"
+                >
+                  <tr>
+                    <td>
+                      <p>{bericht}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>
+                  Kijk ook eens op de website voor het beheren van deze tickets.
+                </p>
+                <p>Groetjes, De tovedem website.</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <img
+                  src="https://tovedem.nergy.space/assets/tovedem_logo.png"
+                  alt="tovedem logo"
+                  style="width: 100px"
+                />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

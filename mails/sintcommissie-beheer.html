@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #fff;
+        color: #000;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: Arial, sans-serif;
+      }
+      .center {
+        display: table;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+      }
+      .message-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 15px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table width="100%" height="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" valign="middle">
+          <table
+            class="center"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td align="center">
+                <img
+                  src="https://tovedem.nergy.space/assets/Sinterklaas_banner.jpg"
+                  alt="Sinterklaas banner"
+                  style="
+                    width: 100%;
+                    border-bottom-right-radius: 1em;
+                    border-bottom-left-radius: 1em;
+                    margin-bottom: 20px;
+                  "
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h1>Beste Secretariaat,</h1>
+                <p>
+                  Er is een aanvraag bij de sinterklaascommisie binnen gekomen.
+                </p>
+                <p>Het bericht is van: {email}</p>
+                <p>Te namen van: {naam}</p>
+                <p>Bericht:</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table
+                  class="message-card"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="width: 100%"
+                >
+                  <tr>
+                    <td>
+                      <p>{message}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Vriendelijke groet,</p>
+                <p>
+                  <i>Gr. De Tovedem WEBSITE</i>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <img
+                  src="https://tovedem.nergy.space/assets/tovedem_logo.png"
+                  alt="tovedem logo"
+                  style="width: 100px"
+                />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
