@@ -16,16 +16,6 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="p-4">
-        <!-- Form Progress Indicator -->
-        <div class="form-progress-container mb-3" aria-live="polite" aria-atomic="true">
-          <div class="form-progress-label">
-            <span>Formulier voltooiing: {{ formProgress() }}%</span>
-          </div>
-          <div class="form-progress-bar" role="progressbar" [attr.aria-valuenow]="formProgress()" aria-valuemin="0" aria-valuemax="100" [attr.aria-label]="'Formulier is ' + formProgress() + ' procent voltooid'">
-            <div class="form-progress-fill" [style.width.%]="formProgress()"></div>
-          </div>
-        </div>
-
         <!-- Aria-live region for reservation totals -->
         <div aria-live="polite" aria-atomic="true" class="sr-only">
           @if(loadingTotals()) {
@@ -49,12 +39,6 @@
               aria-describedby="voornaam-error voornaam-hint"
               aria-required="true"
             />
-            @if(name().length > 0 && nameValid()) {
-            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
-            }
-            @if(name().length > 0 && !nameValid()) {
-            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
-            }
             @if(name().length > 0 && !nameValid()) {
             <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
             }
@@ -75,12 +59,6 @@
               aria-describedby="achternaam-error achternaam-hint"
               aria-required="true"
             />
-            @if(surname().length > 0 && surnameValid()) {
-            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
-            }
-            @if(surname().length > 0 && !surnameValid()) {
-            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
-            }
             @if(surname().length > 0 && !surnameValid()) {
             <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
             }
@@ -102,12 +80,6 @@
               aria-required="true"
               autocomplete="email"
             />
-            @if(email().length > 0 && emailValid()) {
-            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
-            }
-            @if(email().length > 0 && !emailValid()) {
-            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
-            }
             @if(email().length > 0 && !emailValid()) {
             <mat-error id="email-error">Voer een geldig e-mailadres in</mat-error>
             }
@@ -129,12 +101,6 @@
               aria-required="true"
               autocomplete="email"
             />
-            @if(emailMatchStatus() === 'match' && email2Valid()) {
-            <mat-icon matSuffix class="validation-icon success-icon" aria-hidden="true">check_circle</mat-icon>
-            }
-            @if(emailMatchStatus() === 'mismatch' || (email2().length > 0 && !email2Valid())) {
-            <mat-icon matSuffix class="validation-icon error-icon" aria-hidden="true">error</mat-icon>
-            }
             @if(emailMatchStatus() === 'mismatch') {
             <mat-error id="email2-error">E-mailadressen komen niet overeen</mat-error>
             }
@@ -232,16 +198,6 @@
 
                   @if (limitReachedDate1()) {
                   <mat-error id="aantal-datum1-error">
-                    <mat-icon
-                      style="
-                        vertical-align: middle;
-                        font-size: 18px;
-                        height: 18px;
-                        width: 18px;
-                      "
-                      aria-hidden="true"
-                      >error</mat-icon
-                    >
                     Maximum bereikt: {{ totalPeopleDate1() }}/100 mensen
                     gereserveerd voor datum 1
                   </mat-error>
@@ -338,16 +294,6 @@
 
                   @if (limitReachedDate2()) {
                   <mat-error id="aantal-datum2-error">
-                    <mat-icon
-                      style="
-                        vertical-align: middle;
-                        font-size: 18px;
-                        height: 18px;
-                        width: 18px;
-                      "
-                      aria-hidden="true"
-                      >error</mat-icon
-                    >
                     Maximum bereikt: {{ totalPeopleDate2() }}/100 mensen
                     gereserveerd voor datum 2
                   </mat-error>
@@ -435,7 +381,6 @@
                   </button>
                   @if(!formIsValid() && (name().length > 0 || email().length > 0)) {
                   <div class="form-validation-summary mt-2" role="alert" aria-live="polite">
-                    <mat-icon class="error-icon" aria-hidden="true">info</mat-icon>
                     <span>Controleer de bovenstaande velden om door te gaan</span>
                   </div>
                   }

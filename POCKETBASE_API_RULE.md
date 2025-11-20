@@ -41,3 +41,5 @@ Als de admin rol ID `"xyz789abc"` is, wordt de rule:
 - Deze rule geldt alleen voor UPDATE operaties
 - Voor CREATE en DELETE operaties kunnen aparte rules nodig zijn (afhankelijk van je requirements)
 
+
+

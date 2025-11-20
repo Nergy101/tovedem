@@ -379,12 +379,25 @@ button {
 }
 
 // Enhanced focus indicators for all interactive elements
+// Ensure visible focus indicators for keyboard navigation (accessibility)
+*:focus-visible {
+  outline: 3px solid var(--mat-sys-primary);
+  outline-offset: 2px;
+  border-radius: vars.$border-radius-sm;
+  box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.3);
+}
+
+// Remove focus outline for mouse users (only show for keyboard)
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
 input, textarea, select {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
     border-radius: vars.$border-radius-sm;
-    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.2);
+    box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.2);
   }
 }
 
@@ -393,6 +406,44 @@ mat-checkbox, mat-radio-button {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
     border-radius: vars.$border-radius-sm;
+  }
+}
+
+// Focus indicators for Material components
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button, .mat-mdc-fab {
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    border-radius: vars.$border-radius-sm;
+  }
+}
+
+// Focus indicators for links
+a {
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 3px;
+    border-radius: vars.$border-radius-sm;
+    box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.3);
+  }
+}
+
+// Focus indicators for menu items
+.mat-mdc-menu-item, .mat-mdc-list-item {
+  &:focus-visible {
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: -2px;
+    border-radius: vars.$border-radius-sm;
+  }
+}
+
+// Ensure skip links are visible when focused
+.skip-to-content {
+  &:focus-visible {
+    top: 0;
+    outline: 3px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+    z-index: 10001;
   }
 }
 

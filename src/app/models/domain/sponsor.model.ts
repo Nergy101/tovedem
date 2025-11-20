@@ -7,3 +7,5 @@ export interface Sponsor extends BaseModel {
   email: string;
 }
 
+
+

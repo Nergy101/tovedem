@@ -25,6 +25,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { Groep } from '../../../../models/domain/groep.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { AuthService } from '../../../../shared/services/auth.service';
+import { ErrorService } from '../../../../shared/services/error.service';
 import { LoginRequiredDialogComponent } from './login-required-dialog/login-required-dialog.component';
 import { PastDateDialogComponent } from './past-date-dialog/past-date-dialog.component';
 
@@ -63,6 +64,7 @@ export class ReserveringAanpassenComponent {
   client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
+  errorService = inject(ErrorService);
   dialog = inject(MatDialog);
 
   name = signal('');
@@ -429,15 +431,13 @@ export class ReserveringAanpassenComponent {
       this.toastr.success('De reservering is aangepast', 'Gelukt!', {
         positionClass: 'toast-bottom-right',
       });
-    } catch (error: any) {
-      console.error('Error saving reservering:', error);
+    } catch (error: unknown) {
+      // Use ErrorService for consistent error handling
+      const appError = this.errorService.parseError(error, 'Reservering aanpassen');
+      const errorMessage = this.errorService.getUserMessage(appError);
 
-      // Check if it's an unauthorized error (email mismatch or not authorized)
-      if (
-        error?.status === 403 ||
-        error?.response?.code === 403 ||
-        error?.message?.includes('unauthorized')
-      ) {
+      // Special handling for authorization errors
+      if (appError.type === 'AUTHORIZATION') {
         this.toastr.error(
           'U bent niet geautoriseerd om deze reservering aan te passen. Zorg dat u ingelogd bent met het email adres dat overeenkomt met de reservering.',
           'Niet Geautoriseerd',
@@ -446,13 +446,9 @@ export class ReserveringAanpassenComponent {
           }
         );
       } else {
-        this.toastr.error(
-          'Er is een fout opgetreden bij het opslaan van de reservering.',
-          'Fout',
-          {
-            positionClass: 'toast-bottom-right',
-          }
-        );
+        this.toastr.error(errorMessage, 'Fout', {
+          positionClass: 'toast-bottom-right',
+        });
       }
     } finally {
       this.saving.set(false);

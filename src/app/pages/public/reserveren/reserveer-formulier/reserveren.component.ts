@@ -29,6 +29,7 @@ import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../../shared/services/seo.service';
+import { ErrorService } from '../../../../shared/services/error.service';
 
 @Component({
   selector: 'app-reserveren',
@@ -59,6 +60,7 @@ export class ReserverenComponent implements OnInit {
   client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
   seoService = inject(SeoService);
+  errorService = inject(ErrorService);
 
   router = inject(Router);
   name = signal('');
@@ -129,30 +131,6 @@ export class ReserverenComponent implements OnInit {
 
   limitReachedDate2 = computed(() => {
     return this.totalPeopleDate2() >= 100;
-  });
-
-  // Form progress indicator (0-100%)
-  formProgress = computed(() => {
-    // Only count progress if user has started filling the form
-    const hasStarted = this.name().length > 0 || this.surname().length > 0 || 
-                       this.email().length > 0 || this.email2().length > 0 ||
-                       this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0;
-    
-    if (!hasStarted) {
-      return 0;
-    }
-    
-    // Count completed required fields
-    const requiredFields = [
-      this.nameValid(),
-      this.surnameValid(),
-      this.emailValid(),
-      this.email2Valid(),
-      this.emailsAreSame(), // Only true when both emails are filled and match
-      this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0,
-    ];
-    const completedFields = requiredFields.filter(Boolean).length;
-    return Math.round((completedFields / requiredFields.length) * 100);
   });
 
   formIsValid = computed(() => {
@@ -328,22 +306,10 @@ export class ReserverenComponent implements OnInit {
       this.snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
         duration: 5000,
       });
-    } catch (error: any) {
-      console.error('Error creating reservation:', error);
-
-      // Handle server-side validation errors
-      let errorMessage =
-        'Er is een fout opgetreden bij het reserveren. Probeer het later opnieuw.';
-
-      // PocketBase errors have different structures
-      if (error?.response?.message) {
-        errorMessage = error.response.message;
-      } else if (error?.data?.message) {
-        errorMessage = error.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      }
-
+    } catch (error: unknown) {
+      // Use ErrorService for consistent error handling
+      const errorMessage = this.errorService.getErrorMessage(error, 'Reservering aanmaken');
+      
       this.snackBar.open(errorMessage, '❌', {
         duration: 7000,
       });

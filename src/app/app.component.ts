@@ -18,6 +18,7 @@ import { AuthService } from './shared/services/auth.service';
 import { BreakpointService } from './shared/services/breakpoint.service';
 import { SideDrawerService } from './shared/services/side-drawer.service';
 import { ThemeService } from './shared/services/theme.service';
+import { FocusManagementService } from './shared/services/focus-management.service';
 registerLocaleData(localeNL);
 
 @Component({
@@ -47,6 +48,7 @@ export class AppComponent implements OnInit {
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
   themeService = inject(ThemeService);
+  focusManagementService = inject(FocusManagementService);
 
   @ViewChild(MatDrawer) drawer?: MatDrawer;
 
@@ -73,5 +75,17 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // Theme is now managed by ThemeService
+  }
+
+  skipToMainContent(): void {
+    this.focusManagementService.skipToMainContent();
+  }
+
+  skipToNavigation(): void {
+    this.focusManagementService.skipToNavigation();
+  }
+
+  skipToFooter(): void {
+    this.focusManagementService.skipToFooter();
   }
 }

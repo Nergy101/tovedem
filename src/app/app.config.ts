@@ -1,4 +1,8 @@
-import { ApplicationConfig, ErrorHandler, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  importProvidersFrom,
+} from '@angular/core';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -6,17 +10,19 @@ import {
 } from '@angular/router';
 
 import {
-  provideAnimations,
-  provideNoopAnimations,
-} from '@angular/platform-browser/animations';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { RECAPTCHA_LOADER_OPTIONS, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY, RecaptchaSettings, RecaptchaV3Module } from 'ng-recaptcha';
+  RECAPTCHA_LOADER_OPTIONS,
+  RECAPTCHA_SETTINGS,
+  RECAPTCHA_V3_SITE_KEY,
+  RecaptchaSettings,
+  RecaptchaV3Module,
+} from 'ng-recaptcha';
 import { provideToastr } from 'ngx-toastr';
 import { Environment } from '../environment';
 import { environment } from '../environment/environment.dev';
 import { routes } from './app.routes';
 import { CustomErrorHandlerService } from './shared/services/custom-error-handler.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,10 +34,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled',
       })
     ),
-    provideAnimationsAsync(),
-    provideNoopAnimations(),
-    provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([errorInterceptor])),
     provideToastr({
       preventDuplicates: true,
       positionClass: 'toast-bottom-right',
@@ -42,16 +45,16 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: Environment,
-      useValue: environment
+      useValue: environment,
     },
     importProvidersFrom(RecaptchaV3Module),
     {
       provide: RECAPTCHA_V3_SITE_KEY,
-      useValue: environment.captchaSiteKey
+      useValue: environment.captchaSiteKey,
     },
     {
       provide: RECAPTCHA_SETTINGS,
-      useValue: { siteKey: environment.captchaSiteKey, } as RecaptchaSettings,
+      useValue: { siteKey: environment.captchaSiteKey } as RecaptchaSettings,
     },
     {
       provide: RECAPTCHA_LOADER_OPTIONS,

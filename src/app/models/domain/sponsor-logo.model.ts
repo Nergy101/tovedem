@@ -4,3 +4,5 @@ export interface SponsorLogo extends BaseModel {
   logo: string;
 }
 
+
+

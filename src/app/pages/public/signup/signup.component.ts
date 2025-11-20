@@ -13,6 +13,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
+import { ErrorService } from '../../../shared/services/error.service';
 
 @Component({
   selector: 'app-signup',
@@ -38,6 +39,7 @@ export class SignupComponent {
   seoService = inject(SeoService);
   pocketbase = inject(PocketbaseService);
   authService = inject(AuthService);
+  errorService = inject(ErrorService);
   router = inject(Router);
   sideDrawerService = inject(SideDrawerService);
   toastr = inject(ToastrService);
@@ -116,11 +118,9 @@ export class SignupComponent {
           });
           this.router.navigate(['profiel']);
         }
-      } catch (error: any) {
-        console.error('Signup error:', error);
-        const errorMessage =
-          error?.response?.message ||
-          'Er is een fout opgetreden bij het aanmaken van uw account.';
+      } catch (error: unknown) {
+        // Use ErrorService for consistent error handling
+        const errorMessage = this.errorService.getErrorMessage(error, 'Account aanmaken');
         this.toastr.error(errorMessage, 'Fout', {
           positionClass: 'toast-bottom-right',
         });

@@ -1,9 +1,13 @@
-<a href="#main-content" class="skip-to-content">Spring naar hoofdinhoud</a>
+<a href="#main-content" class="skip-to-content" (click)="skipToMainContent()">Spring naar hoofdinhoud</a>
+<a href="#navbar" class="skip-to-content" (click)="skipToNavigation()">Spring naar navigatie</a>
+<a href="#footer" class="skip-to-content" (click)="skipToFooter()">Spring naar footer</a>
 <header>
   <div class="demo-alert">
     <span>Welkom in de proef-versie van de nieuwe Tovedem website. <a href="https://www.tovedem.nl/" target="_blank">Klik hier</a> om terug te gaan naar de echte website.</span>
   </div>
-  <app-navbar></app-navbar>
+  <nav id="navbar">
+    <app-navbar></app-navbar>
+  </nav>
 </header>
 
 <mat-drawer-container class="custom-bg" autosize [hasBackdrop]="false">
@@ -17,7 +21,7 @@
     <div class="router-content" id="main-content" tabindex="-1">
       <router-outlet />
     </div>
-    <footer class="container-fluid">
+    <footer id="footer" class="container-fluid">
       <app-footer></app-footer>
     </footer>
   </div>
