@@ -66,8 +66,7 @@
             [(ngModel)]="tijd1"
             required
             name="timePicker1"
-            min="09:00"
-            max="18:00"
+            step="60"
           />
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
@@ -92,8 +91,7 @@
             type="time"
             [(ngModel)]="tijd2"
             name="timePicker2"
-            min="09:00"
-            max="18:00"
+            step="60"
           />
         </mat-form-field>
       </div>

@@ -27,7 +27,11 @@
             tabindex="0"
             required
             [(ngModel)]="titel"
+            [class.mat-input-invalid]="titel !== undefined && !titel"
           />
+          @if (titel !== undefined && !titel) {
+          <mat-error>Titel is verplicht</mat-error>
+          }
         </mat-form-field>
       </div>
       <div class="row">
@@ -102,3 +106,4 @@
     </form>
   </div>
 </div>
+

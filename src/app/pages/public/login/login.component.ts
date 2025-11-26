@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { Rol } from '../../../models/domain/rol.model';
@@ -26,6 +27,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
         MatCardModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatIconModule,
         RouterModule,
     ],
     templateUrl: './login.component.html',
@@ -34,6 +36,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
 export class LoginComponent {
   usernameOrEmail?: string;
   password?: string;
+  hidePassword = signal(true);
 
   seoService = inject(SeoService);
 

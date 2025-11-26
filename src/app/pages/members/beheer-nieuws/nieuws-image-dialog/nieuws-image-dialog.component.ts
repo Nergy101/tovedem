@@ -72,3 +72,4 @@ export class NieuwsImageDialogComponent implements OnInit {
   }
 }
 
+

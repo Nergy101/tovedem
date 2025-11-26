@@ -291,3 +291,4 @@ export class BeheerNieuwsComponent implements OnInit {
   }
 }
 
+

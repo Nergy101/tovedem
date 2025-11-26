@@ -9,7 +9,7 @@
         <mat-card-subtitle>
           <h4>
             opgevoerd door: {{ groepsNaam }}, locatie:
-            <a href="https://maps.app.goo.gl/dd9fe7p2udocU298A" target="_blank">
+            <a href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland" target="_blank" rel="noopener noreferrer">
               <span>De Schalm</span>
             </a>
           </h4>
@@ -248,7 +248,7 @@
                     {{ amountOfPeopleDate1() }} extra wordt de limiet
                     overschreden.
                   </mat-error>
-                  } @if (totalPeopleDate1() > 0 && canReserveDate1() &&
+                  } @if (canReserveDate1() &&
                   !limitReachedDate1() && !exceeds20LimitDate1()) {
                   <mat-hint id="aantal-datum1-hint">
                     {{ totalPeopleDate1() }}/100 mensen gereserveerd voor datum
@@ -358,7 +358,7 @@
                     {{ amountOfPeopleDate2() }} extra wordt de limiet
                     overschreden.
                   </mat-error>
-                  } @if (totalPeopleDate2() > 0 && canReserveDate2() &&
+                  } @if (canReserveDate2() &&
                   !limitReachedDate2() && !exceeds20LimitDate2()) {
                   <mat-hint id="aantal-datum2-hint">
                     {{ totalPeopleDate2() }}/100 mensen gereserveerd voor datum

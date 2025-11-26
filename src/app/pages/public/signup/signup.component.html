@@ -22,7 +22,15 @@
                 type="text"
                 [(ngModel)]="username"
                 name="username"
+                [class.mat-input-invalid]="username && !usernameValid"
               />
+              @if (username && !usernameValid) {
+              <mat-error>
+                Gebruikersnaam mag alleen letters, cijfers, underscores en
+                streepjes bevatten
+              </mat-error>
+              }
+              <mat-hint>Alleen letters, cijfers, _ en - zijn toegestaan</mat-hint>
             </mat-form-field>
             <mat-form-field>
               <mat-label>E-mail</mat-label>
@@ -49,20 +57,53 @@
               <input
                 matInput
                 required
-                type="password"
+                [type]="hidePassword() ? 'password' : 'text'"
                 name="password"
                 [(ngModel)]="password"
+                [class.mat-input-invalid]="password && !passwordValid"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword.set(!hidePassword())"
+                [attr.aria-label]="'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')"
+              >
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (password && !passwordValid) {
+              <mat-error>
+                Wachtwoord moet minimaal 8 tekens lang zijn
+              </mat-error>
+              }
+              <mat-hint>
+                Minimaal 8 tekens
+              </mat-hint>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Wachtwoord Bevestigen</mat-label>
               <input
                 matInput
                 required
-                type="password"
+                [type]="hidePasswordConfirm() ? 'password' : 'text'"
                 name="passwordConfirm"
                 [(ngModel)]="passwordConfirm"
+                [class.mat-input-invalid]="passwordConfirm && !passwordsMatch"
               />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePasswordConfirm.set(!hidePasswordConfirm())"
+                [attr.aria-label]="'Wachtwoord bevestigen ' + (hidePasswordConfirm() ? 'tonen' : 'verbergen')"
+              >
+                <mat-icon>{{ hidePasswordConfirm() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (passwordConfirm && !passwordsMatch) {
+              <mat-error>
+                Wachtwoorden komen niet overeen
+              </mat-error>
+              }
             </mat-form-field>
             <mat-card-actions>
               <button
@@ -89,3 +130,4 @@
     </div>
   </div>
 </div>
+

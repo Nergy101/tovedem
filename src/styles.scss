@@ -706,6 +706,16 @@ html.lightMode mat-tab-label * {
   color: #000000 !important;
 }
 
+// Make tab labels smaller on mobile
+@media (max-width: 768px) {
+  html.lightMode .mat-mdc-tab-label,
+  html.darkMode .mat-mdc-tab-label {
+    min-width: auto !important;
+    padding: 0 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+}
+
 // Ensure Material tabs have solid backgrounds
 html.lightMode mat-tab-group {
   background-color: #eaf1fc !important;

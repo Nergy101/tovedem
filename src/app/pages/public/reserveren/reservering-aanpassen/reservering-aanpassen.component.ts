@@ -20,6 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { Groep } from '../../../../models/domain/groep.model';
@@ -28,6 +29,7 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { ErrorService } from '../../../../shared/services/error.service';
 import { LoginRequiredDialogComponent } from './login-required-dialog/login-required-dialog.component';
 import { PastDateDialogComponent } from './past-date-dialog/past-date-dialog.component';
+import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 
 @Component({
   selector: 'app-reservering-aanpassen',
@@ -58,14 +60,14 @@ export class ReserveringAanpassenComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   toastr = inject(ToastrService);
+  dialog = inject(MatDialog);
+  client = inject(PocketbaseService);
   reserveringId = signal<string | undefined>(undefined);
   reserveringGuid = signal<string | undefined>(undefined);
   reservering = signal<Reservering | undefined>(undefined);
-  client = inject(PocketbaseService);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
   errorService = inject(ErrorService);
-  dialog = inject(MatDialog);
 
   name = signal('');
   surname = signal('');
@@ -92,14 +94,18 @@ export class ReserveringAanpassenComponent {
   isDatum1Past = computed(() => {
     if (!this.datum1) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(this.datum1.getTime() - 8 * 60 * 60 * 1000);
+    const eightHoursBefore = new Date(
+      this.datum1.getTime() - 8 * 60 * 60 * 1000
+    );
     return this.today >= eightHoursBefore;
   });
 
   isDatum2Past = computed(() => {
     if (!this.datum2) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(this.datum2.getTime() - 8 * 60 * 60 * 1000);
+    const eightHoursBefore = new Date(
+      this.datum2.getTime() - 8 * 60 * 60 * 1000
+    );
     return this.today >= eightHoursBefore;
   });
 
@@ -443,9 +449,13 @@ export class ReserveringAanpassenComponent {
       this.toastr.success('De reservering is aangepast', 'Gelukt!', {
         positionClass: 'toast-bottom-right',
       });
+      this.router.navigate(['/']);
     } catch (error: unknown) {
       // Use ErrorService for consistent error handling
-      const appError = this.errorService.parseError(error, 'Reservering aanpassen');
+      const appError = this.errorService.parseError(
+        error,
+        'Reservering aanpassen'
+      );
       const errorMessage = this.errorService.getUserMessage(appError);
 
       // Special handling for authorization errors
@@ -501,5 +511,46 @@ export class ReserveringAanpassenComponent {
 
   amountOfPeopleDate2Changed(newValue: number): void {
     this.amountOfPeopleDate2.set(newValue);
+  }
+
+  async deleteReservering(): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Reservering intrekken',
+        message: 'Weet je zeker dat je deze reservering wilt intrekken?',
+      },
+    });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+
+    const currentReservering = this.reservering();
+    if (!currentReservering) {
+      this.toastr.error('De reservering kon niet worden gevonden.', 'Fout', {
+        positionClass: 'toast-bottom-right',
+      });
+      return;
+    }
+
+    this.saving.set(true);
+
+    try {
+      await this.client.delete('reserveringen', currentReservering.id);
+      this.toastr.success('De reservering is ingetrokken', 'Gelukt!', {
+        positionClass: 'toast-bottom-right',
+      });
+      this.router.navigate(['/']);
+    } catch (error: unknown) {
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        'Reservering intrekken'
+      );
+      this.toastr.error(errorMessage, 'Fout', {
+        positionClass: 'toast-bottom-right',
+      });
+    } finally {
+      this.saving.set(false);
+    }
   }
 }

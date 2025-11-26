@@ -230,6 +230,19 @@
             Sponsoren <mat-icon>favorite</mat-icon>
           </button>
         </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-nieuwe-leden"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Nieuwe Leden <mat-icon>person_add</mat-icon>
+          </button>
+        </li>
       </p>
     </mat-expansion-panel>
     <div style="width: 100%">
@@ -238,7 +251,7 @@
     } @if (authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
-        <mat-panel-title> Gallerij </mat-panel-title>
+        <mat-panel-title> Galerij </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <p>
@@ -250,7 +263,7 @@
             data-bs-target=".navbar-collapse.show"
             routerLink="/gallerij"
           >
-            Gallerij <mat-icon>image</mat-icon>
+            Galerij <mat-icon>image</mat-icon>
           </button>
         </li>
       </p>

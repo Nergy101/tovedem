@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { VoorstellingLineComponent } from '../../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
@@ -20,6 +26,7 @@ import { SeoService } from '../../../shared/services/seo.service';
   selector: 'app-agenda',
   templateUrl: './agenda.component.html',
   styleUrl: './agenda.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     MatCardModule,
@@ -27,6 +34,10 @@ import { SeoService } from '../../../shared/services/seo.service';
     VoorstellingLineComponent,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
   ],
 })
 export class AgendaComponent implements OnInit {
@@ -43,6 +54,29 @@ export class AgendaComponent implements OnInit {
   voorstellingenPerJaar: WritableSignal<
     { year: number; items: Voorstelling[] }[]
   > = signal([]);
+  searchTerm = signal('');
+  allVoorstellingenPerJaar: WritableSignal<
+    { year: number; items: Voorstelling[] }[]
+  > = signal([]);
+
+  filteredVoorstellingenPerJaar = computed(() => {
+    const search = this.searchTerm().toLowerCase().trim();
+    if (!search) {
+      return this.voorstellingenPerJaar();
+    }
+
+    return this.voorstellingenPerJaar()
+      .map((yearGroup) => ({
+        year: yearGroup.year,
+        items: yearGroup.items.filter(
+          (voorstelling) =>
+            voorstelling.titel.toLowerCase().includes(search) ||
+            voorstelling.ondertitel?.toLowerCase().includes(search) ||
+            (voorstelling.expand?.groep as any)?.naam?.toLowerCase().includes(search)
+        ),
+      }))
+      .filter((yearGroup) => yearGroup.items.length > 0);
+  });
 
   constructor() {
     this.seoService.update(
@@ -71,6 +105,7 @@ export class AgendaComponent implements OnInit {
     ).sort((x, y) => (x.year > y.year ? 1 : -1));
 
     this.voorstellingenPerJaar.set(voorstellingenPerJaar);
+    this.allVoorstellingenPerJaar.set(voorstellingenPerJaar);
 
     const voorstellingenInDeToekomstEnMaxVan6 =
       voorstellingenInDeToekomst.slice(0, 6);

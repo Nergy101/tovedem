@@ -183,6 +183,14 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(['admin'])],
   },
   {
+    path: 'beheer-nieuwe-leden',
+    loadComponent: () =>
+      import('./pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component').then(
+        (m) => m.BeheerNieuweLedenComponent
+      ),
+    canActivate: [loggedInGuard(['admin'])],
+  },
+  {
     path: 'productie-info/Tovedem',
     loadComponent: () =>
       import('./pages/members/productie-info/productie-info.component').then(

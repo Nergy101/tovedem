@@ -21,10 +21,19 @@
               <input
                 matInput
                 required
-                type="password"
+                [type]="hidePassword() ? 'password' : 'text'"
                 name="password"
-                [(ngModel)]="password" />
-
+                [(ngModel)]="password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword.set(!hidePassword())"
+                [attr.aria-label]="'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')"
+              >
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
             </mat-form-field><mat-card-actions>
               <button class="flex-grow-1"
                 type="submit"

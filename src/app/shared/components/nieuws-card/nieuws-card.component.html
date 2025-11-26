@@ -1,41 +1,31 @@
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <mat-card class="nieuws-card mat-elevation-z2 m-2">
-        <mat-card-content class="card-content">
-          <div class="text-section">
-            <mat-card-header class="card-header">
-              <mat-card-title class="card-title">{{ nieuws().titel }}</mat-card-title>
-              <mat-card-subtitle class="card-date">
-                {{ nieuws().publishDate | date : "dd-MM-yyyy" }}
-              </mat-card-subtitle>
-            </mat-card-header>
-            <div class="content-text">
-              <span [innerHtml]="nieuws().inhoud"></span>
-            </div>
-          </div>
-          <div class="image-section">
-            @if(!!nieuws().afbeelding){
-            <img
-              [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
-              class="card-image"
-              [src]="
-                getImageUrl(
-                  nieuws().collectionId,
-                  nieuws().id,
-                  nieuws().afbeelding
-                )
-              "
-            />} @else {
-            <img
-              [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
-              class="card-image"
-              src="/assets/Place-Holder-Image.jpg"
-            />
-            }
-          </div>
-        </mat-card-content>
-      </mat-card>
+<mat-card class="nieuws-card mat-elevation-z2">
+  <mat-card-content class="card-content">
+    <div class="text-section">
+      <mat-card-header class="card-header">
+        <mat-card-title class="card-title">{{ nieuws().titel }}</mat-card-title>
+        <mat-card-subtitle class="card-date">
+          {{ nieuws().publishDate | date : "dd-MM-yyyy" }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <div class="content-text">
+        <span [innerHtml]="nieuws().inhoud"></span>
+      </div>
     </div>
-  </div>
-</div>
+    <div class="image-section">
+      @if(!!nieuws().afbeelding){
+      <img
+        [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
+        class="card-image"
+        [src]="
+          getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)
+        "
+      />} @else {
+      <img
+        [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
+        class="card-image"
+        src="/assets/Place-Holder-Image.jpg"
+      />
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

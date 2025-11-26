@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
@@ -24,6 +25,7 @@ import { ErrorService } from '../../../shared/services/error.service';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatIconModule,
     RouterModule,
   ],
   templateUrl: './signup.component.html',
@@ -35,6 +37,8 @@ export class SignupComponent {
   password?: string;
   passwordConfirm?: string;
   name?: string;
+  hidePassword = signal(true);
+  hidePasswordConfirm = signal(true);
 
   seoService = inject(SeoService);
   pocketbase = inject(PocketbaseService);
@@ -44,14 +48,33 @@ export class SignupComponent {
   sideDrawerService = inject(SideDrawerService);
   toastr = inject(ToastrService);
 
+  // Username validation: only letters, numbers, underscores, and hyphens
+  get usernameValid(): boolean {
+    if (!this.username) return false;
+    const usernamePattern = /^[a-zA-Z0-9_-]+$/;
+    return usernamePattern.test(this.username);
+  }
+
+  // Password validation: minimum 8 characters
+  get passwordValid(): boolean {
+    if (!this.password) return false;
+    return this.password.length >= 8;
+  }
+
+  get passwordsMatch(): boolean {
+    return this.password === this.passwordConfirm;
+  }
+
   get formIsValid(): boolean {
     return (
       !!this.username &&
+      this.usernameValid &&
       !!this.email &&
       !!this.password &&
+      this.passwordValid &&
       !!this.passwordConfirm &&
-      !!this.name &&
-      this.password === this.passwordConfirm
+      this.passwordsMatch &&
+      !!this.name
     );
   }
 

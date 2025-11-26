@@ -1,7 +1,18 @@
 @use "../../../../variables.scss" as *;
 
 :host {
+  display: block;
   margin: $spacing-4;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    margin: $spacing-2;
+  }
+
+  @media (max-width: 480px) {
+    margin: $spacing-1;
+  }
 }
 
 .nieuws-card {
@@ -11,9 +22,17 @@
   transition: box-shadow $transition-base $ease-out;
   overflow: hidden;
   max-height: 250px;
+  max-width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    max-height: none;
+  }
 
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -24,6 +43,13 @@
   gap: $spacing-4;
   height: 100%;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    padding: $spacing-2;
+    gap: $spacing-2;
+  }
 }
 
 .text-section {
@@ -47,8 +73,15 @@
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
 }
 
 .card-date {
@@ -60,15 +93,22 @@
 .content-text {
   flex: 1;
   overflow: hidden;
-  
+
   span {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.4;
     font-size: 0.875rem;
+
+    @media (max-width: 768px) {
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      font-size: 0.8125rem;
+    }
   }
 }
 
@@ -78,9 +118,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   @media (max-width: 768px) {
-    width: 120px;
+    width: 100%;
+    order: -1;
   }
 }
 
@@ -95,5 +136,12 @@
   @media (max-width: 768px) {
     max-height: 120px;
     min-height: 100px;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 100px;
+    min-height: 80px;
   }
 }

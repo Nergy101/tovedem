@@ -1,0 +1,99 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Nieuwe Leden Aanmeldingen</p>
+    </div>
+
+    <div class="row pt-4">
+      @defer (when leden()) {
+      <div class="row" style="margin-top: 1em">
+        <mat-form-field class="col-12" appearance="outline">
+          <mat-label>Zoek op voornaam, achternaam of email</mat-label>
+          <input
+            matInput
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchTermChanged($event)"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        @if (searching()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      </div>
+
+      <mat-card class="table-responsive table-width">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Voornaam</th>
+              <th scope="col">Achternaam</th>
+              <th scope="col">Email</th>
+              <th scope="col">Geboortedatum</th>
+              <th scope="col">Groep</th>
+              <th scope="col">Bericht</th>
+              <th scope="col">Aangemaakt</th>
+              @if (!!authService.isGlobalAdmin) {
+              <th></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (lid of leden(); track $index) {
+            <tr>
+              <td>{{ lid.voornaam }}</td>
+              <td>{{ lid.achternaam }}</td>
+              <td>{{ lid.email }}</td>
+              <td>{{ formatDate(lid.geboorte_datum) }}</td>
+              <td>
+                @if (lid.expand?.groep) {
+                {{ lid.expand?.groep?.naam ?? "N.V.T." }}
+                } @else { - }
+              </td>
+              <td>
+                <span
+                  [matTooltip]="lid.bericht"
+                  [matTooltipDisabled]="lid.bericht.length <= 50"
+                >
+                  {{
+                    lid.bericht.length > 50
+                      ? (lid.bericht | slice : 0 : 50) + "..."
+                      : lid.bericht
+                  }}
+                </span>
+              </td>
+              <td>{{ formatDate(lid.created) }}</td>
+
+              @if (!!authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(lid.id)"
+                  [disabled]="loading()"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            } @empty {
+            <tr>
+              <td
+                [attr.colspan]="authService.isGlobalAdmin ? 8 : 7"
+                style="text-align: center; padding: 2em"
+              >
+                Geen aanmeldingen gevonden
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+      } @placeholder {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      }
+    </div>
+  </div>
+</div>

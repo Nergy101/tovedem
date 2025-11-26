@@ -11,7 +11,7 @@
         <mat-card-subtitle>
           <h3>
             opgevoerd door: {{ groepsNaam }}, locatie:
-            <a href="https://maps.app.goo.gl/dd9fe7p2udocU298A" target="_blank">
+            <a href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland" target="_blank" rel="noopener noreferrer">
               <span>De Schalm</span>
             </a>
           </h3>
@@ -73,20 +73,7 @@
                 @if(isDatum1Past()) {
                 <p class="reservering-gesloten">Reservering gesloten</p>
                 } @else {
-                <div style="display: flex; justify-content: center">
-                  <button
-                    class="amount-button"
-                    mat-stroked-button
-                    (click)="
-                      amountOfPeopleDate1.set(
-                        amountOfPeopleDate1() - 1 < 0
-                          ? 0
-                          : amountOfPeopleDate1() - 1
-                      )
-                    "
-                  >
-                    ➖
-                  </button>
+                <div style="display: flex; justify-content: center; align-items: center">
                   <mat-form-field style="max-width: 20em; text-align: center">
                     <mat-label>Hoeveel mensen?</mat-label>
                     <input
@@ -98,14 +85,33 @@
                       [ngModel]="amountOfPeopleDate1()"
                       (ngModelChange)="amountOfPeopleDate1Changed($event)"
                     />
+                    <button
+                      matPrefix
+                      mat-icon-button
+                      type="button"
+                      color="primary"
+                      (click)="
+                        amountOfPeopleDate1.set(
+                          amountOfPeopleDate1() - 1 < 0
+                            ? 0
+                            : amountOfPeopleDate1() - 1
+                        )
+                      "
+                      aria-label="Verminder aantal mensen met 1"
+                    >
+                      <mat-icon aria-hidden="true">remove</mat-icon>
+                    </button>
+                    <button
+                      matSuffix
+                      mat-icon-button
+                      type="button"
+                      color="primary"
+                      (click)="amountOfPeopleDate1.set(amountOfPeopleDate1() + 1)"
+                      aria-label="Verhoog aantal mensen met 1"
+                    >
+                      <mat-icon aria-hidden="true">add</mat-icon>
+                    </button>
                   </mat-form-field>
-                  <button
-                    class="amount-button"
-                    mat-stroked-button
-                    (click)="amountOfPeopleDate1.set(amountOfPeopleDate1() + 1)"
-                  >
-                    ➕
-                  </button>
                 </div>
                 }
               </div>
@@ -132,20 +138,7 @@
                 @if(isDatum2Past()) {
                 <p class="reservering-gesloten">Reservering gesloten</p>
                 } @else {
-                <div style="display: flex; justify-content: center">
-                  <button
-                    class="amount-button"
-                    mat-stroked-button
-                    (click)="
-                      amountOfPeopleDate2.set(
-                        amountOfPeopleDate2() - 1 < 0
-                          ? 0
-                          : amountOfPeopleDate2() - 1
-                      )
-                    "
-                  >
-                    ➖
-                  </button>
+                <div style="display: flex; justify-content: center; align-items: center">
                   <mat-form-field style="max-width: 20em">
                     <mat-label style="text-align: center"
                       >Hoeveel mensen?</mat-label
@@ -159,14 +152,33 @@
                       [ngModel]="amountOfPeopleDate2()"
                       (ngModelChange)="amountOfPeopleDate2Changed($event)"
                     />
+                    <button
+                      matPrefix
+                      mat-icon-button
+                      type="button"
+                      color="primary"
+                      (click)="
+                        amountOfPeopleDate2.set(
+                          amountOfPeopleDate2() - 1 < 0
+                            ? 0
+                            : amountOfPeopleDate2() - 1
+                        )
+                      "
+                      aria-label="Verminder aantal mensen met 1"
+                    >
+                      <mat-icon aria-hidden="true">remove</mat-icon>
+                    </button>
+                    <button
+                      matSuffix
+                      mat-icon-button
+                      type="button"
+                      color="primary"
+                      (click)="amountOfPeopleDate2.set(amountOfPeopleDate2() + 1)"
+                      aria-label="Verhoog aantal mensen met 1"
+                    >
+                      <mat-icon aria-hidden="true">add</mat-icon>
+                    </button>
                   </mat-form-field>
-                  <button
-                    class="amount-button"
-                    mat-stroked-button
-                    (click)="amountOfPeopleDate2.set(amountOfPeopleDate2() + 1)"
-                  >
-                    ➕
-                  </button>
                 </div>
                 }
               </div>
@@ -221,6 +233,16 @@
                   (click)="saveReservering()"
                 >
                   Aanpassen
+                </button>
+                <button
+                  color="warn"
+                  style="flex: 1; min-height: 48px; margin-top: 0.5em"
+                  mat-stroked-button
+                  [disabled]="saving() || isPastDate()"
+                  (click)="deleteReservering()"
+                >
+                  <mat-icon>delete</mat-icon>
+                  Reservering intrekken
                 </button>
                 @if (isPastDate()) {
                 <p class="text-danger text-center mt-2">

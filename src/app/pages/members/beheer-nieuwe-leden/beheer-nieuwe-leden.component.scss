@@ -95,34 +95,6 @@ html.lightMode .table-responsive {
   }
 }
 
-// Ensure "Aanmaken" button uses primary blue color
-button[mat-fab][color="primary"],
-button[mat-fab][color="primary"] .mat-mdc-fab {
-  background-color: #7db3e8 !important;
-  color: #ffffff !important;
-
-  &:hover {
-    background-color: #6aa3d8 !important;
-  }
-
-  mat-icon {
-    color: #ffffff !important;
-  }
-}
-
-// Center icons in tinted edit buttons
-button[mat-icon-button][style*="background-color"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  mat-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-}
-
 .center {
   display: flex;
   justify-content: center;
