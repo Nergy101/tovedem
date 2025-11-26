@@ -102,3 +102,68 @@ html.lightMode .table-responsive {
   padding: 2em;
 }
 
+.bericht-button {
+  text-transform: none;
+  text-align: left;
+  padding: 0.5em 0.75em;
+  min-width: auto;
+  font-weight: 500;
+  line-height: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background-color: rgba(125, 179, 232, 0.1);
+  color: #7db3e8;
+  
+  .bericht-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #7db3e8;
+  }
+  
+  .bericht-text {
+    flex: 1;
+  }
+  
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(125, 179, 232, 0.2);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Dark theme adjustments
+html.darkMode .bericht-button {
+  background-color: rgba(125, 179, 232, 0.15);
+  color: #9bc5f0;
+  
+  .bericht-icon {
+    color: #9bc5f0;
+  }
+  
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.25);
+  }
+}
+
+// Light theme adjustments
+html.lightMode .bericht-button {
+  background-color: rgba(125, 179, 232, 0.1);
+  color: #5a9bd4;
+  
+  .bericht-icon {
+    color: #5a9bd4;
+  }
+  
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2);
+  }
+}
+

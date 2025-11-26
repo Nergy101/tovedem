@@ -51,16 +51,35 @@
                 } @else { - }
               </td>
               <td>
-                <span
-                  [matTooltip]="lid.bericht"
-                  [matTooltipDisabled]="lid.bericht.length <= 50"
-                >
-                  {{
+                @if (lid.bericht && lid.bericht.length > 0) {
+                <button
+                  mat-button
+                  color="primary"
+                  class="bericht-button"
+                  (click)="
+                    openBerichtDialog(
+                      lid.bericht,
+                      lid.voornaam + ' ' + lid.achternaam
+                    )
+                  "
+                  [matTooltip]="
                     lid.bericht.length > 50
-                      ? (lid.bericht | slice : 0 : 50) + "..."
-                      : lid.bericht
-                  }}
-                </span>
+                      ? 'Klik om volledig bericht te bekijken'
+                      : 'Klik om bericht te bekijken'
+                  "
+                >
+                  <mat-icon class="bericht-icon">visibility</mat-icon>
+                  <span class="bericht-text">
+                    {{
+                      lid.bericht.length > 50
+                        ? (lid.bericht | slice : 0 : 50) + "..."
+                        : lid.bericht
+                    }}
+                  </span>
+                </button>
+                } @else {
+                <span>-</span>
+                }
               </td>
               <td>{{ formatDate(lid.created) }}</td>
 

@@ -25,6 +25,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { BerichtViewDialogComponent } from './bericht-view-dialog/bericht-view-dialog.component';
 
 @Component({
   selector: 'app-beheer-nieuwe-leden',
@@ -148,6 +149,17 @@ export class BeheerNieuweLedenComponent implements OnInit {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+    });
+  }
+
+  openBerichtDialog(bericht: string, naam: string): void {
+    this.dialog.open(BerichtViewDialogComponent, {
+      data: {
+        bericht: bericht,
+        naam: naam,
+      },
+      width: '600px',
+      maxWidth: '90vw',
     });
   }
 }

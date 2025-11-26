@@ -1,0 +1,19 @@
+.container.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+mat-dialog-content {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.bericht-content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
