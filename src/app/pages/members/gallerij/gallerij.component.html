@@ -1,7 +1,16 @@
 <div class="container mt-4">
   <div class="container">
-    <div class="row">
-      <p class="display-1">Galerij</p>
+    <div class="row d-flex justify-content-between align-items-center">
+      <p class="display-1 mb-0">Galerij</p>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="openUploadDialog()"
+        aria-label="Afbeelding toevoegen"
+      >
+        <mat-icon>add</mat-icon>
+        Afbeelding toevoegen
+      </button>
     </div>
 
     <mat-card class="gallery" appearance="outlined">
@@ -19,9 +28,20 @@
             [alt]="'Galerij afbeelding ' + ($index + 1)"
             placeholder="assets/Place-Holder-Image.jpg"
           />
-          <mat-card-actions class="d-flex justify-content-center">
-            <button mat-icon-button (click)="openImage(item)" aria-label="Bekijk afbeelding in volledig scherm">
+          <mat-card-actions>
+            <button
+              mat-icon-button
+              (click)="openImage(item)"
+              aria-label="Bekijk afbeelding in volledig scherm"
+            >
               <mat-icon aria-hidden="true">visibility</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="deleteImage(item)"
+              aria-label="Verwijder afbeelding"
+            >
+              <mat-icon aria-hidden="true">delete</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>

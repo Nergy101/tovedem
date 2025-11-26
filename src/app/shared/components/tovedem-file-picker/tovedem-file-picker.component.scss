@@ -4,3 +4,32 @@
   display: flex;
   justify-content: center;
 }
+
+// Hide the drag-and-drop zone, only show the file picker button
+::ng-deep {
+  // Hide drag-and-drop containers
+  .file-drop-container,
+  .file-drop-wrapper,
+  .file-drop-content,
+  .file-drop-area,
+  .file-drop-zone,
+  [class*="file-drop"],
+  [class*="drop-zone"] {
+    display: none !important;
+  }
+  
+  // Hide any drag-and-drop related elements
+  ngx-awesome-uploader > div:first-child,
+  ngx-awesome-uploader > div[class*="drop"],
+  ngx-awesome-uploader > div[class*="drag"] {
+    display: none !important;
+  }
+  
+  // Show only the file picker button
+  .file-picker-button,
+  button[type="button"],
+  ngx-awesome-uploader button {
+    display: inline-block !important;
+    visibility: visible !important;
+  }
+}

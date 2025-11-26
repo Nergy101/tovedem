@@ -695,6 +695,128 @@ html.lightMode mat-dialog-container * {
   color: #000000 !important;
 }
 
+// Style dialog close buttons in header
+html.darkMode mat-dialog-container .header button[mat-icon-button],
+html.darkMode mat-dialog-container .header .mat-mdc-icon-button {
+  color: #ffffff !important;
+
+  mat-icon,
+  .mat-icon {
+    color: #ffffff !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.3) !important;
+
+    mat-icon,
+    .mat-icon {
+      color: #ffffff !important;
+    }
+  }
+}
+
+html.lightMode mat-dialog-container .header button[mat-icon-button],
+html.lightMode mat-dialog-container .header .mat-mdc-icon-button {
+  color: #000000 !important;
+
+  mat-icon,
+  .mat-icon {
+    color: #000000 !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2) !important;
+
+    mat-icon,
+    .mat-icon {
+      color: #000000 !important;
+    }
+  }
+}
+
+// Ensure dialog container background is transparent for image preview
+html.darkMode mat-dialog-container {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+// Image preview dialog - dark theme actions bar
+html.darkMode mat-dialog-container .actions,
+html.darkMode mat-dialog-container mat-dialog-actions.actions,
+html.darkMode mat-dialog-container mat-dialog-actions,
+html.darkMode .cdk-overlay-container mat-dialog-container .actions,
+html.darkMode .cdk-overlay-container mat-dialog-container mat-dialog-actions {
+  background-color: #1a1d24 !important;
+  background: #1a1d24 !important;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5) !important;
+
+  &::before {
+    background-color: #1a1d24 !important;
+    background: #1a1d24 !important;
+  }
+
+  * {
+    background-color: transparent !important;
+  }
+}
+
+// Image preview dialog - light theme actions bar
+html.lightMode mat-dialog-container .actions,
+html.lightMode mat-dialog-container mat-dialog-actions.actions {
+  background-color: #ffffff !important;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+// Image preview dialog - dark theme buttons
+html.darkMode mat-dialog-container .actions button,
+html.darkMode mat-dialog-container .actions .mat-mdc-button,
+html.darkMode mat-dialog-container .actions button[mat-button] {
+  color: #ffffff !important;
+  font-weight: 500;
+  border: 2px solid rgba(125, 179, 232, 0.5) !important;
+  border-radius: 4px;
+  background-color: transparent !important;
+
+  .mdc-button__label {
+    color: #ffffff !important;
+  }
+
+  mat-icon,
+  .mat-icon {
+    color: #ffffff !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2) !important;
+    border-color: #7db3e8 !important;
+  }
+}
+
+// Image preview dialog - light theme buttons
+html.lightMode mat-dialog-container .actions button,
+html.lightMode mat-dialog-container .actions .mat-mdc-button,
+html.lightMode mat-dialog-container .actions button[mat-button] {
+  color: #000000 !important;
+  font-weight: 500;
+  border: 2px solid rgba(125, 179, 232, 0.5) !important;
+  border-radius: 4px;
+  background-color: transparent !important;
+
+  .mdc-button__label {
+    color: #000000 !important;
+  }
+
+  mat-icon,
+  .mat-icon {
+    color: #000000 !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.1) !important;
+    border-color: #7db3e8 !important;
+  }
+}
+
 // Force Material tab labels to theme colors
 html.darkMode mat-tab-label,
 html.darkMode mat-tab-label * {

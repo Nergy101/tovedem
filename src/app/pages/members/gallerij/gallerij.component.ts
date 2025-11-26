@@ -13,11 +13,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
+import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { Afbeelding } from '../../../models/domain/afbeelding.model';
 import { Page } from '../../../models/pocketbase/page.model';
+import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { ErrorService } from '../../../shared/services/error.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
+import { ImageUploadDialogComponent } from './image-upload-dialog/image-upload-dialog.component';
 
 @Component({
   selector: 'app-gallerij',
@@ -40,6 +45,8 @@ export class GallerijComponent implements OnInit {
   pageIndex = signal(0);
   dialog = inject(MatDialog);
   loading = signal(false);
+  toastr = inject(ToastrService);
+  errorService = inject(ErrorService);
 
   client = inject(PocketbaseService);
 
@@ -52,29 +59,30 @@ export class GallerijComponent implements OnInit {
     effect(() => {
       // Skip effect on initial load - ngOnInit handles it
       if (!this.initialized()) return;
-      
+
       const pageIndex = this.pageIndex();
       const pageSize = this.pageSize();
-      
+
       this.loading.set(true);
-      this.client.directClient.collection('afbeeldingen').getList(
-        pageIndex,
-        pageSize
-      ).then((pbPage) => {
-        const page = {
-          page: pageIndex,
-          perPage: pageSize,
-          items: pbPage.items as unknown as Afbeelding[],
-          totalItems: pbPage.totalItems,
-          totalPages: pbPage.totalPages,
-        } as Page<Afbeelding>;
-        this.page.set(page);
-        this.loading.set(false);
-      }).catch((error) => {
-        console.error('Error loading gallery page:', error);
-        this.loading.set(false);
-        // Don't rethrow - prevent global error handler from showing toast during loading
-      });
+      this.client.directClient
+        .collection('afbeeldingen')
+        .getList(pageIndex, pageSize)
+        .then((pbPage) => {
+          const page = {
+            page: pageIndex,
+            perPage: pageSize,
+            items: pbPage.items as unknown as Afbeelding[],
+            totalItems: pbPage.totalItems,
+            totalPages: pbPage.totalPages,
+          } as Page<Afbeelding>;
+          this.page.set(page);
+          this.loading.set(false);
+        })
+        .catch((error) => {
+          console.error('Error loading gallery page:', error);
+          this.loading.set(false);
+          // Don't rethrow - prevent global error handler from showing toast during loading
+        });
     });
   }
 
@@ -82,10 +90,9 @@ export class GallerijComponent implements OnInit {
     this.loading.set(true);
     try {
       this.fileToken.set(await this.client.getFileToken());
-      const pbPage = await this.client.directClient.collection('afbeeldingen').getList(
-        this.pageIndex(),
-        this.pageSize()
-      );
+      const pbPage = await this.client.directClient
+        .collection('afbeeldingen')
+        .getList(this.pageIndex(), this.pageSize());
       const page = {
         page: this.pageIndex(),
         perPage: this.pageSize(),
@@ -136,9 +143,94 @@ export class GallerijComponent implements OnInit {
 
   getFileUrl(afbeelding: Afbeelding): string {
     if (!this.fileToken()) return 'assets/Place-Holder-Image.jpg';
-    return this.client.directClient.files.getURL(afbeelding, afbeelding.bestand, {
-      token: this.fileToken(),
-      thumb: '100x100',
+    return this.client.directClient.files.getURL(
+      afbeelding,
+      afbeelding.bestand,
+      {
+        token: this.fileToken(),
+        thumb: '100x100',
+      }
+    );
+  }
+
+  async deleteImage(afbeelding: Afbeelding): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Afbeelding verwijderen',
+        message: 'Weet je zeker dat je deze afbeelding wilt verwijderen?',
+      },
     });
+
+    const dialogResult = await lastValueFrom(dialogRef.afterClosed());
+
+    if (!dialogResult) return;
+
+    this.loading.set(true);
+
+    try {
+      await this.client.delete('afbeeldingen', afbeelding.id);
+      // Reload the current page
+      const pbPage = await this.client.directClient
+        .collection('afbeeldingen')
+        .getList(this.pageIndex(), this.pageSize());
+      const page = {
+        page: this.pageIndex(),
+        perPage: this.pageSize(),
+        items: pbPage.items as unknown as Afbeelding[],
+        totalItems: pbPage.totalItems,
+        totalPages: pbPage.totalPages,
+      } as Page<Afbeelding>;
+      this.page.set(page);
+      this.toastr.success('Afbeelding succesvol verwijderd', 'Gelukt!');
+    } catch (error: unknown) {
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        'Afbeelding verwijderen'
+      );
+      this.toastr.error(errorMessage, 'Fout bij verwijderen', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 7000,
+      });
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async openUploadDialog(): Promise<void> {
+    const dialogRef = this.dialog.open(ImageUploadDialogComponent, {
+      disableClose: true,
+    });
+
+    const result = await lastValueFrom(dialogRef.afterClosed());
+
+    if (result) {
+      // Reload the current page to show the new image
+      this.loading.set(true);
+      try {
+        const pbPage = await this.client.directClient
+          .collection('afbeeldingen')
+          .getList(this.pageIndex(), this.pageSize());
+        const page = {
+          page: this.pageIndex(),
+          perPage: this.pageSize(),
+          items: pbPage.items as unknown as Afbeelding[],
+          totalItems: pbPage.totalItems,
+          totalPages: pbPage.totalPages,
+        } as Page<Afbeelding>;
+        this.page.set(page);
+        this.toastr.success('Afbeelding succesvol toegevoegd', 'Gelukt!');
+      } catch (error: unknown) {
+        const errorMessage = this.errorService.getErrorMessage(
+          error,
+          'Galerij laden'
+        );
+        this.toastr.error(errorMessage, 'Fout', {
+          positionClass: 'toast-bottom-right',
+          timeOut: 7000,
+        });
+      } finally {
+        this.loading.set(false);
+      }
+    }
   }
 }
