@@ -1,14 +1,12 @@
 <div class="container mt-4">
   <div class="container">
-    <div class="row d-flex justify-content-between align-items-center">
-      <p class="display-1 mb-0">Galerij</p>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="openUploadDialog()"
-        aria-label="Afbeelding toevoegen"
-      >
-        <mat-icon>add</mat-icon>
+    <div class="row">
+      <p class="display-1">Galerij</p>
+    </div>
+
+    <div class="row my-4">
+      <button mat-fab extended color="primary" (click)="openUploadDialog()">
+        <mat-icon>add_circle</mat-icon>
         Afbeelding toevoegen
       </button>
     </div>

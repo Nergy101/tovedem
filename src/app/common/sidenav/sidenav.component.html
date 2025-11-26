@@ -60,8 +60,7 @@
     authService.userHasAllRoles(['sint_commissie']) ||
     authService.userHasAllRoles(['lees_commissie']) ||
     authService.userHasAllRoles(['commissie']) ||
-    authService.userHasAllRoles(['beheer']) ||
-    authService.isGlobalAdmin) {
+    authService.userHasAllRoles(['beheer']) || authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title>Commissies</mat-panel-title>
@@ -108,8 +107,7 @@
       } @if( authService.userHasAllRoles(['admin']) ||
       authService.userHasAllRoles(['bestuur']) ||
       authService.userHasAllRoles(['commissie']) ||
-      authService.userHasAllRoles(['beheer']) ||
-      authService.isGlobalAdmin) {
+      authService.userHasAllRoles(['beheer']) || authService.isGlobalAdmin) {
       <p>
         <li>
           <button
@@ -139,6 +137,19 @@
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <p>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-voorstellingen"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Voorstellingen <mat-icon>curtains</mat-icon>
+          </button>
+        </li>
         <li>
           <button
             mat-raised-button
@@ -185,36 +196,10 @@
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
-            routerLink="/beheer-voorstellingen"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            Voorstellingen <mat-icon>curtains</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-raised-button
-            class="nav-link flex-grow-1"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
             routerLink="/beheer-leden"
             [routerLinkActiveOptions]="{ exact: true }"
           >
             Leden <mat-icon>diversity_3</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-raised-button
-            class="nav-link flex-grow-1"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/beheer-mails"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            Emails <mat-icon>mail</mat-icon>
           </button>
         </li>
         <li>
@@ -241,6 +226,20 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             Nieuwe Leden <mat-icon>person_add</mat-icon>
+          </button>
+        </li>
+
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-mails"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Emails <mat-icon>mail</mat-icon>
           </button>
         </li>
       </p>
