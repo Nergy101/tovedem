@@ -27,6 +27,7 @@ import { Groep } from '../../../../models/domain/groep.model';
 import { Rol } from '../../../../models/domain/rol.model';
 import { Speler } from '../../../../models/domain/speler.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-gebruiker-create-edit-dialog',
@@ -81,6 +82,7 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
   client = inject(PocketbaseService);
   dialogRef = inject(MatDialogRef<GebruikerCreateEditDialogComponent>);
   data = inject(MAT_DIALOG_DATA);
+  toastr = inject(ToastrService);
 
   get isUpdate(): boolean {
     return !!this.data?.existingGebruiker;
@@ -98,6 +100,16 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
   }
 
   async submit(): Promise<void> {
+    // Check if passwords match before submitting (only for new users)
+    if (!this.isUpdate && this.gebruiker.password && this.gebruiker.passwordConfirm && 
+        this.gebruiker.password !== this.gebruiker.passwordConfirm) {
+      this.toastr.error('De wachtwoorden komen niet overeen. Controleer beide velden.', 'Wachtwoorden komen niet overeen', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 5000,
+      });
+      return;
+    }
+
     this.loading.set(true);
 
     if (this.isUpdate) {
@@ -120,6 +132,13 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
       this.dialogRef.close(created);
     }
     this.loading.set(false);
+  }
+
+  get passwordsMatch(): boolean {
+    if (!this.gebruiker.password || !this.gebruiker.passwordConfirm) {
+      return true; // Don't show error if fields are empty
+    }
+    return this.gebruiker.password === this.gebruiker.passwordConfirm;
   }
 
   formIsValid(): boolean {
@@ -147,8 +166,8 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
         !!this.gebruiker.rollen &&
         this.gebruiker.rollen.length > 0 &&
         !!this.gebruiker.passwordConfirm &&
-        this.gebruiker.passwordConfirm != ''
-        && this.gebruiker.password === this.gebruiker.passwordConfirm
+        this.gebruiker.passwordConfirm != '' &&
+        this.passwordsMatch
       );
     }
   }

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +20,6 @@ import { ErrorService } from '../../../shared/services/error.service';
   imports: [
     CommonModule,
     MatInputModule,
-    FormsModule,
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -32,11 +30,12 @@ import { ErrorService } from '../../../shared/services/error.service';
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
-  username?: string;
-  email?: string;
-  password?: string;
-  passwordConfirm?: string;
-  name?: string;
+  // Form field signals
+  username = signal('');
+  email = signal('');
+  name = signal('');
+  password = signal('');
+  passwordConfirm = signal('');
   hidePassword = signal(true);
   hidePasswordConfirm = signal(true);
 
@@ -48,35 +47,66 @@ export class SignupComponent {
   sideDrawerService = inject(SideDrawerService);
   toastr = inject(ToastrService);
 
-  // Username validation: only letters, numbers, underscores, and hyphens
-  get usernameValid(): boolean {
-    if (!this.username) return false;
+  // Validation computed signals
+  usernameValid = computed(() => {
+    const usernameValue = this.username();
+    if (!usernameValue || usernameValue.trim().length === 0) return false;
     const usernamePattern = /^[a-zA-Z0-9_-]+$/;
-    return usernamePattern.test(this.username);
-  }
+    return usernamePattern.test(usernameValue);
+  });
 
-  // Password validation: minimum 8 characters
-  get passwordValid(): boolean {
-    if (!this.password) return false;
-    return this.password.length >= 8;
-  }
+  emailValid = computed(() => {
+    const emailValue = this.email();
+    if (!emailValue || emailValue.trim().length === 0) return false;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailValue);
+  });
 
-  get passwordsMatch(): boolean {
-    return this.password === this.passwordConfirm;
-  }
+  nameValid = computed(() => {
+    const nameValue = this.name();
+    return !!nameValue && nameValue.trim().length > 0;
+  });
 
-  get formIsValid(): boolean {
+  passwordValid = computed(() => {
+    const passwordValue = this.password();
+    if (!passwordValue) return false;
+    return passwordValue.length >= 8;
+  });
+
+  passwordsMatch = computed(() => {
+    const passwordValue = this.password();
+    const passwordConfirmValue = this.passwordConfirm();
+    // Only return true if both fields are filled AND they match
+    if (!passwordValue || !passwordConfirmValue) {
+      return false; // Don't show success if fields are empty
+    }
+    return passwordValue === passwordConfirmValue;
+  });
+
+  passwordsDoNotMatch = computed(() => {
+    const passwordValue = this.password();
+    const passwordConfirmValue = this.passwordConfirm();
+    // Show error if both fields are filled and they don't match
     return (
-      !!this.username &&
-      this.usernameValid &&
-      !!this.email &&
-      !!this.password &&
-      this.passwordValid &&
-      !!this.passwordConfirm &&
-      this.passwordsMatch &&
-      !!this.name
+      passwordValue.length > 0 &&
+      passwordConfirmValue.length > 0 &&
+      passwordValue !== passwordConfirmValue
     );
-  }
+  });
+
+  formIsValid = computed(() => {
+    const passwordValue = this.password();
+    const passwordConfirmValue = this.passwordConfirm();
+
+    return (
+      this.usernameValid() &&
+      this.emailValid() &&
+      this.nameValid() &&
+      this.passwordValid() &&
+      passwordConfirmValue.length > 0 &&
+      passwordValue === passwordConfirmValue
+    );
+  });
 
   loading = signal(false);
 
@@ -84,8 +114,21 @@ export class SignupComponent {
     this.seoService.update('Tovedem - Account Aanmaken');
   }
 
-  async signup(): Promise<void> {
-    if (this.formIsValid) {
+  async signup(event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+
+    console.log('Signup method called');
+    console.log('Form valid:', this.formIsValid());
+    console.log('Form values:', {
+      username: this.username(),
+      email: this.email(),
+      name: this.name(),
+      password: this.password().length > 0 ? '***' : '',
+      passwordConfirm: this.passwordConfirm().length > 0 ? '***' : '',
+    });
+
+    if (this.formIsValid()) {
       this.loading.set(true);
 
       try {
@@ -101,11 +144,11 @@ export class SignupComponent {
 
         // Create user account with 'bezoeker' role
         const userData = {
-          username: this.username!,
-          email: this.email!,
-          password: this.password!,
-          passwordConfirm: this.passwordConfirm!,
-          name: this.name!,
+          username: this.username(),
+          email: this.email(),
+          password: this.password(),
+          passwordConfirm: this.passwordConfirm(),
+          name: this.name(),
           emailVisibility: true,
           rollen: [bezoekerRol.id],
         };
@@ -115,7 +158,7 @@ export class SignupComponent {
         // Automatically log in after successful signup
         const authData = await this.pocketbase.client
           .collection('users')
-          .authWithPassword(this.email!, this.password!, {
+          .authWithPassword(this.email(), this.password(), {
             expand: 'groep,rollen',
           });
 
@@ -142,10 +185,18 @@ export class SignupComponent {
           this.router.navigate(['profiel']);
         }
       } catch (error: unknown) {
+        // Log full error for debugging
+        console.error('Signup error:', error);
+
         // Use ErrorService for consistent error handling
-        const errorMessage = this.errorService.getErrorMessage(error, 'Account aanmaken');
-        this.toastr.error(errorMessage, 'Fout', {
+        const errorMessage = this.errorService.getErrorMessage(
+          error,
+          'Account aanmaken'
+        );
+
+        this.toastr.error(errorMessage, 'Fout bij aanmaken account', {
           positionClass: 'toast-bottom-right',
+          timeOut: 7000,
         });
       } finally {
         this.loading.set(false);

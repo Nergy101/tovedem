@@ -121,7 +121,7 @@
   </div>
   } @if (authService.isLoggedIn()) {
   <div class="row justify-content-center mt-4">
-    <div class="col-xl-8 col-12">
+    <div class="col-xl-10 col-12">
       <mat-card>
         <mat-card-header>
           <mat-card-title>Uw reserveringen</mat-card-title>
@@ -132,82 +132,71 @@
             <mat-spinner diameter="40"></mat-spinner>
           </div>
           } @else if (reserveringen() && reserveringen()!.length > 0) {
-          <mat-list>
+          <div class="reserveringen-grid">
             @for (reservering of paginatedReserveringen(); track reservering.id)
             {
-            <mat-list-item class="reservering-item">
-              <div class="w-100 py-2">
-                <div
-                  class="d-flex justify-content-between align-items-start flex-wrap gap-3"
+            <mat-card class="reservering-card">
+              <mat-card-header>
+                <mat-card-title>
+                  {{
+                    reservering.expand?.voorstelling?.titel ||
+                      "Onbekende voorstelling"
+                  }}
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                @if (reservering.datum_tijd_1_aantal > 0) {
+                <p class="mb-2">
+                  <strong>Datum/tijd 1:</strong>
+                  {{ reservering.datum_tijd_1_aantal }} persoon(en)
+                </p>
+                } @if (reservering.datum_tijd_2_aantal > 0) {
+                <p class="mb-2">
+                  <strong>Datum/tijd 2:</strong>
+                  {{ reservering.datum_tijd_2_aantal }} persoon(en)
+                </p>
+                } @if (reservering.opmerking) {
+                <p class="mb-2">
+                  <strong>Opmerking:</strong> {{ reservering.opmerking }}
+                </p>
+                }
+                <p class="mb-0 text-muted">
+                  <small
+                    >Aangemaakt:
+                    {{
+                      reservering.created | date : "dd MMMM yyyy 'om' HH:mm"
+                    }}</small
+                  >
+                </p>
+              </mat-card-content>
+              @if (reservering.guid) {
+              <mat-card-actions>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="
+                    navigateTo(
+                      '/reservering-aanpassen/' +
+                        reservering.id +
+                        '/' +
+                        reservering.guid
+                    )
+                  "
                 >
-                  <div class="flex-grow-1">
-                    <h4 class="mb-2">
-                      {{
-                        reservering.expand?.voorstelling?.titel ||
-                          "Onbekende voorstelling"
-                      }}
-                    </h4>
-                    <p class="mb-1">
-                      <strong>Email:</strong> {{ reservering.email }}<br />
-                      <strong>Naam:</strong> {{ reservering.voornaam }}
-                      {{ reservering.achternaam }}
-                    </p>
-                    @if (reservering.datum_tijd_1_aantal > 0) {
-                    <p class="mb-1">
-                      <strong>Datum/tijd 1:</strong>
-                      {{ reservering.datum_tijd_1_aantal }} persoon(en)
-                    </p>
-                    } @if (reservering.datum_tijd_2_aantal > 0) {
-                    <p class="mb-1">
-                      <strong>Datum/tijd 2:</strong>
-                      {{ reservering.datum_tijd_2_aantal }} persoon(en)
-                    </p>
-                    } @if (reservering.opmerking) {
-                    <p class="mb-1">
-                      <strong>Opmerking:</strong> {{ reservering.opmerking }}
-                    </p>
-                    }
-                    <p class="mb-0 text-muted">
-                      <small
-                        >Aangemaakt:
-                        {{
-                          reservering.created | date : "dd MMMM yyyy 'om' HH:mm"
-                        }}</small
-                      >
-                    </p>
-                  </div>
-                  @if (reservering.guid) {
-                  <div class="flex-shrink-0">
-                    <button
-                      mat-raised-button
-                      color="primary"
-                      (click)="
-                        navigateTo(
-                          '/reservering-aanpassen/' +
-                            reservering.id +
-                            '/' +
-                            reservering.guid
-                        )
-                      "
-                    >
-                      <mat-icon>edit</mat-icon>
-                      Aanpassen
-                    </button>
-                  </div>
-                  }
-                </div>
-              </div>
-            </mat-list-item>
-            @if (!$last) {
-            <mat-divider></mat-divider>
-            } }
-          </mat-list>
-          @if (reserveringen() && reserveringen()!.length > 5) {
+                  <mat-icon>edit</mat-icon>
+                  Aanpassen
+                </button>
+              </mat-card-actions>
+              }
+            </mat-card>
+            }
+          </div>
+          @if (reserveringen() && reserveringen()!.length > 4) {
           <mat-paginator
             [length]="reserveringen()!.length"
             [pageSize]="pageSize()"
             [pageIndex]="pageIndex()"
-            [pageSizeOptions]="[5, 10, 25, 50]"
+            [pageSizeOptions]="[4, 8, 12, 16]"
             (page)="onPageChange($event)"
             showFirstLastButtons
           >

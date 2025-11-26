@@ -32,21 +32,27 @@ mat-expansion-panel {
   border-radius: 4px;
 }
 
-mat-list {
-  mat-list-item.reservering-item {
-    height: auto !important;
-    min-height: 120px;
-    padding: 1rem 0 !important;
-    display: block !important;
-    
-    .mat-mdc-list-item-content {
-      padding: 0 !important;
-      width: 100%;
-      display: block;
-    }
+.reserveringen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
-  
-  mat-divider {
-    margin: 0.5rem 0;
+}
+
+.reservering-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  mat-card-content {
+    flex-grow: 1;
+  }
+
+  mat-card-actions {
+    margin-top: auto;
   }
 }

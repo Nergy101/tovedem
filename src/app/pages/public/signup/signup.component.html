@@ -11,7 +11,7 @@
         </mat-card-header>
         <mat-card-content class="mt-2 row gap-4">
           <form
-            (ngSubmit)="signup()"
+            (submit)="signup($event)"
             class="col-md-6 col-12 w-100 d-flex flex-column gap-2"
           >
             <mat-form-field>
@@ -20,17 +20,26 @@
                 matInput
                 required
                 type="text"
-                [(ngModel)]="username"
-                name="username"
-                [class.mat-input-invalid]="username && !usernameValid"
+                [value]="username()"
+                (input)="username.set($any($event.target).value)"
+                [class.mat-input-invalid]="
+                  username().length > 0 && !usernameValid()
+                "
               />
-              @if (username && !usernameValid) {
+              @if (username().length > 0 && !usernameValid()) {
               <mat-error>
                 Gebruikersnaam mag alleen letters, cijfers, underscores en
                 streepjes bevatten
               </mat-error>
+              } @if (username().length > 0 && usernameValid()) {
+              <mat-hint class="mat-hint-success">
+                Gebruikersnaam is geldig
+              </mat-hint>
+              } @if (username().length === 0) {
+              <mat-hint
+                >Alleen letters, cijfers, _ en - zijn toegestaan</mat-hint
+              >
               }
-              <mat-hint>Alleen letters, cijfers, _ en - zijn toegestaan</mat-hint>
             </mat-form-field>
             <mat-form-field>
               <mat-label>E-mail</mat-label>
@@ -38,9 +47,17 @@
                 matInput
                 required
                 type="email"
-                [(ngModel)]="email"
-                name="email"
+                [value]="email()"
+                (input)="email.set($any($event.target).value)"
+                [class.mat-input-invalid]="email().length > 0 && !emailValid()"
               />
+              @if (email().length > 0 && !emailValid()) {
+              <mat-error> Voer een geldig e-mailadres in </mat-error>
+              } @if (email().length > 0 && emailValid()) {
+              <mat-hint class="mat-hint-success">
+                E-mailadres is geldig
+              </mat-hint>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Naam</mat-label>
@@ -48,9 +65,15 @@
                 matInput
                 required
                 type="text"
-                [(ngModel)]="name"
-                name="name"
+                [value]="name()"
+                (input)="name.set($any($event.target).value)"
+                [class.mat-input-invalid]="name().length > 0 && !nameValid()"
               />
+              @if (name().length > 0 && !nameValid()) {
+              <mat-error> Naam mag niet leeg zijn </mat-error>
+              } @if (name().length > 0 && nameValid()) {
+              <mat-hint class="mat-hint-success"> Naam is ingevuld </mat-hint>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Wachtwoord</mat-label>
@@ -58,27 +81,36 @@
                 matInput
                 required
                 [type]="hidePassword() ? 'password' : 'text'"
-                name="password"
-                [(ngModel)]="password"
-                [class.mat-input-invalid]="password && !passwordValid"
+                [value]="password()"
+                (input)="password.set($any($event.target).value)"
+                [class.mat-input-invalid]="
+                  password().length > 0 && !passwordValid()
+                "
               />
               <button
                 mat-icon-button
                 matSuffix
                 type="button"
                 (click)="hidePassword.set(!hidePassword())"
-                [attr.aria-label]="'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')"
+                [attr.aria-label]="
+                  'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')
+                "
               >
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                <mat-icon>{{
+                  hidePassword() ? "visibility_off" : "visibility"
+                }}</mat-icon>
               </button>
-              @if (password && !passwordValid) {
+              @if (password().length > 0 && !passwordValid()) {
               <mat-error>
                 Wachtwoord moet minimaal 8 tekens lang zijn
               </mat-error>
-              }
-              <mat-hint>
-                Minimaal 8 tekens
+              } @if (password().length > 0 && passwordValid()) {
+              <mat-hint class="mat-hint-success">
+                Wachtwoord is geldig
               </mat-hint>
+              } @if (password().length === 0) {
+              <mat-hint> Minimaal 8 tekens </mat-hint>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Wachtwoord Bevestigen</mat-label>
@@ -86,23 +118,32 @@
                 matInput
                 required
                 [type]="hidePasswordConfirm() ? 'password' : 'text'"
-                name="passwordConfirm"
-                [(ngModel)]="passwordConfirm"
-                [class.mat-input-invalid]="passwordConfirm && !passwordsMatch"
+                [value]="passwordConfirm()"
+                (input)="passwordConfirm.set($any($event.target).value)"
+                [class.mat-input-invalid]="passwordsDoNotMatch()"
               />
               <button
                 mat-icon-button
                 matSuffix
                 type="button"
                 (click)="hidePasswordConfirm.set(!hidePasswordConfirm())"
-                [attr.aria-label]="'Wachtwoord bevestigen ' + (hidePasswordConfirm() ? 'tonen' : 'verbergen')"
+                [attr.aria-label]="
+                  'Wachtwoord bevestigen ' +
+                  (hidePasswordConfirm() ? 'tonen' : 'verbergen')
+                "
               >
-                <mat-icon>{{ hidePasswordConfirm() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                <mat-icon>{{
+                  hidePasswordConfirm() ? "visibility_off" : "visibility"
+                }}</mat-icon>
               </button>
-              @if (passwordConfirm && !passwordsMatch) {
+              @if (passwordsDoNotMatch()) {
               <mat-error>
-                Wachtwoorden komen niet overeen
+                De wachtwoorden komen niet overeen. Controleer beide velden.
               </mat-error>
+              } @if (passwordsMatch()) {
+              <mat-hint class="mat-hint-success">
+                Wachtwoorden komen overeen
+              </mat-hint>
               }
             </mat-form-field>
             <mat-card-actions>
@@ -111,7 +152,7 @@
                 type="submit"
                 color="primary"
                 mat-flat-button
-                [disabled]="!formIsValid || loading()"
+                [disabled]="!formIsValid() || loading()"
               >
                 Account Aanmaken
               </button>
@@ -130,4 +171,3 @@
     </div>
   </div>
 </div>
-

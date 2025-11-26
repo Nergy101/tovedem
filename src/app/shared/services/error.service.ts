@@ -143,22 +143,153 @@ export class ErrorService {
 
   /**
    * Extract error message from PocketBase error structure
+   * PocketBase can return errors in different formats:
+   * - General message: error.response.message
+   * - Field-specific errors: error.response.data.email.message, error.response.data.username.message, etc.
+   * - Arrays of messages: error.response.data.email = ["message1", "message2"]
    */
   extractPocketBaseMessage(error: PocketBaseError): string | null {
+    // First try to get field-specific errors (most common for validation)
+    const data = error.response?.data || error.data;
+    if (data && typeof data === 'object') {
+      // Check for field-specific errors (email, username, etc.)
+      for (const [key, value] of Object.entries(data)) {
+        if (key !== 'message') {
+          // Handle array of messages (common in PocketBase)
+          if (Array.isArray(value) && value.length > 0) {
+            const firstMessage = typeof value[0] === 'string' ? value[0] : String(value[0]);
+            if (firstMessage) {
+              return this.translatePocketBaseError(firstMessage, key);
+            }
+          }
+          // Handle object with message property
+          else if (value && typeof value === 'object' && 'message' in value) {
+            const fieldMessage = (value as { message: string }).message;
+            if (fieldMessage) {
+              return this.translatePocketBaseError(fieldMessage, key);
+            }
+          }
+          // Handle direct string value
+          else if (typeof value === 'string' && value) {
+            return this.translatePocketBaseError(value, key);
+          }
+        }
+      }
+      
+      // Check for general message in data
+      if ('message' in data) {
+        const message = data.message;
+        if (typeof message === 'string') {
+          return this.translatePocketBaseError(message);
+        }
+        if (Array.isArray(message)) {
+          const messageArray = message as unknown[];
+          if (messageArray.length > 0) {
+            const firstMessage = typeof messageArray[0] === 'string' ? messageArray[0] : String(messageArray[0]);
+            return this.translatePocketBaseError(firstMessage);
+          }
+        }
+      }
+    }
+
     // Try different possible locations for the error message
     if (error.response?.message) {
-      return error.response.message;
-    }
-    if (error.response?.data?.message) {
-      return error.response.data.message;
-    }
-    if (error.data?.message) {
-      return error.data.message;
+      const responseMessage = error.response.message;
+      if (typeof responseMessage === 'string') {
+        return this.translatePocketBaseError(responseMessage);
+      }
+      if (Array.isArray(responseMessage)) {
+        const responseMessageArray = responseMessage as unknown[];
+        if (responseMessageArray.length > 0) {
+          const firstMessage = typeof responseMessageArray[0] === 'string' ? responseMessageArray[0] : String(responseMessageArray[0]);
+          return this.translatePocketBaseError(firstMessage);
+        }
+      }
     }
     if (error.message) {
-      return error.message;
+      return this.translatePocketBaseError(error.message);
     }
     return null;
+  }
+
+  /**
+   * Translate PocketBase error messages to Dutch
+   */
+  private translatePocketBaseError(message: string, field?: string): string {
+    const lowerMessage = message.toLowerCase();
+    
+    // Email already exists (check multiple variations)
+    if ((lowerMessage.includes('email') || field?.toLowerCase() === 'email') && 
+        (lowerMessage.includes('already') || lowerMessage.includes('exists') || 
+         lowerMessage.includes('taken') || lowerMessage.includes('in use') ||
+         lowerMessage.includes('duplicate') || lowerMessage.includes('must be unique'))) {
+      return 'Dit e-mailadres is al in gebruik. Gebruik een ander e-mailadres of log in met dit account.';
+    }
+    
+    // Username already exists
+    if ((lowerMessage.includes('username') || field?.toLowerCase() === 'username') && 
+        (lowerMessage.includes('already') || lowerMessage.includes('exists') || 
+         lowerMessage.includes('taken') || lowerMessage.includes('in use') ||
+         lowerMessage.includes('duplicate') || lowerMessage.includes('must be unique'))) {
+      return 'Deze gebruikersnaam is al in gebruik. Kies een andere gebruikersnaam.';
+    }
+    
+    // Invalid email format
+    if ((lowerMessage.includes('email') || field?.toLowerCase() === 'email') && 
+        (lowerMessage.includes('invalid') || lowerMessage.includes('format') || 
+         lowerMessage.includes('not valid') || lowerMessage.includes('malformed'))) {
+      return 'Het e-mailadres heeft een ongeldig formaat. Controleer het e-mailadres en probeer het opnieuw.';
+    }
+    
+    // Password too short
+    if ((lowerMessage.includes('password') || field?.toLowerCase() === 'password') && 
+        (lowerMessage.includes('too short') || lowerMessage.includes('minimum') || 
+         lowerMessage.includes('at least'))) {
+      return 'Het wachtwoord is te kort. Gebruik minimaal 8 tekens.';
+    }
+    
+    // Required field
+    if (lowerMessage.includes('required') || lowerMessage.includes('cannot be blank') || 
+        lowerMessage.includes('is required') || lowerMessage.includes('must not be empty')) {
+      const fieldName = field ? this.getFieldNameDutch(field) : 'veld';
+      return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is verplicht.`;
+    }
+    
+    // Record not found
+    if (lowerMessage.includes('not found') || lowerMessage.includes('missing') || 
+        lowerMessage.includes('does not exist')) {
+      return 'Het gevraagde item is niet gevonden.';
+    }
+    
+    // Permission denied
+    if (lowerMessage.includes('permission') || lowerMessage.includes('unauthorized') || 
+        lowerMessage.includes('forbidden') || lowerMessage.includes('access denied')) {
+      return 'U heeft geen toestemming voor deze actie.';
+    }
+    
+    // Failed to create/update record
+    if (lowerMessage.includes('failed to create') || lowerMessage.includes('failed to update')) {
+      return 'Het aanmaken van het account is mislukt. Controleer de ingevoerde gegevens en probeer het opnieuw.';
+    }
+    
+    // Return original message if no translation found (PocketBase messages are often already user-friendly)
+    return message;
+  }
+
+  /**
+   * Get Dutch field name for common fields
+   */
+  private getFieldNameDutch(field: string): string {
+    const fieldMap: Record<string, string> = {
+      email: 'e-mailadres',
+      username: 'gebruikersnaam',
+      password: 'wachtwoord',
+      passwordConfirm: 'wachtwoord bevestigen',
+      name: 'naam',
+      surname: 'achternaam',
+    };
+    
+    return fieldMap[field.toLowerCase()] || field;
   }
 
   /**

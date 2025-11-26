@@ -72,7 +72,7 @@ export class ProfielComponent implements OnInit {
   reserveringen: WritableSignal<Reservering[] | null> = signal(null);
   loadingReserveringen = signal(false);
   pageIndex = signal(0);
-  pageSize = signal(5);
+  pageSize = signal(4);
 
   paginatedReserveringen = computed(() => {
     const allReserveringen = this.reserveringen();

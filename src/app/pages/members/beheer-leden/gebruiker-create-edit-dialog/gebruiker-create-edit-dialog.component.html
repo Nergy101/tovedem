@@ -14,94 +14,106 @@
 
 <div mat-dialog-content class="container p-4">
   @defer (when rollen() && spelers() && groepen()) {
-    <div class="row">
-      <form (ngSubmit)="submit()">
-        <div class="row">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Username</mat-label>
-            <input
-              matInput
-              type="text"
-              name="username"
-              maxlength="30"
-              tabindex="0"
-              required
-              [(ngModel)]="gebruiker.username"
-            />
-          </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Email</mat-label>
-            <input
-              matInput
-              type="email"
-              name="email"
-              required
-              [(ngModel)]="gebruiker.email"
-            />
-          </mat-form-field>
-        </div>
+  <div class="row">
+    <form (ngSubmit)="submit()">
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            type="text"
+            name="username"
+            maxlength="30"
+            tabindex="0"
+            required
+            [(ngModel)]="gebruiker.username"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            name="email"
+            required
+            [(ngModel)]="gebruiker.email"
+          />
+        </mat-form-field>
+      </div>
 
-        <div class="row">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Wachtwoord</mat-label>
-            <input
-              matInput
-              type="password"
-              name="password"
-              maxlength="30"
-              tabindex="0"
-              required
-              [(ngModel)]="gebruiker.password"
-            />
-          </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Bevestig Wachtwoord</mat-label>
-            <input
-              matInput
-              type="password"
-              name="passwordConfirm"
-              maxlength="30"
-              tabindex="0"
-              required
-              [(ngModel)]="gebruiker.passwordConfirm"
-            />
-          </mat-form-field>
-        </div>
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Wachtwoord</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            maxlength="30"
+            tabindex="0"
+            required
+            [(ngModel)]="gebruiker.password"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Bevestig Wachtwoord</mat-label>
+          <input
+            matInput
+            type="password"
+            name="passwordConfirm"
+            maxlength="30"
+            tabindex="0"
+            required
+            [(ngModel)]="gebruiker.passwordConfirm"
+            [class.mat-input-invalid]="
+              gebruiker.password && gebruiker.passwordConfirm && !passwordsMatch
+            "
+          />
+          @if (gebruiker.password && gebruiker.passwordConfirm &&
+          !passwordsMatch) {
+          <mat-error> Wachtwoorden komen niet overeen </mat-error>
+          } @if (gebruiker.password && gebruiker.passwordConfirm &&
+          passwordsMatch) {
+          <mat-hint class="mat-hint-success">
+            Wachtwoorden komen overeen
+          </mat-hint>
+          }
+        </mat-form-field>
+      </div>
 
-        <div class="row">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Naam</mat-label>
-            <input
-              matInput
-              type="name"
-              name="name"
-              maxlength="30"
-              tabindex="0"
-              required
-              [(ngModel)]="gebruiker.name"
-            />
-          </mat-form-field>
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Rollen</mat-label>
-            <mat-select multiple [(value)]="gebruiker.rollen" required>
-              @for (rol of rollen(); track $index) {
-                <mat-option [value]="rol.id">{{ rol.rol }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Naam</mat-label>
+          <input
+            matInput
+            type="name"
+            name="name"
+            maxlength="30"
+            tabindex="0"
+            required
+            [(ngModel)]="gebruiker.name"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Rollen</mat-label>
+          <mat-select multiple [(value)]="gebruiker.rollen" required>
+            @for (rol of rollen(); track $index) {
+            <mat-option [value]="rol.id">{{ rol.rol }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-        <div class="row">
-          <mat-form-field class="col-md-6 col-12">
-            <mat-label>Groep</mat-label>
-            <mat-select [(value)]="gebruiker.groep">
-              <mat-option>Geen</mat-option>
-              @for (groep of groepen(); track $index) {
-                <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <!-- <mat-form-field class="col-md-6 col-12">
+      <div class="row">
+        <mat-form-field class="col-md-6 col-12">
+          <mat-label>Groep</mat-label>
+          <mat-select [(value)]="gebruiker.groep">
+            <mat-option>Geen</mat-option>
+            @for (groep of groepen(); track $index) {
+            <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field class="col-md-6 col-12">
                     <mat-label>Speler</mat-label>
                     <mat-select [(value)]="gebruiker.speler">
                         <mat-option>Geen</mat-option>
@@ -111,33 +123,33 @@
                         }
                     </mat-select>
                 </mat-form-field> -->
-        </div>
+      </div>
 
-        <div class="row">
-          <div class="col-md-6 col-12 d-flex justify-content-center">
-            <button mat-stroked-button mat-dialog-close class="flex-grow-1">
-              <mat-icon>arrow_back</mat-icon>
-              Terug
-            </button>
-          </div>
-          <div class="col-md-6 col-12 d-flex justify-content-center">
-            <button
-              mat-flat-button
-              color="primary"
-              type="submit"
-              class="flex-grow-1"
-              [disabled]="loading() || !formIsValid()"
-              (click)="submit()"
-            >
-              {{ isUpdate ? "Aanpassen" : "Aanmaken" }}
-            </button>
-          </div>
+      <div class="row">
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button mat-stroked-button mat-dialog-close class="flex-grow-1">
+            <mat-icon>arrow_back</mat-icon>
+            Terug
+          </button>
         </div>
-      </form>
-    </div>
+        <div class="col-md-6 col-12 d-flex justify-content-center">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="flex-grow-1"
+            [disabled]="loading() || !formIsValid()"
+            (click)="submit()"
+          >
+            {{ isUpdate ? "Aanpassen" : "Aanmaken" }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
   } @placeholder {
-    <div class="center">
-      <mat-spinner></mat-spinner>
-    </div>
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
   }
 </div>
