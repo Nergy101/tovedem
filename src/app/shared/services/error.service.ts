@@ -24,7 +24,7 @@ export class ErrorService {
    */
   parseError(error: unknown, context?: string): AppError {
     const errorType = this.categorizeError(error);
-    const message = this.extractErrorMessage(error);
+    const message = this.extractErrorMessage(error, context);
     const statusCode = this.extractStatusCode(error);
     const code = this.extractErrorCode(error);
 
@@ -104,7 +104,7 @@ export class ErrorService {
   getUserMessage(error: AppError): string {
     // If we have a PocketBase message, use it (it's usually already user-friendly)
     if (isPocketBaseError(error.originalError)) {
-      const pbMessage = this.extractPocketBaseMessage(error.originalError);
+      const pbMessage = this.extractPocketBaseMessage(error.originalError, error.context);
       if (pbMessage) {
         return pbMessage;
       }
@@ -148,7 +148,7 @@ export class ErrorService {
    * - Field-specific errors: error.response.data.email.message, error.response.data.username.message, etc.
    * - Arrays of messages: error.response.data.email = ["message1", "message2"]
    */
-  extractPocketBaseMessage(error: PocketBaseError): string | null {
+  extractPocketBaseMessage(error: PocketBaseError, context?: string): string | null {
     // First try to get field-specific errors (most common for validation)
     const data = error.response?.data || error.data;
     if (data && typeof data === 'object') {
@@ -159,19 +159,19 @@ export class ErrorService {
           if (Array.isArray(value) && value.length > 0) {
             const firstMessage = typeof value[0] === 'string' ? value[0] : String(value[0]);
             if (firstMessage) {
-              return this.translatePocketBaseError(firstMessage, key);
+              return this.translatePocketBaseError(firstMessage, key, context);
             }
           }
           // Handle object with message property
           else if (value && typeof value === 'object' && 'message' in value) {
             const fieldMessage = (value as { message: string }).message;
             if (fieldMessage) {
-              return this.translatePocketBaseError(fieldMessage, key);
+              return this.translatePocketBaseError(fieldMessage, key, context);
             }
           }
           // Handle direct string value
           else if (typeof value === 'string' && value) {
-            return this.translatePocketBaseError(value, key);
+            return this.translatePocketBaseError(value, key, context);
           }
         }
       }
@@ -180,13 +180,13 @@ export class ErrorService {
       if ('message' in data) {
         const message = data.message;
         if (typeof message === 'string') {
-          return this.translatePocketBaseError(message);
+          return this.translatePocketBaseError(message, undefined, context);
         }
         if (Array.isArray(message)) {
           const messageArray = message as unknown[];
           if (messageArray.length > 0) {
             const firstMessage = typeof messageArray[0] === 'string' ? messageArray[0] : String(messageArray[0]);
-            return this.translatePocketBaseError(firstMessage);
+            return this.translatePocketBaseError(firstMessage, undefined, context);
           }
         }
       }
@@ -196,18 +196,18 @@ export class ErrorService {
     if (error.response?.message) {
       const responseMessage = error.response.message;
       if (typeof responseMessage === 'string') {
-        return this.translatePocketBaseError(responseMessage);
+        return this.translatePocketBaseError(responseMessage, undefined, context);
       }
       if (Array.isArray(responseMessage)) {
         const responseMessageArray = responseMessage as unknown[];
         if (responseMessageArray.length > 0) {
           const firstMessage = typeof responseMessageArray[0] === 'string' ? responseMessageArray[0] : String(responseMessageArray[0]);
-          return this.translatePocketBaseError(firstMessage);
+          return this.translatePocketBaseError(firstMessage, undefined, context);
         }
       }
     }
     if (error.message) {
-      return this.translatePocketBaseError(error.message);
+      return this.translatePocketBaseError(error.message, undefined, context);
     }
     return null;
   }
@@ -215,7 +215,7 @@ export class ErrorService {
   /**
    * Translate PocketBase error messages to Dutch
    */
-  private translatePocketBaseError(message: string, field?: string): string {
+  private translatePocketBaseError(message: string, field?: string, context?: string): string {
     const lowerMessage = message.toLowerCase();
     
     // Email already exists (check multiple variations)
@@ -269,7 +269,15 @@ export class ErrorService {
     
     // Failed to create/update record
     if (lowerMessage.includes('failed to create') || lowerMessage.includes('failed to update')) {
-      return 'Het aanmaken van het account is mislukt. Controleer de ingevoerde gegevens en probeer het opnieuw.';
+      // Use context to provide more specific error message
+      if (context?.toLowerCase().includes('reservering')) {
+        return 'Het aanmaken van de reservering is mislukt. Controleer de ingevoerde gegevens en probeer het opnieuw.';
+      }
+      if (context?.toLowerCase().includes('account') || context?.toLowerCase().includes('aanmaken')) {
+        return 'Het aanmaken van het account is mislukt. Controleer de ingevoerde gegevens en probeer het opnieuw.';
+      }
+      // Generic fallback
+      return 'Het aanmaken is mislukt. Controleer de ingevoerde gegevens en probeer het opnieuw.';
     }
     
     // Return original message if no translation found (PocketBase messages are often already user-friendly)
@@ -318,9 +326,9 @@ export class ErrorService {
   /**
    * Extract error message from any error type
    */
-  private extractErrorMessage(error: unknown): string {
+  private extractErrorMessage(error: unknown, context?: string): string {
     if (isPocketBaseError(error)) {
-      const message = this.extractPocketBaseMessage(error);
+      const message = this.extractPocketBaseMessage(error, context);
       if (message) {
         return message;
       }

@@ -344,6 +344,18 @@ export class ReserverenComponent implements OnInit {
       return;
     }
 
+    // Validate voorstellingId is present
+    if (!this.voorstellingId) {
+      this.snackBar.open(
+        'Er is geen voorstelling geselecteerd. Probeer het opnieuw.',
+        '❌',
+        {
+          duration: 5000,
+        }
+      );
+      return;
+    }
+
     // Double-check limits before submitting (client-side validation)
     if (!this.canReserveDate1() || !this.canReserveDate2()) {
       this.snackBar.open(
@@ -368,7 +380,7 @@ export class ReserverenComponent implements OnInit {
           email: formData.email,
           is_vriend_van_tovedem: formData.vriendVanTovedem,
           is_lid_van_vereniging: formData.lidVanTovedemMejotos,
-          voorstelling: this.voorstellingId ?? '',
+          voorstelling: this.voorstellingId,
           datum_tijd_1_aantal: formData.amountOfPeopleDate1 ?? 0,
           datum_tijd_2_aantal: formData.amountOfPeopleDate2 ?? 0,
           guid: crypto.randomUUID(),
