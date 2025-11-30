@@ -180,7 +180,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               await this.clientB.collection('leden').create({
                 voornaam: formData.voornaam,
                 achternaam: formData.achternaam,
-                groep: formData.selectedGroep,
+                groep: formData.selectedGroep?.id,
                 bericht: formData.message,
                 geboorte_datum: formData.geboorteDatum,
                 email: formData.email,
