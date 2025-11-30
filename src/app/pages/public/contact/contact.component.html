@@ -9,18 +9,23 @@
   </div>
   <mat-divider class="divider mb-4"></mat-divider>
   <div class="contact-intro">
-    <div class="intro-text">
+    <div>
       In het volgende formulier kunt u overige vragen stellen die bij het
-      algemene e-mail adres van de Tovedem terecht komen. Heeft u een aanvraag
-      om lid te worden, tovedem te steunen of voor de sintcommisie kies dan een
-      van de andere aanmeldformulieren.
+      algemene e-mail adres van de Tovedem terecht komen.
     </div>
+    <span class="intro-text bordered"
+      ><i>
+        Heeft u een aanvraag om lid te worden, tovedem te steunen of voor de
+        sintcommisie? <br />Kies dan een van de andere aanmeldformulieren rechts
+        van deze tekst.
+      </i>
+    </span>
 
     <div class="action-buttons">
       <button
         class="action-button"
         mat-icon-button
-        matTooltip="Ga naar lid worden"
+        matTooltip="Lid worden"
         routerLinkActive="active"
         routerLink="/lid-worden"
       >
@@ -28,7 +33,7 @@
       </button>
       <button
         class="action-button"
-        matTooltip="Ga naar steunen"
+        matTooltip="Steunen"
         mat-icon-button
         routerLinkActive="active"
         routerLink="/steunen"
@@ -37,7 +42,7 @@
       </button>
       <button
         class="action-button"
-        matTooltip="Ga naar Sinterklaas"
+        matTooltip="Sinterklaas"
         mat-icon-button
         routerLinkActive="active"
         routerLink="/sinterklaas"
@@ -51,6 +56,20 @@
       <h1>
         <mat-icon>location_on</mat-icon> Schalm Oranjelaan 10, 3454 BT De Meern
       </h1>
+    </div>
+    <div class="row mb-4" style="justify-content: center">
+      <div class="col-12 col-md-8 col-lg-8">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d411.8729543750964!2d5.03817722419667!3d52.08038841496903!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c665571d884b77%3A0x26f158dccb3b7da0!2sthe%20Schalm!5e0!3m2!1sen!2snl!4v1764534116377!5m2!1sen!2snl"
+          width="100%"
+          height="300"
+          style="border: 0; border-radius: 8px"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Locatie van De Schalm"
+        ></iframe>
+      </div>
     </div>
     @if (!submitted()) {
     <form (ngSubmit)="verstuurContactMail()" class="row contact-form">

@@ -22,14 +22,13 @@
     <div class="justify-content-center d-flex row">
       <h2><mat-icon aria-hidden="true">pin_drop</mat-icon> Adres</h2>
       <a
-        href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland"
+        href="https://maps.app.goo.gl/rWmNxK4db39zvPg87"
         target="_blank"
         rel="noopener noreferrer"
         class="adres"
-        matTooltip="Open Google Maps"
         aria-label="Open adres in Google Maps"
       >
-        <span>
+        <span matTooltip="Open Google Maps" matTooltipPosition="below">
           De Schalm<br />
           Orangjelaan 10<br />
           3454 BT<br />
@@ -45,12 +44,12 @@
         <li role="listitem">
           <button
             mat-button
-            (click)="navigateTo(['/'])"
-            (keydown.enter)="navigateTo(['/'])"
+            (click)="navigateTo(['/agenda'])"
+            (keydown.enter)="navigateTo(['/agenda'])"
             role="link"
-            aria-label="Ga naar reserveren pagina"
+            aria-label="Ga naar agenda pagina"
           >
-            Reserveren
+            Agenda
           </button>
         </li>
         <li role="listitem">
@@ -110,7 +109,10 @@
 </div>
 
 <div class="container-fluid privacy">
-  <a class="privacy-link" href="/PrivacyBeleid" aria-label="Ga naar privacybeleid pagina"
+  <a
+    class="privacy-link"
+    href="/PrivacyBeleid"
+    aria-label="Ga naar privacybeleid pagina"
     ><span>Privacybeleid / &#64;{{ currentYear }} Tovedem</span></a
   >
   <a
