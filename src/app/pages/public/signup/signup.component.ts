@@ -1,5 +1,14 @@
-
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import {
+  Field,
+  form,
+  required,
+  email,
+  minLength,
+  pattern,
+  debounce,
+  validate,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { Rol } from '../../../models/domain/rol.model';
+import { SignupFormModel } from '../../../models/form-models/signup-form.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -23,18 +33,56 @@ import { ErrorService } from '../../../shared/services/error.service';
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-    RouterModule
-],
+    Field,
+    RouterModule,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
-  // Form field signals
-  username = signal('');
-  email = signal('');
-  name = signal('');
-  password = signal('');
-  passwordConfirm = signal('');
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  signupModel = signal<SignupFormModel>({
+    username: '',
+    email: '',
+    name: '',
+    password: '',
+    passwordConfirm: '',
+  });
+
+  signupForm = form(this.signupModel, (schemaPath) => {
+    debounce(schemaPath.username, 500);
+    debounce(schemaPath.email, 500);
+    debounce(schemaPath.name, 500);
+    debounce(schemaPath.password, 500);
+    debounce(schemaPath.passwordConfirm, 500);
+    required(schemaPath.username);
+    pattern(schemaPath.username, /^[a-zA-Z0-9_-]+$/, {
+      message:
+        'Gebruikersnaam mag alleen letters, cijfers, underscores en streepjes bevatten',
+    });
+    required(schemaPath.email);
+    email(schemaPath.email);
+    required(schemaPath.name);
+    required(schemaPath.password);
+    minLength(schemaPath.password, 8, {
+      message: 'Wachtwoord moet minimaal 8 tekens lang zijn',
+    });
+    required(schemaPath.passwordConfirm);
+    // Custom validator for password match
+    validate(schemaPath.passwordConfirm, ({ value, valueOf }) => {
+      const confirmPassword = value();
+      const password = valueOf(schemaPath.password);
+      if (confirmPassword !== password && confirmPassword.length > 0) {
+        return {
+          kind: 'passwordMismatch',
+          message: 'De wachtwoorden komen niet overeen',
+        };
+      }
+      return null;
+    });
+  });
+
   hidePassword = signal(true);
   hidePasswordConfirm = signal(true);
 
@@ -46,67 +94,6 @@ export class SignupComponent {
   sideDrawerService = inject(SideDrawerService);
   toastr = inject(ToastrService);
 
-  // Validation computed signals
-  usernameValid = computed(() => {
-    const usernameValue = this.username();
-    if (!usernameValue || usernameValue.trim().length === 0) return false;
-    const usernamePattern = /^[a-zA-Z0-9_-]+$/;
-    return usernamePattern.test(usernameValue);
-  });
-
-  emailValid = computed(() => {
-    const emailValue = this.email();
-    if (!emailValue || emailValue.trim().length === 0) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(emailValue);
-  });
-
-  nameValid = computed(() => {
-    const nameValue = this.name();
-    return !!nameValue && nameValue.trim().length > 0;
-  });
-
-  passwordValid = computed(() => {
-    const passwordValue = this.password();
-    if (!passwordValue) return false;
-    return passwordValue.length >= 8;
-  });
-
-  passwordsMatch = computed(() => {
-    const passwordValue = this.password();
-    const passwordConfirmValue = this.passwordConfirm();
-    // Only return true if both fields are filled AND they match
-    if (!passwordValue || !passwordConfirmValue) {
-      return false; // Don't show success if fields are empty
-    }
-    return passwordValue === passwordConfirmValue;
-  });
-
-  passwordsDoNotMatch = computed(() => {
-    const passwordValue = this.password();
-    const passwordConfirmValue = this.passwordConfirm();
-    // Show error if both fields are filled and they don't match
-    return (
-      passwordValue.length > 0 &&
-      passwordConfirmValue.length > 0 &&
-      passwordValue !== passwordConfirmValue
-    );
-  });
-
-  formIsValid = computed(() => {
-    const passwordValue = this.password();
-    const passwordConfirmValue = this.passwordConfirm();
-
-    return (
-      this.usernameValid() &&
-      this.emailValid() &&
-      this.nameValid() &&
-      this.passwordValid() &&
-      passwordConfirmValue.length > 0 &&
-      passwordValue === passwordConfirmValue
-    );
-  });
-
   loading = signal(false);
 
   constructor() {
@@ -117,18 +104,9 @@ export class SignupComponent {
     event.preventDefault();
     event.stopPropagation();
 
-    console.log('Signup method called');
-    console.log('Form valid:', this.formIsValid());
-    console.log('Form values:', {
-      username: this.username(),
-      email: this.email(),
-      name: this.name(),
-      password: this.password().length > 0 ? '***' : '',
-      passwordConfirm: this.passwordConfirm().length > 0 ? '***' : '',
-    });
-
-    if (this.formIsValid()) {
+    if (this.signupForm().valid()) {
       this.loading.set(true);
+      const formData = this.signupModel();
 
       try {
         // Get the 'bezoeker' role ID
@@ -143,11 +121,11 @@ export class SignupComponent {
 
         // Create user account with 'bezoeker' role
         const userData = {
-          username: this.username(),
-          email: this.email(),
-          password: this.password(),
-          passwordConfirm: this.passwordConfirm(),
-          name: this.name(),
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          passwordConfirm: formData.passwordConfirm,
+          name: formData.name,
           emailVisibility: true,
           rollen: [bezoekerRol.id],
         };
@@ -157,7 +135,7 @@ export class SignupComponent {
         // Automatically log in after successful signup
         const authData = await this.pocketbase.client
           .collection('users')
-          .authWithPassword(this.email(), this.password(), {
+          .authWithPassword(formData.email, formData.password, {
             expand: 'groep,rollen',
           });
 

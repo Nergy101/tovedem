@@ -4,7 +4,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Field, form, required, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { Rol } from '../../../models/domain/rol.model';
+import { LoginFormModel } from '../../../models/form-models/login-form.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -22,7 +23,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
     selector: 'app-login',
     imports: [
     MatInputModule,
-    FormsModule,
+    Field,
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -33,8 +34,20 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
     styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  usernameOrEmail?: string;
-  password?: string;
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  loginModel = signal<LoginFormModel>({
+    usernameOrEmail: '',
+    password: ''
+  });
+
+  loginForm = form(this.loginModel, (schemaPath) => {
+    debounce(schemaPath.usernameOrEmail, 500);
+    debounce(schemaPath.password, 500);
+    required(schemaPath.usernameOrEmail);
+    required(schemaPath.password);
+  });
+
   hidePassword = signal(true);
 
   seoService = inject(SeoService);
@@ -44,10 +57,6 @@ export class LoginComponent {
   router = inject(Router);
   sideDrawerService = inject(SideDrawerService);
 
-  get formIsValid(): boolean {
-    return !!this.usernameOrEmail && !!this.password;
-  }
-
   loading = signal(false);
 
   constructor() {
@@ -55,13 +64,14 @@ export class LoginComponent {
   }
 
   async login(): Promise<void> {
-    if (this.formIsValid) {
+    if (this.loginForm().valid()) {
       this.loading.set(true);
+      const formData = this.loginModel();
 
       try {
         const authData = await this.pocketbase.client
           .collection('users')
-          .authWithPassword(this.usernameOrEmail!, this.password!, {
+          .authWithPassword(formData.usernameOrEmail, formData.password, {
             expand: 'groep,rollen',
           });
 
@@ -79,9 +89,10 @@ export class LoginComponent {
           this.router.navigate(['profiel']);
         }
       } catch {
+        const formData = this.loginModel();
         const authData = await this.pocketbase.client.collection("_superusers").authWithPassword(
-          this.usernameOrEmail!,
-          this.password!
+          formData.usernameOrEmail,
+          formData.password
         );
 
         if (authData.record) {

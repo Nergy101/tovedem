@@ -78,53 +78,62 @@
         <input
           placeholder="Pieter Post"
           matInput
-          name="name"
           type="text"
-          required
-          [(ngModel)]="name"
+          [field]="contactForm.name"
         />
+        @if (contactForm.name().touched() && contactForm.name().invalid()) {
+        <mat-error>Naam is verplicht</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="col-12 col-md-4">
         <mat-label>E-mail</mat-label>
         <input
           placeholder="pieter-post@voorbeeld.nl"
-          name="email"
-          required
           matInput
           type="email"
-          [(ngModel)]="email"
+          autocomplete="email"
+          [field]="contactForm.email"
         />
+        @if (contactForm.email().touched() && contactForm.email().invalid()) {
+        <mat-error>
+          @for (error of contactForm.email().errors(); track error) {
+          {{ error.message }}
+          }
+        </mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="col-12 col-md-4">
         <mat-label>Onderwerp</mat-label>
         <input
           placeholder="Het Onderwerp"
           matInput
-          name="subject"
           type="text"
-          required
-          [(ngModel)]="subject"
+          [field]="contactForm.subject"
         />
+        @if (contactForm.subject().touched() && contactForm.subject().invalid())
+        {
+        <mat-error>Onderwerp is verplicht</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="col-12">
         <mat-label>Bericht</mat-label>
         <textarea
-          [(ngModel)]="message"
+          [field]="contactForm.message"
           matInput
-          name="message"
           rows="10"
           placeholder="Typ hier je bericht"
-          required
         ></textarea>
+        @if (contactForm.message().touched() && contactForm.message().invalid())
+        {
+        <mat-error>Bericht is verplicht</mat-error>
+        }
       </mat-form-field>
       <div class="d-flex submit-button-container">
         <span
           [matTooltip]="
-            !name || !email || !subject || !message
-              ? 'Vul het formulier in om te verzenden'
-              : ''
+            !contactForm().valid() ? 'Vul het formulier in om te verzenden' : ''
           "
-          [matTooltipDisabled]="!(!name || !email || !subject || !message)"
+          [matTooltipDisabled]="contactForm().valid()"
           style="display: flex; flex: 1"
         >
           <button
@@ -132,7 +141,7 @@
             mat-flat-button
             [color]="'primary'"
             type="submit"
-            [disabled]="!name || !email || !subject || !message"
+            [disabled]="!contactForm().valid()"
           >
             Verzenden
           </button>

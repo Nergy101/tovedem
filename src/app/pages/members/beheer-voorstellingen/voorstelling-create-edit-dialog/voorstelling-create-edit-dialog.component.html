@@ -23,21 +23,21 @@
           <input
             matInput
             type="text"
-            name="titel"
-            maxlength="30"
             tabindex="0"
-            required
-            [(ngModel)]="titel"
+            [field]="voorstellingForm.titel"
           />
+          @if (voorstellingForm.titel().touched() &&
+          voorstellingForm.titel().invalid()) {
+          <mat-error>Titel is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Ondertitel</mat-label>
           <input
             matInput
             type="text"
-            name="ondertitel"
-            required
-            [(ngModel)]="ondertitel"
+            [value]="ondertitelValue()"
+            (input)="updateOndertitel($any($event.target).value)"
           />
         </mat-form-field>
       </div>
@@ -47,9 +47,7 @@
           <input
             matInput
             [matDatepicker]="picker1"
-            [(ngModel)]="datum1"
-            required
-            name="picker1"
+            [field]="voorstellingForm.datum1"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
@@ -57,25 +55,30 @@
             [for]="picker1"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
+          @if (voorstellingForm.datum1().touched() &&
+          voorstellingForm.datum1().invalid()) {
+          <mat-error>Datum 1 is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
           <mat-label>Tijd 1</mat-label>
           <input
             matInput
             type="time"
-            [(ngModel)]="tijd1"
-            required
-            name="timePicker1"
+            [field]="voorstellingForm.tijd1"
             step="60"
           />
+          @if (voorstellingForm.tijd1().touched() &&
+          voorstellingForm.tijd1().invalid()) {
+          <mat-error>Tijd 1 is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
           <mat-label>Datum 2</mat-label>
           <input
             matInput
             [matDatepicker]="picker2"
-            [(ngModel)]="datum2"
-            name="picker2"
+            [field]="voorstellingForm.datum2"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
@@ -89,8 +92,7 @@
           <input
             matInput
             type="time"
-            [(ngModel)]="tijd2"
-            name="timePicker2"
+            [field]="voorstellingForm.tijd2"
             step="60"
           />
         </mat-form-field>
@@ -98,15 +100,19 @@
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Groep</mat-label>
-          <mat-select [(value)]="selectedGroep" required>
+          <mat-select [field]="voorstellingForm.selectedGroep">
             @for (groep of groepen(); track $index) {
             <mat-option [value]="groep">{{ groep.naam }}</mat-option>
             }
           </mat-select>
+          @if (voorstellingForm.selectedGroep().touched() &&
+          voorstellingForm.selectedGroep().invalid()) {
+          <mat-error>Groep is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Spelers</mat-label>
-          <mat-select multiple [(value)]="selectedSpelers">
+          <mat-select multiple [field]="voorstellingForm.selectedSpelers">
             @for (speler of spelers(); track $index) {
             <mat-option [value]="speler">{{ speler.naam }} </mat-option>
             }
@@ -119,8 +125,7 @@
           <input
             matInput
             type="number"
-            [(ngModel)]="beschikbare_stoelen_datum_tijd_1"
-            name="beschikbare_stoelen_datum_1"
+            [field]="voorstellingForm.beschikbare_stoelen_datum_tijd_1"
           />
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -128,8 +133,7 @@
           <input
             matInput
             type="number"
-            [(ngModel)]="beschikbare_stoelen_datum_tijd_2"
-            name="beschikbare_stoelen_datum_2"
+            [field]="voorstellingForm.beschikbare_stoelen_datum_tijd_2"
           />
         </mat-form-field>
       </div>
@@ -139,8 +143,7 @@
           <input
             matInput
             [matDatepicker]="picker3"
-            [(ngModel)]="publicatie_datum"
-            name="picker3"
+            [field]="voorstellingForm.publicatie_datum"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
@@ -155,9 +158,12 @@
           <input
             matInput
             type="number"
-            [(ngModel)]="prijs_per_kaartje"
-            name="prijs_per_kaartje"
+            [field]="voorstellingForm.prijs_per_kaartje"
           />
+          @if (voorstellingForm.prijs_per_kaartje().touched() &&
+          voorstellingForm.prijs_per_kaartje().invalid()) {
+          <mat-error>Prijs per kaartje is verplicht</mat-error>
+          }
         </mat-form-field>
       </div>
       <div class="row">
@@ -167,7 +173,8 @@
             class="regie"
             [modules]="modules"
             name="regie"
-            [(ngModel)]="regie"
+            [ngModel]="voorstellingForm.regie().value() || ''"
+            (ngModelChange)="updateRegie($event)"
             [placeholder]="''"
           ></quill-editor>
         </div>
@@ -176,7 +183,8 @@
           <quill-editor
             [modules]="modules"
             name="omschrijving"
-            [(ngModel)]="omschrijving"
+            [ngModel]="voorstellingForm.omschrijving().value() || ''"
+            (ngModelChange)="updateOmschrijving($event)"
             [placeholder]="''"
           ></quill-editor>
         </div>
@@ -200,7 +208,7 @@
             color="primary"
             type="submit"
             class="flex-grow-1"
-            [disabled]="loading() || !formIsValid()"
+            [disabled]="loading() || !voorstellingForm().valid()"
             (click)="submit()"
           >
             @if (!!existingVoorstelling) { Opslaan } @else { Aanmaken }

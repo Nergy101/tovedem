@@ -1,4 +1,3 @@
-
 import {
   Component,
   OnDestroy,
@@ -7,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Field, form, required, email, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -23,6 +22,7 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
+import { SinterklaasFormModel } from '../../../models/form-models/sinterklaas-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Subscription } from 'rxjs';
@@ -35,7 +35,7 @@ import { Subscription } from 'rxjs';
     MatIconModule,
     RouterModule,
     MatInputModule,
-    FormsModule,
+    Field,
     MatDatepickerModule,
     MatButtonModule,
     RouterModule,
@@ -43,8 +43,8 @@ import { Subscription } from 'rxjs';
     MatCheckboxModule,
     MatDividerModule,
     MdbCarouselModule,
-    MatTooltipModule
-],
+    MatTooltipModule,
+  ],
   templateUrl: './sinterklaas.component.html',
   styleUrl: './sinterklaas.component.scss',
 })
@@ -54,11 +54,30 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
     { id: number; title: string; description: string; src: string }[] | null
   > = signal(null);
 
-  name = signal<string | null>(null);
-  email = signal<string | null>(null);
-  subject = signal<string | null>(null);
-  message = signal<string | null>(null);
-  images = signal<{ id: number; title: string; description: string; src: string }[]>([]);
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  sinterklaasModel = signal<SinterklaasFormModel>({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+
+  sinterklaasForm = form(this.sinterklaasModel, (schemaPath) => {
+    debounce(schemaPath.name, 500);
+    debounce(schemaPath.email, 500);
+    debounce(schemaPath.subject, 500);
+    debounce(schemaPath.message, 500);
+    required(schemaPath.name, { message: 'Naam is verplicht' });
+    required(schemaPath.email, { message: 'E-mail is verplicht' });
+    email(schemaPath.email, { message: 'Ongeldig e-mailadres' });
+    required(schemaPath.subject, { message: 'Onderwerp is verplicht' });
+    required(schemaPath.message, { message: 'Bericht is verplicht' });
+  });
+
+  images = signal<
+    { id: number; title: string; description: string; src: string }[]
+  >([]);
   status: string | null = null;
   submitted = signal(false);
 
@@ -71,6 +90,10 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   verstuurSinterklaasMail(): void {
+    if (!this.sinterklaasForm().valid()) {
+      return;
+    }
+
     this.subscriptions.push(
       this.recaptchaV3Service.execute('sinterklaas').subscribe({
         next: async (token) => {
@@ -91,11 +114,12 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
           if (resultObj.result.success) {
             try {
+              const formData = this.sinterklaasModel();
               await this.client.collection('sinterklaas_verzoeken').create({
-                name: this.name(),
-                email: this.email(),
-                subject: this.subject(),
-                message: this.message(),
+                name: formData.name,
+                email: formData.email,
+                subject: formData.subject,
+                message: formData.message,
                 status: 'nieuw',
               });
 
@@ -103,11 +127,14 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
                 'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
               );
 
-              this.name.set(null);
-              this.email.set(null);
-              this.subject.set(null);
-              this.message.set(null);
-              
+              // Reset form
+              this.sinterklaasModel.set({
+                name: '',
+                email: '',
+                subject: '',
+                message: '',
+              });
+
               this.submitted.set(true);
             } catch (error) {
               console.error(error);
@@ -137,10 +164,12 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
     this.content.set(record.tekst_1);
 
-    this.images.set(record.afbeeldingen.map((img: string) => ({
-      id: img,
-      src: this.getImageUrl(record.collectionId, record.id, img),
-    })));
+    this.images.set(
+      record.afbeeldingen.map((img: string) => ({
+        id: img,
+        src: this.getImageUrl(record.collectionId, record.id, img),
+      }))
+    );
   }
 
   resetForm(): void {

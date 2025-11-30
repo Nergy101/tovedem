@@ -4,10 +4,21 @@ import {
   Input,
   OnInit,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  Field,
+  form,
+  required,
+  email,
+  min,
+  max,
+  maxLength,
+  debounce,
+  validate,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -27,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { ReserveringFormModel } from '../../../../models/form-models/reservering-form.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../../shared/services/seo.service';
 import { ErrorService } from '../../../../shared/services/error.service';
@@ -39,12 +51,10 @@ import { ErrorService } from '../../../../shared/services/error.service';
     MatCardModule,
     MatInputModule,
     MatIconModule,
-    FormsModule,
+    Field,
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
@@ -63,18 +73,58 @@ export class ReserverenComponent implements OnInit {
   errorService = inject(ErrorService);
 
   router = inject(Router);
-  name = signal('');
-  surname = signal('');
 
-  email = signal('');
-  email2 = signal('');
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  reserveringModel = signal<ReserveringFormModel>({
+    name: '',
+    surname: '',
+    email: '',
+    email2: '',
+    vriendVanTovedem: false,
+    lidVanTovedemMejotos: false,
+    opmerking: '',
+    amountOfPeopleDate1: 0,
+    amountOfPeopleDate2: 0,
+  });
 
-  vriendVanTovedem = signal(false);
-  lidVanTovedemMejotos = signal(false);
-  opmerking = signal('');
-  opmerkingLength = signal('');
-  amountOfPeopleDate1 = signal(0);
-  amountOfPeopleDate2 = signal(0);
+  reserveringForm = form(this.reserveringModel, (schemaPath) => {
+    debounce(schemaPath.name, 500);
+    debounce(schemaPath.surname, 500);
+    debounce(schemaPath.email, 500);
+    debounce(schemaPath.email2, 500);
+    debounce(schemaPath.opmerking, 500);
+    maxLength(schemaPath.opmerking, 250, {
+      message: 'Opmerking mag maximaal 250 tekens lang zijn',
+    });
+    required(schemaPath.name, { message: 'Voornaam is verplicht' });
+    required(schemaPath.surname, { message: 'Achternaam is verplicht' });
+    required(schemaPath.email, { message: 'E-mail is verplicht' });
+    email(schemaPath.email, { message: 'Ongeldig e-mailadres' });
+    required(schemaPath.email2, { message: 'E-mail is verplicht' });
+    email(schemaPath.email2, { message: 'Ongeldig e-mailadres' });
+    min(schemaPath.amountOfPeopleDate1, 0);
+    max(schemaPath.amountOfPeopleDate1, 20, {
+      message: 'Aantal mensen mag maximaal 20 zijn',
+    });
+    min(schemaPath.amountOfPeopleDate2, 0);
+    max(schemaPath.amountOfPeopleDate2, 20, {
+      message: 'Aantal mensen mag maximaal 20 zijn',
+    });
+    // Custom validator for email matching
+    validate(schemaPath.email2, ({ value, valueOf }) => {
+      const email2Value = value();
+      const emailValue = valueOf(schemaPath.email);
+      if (email2Value && emailValue && email2Value !== emailValue) {
+        return {
+          kind: 'emailMismatch',
+          message: 'E-mailadressen komen niet overeen',
+        };
+      }
+      return null;
+    });
+  });
+
   saving = signal(false);
 
   // Reservation totals from API (privacy-safe - only numbers)
@@ -82,34 +132,17 @@ export class ReserverenComponent implements OnInit {
   totalPeopleDate2 = signal(0);
   loadingTotals = signal(false);
 
-  emailsAreSame = computed(() => {
-    const email1 = this.email();
-    const email2 = this.email2();
-    // Only return true if both emails are non-empty and match
-    return email1.length > 0 && email2.length > 0 && email1 === email2;
-  });
-
-  // Validation state signals
-  nameValid = computed(() => !!this.name() && this.name().trim().length > 0);
-  surnameValid = computed(() => !!this.surname() && this.surname().trim().length > 0);
-  emailValid = computed(() => {
-    const emailValue = this.email();
-    if (!emailValue || emailValue.trim().length === 0) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(emailValue);
-  });
-  email2Valid = computed(() => {
-    const email2Value = this.email2();
-    if (!email2Value || email2Value.trim().length === 0) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email2Value);
-  });
-
   // Email match status: 'match', 'mismatch', or 'empty'
   emailMatchStatus = computed(() => {
-    const email1 = this.email();
-    const email2 = this.email2();
-    if (!email1 || !email2 || email1.trim().length === 0 || email2.trim().length === 0) {
+    const formData = this.reserveringModel();
+    const email1 = formData.email;
+    const email2 = formData.email2;
+    if (
+      !email1 ||
+      !email2 ||
+      email1.trim().length === 0 ||
+      email2.trim().length === 0
+    ) {
       return 'empty';
     }
     return email1 === email2 ? 'match' : 'mismatch';
@@ -117,20 +150,24 @@ export class ReserverenComponent implements OnInit {
 
   // Check if reservation is allowed for each date (100 total limit)
   canReserveDate1 = computed(() => {
-    return this.totalPeopleDate1() + this.amountOfPeopleDate1() <= 100;
+    const formData = this.reserveringModel();
+    return this.totalPeopleDate1() + formData.amountOfPeopleDate1 <= 100;
   });
 
   canReserveDate2 = computed(() => {
-    return this.totalPeopleDate2() + this.amountOfPeopleDate2() <= 100;
+    const formData = this.reserveringModel();
+    return this.totalPeopleDate2() + formData.amountOfPeopleDate2 <= 100;
   });
 
   // Check if 20 ticket per day limit is exceeded
   exceeds20LimitDate1 = computed(() => {
-    return this.amountOfPeopleDate1() > 20;
+    const formData = this.reserveringModel();
+    return formData.amountOfPeopleDate1 > 20;
   });
 
   exceeds20LimitDate2 = computed(() => {
-    return this.amountOfPeopleDate2() > 20;
+    const formData = this.reserveringModel();
+    return formData.amountOfPeopleDate2 > 20;
   });
 
   // Check if limit is reached (for display purposes)
@@ -147,17 +184,22 @@ export class ReserverenComponent implements OnInit {
     if (this.isDatum1Past() && (!this.datum2 || this.isDatum2Past())) {
       return false;
     }
-    if (this.datum2 && this.isDatum2Past() && (!this.datum1 || this.isDatum1Past())) {
+    if (
+      this.datum2 &&
+      this.isDatum2Past() &&
+      (!this.datum1 || this.isDatum1Past())
+    ) {
       return false;
     }
-    
+
+    const formData = this.reserveringModel();
+    const formValid = this.reserveringForm().valid();
+    const hasReservations =
+      formData.amountOfPeopleDate1 > 0 || formData.amountOfPeopleDate2 > 0;
+
     return (
-      this.nameValid() &&
-      this.emailValid() &&
-      this.email2Valid() &&
-      this.emailsAreSame() &&
-      this.surnameValid() &&
-      (this.amountOfPeopleDate1() > 0 || this.amountOfPeopleDate2() > 0) &&
+      formValid &&
+      hasReservations &&
       this.canReserveDate1() &&
       this.canReserveDate2() &&
       !this.exceeds20LimitDate1() &&
@@ -177,14 +219,18 @@ export class ReserverenComponent implements OnInit {
   isDatum1Past = computed(() => {
     if (!this.datum1) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(this.datum1.getTime() - 8 * 60 * 60 * 1000);
+    const eightHoursBefore = new Date(
+      this.datum1.getTime() - 8 * 60 * 60 * 1000
+    );
     return this.today >= eightHoursBefore;
   });
 
   isDatum2Past = computed(() => {
     if (!this.datum2) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(this.datum2.getTime() - 8 * 60 * 60 * 1000);
+    const eightHoursBefore = new Date(
+      this.datum2.getTime() - 8 * 60 * 60 * 1000
+    );
     return this.today >= eightHoursBefore;
   });
 
@@ -217,7 +263,9 @@ export class ReserverenComponent implements OnInit {
       // Add TheaterEvent structured data
       this.seoService.updateOpenGraphTags({
         title: `Reserveren - ${voorstelling.titel}`,
-        description: voorstelling.omschrijving || `Reserveer voor ${voorstelling.titel} door ${groep.naam}`,
+        description:
+          voorstelling.omschrijving ||
+          `Reserveer voor ${voorstelling.titel} door ${groep.naam}`,
         url: `https://tovedem.nergy.space/reserveren?voorstellingid=${voorstelling.id}`,
         type: 'website',
         siteName: 'Tovedem',
@@ -292,6 +340,10 @@ export class ReserverenComponent implements OnInit {
   }
 
   async saveReservering(): Promise<void> {
+    if (!this.formIsValid()) {
+      return;
+    }
+
     // Double-check limits before submitting (client-side validation)
     if (!this.canReserveDate1() || !this.canReserveDate2()) {
       this.snackBar.open(
@@ -307,19 +359,20 @@ export class ReserverenComponent implements OnInit {
     this.saving.set(true);
 
     try {
+      const formData = this.reserveringModel();
       const nieuweReservering = await this.client.create<Reservering>(
         'reserveringen',
         {
-          voornaam: this.name(),
-          achternaam: this.surname(),
-          email: this.email(),
-          is_vriend_van_tovedem: this.vriendVanTovedem(),
-          is_lid_van_vereniging: this.lidVanTovedemMejotos(),
+          voornaam: formData.name,
+          achternaam: formData.surname,
+          email: formData.email,
+          is_vriend_van_tovedem: formData.vriendVanTovedem,
+          is_lid_van_vereniging: formData.lidVanTovedemMejotos,
           voorstelling: this.voorstellingId ?? '',
-          datum_tijd_1_aantal: this.amountOfPeopleDate1() ?? 0,
-          datum_tijd_2_aantal: this.amountOfPeopleDate2() ?? 0,
+          datum_tijd_1_aantal: formData.amountOfPeopleDate1 ?? 0,
+          datum_tijd_2_aantal: formData.amountOfPeopleDate2 ?? 0,
           guid: crypto.randomUUID(),
-          opmerking: this.opmerking(),
+          opmerking: formData.opmerking,
         }
       );
 
@@ -341,8 +394,11 @@ export class ReserverenComponent implements OnInit {
       });
     } catch (error: unknown) {
       // Use ErrorService for consistent error handling
-      const errorMessage = this.errorService.getErrorMessage(error, 'Reservering aanmaken');
-      
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        'Reservering aanmaken'
+      );
+
       this.snackBar.open(errorMessage, '❌', {
         duration: 7000,
       });
@@ -351,65 +407,64 @@ export class ReserverenComponent implements OnInit {
     }
   }
 
-  onEmailChanged(newValue: string): void {
-    this.email.set(newValue);
+  constructor() {
+    // Effect to enforce 20 ticket limit when amount changes
+    effect(() => {
+      const model = this.reserveringModel();
+      let updated = false;
+      let newModel = { ...model };
+
+      if (model.amountOfPeopleDate1 > 20) {
+        newModel.amountOfPeopleDate1 = 20;
+        updated = true;
+        this.snackBar.open(
+          'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
+          '⚠️',
+          { duration: 5000 }
+        );
+      }
+
+      if (model.amountOfPeopleDate2 > 20) {
+        newModel.amountOfPeopleDate2 = 20;
+        updated = true;
+        this.snackBar.open(
+          'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
+          '⚠️',
+          { duration: 5000 }
+        );
+      }
+
+      if (updated) {
+        this.reserveringModel.set(newModel);
+      }
+    });
   }
 
-  onEmail2Changed(newValue: string): void {
-    this.email2.set(newValue);
+  incrementAmountDate1(): void {
+    this.reserveringModel.update((model) => ({
+      ...model,
+      amountOfPeopleDate1: Math.min(20, model.amountOfPeopleDate1 + 1),
+    }));
   }
 
-  onNameChanged(newValue: string): void {
-    this.name.set(newValue);
+  decrementAmountDate1(): void {
+    this.reserveringModel.update((model) => ({
+      ...model,
+      amountOfPeopleDate1: Math.max(0, model.amountOfPeopleDate1 - 1),
+    }));
   }
 
-  onSurnameChanged(newValue: string): void {
-    this.surname.set(newValue);
+  incrementAmountDate2(): void {
+    this.reserveringModel.update((model) => ({
+      ...model,
+      amountOfPeopleDate2: Math.min(20, model.amountOfPeopleDate2 + 1),
+    }));
   }
 
-  vriendVanTovedemChanged(newValue: boolean): void {
-    this.vriendVanTovedem.set(newValue);
-  }
-
-  lidVanTovedemMejotosChanged(newValue: boolean): void {
-    this.lidVanTovedemMejotos.set(newValue);
-  }
-
-  amountOfPeopleDate1Changed(newValue: number): void {
-    if (newValue > 20) {
-      this.amountOfPeopleDate1.set(20);
-      this.snackBar.open(
-        'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
-        '⚠️',
-        {
-          duration: 5000,
-        }
-      );
-    } else {
-      this.amountOfPeopleDate1.set(newValue);
-    }
-  }
-
-  amountOfPeopleDate2Changed(newValue: number): void {
-    if (newValue > 20) {
-      this.amountOfPeopleDate2.set(20);
-      this.snackBar.open(
-        'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
-        '⚠️',
-        {
-          duration: 5000,
-        }
-      );
-    } else {
-      this.amountOfPeopleDate2.set(newValue);
-    }
-  }
-
-  onOpmerkingChange(newValue: string): void {
-    this.opmerking.set(newValue);
-  }
-
-  onOpmerkingChange2(event: Event): void {
-    this.opmerkingLength.set((event.target as HTMLInputElement).value);
+  decrementAmountDate2(): void {
+    this.reserveringModel.update((model) => ({
+      ...model,
+      amountOfPeopleDate2: Math.max(0, model.amountOfPeopleDate2 - 1),
+    }));
   }
 }

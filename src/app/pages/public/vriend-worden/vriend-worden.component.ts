@@ -1,4 +1,3 @@
-
 import {
   Component,
   OnDestroy,
@@ -7,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Field, form, required, email, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,24 +21,55 @@ import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Environment } from '../../../../environment';
+import { VriendWordenFormModel } from '../../../models/form-models/vriend-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-vriend-worden',
-    imports: [MatProgressSpinnerModule, MatFormFieldModule, MatIconModule, RouterModule, MatInputModule, FormsModule, MatDatepickerModule, MatButtonModule, RouterModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatTooltipModule],
-    templateUrl: './vriend-worden.component.html',
-    styleUrl: './vriend-worden.component.scss'
+  selector: 'app-vriend-worden',
+  imports: [
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    RouterModule,
+    MatInputModule,
+    Field,
+    MatDatepickerModule,
+    MatButtonModule,
+    RouterModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatTooltipModule,
+  ],
+  templateUrl: './vriend-worden.component.html',
+  styleUrl: './vriend-worden.component.scss',
 })
-
 export class VriendWordenComponent implements OnInit, OnDestroy {
-
   content: WritableSignal<string | null> = signal(null);
-  name: string | null = null;
-  email: string | null = null;
-  subject: string | null = null;
-  message: string | null = null;
+
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  vriendWordenModel = signal<VriendWordenFormModel>({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+
+  vriendWordenForm = form(this.vriendWordenModel, (schemaPath) => {
+    debounce(schemaPath.name, 500);
+    debounce(schemaPath.email, 500);
+    debounce(schemaPath.subject, 500);
+    debounce(schemaPath.message, 500);
+    required(schemaPath.name, { message: 'Naam is verplicht' });
+    required(schemaPath.email, { message: 'E-mail is verplicht' });
+    email(schemaPath.email, { message: 'Ongeldig e-mailadres' });
+    required(schemaPath.subject, { message: 'Onderwerp is verplicht' });
+    required(schemaPath.message, { message: 'Bericht is verplicht' });
+  });
+
   submitted = signal(false);
 
   toastr = inject(ToastrService);
@@ -52,46 +82,61 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   verstuurVriendVanTovedemMail(): void {
-    this.subscriptions.push(this.recaptchaV3Service.execute('vriend_worden')
-      .subscribe(
-        {
-          next: async (token) => {
-            const response = await fetch(`${this.environment.pocketbase.baseUrl}/recaptcha`, {
-              method: "POST",
+    if (!this.vriendWordenForm().valid()) {
+      return;
+    }
+
+    this.subscriptions.push(
+      this.recaptchaV3Service.execute('vriend_worden').subscribe({
+        next: async (token) => {
+          const response = await fetch(
+            `${this.environment.pocketbase.baseUrl}/recaptcha`,
+            {
+              method: 'POST',
               headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                token
-              })
-            });
+                token,
+              }),
+            }
+          );
 
-            const resultObj = await response.json();
+          const resultObj = await response.json();
 
-            if (resultObj.result.success) {
-              try {
-                await this.client.collection('vriend_worden_verzoeken').create({
-                  name: this.name,
-                  email: this.email,
-                  subject: this.subject,
-                  message: this.message
-                });
+          if (resultObj.result.success) {
+            try {
+              const formData = this.vriendWordenModel();
+              await this.client.collection('vriend_worden_verzoeken').create({
+                name: formData.name,
+                email: formData.email,
+                subject: formData.subject,
+                message: formData.message,
+              });
 
-                this.toastr.success('Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.');
+              this.toastr.success(
+                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
+              );
 
-                this.name = null;
-                this.email = null;
-                this.subject = null;
-                this.message = null;
-                
-                this.submitted.set(true);
-              } catch (error) {
-                console.error(error);
-                this.toastr.error('Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.');
-              }
+              // Reset form
+              this.vriendWordenModel.set({
+                name: '',
+                email: '',
+                subject: '',
+                message: '',
+              });
+
+              this.submitted.set(true);
+            } catch (error) {
+              console.error(error);
+              this.toastr.error(
+                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+              );
             }
           }
-        }));
+        },
+      })
+    );
   }
 
   seoService = inject(SeoService);
@@ -101,7 +146,11 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     // Use cached service method instead of direct client access
-    const page = await this.pocketbaseService.getPage<any>('vriend_worden', 1, 1);
+    const page = await this.pocketbaseService.getPage<any>(
+      'vriend_worden',
+      1,
+      1
+    );
     const { tekst_1 } = page.items[0];
     this.content.set(tekst_1);
   }
@@ -111,7 +160,6 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }
-

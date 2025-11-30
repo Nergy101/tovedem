@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Field, form, required, email, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,6 +30,7 @@ import { Subscription } from 'rxjs';
 import confetti from 'canvas-confetti';
 import { Environment } from '../../../../environment';
 import { Groep } from '../../../models/domain/groep.model';
+import { LidWordenFormModel } from '../../../models/form-models/lid-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
@@ -43,15 +44,15 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatCardModule,
     MatInputModule,
     MatIconModule,
-    FormsModule,
+    Field,
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatSelectModule,
     MatDividerModule,
     MatTooltipModule,
-    NgOptimizedImage
-],
+    NgOptimizedImage,
+  ],
   providers: [
     provideNativeDateAdapter(),
     DatePipe,
@@ -69,13 +70,33 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   img_2 = signal('');
   img_3 = signal('');
 
-  //formulier
-  voornaam = signal<string | null>(null);
-  achternaam = signal<string | null>(null);
-  email = signal<string | null>(null);
-  message = signal<string | null>(null);
-  geboorteDatum = signal<Date | undefined>(undefined);
-  selectedGroep = signal<Groep | null>(null);
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  lidWordenModel = signal<LidWordenFormModel>({
+    voornaam: '',
+    achternaam: '',
+    email: '',
+    geboorteDatum: null,
+    selectedGroep: null,
+    message: '',
+  });
+
+  lidWordenForm = form(this.lidWordenModel, (schemaPath) => {
+    debounce(schemaPath.voornaam, 500);
+    debounce(schemaPath.achternaam, 500);
+    debounce(schemaPath.email, 500);
+    debounce(schemaPath.message, 500);
+    required(schemaPath.voornaam, { message: 'Voornaam is verplicht' });
+    required(schemaPath.achternaam, { message: 'Achternaam is verplicht' });
+    required(schemaPath.email, { message: 'E-mail is verplicht' });
+    email(schemaPath.email, { message: 'Ongeldig e-mailadres' });
+    required(schemaPath.geboorteDatum, {
+      message: 'Geboortedatum is verplicht',
+    });
+    required(schemaPath.selectedGroep, { message: 'Groep is verplicht' });
+    required(schemaPath.message, { message: 'Bericht is verplicht' });
+  });
+
   groepen: WritableSignal<Groep[]> = signal([]);
 
   loading = signal(false);
@@ -116,7 +137,8 @@ export class LidWordenComponent implements OnInit, OnDestroy {
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({
       title: 'Tovedem - Lid Worden',
-      description: 'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.',
+      description:
+        'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.',
       url: 'https://tovedem.nergy.space/lid-worden',
       type: 'website',
       siteName: 'Tovedem',
@@ -128,6 +150,10 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   }
 
   async submit(): Promise<void> {
+    if (!this.lidWordenForm().valid()) {
+      return;
+    }
+
     this.loading.set(true);
 
     this.subscriptions.push(
@@ -150,17 +176,18 @@ export class LidWordenComponent implements OnInit, OnDestroy {
 
           if (resultObj.result.success) {
             try {
+              const formData = this.lidWordenModel();
               await this.clientB.collection('leden').create({
-                voornaam: this.voornaam(),
-                achternaam: this.achternaam(),
-                groep: this.selectedGroep(),
-                bericht: this.message(),
-                geboorte_datum: this.geboorteDatum(),
-                email: this.email(),
+                voornaam: formData.voornaam,
+                achternaam: formData.achternaam,
+                groep: formData.selectedGroep,
+                bericht: formData.message,
+                geboorte_datum: formData.geboorteDatum,
+                email: formData.email,
               });
 
               this.toastr.success(
-                `Bedankt voor de aanmelding, ${this.voornaam()}.`,
+                `Bedankt voor de aanmelding, ${formData.voornaam}.`,
                 'Aanvraag verzonden!'
               );
 
@@ -175,13 +202,16 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
               setTimeout(() => confetti.reset(), 3000);
 
-              this.voornaam.set(null);
-              this.achternaam.set(null);
-              this.email.set(null);
-              this.message.set(null);
-              this.geboorteDatum.set(undefined);
-              this.selectedGroep.set(null);
-              
+              // Reset form
+              this.lidWordenModel.set({
+                voornaam: '',
+                achternaam: '',
+                email: '',
+                geboorteDatum: null,
+                selectedGroep: null,
+                message: '',
+              });
+
               this.submitted.set(true);
               this.loading.set(false);
             } catch (error) {
@@ -202,22 +232,6 @@ export class LidWordenComponent implements OnInit, OnDestroy {
           );
         },
       })
-    );
-  }
-
-  formIsValid(): boolean {
-    return (
-      !!this.voornaam() &&
-      this.voornaam() != '' &&
-      !!this.achternaam() &&
-      this.achternaam() != '' &&
-      !!this.selectedGroep() &&
-      !!this.email() &&
-      this.email() != '' &&
-      !!this.geboorteDatum() &&
-      !!this.selectedGroep() &&
-      !!this.message() &&
-      this.message() != ''
     );
   }
 

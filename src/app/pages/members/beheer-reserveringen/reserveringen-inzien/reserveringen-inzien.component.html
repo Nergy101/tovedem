@@ -27,10 +27,10 @@
           type="text"
           aria-label="Number"
           matInput
-          [formControl]="reservatieSearchControl"
+          [field]="reservatieSearchForm.searchTerm"
           [matAutocomplete]="auto"
         />
-        @if (reservatieSearchControl.value) {
+        @if (reservatieSearchForm.searchTerm().value()) {
         <button
           matPrefix
           mat-icon-button

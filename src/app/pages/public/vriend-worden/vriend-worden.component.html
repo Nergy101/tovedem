@@ -13,73 +13,93 @@
   <div class="center p-4">
     <mat-spinner></mat-spinner>
   </div>
-  }
-  @if (!submitted()) {
-  <form class="row vriend-worden-form">
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>Naam</mat-label>
-      <input
-        placeholder="Pieter Post"
-        matInput
-        type="text"
-        required
-        name="name"
-        [(ngModel)]="name"
-      />
-    </mat-form-field>
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>E-mail</mat-label>
-      <input
-        placeholder="pieter-post@voorbeeld.nl"
-        matInput
-        type="email"
-        required
-        name="email"
-        [(ngModel)]="email"
-      />
-    </mat-form-field>
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>Onderwerp</mat-label>
-      <input
-        placeholder="Het Onderwerp"
-        matInput
-        type="text"
-        required
-        name="subject"
-        [(ngModel)]="subject"
-      />
-    </mat-form-field>
-    <mat-form-field class="col-12">
-      <mat-label>Bericht</mat-label>
-      <textarea
-        [(ngModel)]="message"
-        matInput
-        rows="10"
-        required
-        name="message"
-        placeholder="Typ hier je bericht"
-      ></textarea>
-    </mat-form-field>
+  } @if (!submitted()) {
+  <form class="vriend-worden-form">
+    <div class="row">
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>Naam</mat-label>
+        <input
+          placeholder="Pieter Post"
+          matInput
+          type="text"
+          [field]="vriendWordenForm.name"
+        />
+        @for (error of vriendWordenForm.name().errors(); track error) {
+        <mat-error>{{ error.message }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>E-mail</mat-label>
+        <input
+          matInput
+          type="email"
+          autocomplete="email"
+          [field]="vriendWordenForm.email"
+        />
+        @if (vriendWordenForm.email().touched() &&
+        vriendWordenForm.email().invalid()) {
+        <mat-error>
+          @for (error of vriendWordenForm.email().errors(); track error) {
+          {{ error.message }}
+          }
+        </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="col-12 col-md-4">
+        <mat-label>Onderwerp</mat-label>
+        <input
+          placeholder="Het Onderwerp"
+          matInput
+          type="text"
+          [field]="vriendWordenForm.subject"
+        />
+        @if (vriendWordenForm.subject().touched() &&
+        vriendWordenForm.subject().invalid()) {
+        <mat-error>Onderwerp is verplicht</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Bericht</mat-label>
+        <textarea
+          [field]="vriendWordenForm.message"
+          matInput
+          rows="10"
+          placeholder="Typ hier je bericht"
+        ></textarea>
+        @if (vriendWordenForm.message().touched() &&
+        vriendWordenForm.message().invalid()) {
+        <mat-error>Bericht is verplicht</mat-error>
+        }
+      </mat-form-field>
+    </div>
     <div class="d-flex">
       <span
-        [matTooltip]="(!name || !email || !subject || !message) ? 'Vul het formulier in om te verzenden' : ''"
-        [matTooltipDisabled]="!(!name || !email || !subject || !message)"
-        style="display: flex; flex: 1;"
+        [matTooltip]="
+          !vriendWordenForm().valid()
+            ? 'Vul het formulier in om te verzenden'
+            : ''
+        "
+        [matTooltipDisabled]="vriendWordenForm().valid()"
+        style="display: flex; flex: 1"
       >
         <button
           class="flex"
           mat-flat-button
           (click)="verstuurVriendVanTovedemMail()"
-          [disabled]="!name || !email || !subject || !message"
+          [disabled]="!vriendWordenForm().valid()"
         >
           Verzenden
         </button>
       </span>
     </div>
   </form>
-  }
-  @if (submitted()) {
-  <mat-card class="success-card" style="text-align: center; padding: 2em; margin-top: 2em">
+  } @if (submitted()) {
+  <mat-card
+    class="success-card"
+    style="text-align: center; padding: 2em; margin-top: 2em"
+  >
     <mat-card-content>
       <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
       <button mat-flat-button color="primary" (click)="resetForm()">

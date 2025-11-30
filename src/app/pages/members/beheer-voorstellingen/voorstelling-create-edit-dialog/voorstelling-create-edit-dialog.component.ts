@@ -5,7 +5,16 @@ import {
   WritableSignal,
   inject,
   signal,
+  computed,
 } from '@angular/core';
+import {
+  Field,
+  form,
+  required,
+  min,
+  maxLength,
+  debounce,
+} from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
@@ -32,6 +41,7 @@ import { QuillModule } from 'ngx-quill';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Speler } from '../../../../models/domain/speler.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { VoorstellingFormModel } from '../../../../models/form-models/voorstelling-form.model';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
@@ -44,6 +54,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatIcon,
     MatDialogModule,
     MatInputModule,
+    Field,
     FormsModule,
     MatFormField,
     MatDatepicker,
@@ -63,25 +74,49 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
   styleUrl: './voorstelling-create-edit-dialog.component.scss',
 })
 export class VoorstellingCreateEditDialogComponent implements OnInit {
-  titel?: string;
-  ondertitel?: string;
-  regie?: string;
-  omschrijving?: string;
-  selectedSpelers: Speler[] = [];
-  selectedGroep?: Groep;
-  voorstelling?: Voorstelling;
-  publicatie_datum?: Date;
-  afbeelding?: FilePreviewModel;
-  beschikbare_stoelen_datum_tijd_1?: number = 100;
-  beschikbare_stoelen_datum_tijd_2?: number = 100;
-  prijs_per_kaartje?: number;
+  // Signal Forms: Create form model and form instance
+  // NOTE: Signal Forms are experimental in Angular 21
+  // Quill editor and file upload are handled manually (not via Signal Forms)
+  voorstellingModel = signal<VoorstellingFormModel>({
+    titel: '',
+    ondertitel: null,
+    regie: '',
+    omschrijving: '',
+    selectedGroep: null,
+    datum1: null,
+    datum2: null,
+    tijd1: '',
+    tijd2: '',
+    beschikbare_stoelen_datum_tijd_1: 100,
+    beschikbare_stoelen_datum_tijd_2: 100,
+    prijs_per_kaartje: 0,
+    publicatie_datum: null,
+    selectedSpelers: [],
+    afbeelding: null,
+  });
+
+  voorstellingForm = form(this.voorstellingModel, (schemaPath) => {
+    debounce(schemaPath.titel, 500);
+    debounce(schemaPath.ondertitel, 500);
+    debounce(schemaPath.regie, 500);
+    debounce(schemaPath.omschrijving, 500);
+    debounce(schemaPath.tijd1, 500);
+    debounce(schemaPath.tijd2, 500);
+    required(schemaPath.titel);
+    maxLength(schemaPath.titel, 30, {
+      message: 'Titel mag maximaal 30 tekens lang zijn',
+    });
+    // ondertitel is optional in PocketBase, so no required() validator
+    required(schemaPath.regie);
+    required(schemaPath.omschrijving);
+    required(schemaPath.selectedGroep);
+    required(schemaPath.prijs_per_kaartje);
+    min(schemaPath.prijs_per_kaartje, 0);
+    required(schemaPath.datum1);
+    required(schemaPath.tijd1);
+  });
 
   loading = signal(false);
-
-  datum1?: Date;
-  datum2?: Date;
-  tijd1?: string;
-  tijd2?: string;
 
   modules = {
     toolbar: [
@@ -120,50 +155,82 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       this.existingVoorstellingData?.existingVoorstelling;
 
     if (this.existingVoorstelling) {
-      this.titel = this.existingVoorstelling.titel;
-      this.ondertitel = this.existingVoorstelling.ondertitel;
-      this.regie = this.existingVoorstelling.regie;
-      this.omschrijving = this.existingVoorstelling.omschrijving;
-      this.selectedGroep = this.groepen().find(
-        (g) => g.id == this.existingVoorstelling?.expand?.groep?.id
-      );
-      this.datum1 = new Date(this.existingVoorstelling.datum_tijd_1);
-      this.datum2 = this.existingVoorstelling.datum_tijd_2
-        ? new Date(this.existingVoorstelling.datum_tijd_2)
-        : undefined;
-      this.publicatie_datum = new Date(
-        this.existingVoorstelling.publicatie_datum
-      );
-
-      this.tijd1 = this.formatDateTo24HourString(
-        new Date(this.existingVoorstelling.datum_tijd_1)
-      );
-      this.tijd2 = this.existingVoorstelling.datum_tijd_2
-        ? this.formatDateTo24HourString(
-            new Date(this.existingVoorstelling.datum_tijd_2)
-          )
-        : undefined;
-      this.beschikbare_stoelen_datum_tijd_1 =
-        this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1;
-      this.beschikbare_stoelen_datum_tijd_2 =
-        this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2;
-      this.prijs_per_kaartje = this.existingVoorstelling.prijs_per_kaartje;
+      // Populate form model with existing data
+      this.voorstellingModel.set({
+        titel: this.existingVoorstelling.titel,
+        ondertitel: this.existingVoorstelling.ondertitel || null, // Optional in PocketBase
+        regie: this.existingVoorstelling.regie, // Required in PocketBase
+        omschrijving: this.existingVoorstelling.omschrijving, // Required in PocketBase
+        selectedGroep:
+          this.groepen().find(
+            (g) => g.id == this.existingVoorstelling?.expand?.groep?.id
+          ) || null,
+        datum1: new Date(this.existingVoorstelling.datum_tijd_1),
+        datum2: this.existingVoorstelling.datum_tijd_2
+          ? new Date(this.existingVoorstelling.datum_tijd_2)
+          : null,
+        tijd1: this.formatDateTo24HourString(
+          new Date(this.existingVoorstelling.datum_tijd_1)
+        ),
+        tijd2: this.existingVoorstelling.datum_tijd_2
+          ? this.formatDateTo24HourString(
+              new Date(this.existingVoorstelling.datum_tijd_2)
+            )
+          : '',
+        beschikbare_stoelen_datum_tijd_1:
+          this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1,
+        beschikbare_stoelen_datum_tijd_2:
+          this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2,
+        prijs_per_kaartje: this.existingVoorstelling.prijs_per_kaartje,
+        publicatie_datum: new Date(this.existingVoorstelling.publicatie_datum),
+        selectedSpelers: [],
+        afbeelding: null,
+      });
     }
   }
 
+  updateRegie(value: string): void {
+    this.voorstellingModel.update((model) => ({ ...model, regie: value }));
+  }
+
+  updateOmschrijving(value: string): void {
+    this.voorstellingModel.update((model) => ({
+      ...model,
+      omschrijving: value,
+    }));
+  }
+
+  updateOndertitel(value: string): void {
+    this.voorstellingModel.update((model) => ({
+      ...model,
+      ondertitel: value || null,
+    }));
+  }
+
+  ondertitelValue = computed(
+    () => this.voorstellingForm.ondertitel().value() || ''
+  );
+
   async submit(): Promise<void> {
+    if (!this.voorstellingForm().valid()) {
+      return;
+    }
+
     this.loading.set(true);
 
+    const formData = this.voorstellingModel();
     const voorstelling = {
-      titel: this.titel,
-      ondertitel: this.ondertitel,
-      regie: this.regie,
-      omschrijving: this.omschrijving,
-      groep: this.selectedGroep?.id,
-      beschikbare_stoelen_datum_tijd_1: this.beschikbare_stoelen_datum_tijd_1,
-      beschikbare_stoelen_datum_tijd_2: this.beschikbare_stoelen_datum_tijd_2,
-      publicatie_datum: this.publicatie_datum,
-      prijs_per_kaartje: this.prijs_per_kaartje,
+      titel: formData.titel,
+      ondertitel: formData.ondertitel,
+      regie: formData.regie,
+      omschrijving: formData.omschrijving,
+      groep: formData.selectedGroep?.id,
+      beschikbare_stoelen_datum_tijd_1:
+        formData.beschikbare_stoelen_datum_tijd_1,
+      beschikbare_stoelen_datum_tijd_2:
+        formData.beschikbare_stoelen_datum_tijd_2,
+      publicatie_datum: formData.publicatie_datum,
+      prijs_per_kaartje: formData.prijs_per_kaartje,
       //* tijden added below
       datum_tijd_1: undefined,
       datum_tijd_2: undefined,
@@ -172,50 +239,46 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
-    if (this.tijd1) {
-      const tijd1 = this.parseTimeToDate(this.tijd1);
-
-      const date1 = DateTime.fromISO(this.datum1!.toISOString());
+    if (formData.tijd1 && formData.datum1) {
+      const tijd1 = this.parseTimeToDate(formData.tijd1);
+      const date1 = DateTime.fromISO(formData.datum1.toISOString());
       const date1ISO = date1
         .set({ hour: tijd1.getHours(), minute: tijd1.getMinutes() })
         .toISO();
-
       voorstelling.datum_tijd_1 = date1ISO;
     }
 
-    if (this.tijd2) {
-      const tijd2 = this.parseTimeToDate(this.tijd2);
-      const date2 = DateTime.fromISO(this.datum2!.toISOString());
+    if (formData.tijd2 && formData.datum2) {
+      const tijd2 = this.parseTimeToDate(formData.tijd2);
+      const date2 = DateTime.fromISO(formData.datum2.toISOString());
       const date2ISO = date2
         .set({ hour: tijd2.getHours(), minute: tijd2.getMinutes() })
         .toISO();
-
       voorstelling.datum_tijd_2 = date2ISO;
     }
 
-    if (this.publicatie_datum) {
+    if (formData.publicatie_datum) {
       const publicatie_datum = DateTime.fromISO(
-        this.publicatie_datum!.toISOString()
+        formData.publicatie_datum.toISOString()
       );
       const PublicatieDateISO = publicatie_datum.toISO();
-
       voorstelling.publicatie_datum = PublicatieDateISO;
     }
 
-    const formData = this.objectToFormData(voorstelling);
+    const formDataObj = this.objectToFormData(voorstelling);
 
-    this.selectedSpelers?.forEach((s) => {
-      formData.append('spelers', s.id);
+    formData.selectedSpelers?.forEach((s) => {
+      formDataObj.append('spelers', s.id);
     });
 
-    if (this.afbeelding?.file) {
-      formData.append('afbeelding', this.afbeelding?.file);
+    if (formData.afbeelding?.file) {
+      formDataObj.append('afbeelding', formData.afbeelding.file);
     }
 
     if (this.existingVoorstelling) {
       await this.client
         .collection('voorstellingen')
-        .update(this.existingVoorstelling.id, formData);
+        .update(this.existingVoorstelling.id, formDataObj);
       this.dialogRef.close(this.existingVoorstelling);
       this.loading.set(false);
       return;
@@ -223,31 +286,17 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
 
     const created = await this.client
       .collection('voorstellingen')
-      .create(formData);
+      .create(formDataObj);
 
     this.dialogRef.close(created);
     this.loading.set(false);
   }
 
   onFileUploaded(filePreviewModel: FilePreviewModel): void {
-    this.afbeelding = filePreviewModel;
-  }
-
-  formIsValid(): boolean {
-    return (
-      !!this.titel &&
-      this.titel != '' &&
-      !!this.ondertitel &&
-      this.ondertitel != '' &&
-      !!this.regie &&
-      this.regie != '' &&
-      this.regie != '<p></p>' &&
-      !!this.omschrijving &&
-      this.omschrijving != '' &&
-      this.omschrijving != '<p></p>' &&
-      !!this.selectedGroep &&
-      !!this.prijs_per_kaartje
-    );
+    this.voorstellingModel.update((model) => ({
+      ...model,
+      afbeelding: filePreviewModel,
+    }));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

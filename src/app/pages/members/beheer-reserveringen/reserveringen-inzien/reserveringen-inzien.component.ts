@@ -8,7 +8,8 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Field, form, debounce } from '@angular/forms/signals';
+import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -31,6 +32,7 @@ import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Sponsor } from '../../../../models/domain/sponsor.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
+import { ReserveringSearchFormModel } from '../../../../models/form-models/reservering-search-form.model';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ReserveringenTableComponent } from '../../../../shared/components/reserveringen-table/reserveringen-table.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
@@ -58,7 +60,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PieChartComponent,
     MatCardModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
+    Field,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
@@ -95,7 +97,16 @@ export class ReserveringenInzienComponent implements OnInit {
     );
   });
 
-  reservatieSearchControl = new FormControl('');
+  // Signal Forms: Create form model and form instance for search
+  // NOTE: Signal Forms are experimental in Angular 21
+  reservatieSearchModel = signal<ReserveringSearchFormModel>({
+    searchTerm: ''
+  });
+
+  reservatieSearchForm = form(this.reservatieSearchModel, (schemaPath) => {
+    debounce(schemaPath.searchTerm, 500);
+  });
+
   filteredOptions: Observable<Reservering[]>;
   selectedOption = signal<Reservering | null>(null);
 
@@ -243,11 +254,11 @@ export class ReserveringenInzienComponent implements OnInit {
         });
     });
 
-    this.filteredOptions = this.reservatieSearchControl.valueChanges.pipe(
+    // Convert Signal Forms model to Observable for autocomplete
+    this.filteredOptions = toObservable(this.reservatieSearchModel).pipe(
       takeUntilDestroyed(),
-      startWith(''),
-      filter((x) => typeof x === 'string'),
-      map((filter) => this._filter(filter || ''))
+      startWith(this.reservatieSearchModel()),
+      map((model) => this._filter(model.searchTerm || ''))
     );
 
     effect(() => {
@@ -306,7 +317,7 @@ export class ReserveringenInzienComponent implements OnInit {
   }
 
   clearReservatieSearch(): void {
-    this.reservatieSearchControl.setValue('');
+    this.reservatieSearchModel.set({ searchTerm: '' });
     this.selectedOption.set(null);
   }
 

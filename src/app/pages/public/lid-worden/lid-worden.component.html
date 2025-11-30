@@ -118,11 +118,12 @@
           placeholder="Pieter"
           matInput
           type="text"
-          required
-          name="voornaam"
-          [ngModel]="voornaam()"
-          (ngModelChange)="voornaam.set($event)"
+          [field]="lidWordenForm.voornaam"
         />
+        @if (lidWordenForm.voornaam().touched() &&
+        lidWordenForm.voornaam().invalid()) {
+        <mat-error>Voornaam is verplicht</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="col-md-4 col-12">
         <mat-label>Achternaam</mat-label>
@@ -130,11 +131,12 @@
           placeholder="Post"
           matInput
           type="text"
-          required
-          name="achternaam"
-          [ngModel]="achternaam()"
-          (ngModelChange)="achternaam.set($event)"
+          [field]="lidWordenForm.achternaam"
         />
+        @if (lidWordenForm.achternaam().touched() &&
+        lidWordenForm.achternaam().invalid()) {
+        <mat-error>Achternaam is verplicht</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="col-md-4 col-12">
         <mat-label>Geboortedatum</mat-label>
@@ -142,16 +144,17 @@
           placeholder="14-11-1990"
           matInput
           [matDatepicker]="picker1"
-          [ngModel]="geboorteDatum()"
-          (ngModelChange)="geboorteDatum.set($event)"
-          required
-          name="picker1"
+          [field]="lidWordenForm.geboorteDatum"
         />
         <mat-datepicker-toggle
           matIconSuffix
           [for]="picker1"
         ></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
+        @if (lidWordenForm.geboorteDatum().touched() &&
+        lidWordenForm.geboorteDatum().invalid()) {
+        <mat-error>Geboortedatum is verplicht</mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="row">
@@ -161,20 +164,30 @@
           placeholder="pieter-post@voorbeeld.nl"
           matInput
           type="email"
-          required
-          name="email"
-          [ngModel]="email()"
-          (ngModelChange)="email.set($event)"
+          autocomplete="email"
+          [field]="lidWordenForm.email"
         />
+        @if (lidWordenForm.email().touched() && lidWordenForm.email().invalid())
+        {
+        <mat-error>
+          @for (error of lidWordenForm.email().errors(); track error) {
+          {{ error.message }}
+          }
+        </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="col-md-4 col-12">
         <mat-label>Groep</mat-label>
-        <mat-select [value]="selectedGroep()" (valueChange)="selectedGroep.set($event)" required>
+        <mat-select [field]="lidWordenForm.selectedGroep">
           @for (groep of groepen(); track $index) {
-          <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
+          <mat-option [value]="groep">{{ groep.naam }}</mat-option>
           }
         </mat-select>
+        @if (lidWordenForm.selectedGroep().touched() &&
+        lidWordenForm.selectedGroep().invalid()) {
+        <mat-error>Groep is verplicht</mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -182,40 +195,43 @@
       <mat-form-field class="flex">
         <mat-label>Bericht</mat-label>
         <textarea
-          [ngModel]="message()"
-          (ngModelChange)="message.set($event)"
+          [field]="lidWordenForm.message"
           matInput
           rows="10"
-          required
-          name="message"
           placeholder="Typ hier je bericht"
         ></textarea>
+        @if (lidWordenForm.message().touched() &&
+        lidWordenForm.message().invalid()) {
+        <mat-error>Bericht is verplicht</mat-error>
+        }
       </mat-form-field>
     </div>
     <div class="d-flex">
       <span
         [matTooltip]="
-          loading() || !formIsValid()
+          loading() || !lidWordenForm().valid()
             ? 'Vul het formulier in om te verzenden'
             : ''
         "
-        [matTooltipDisabled]="!(loading() || !formIsValid())"
+        [matTooltipDisabled]="!(loading() || !lidWordenForm().valid())"
         style="display: flex; flex: 1"
       >
         <button
           class="flex"
           mat-flat-button
           (click)="submit()"
-          [disabled]="loading() || !formIsValid()"
+          [disabled]="loading() || !lidWordenForm().valid()"
         >
           Verzenden
         </button>
       </span>
     </div>
   </form>
-  }
-  @if (submitted()) {
-  <mat-card class="success-card" style="text-align: center; padding: 2em; margin-top: 2em">
+  } @if (submitted()) {
+  <mat-card
+    class="success-card"
+    style="text-align: center; padding: 2em; margin-top: 2em"
+  >
     <mat-card-content>
       <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
       <button mat-flat-button color="primary" (click)="resetForm()">

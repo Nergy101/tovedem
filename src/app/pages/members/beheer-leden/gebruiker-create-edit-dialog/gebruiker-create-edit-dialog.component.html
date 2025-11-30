@@ -19,60 +19,52 @@
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Username</mat-label>
-          <input
-            matInput
-            type="text"
-            name="username"
-            maxlength="30"
-            tabindex="0"
-            required
-            [(ngModel)]="gebruiker.username"
-          />
+          <input matInput type="text" [field]="gebruikerForm.username" />
+          @if (gebruikerForm.username().touched() &&
+          gebruikerForm.username().invalid()) {
+          <mat-error>Username is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Email</mat-label>
           <input
             matInput
             type="email"
-            name="email"
-            required
-            [(ngModel)]="gebruiker.email"
+            autocomplete="email"
+            [field]="gebruikerForm.email"
           />
+          @if (gebruikerForm.email().touched() &&
+          gebruikerForm.email().invalid()) { @for (error of
+          gebruikerForm.email().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Wachtwoord</mat-label>
-          <input
-            matInput
-            type="password"
-            name="password"
-            maxlength="30"
-            tabindex="0"
-            required
-            [(ngModel)]="gebruiker.password"
-          />
+          <input matInput type="password" [field]="gebruikerForm.password" />
+          @if (!isUpdate && gebruikerForm.password().touched() &&
+          gebruikerForm.password().invalid()) {
+          <mat-error>Wachtwoord is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Bevestig Wachtwoord</mat-label>
           <input
             matInput
             type="password"
-            name="passwordConfirm"
-            maxlength="30"
-            tabindex="0"
-            required
-            [(ngModel)]="gebruiker.passwordConfirm"
-            [class.mat-input-invalid]="
-              gebruiker.password && gebruiker.passwordConfirm && !passwordsMatch
-            "
+            [field]="gebruikerForm.passwordConfirm"
           />
-          @if (gebruiker.password && gebruiker.passwordConfirm &&
-          !passwordsMatch) {
-          <mat-error> Wachtwoorden komen niet overeen </mat-error>
-          } @if (gebruiker.password && gebruiker.passwordConfirm &&
-          passwordsMatch) {
+          @if (!isUpdate && gebruikerForm.passwordConfirm().touched() &&
+          gebruikerForm.passwordConfirm().invalid()) { @for (error of
+          gebruikerForm.passwordConfirm().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } } @else if (!isUpdate && gebruikerForm.passwordConfirm().valid() &&
+          gebruikerForm.passwordConfirm().value() &&
+          gebruikerForm.password().value() ===
+          gebruikerForm.passwordConfirm().value()) {
           <mat-hint class="mat-hint-success">
             Wachtwoorden komen overeen
           </mat-hint>
@@ -83,31 +75,31 @@
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Naam</mat-label>
-          <input
-            matInput
-            type="name"
-            name="name"
-            maxlength="30"
-            tabindex="0"
-            required
-            [(ngModel)]="gebruiker.name"
-          />
+          <input matInput type="text" [field]="gebruikerForm.name" />
+          @if (gebruikerForm.name().touched() && gebruikerForm.name().invalid())
+          {
+          <mat-error>Naam is verplicht</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Rollen</mat-label>
-          <mat-select multiple [(value)]="gebruiker.rollen" required>
+          <mat-select multiple [field]="gebruikerForm.rollen">
             @for (rol of rollen(); track $index) {
             <mat-option [value]="rol.id">{{ rol.rol }}</mat-option>
             }
           </mat-select>
+          @if (gebruikerForm.rollen().touched() &&
+          gebruikerForm.rollen().invalid()) {
+          <mat-error>Rollen zijn verplicht</mat-error>
+          }
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Groep</mat-label>
-          <mat-select [(value)]="gebruiker.groep">
-            <mat-option>Geen</mat-option>
+          <mat-select [field]="gebruikerForm.groep">
+            <mat-option [value]="null">Geen</mat-option>
             @for (groep of groepen(); track $index) {
             <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
             }
@@ -138,7 +130,7 @@
             color="primary"
             type="submit"
             class="flex-grow-1"
-            [disabled]="loading() || !formIsValid()"
+            [disabled]="loading() || gebruikerForm().invalid()"
             (click)="submit()"
           >
             {{ isUpdate ? "Aanpassen" : "Aanmaken" }}
