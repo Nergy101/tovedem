@@ -1,6 +1,6 @@
 /* Send an email after somebody did a reservation */
 onRecordAfterCreateSuccess((e) => {
-  const mailing = require("./mailing.js");
+  const mailing = require(`${__hooks}/mailing.js`);
 
   const reservatie = e.record;
   $app.expandRecord(reservatie, ["voorstelling"], null);
@@ -25,11 +25,12 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
+  e.next();
 }, "reserveringen");
 
 /* Send an email after somebody updated a reservation */
 onRecordAfterUpdateSuccess((e) => {
-  const mailing = require("./mailing.js");
+  const mailing = require(`${__hooks}/mailing.js`);
 
   const reservatie = e.record;
   $app.expandRecord(reservatie, ["voorstelling"], null);
@@ -54,4 +55,5 @@ onRecordAfterUpdateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
+  e.next();
 }, "reserveringen");

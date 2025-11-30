@@ -1,8 +1,7 @@
-const constants = require('./constants.js');
-
 /* Send an email after somebody did a vriend worden verzoek */
 onRecordAfterCreateSuccess((e) => {
-  const mailing = require('./mailing.js');
+  const constants = require(`${__hooks}/constants.js`);
+  const mailing = require(`${__hooks}/mailing.js`);
 
   const verzoek = e.record;
 
@@ -25,6 +24,7 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
+  e.next();
 
   // send a mail to the beheerders, so they can check the request
   const mailInfoBeheer = mailing.getMail("vriend_worden-beheer");
@@ -46,4 +46,5 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(messageBeheer);
+  e.next();
 }, "vriend_worden_verzoeken");

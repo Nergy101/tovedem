@@ -1,8 +1,7 @@
-const constants = require("./constants.js");
-
 /* Send an email after somebody did a nieuwe lid aanmelding */
 onRecordAfterCreateSuccess((e) => {
-  const mailing = require("./mailing.js");
+  const constants = require(`${__hooks}/constants.js`);
+  const mailing = require(`${__hooks}/mailing.js`);
 
   const lid = e.record;
 
@@ -29,6 +28,7 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
+  e.next();
 
   // send a mail to the beheerders, so they can check the new member registration
   const mailInfoBeheer = mailing.getMail("lid_worden_beheer");
@@ -52,4 +52,5 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(messageBeheer);
+  e.next();
 }, "leden");
