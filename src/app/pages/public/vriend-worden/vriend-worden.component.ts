@@ -62,7 +62,6 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
     debounce(schemaPath.name, 500);
     debounce(schemaPath.email, 500);
     debounce(schemaPath.subject, 500);
-    debounce(schemaPath.message, 500);
     required(schemaPath.name, { message: 'Naam is verplicht' });
     required(schemaPath.email, { message: 'E-mail is verplicht' });
     email(schemaPath.email, { message: 'Ongeldig e-mailadres' });

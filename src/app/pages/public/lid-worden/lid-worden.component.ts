@@ -85,7 +85,6 @@ export class LidWordenComponent implements OnInit, OnDestroy {
     debounce(schemaPath.voornaam, 500);
     debounce(schemaPath.achternaam, 500);
     debounce(schemaPath.email, 500);
-    debounce(schemaPath.message, 500);
     required(schemaPath.voornaam, { message: 'Voornaam is verplicht' });
     required(schemaPath.achternaam, { message: 'Achternaam is verplicht' });
     required(schemaPath.email, { message: 'E-mail is verplicht' });
