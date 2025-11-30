@@ -16,7 +16,7 @@
 
 <div mat-dialog-content class="container p-4">
   <div class="row">
-    <form (ngSubmit)="submit()">
+    <form #nieuwsForm="ngForm">
       <div class="row">
         <mat-form-field class="col-12">
           <mat-label>Titel</mat-label>
@@ -27,10 +27,12 @@
             tabindex="0"
             required
             [(ngModel)]="titel"
-            [class.mat-input-invalid]="titel !== undefined && !titel"
+            #titelField="ngModel"
           />
-          @if (titel !== undefined && !titel) {
-          <mat-error>Titel is verplicht</mat-error>
+          @if (titelField.touched && titelField.invalid) {
+            @for (error of getFieldErrors(titelField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
           }
         </mat-form-field>
       </div>
@@ -94,7 +96,7 @@
           <button
             mat-flat-button
             color="primary"
-            type="submit"
+            type="button"
             class="flex-grow-1"
             [disabled]="loading() || !formIsValid()"
             (click)="submit()"

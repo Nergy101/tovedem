@@ -102,18 +102,34 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     debounce(schemaPath.omschrijving, 500);
     debounce(schemaPath.tijd1, 500);
     debounce(schemaPath.tijd2, 500);
-    required(schemaPath.titel);
+    required(schemaPath.titel, {
+      message: 'Titel is verplicht',
+    });
     maxLength(schemaPath.titel, 30, {
       message: 'Titel mag maximaal 30 tekens lang zijn',
     });
     // ondertitel is optional in PocketBase, so no required() validator
-    required(schemaPath.regie);
-    required(schemaPath.omschrijving);
-    required(schemaPath.selectedGroep);
-    required(schemaPath.prijs_per_kaartje);
-    min(schemaPath.prijs_per_kaartje, 0);
-    required(schemaPath.datum1);
-    required(schemaPath.tijd1);
+    required(schemaPath.regie, {
+      message: 'Regie is verplicht',
+    });
+    required(schemaPath.omschrijving, {
+      message: 'Omschrijving is verplicht',
+    });
+    required(schemaPath.selectedGroep, {
+      message: 'Groep is verplicht',
+    });
+    required(schemaPath.prijs_per_kaartje, {
+      message: 'Prijs per kaartje is verplicht',
+    });
+    min(schemaPath.prijs_per_kaartje, 0, {
+      message: 'Prijs per kaartje moet minimaal 0 zijn',
+    });
+    required(schemaPath.datum1, {
+      message: 'Datum 1 is verplicht',
+    });
+    required(schemaPath.tijd1, {
+      message: 'Tijd 1 is verplicht',
+    });
   });
 
   loading = signal(false);

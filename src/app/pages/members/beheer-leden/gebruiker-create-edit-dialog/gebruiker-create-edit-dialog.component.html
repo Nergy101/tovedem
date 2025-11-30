@@ -15,14 +15,16 @@
 <div mat-dialog-content class="container p-4">
   @defer (when rollen() && spelers() && groepen()) {
   <div class="row">
-    <form (ngSubmit)="submit()">
+    <form>
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Username</mat-label>
           <input matInput type="text" [field]="gebruikerForm.username" />
           @if (gebruikerForm.username().touched() &&
           gebruikerForm.username().invalid()) {
-          <mat-error>Username is verplicht</mat-error>
+            @for (error of gebruikerForm.username().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -47,7 +49,9 @@
           <input matInput type="password" [field]="gebruikerForm.password" />
           @if (!isUpdate && gebruikerForm.password().touched() &&
           gebruikerForm.password().invalid()) {
-          <mat-error>Wachtwoord is verplicht</mat-error>
+            @for (error of gebruikerForm.password().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -76,9 +80,10 @@
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Naam</mat-label>
           <input matInput type="text" [field]="gebruikerForm.name" />
-          @if (gebruikerForm.name().touched() && gebruikerForm.name().invalid())
-          {
-          <mat-error>Naam is verplicht</mat-error>
+          @if (gebruikerForm.name().touched() && gebruikerForm.name().invalid()) {
+            @for (error of gebruikerForm.name().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -128,7 +133,7 @@
           <button
             mat-flat-button
             color="primary"
-            type="submit"
+            type="button"
             class="flex-grow-1"
             [disabled]="loading() || gebruikerForm().invalid()"
             (click)="submit()"

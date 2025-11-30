@@ -11,7 +11,7 @@
 </div>
 <div mat-dialog-content class="container p-4">
   <div class="row">
-    <form (ngSubmit)="return()">
+    <form #spelerForm="ngForm">
       <mat-form-field class="col-12">
         <mat-label>Speler Naam</mat-label>
         <input
@@ -19,15 +19,24 @@
           matInput
           type="text"
           name="spelerNaam"
+          required
           [(ngModel)]="speler.naam"
+          #naamField="ngModel"
         />
+        @if (naamField.touched && naamField.invalid) {
+          @for (error of getFieldErrors(naamField); track error) {
+            <mat-error>{{ error }}</mat-error>
+          }
+        }
       </mat-form-field>
       <button
         class="col-12"
         style="height: 4em"
         mat-flat-button
         color="primary"
-        type="submit"
+        type="button"
+        [disabled]="!formIsValid()"
+        (click)="return()"
       >
         <span>Aanpassen</span>
       </button>

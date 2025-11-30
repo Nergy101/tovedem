@@ -30,28 +30,14 @@
   }
 }
 
-// Dark theme table styling
+// Dark theme table styling - minimal, styles.scss handles base colors
 html.darkMode .table {
-  background-color: var(--mat-sys-surface-container-lowest) !important;
-  color: var(--mat-sys-on-surface) !important;
-  
   thead {
     background-color: var(--mat-sys-surface-container) !important;
-    
-    th {
-      color: var(--mat-sys-on-surface) !important;
-    }
   }
-  
-  tbody {
-    tr {
-      background-color: var(--mat-sys-surface-container-lowest) !important;
-      color: var(--mat-sys-on-surface) !important;
-      
-      &:hover {
-        background-color: var(--mat-sys-surface-container) !important;
-      }
-    }
+
+  tbody tr:hover {
+    background-color: var(--mat-sys-surface-container) !important;
   }
 }
 
@@ -82,15 +68,93 @@ html.lightMode .table {
 
 .table-responsive {
   border-radius: $border-radius-lg;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  
+  .table {
+    min-width: 800px; // Ensure table has minimum width for scrolling
+  }
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
 }
 
 html.darkMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
 }
 
 html.lightMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+// Ensure mat-card with table-responsive has proper dark theme styling
+html.darkMode mat-card.table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+  
+  .table {
+    background-color: transparent !important;
+  }
+  
+  // Ensure all text inside is visible
+  * {
+    color: var(--mat-sys-on-surface) !important;
+  }
+  
+  // But allow table-specific styling to override
+  .table thead th,
+  .table tbody td {
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+html.lightMode mat-card.table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+  
+  .table {
+    background-color: transparent !important;
+  }
 }
 
 .table-width {

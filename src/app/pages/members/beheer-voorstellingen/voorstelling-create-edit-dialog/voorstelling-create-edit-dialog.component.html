@@ -16,7 +16,7 @@
 
 <div mat-dialog-content class="container p-4">
   <div class="row">
-    <form (ngSubmit)="submit()">
+    <form>
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Titel</mat-label>
@@ -28,7 +28,9 @@
           />
           @if (voorstellingForm.titel().touched() &&
           voorstellingForm.titel().invalid()) {
-          <mat-error>Titel is verplicht</mat-error>
+            @for (error of voorstellingForm.titel().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -57,7 +59,9 @@
           <mat-datepicker #picker1></mat-datepicker>
           @if (voorstellingForm.datum1().touched() &&
           voorstellingForm.datum1().invalid()) {
-          <mat-error>Datum 1 is verplicht</mat-error>
+            @for (error of voorstellingForm.datum1().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
@@ -70,7 +74,9 @@
           />
           @if (voorstellingForm.tijd1().touched() &&
           voorstellingForm.tijd1().invalid()) {
-          <mat-error>Tijd 1 is verplicht</mat-error>
+            @for (error of voorstellingForm.tijd1().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
@@ -107,7 +113,9 @@
           </mat-select>
           @if (voorstellingForm.selectedGroep().touched() &&
           voorstellingForm.selectedGroep().invalid()) {
-          <mat-error>Groep is verplicht</mat-error>
+            @for (error of voorstellingForm.selectedGroep().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -162,7 +170,9 @@
           />
           @if (voorstellingForm.prijs_per_kaartje().touched() &&
           voorstellingForm.prijs_per_kaartje().invalid()) {
-          <mat-error>Prijs per kaartje is verplicht</mat-error>
+            @for (error of voorstellingForm.prijs_per_kaartje().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           }
         </mat-form-field>
       </div>
@@ -206,7 +216,7 @@
           <button
             mat-flat-button
             color="primary"
-            type="submit"
+            type="button"
             class="flex-grow-1"
             [disabled]="loading() || !voorstellingForm().valid()"
             (click)="submit()"

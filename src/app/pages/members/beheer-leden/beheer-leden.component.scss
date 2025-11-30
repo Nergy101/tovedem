@@ -8,7 +8,7 @@
 .table {
   border-collapse: separate;
   border-spacing: 0;
-  
+
   thead {
     th {
       border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
@@ -16,20 +16,20 @@
       font-weight: $font-weight-semibold;
     }
   }
-  
+
   tbody {
     tr {
       border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
       transition: background-color $transition-base $ease-out;
-      
+
       &.active {
         background-color: rgba(125, 179, 232, 0.2) !important;
-        
+
         &:hover {
           background-color: rgba(125, 179, 232, 0.3) !important;
         }
       }
-      
+
       td {
         padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
         vertical-align: middle;
@@ -38,28 +38,14 @@
   }
 }
 
-// Dark theme table styling
+// Dark theme table styling - minimal, styles.scss handles base colors
 html.darkMode .table {
-  background-color: var(--mat-sys-surface-container-lowest) !important;
-  color: var(--mat-sys-on-surface) !important;
-  
   thead {
     background-color: var(--mat-sys-surface-container) !important;
-    
-    th {
-      color: var(--mat-sys-on-surface) !important;
-    }
   }
-  
-  tbody {
-    tr {
-      background-color: var(--mat-sys-surface-container-lowest) !important;
-      color: var(--mat-sys-on-surface) !important;
-      
-      &:hover {
-        background-color: var(--mat-sys-surface-container) !important;
-      }
-    }
+
+  tbody tr:hover {
+    background-color: var(--mat-sys-surface-container) !important;
   }
 }
 
@@ -67,20 +53,20 @@ html.darkMode .table {
 html.lightMode .table {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   thead {
     background-color: var(--mat-sys-surface-container-low) !important;
-    
+
     th {
       color: var(--mat-sys-on-surface) !important;
     }
   }
-  
+
   tbody {
     tr {
       background-color: var(--mat-sys-surface-container-lowest) !important;
       color: var(--mat-sys-on-surface) !important;
-      
+
       &:hover {
         background-color: var(--mat-sys-surface-container-low) !important;
       }
@@ -90,15 +76,93 @@ html.lightMode .table {
 
 .table-responsive {
   border-radius: $border-radius-lg;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+
+  .table {
+    min-width: 800px; // Ensure table has minimum width for scrolling
+  }
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
 }
 
 html.darkMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
 }
 
 html.lightMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+// Ensure mat-card with table-responsive has proper dark theme styling
+html.darkMode mat-card.table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+
+  .table {
+    background-color: transparent !important;
+  }
+
+  // Ensure all text inside is visible
+  * {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  // But allow table-specific styling to override
+  .table thead th,
+  .table tbody td {
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+html.lightMode mat-card.table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+
+  .table {
+    background-color: transparent !important;
+  }
 }
 
 .table-width {
@@ -127,7 +191,7 @@ button[mat-icon-button][style*="background-color"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  
+
   mat-icon {
     display: flex !important;
     align-items: center !important;
@@ -139,15 +203,15 @@ button[mat-icon-button][style*="background-color"] {
 .lid-type-card {
   height: 100%;
   transition: transform 0.2s, box-shadow 0.2s;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
-  
+
   mat-card-header {
     padding-bottom: 0.5rem;
-    
+
     ::ng-deep .mat-mdc-card-avatar {
       border-radius: 0 !important;
       overflow: visible !important;
@@ -155,7 +219,7 @@ button[mat-icon-button][style*="background-color"] {
       height: auto !important;
       margin-right: 1rem;
     }
-    
+
     ::ng-deep mat-icon[mat-card-avatar] {
       font-size: 2.5rem;
       width: auto !important;
@@ -166,17 +230,17 @@ button[mat-icon-button][style*="background-color"] {
       border-radius: 0 !important;
       overflow: visible !important;
     }
-    
+
     mat-card-title {
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0;
     }
   }
-  
+
   mat-card-content {
     padding-top: 0.5rem;
-    
+
     p {
       margin: 0;
       line-height: 1.6;

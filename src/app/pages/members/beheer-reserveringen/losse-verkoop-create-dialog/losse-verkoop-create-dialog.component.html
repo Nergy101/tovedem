@@ -13,7 +13,7 @@
   
   <div mat-dialog-content class="container p-4">
     <div class="row">
-      <form (ngSubmit)="submit()">
+      <form #losseVerkoopForm="ngForm">
         <div class="row">
           <mat-form-field class="col-md-6 col-12">
             <mat-label>Aantal</mat-label>
@@ -26,7 +26,13 @@
               tabindex="0"
               required
               [(ngModel)]="aantal"
+              #aantalField="ngModel"
             />
+            @if (aantalField.touched && aantalField.invalid) {
+              @for (error of getFieldErrors(aantalField); track error) {
+                <mat-error>{{ error }}</mat-error>
+              }
+            }
           </mat-form-field>
           <mat-form-field class="col-md-6 col-12">
             <mat-label>Datum</mat-label>
@@ -49,9 +55,10 @@
             <button
               mat-flat-button
               color="primary"
-              type="submit"
+              type="button"
               class="flex-grow-1"
               [disabled]="loading() || !formIsValid()"
+              (click)="submit()"
             >
               Toevoegen
             </button>

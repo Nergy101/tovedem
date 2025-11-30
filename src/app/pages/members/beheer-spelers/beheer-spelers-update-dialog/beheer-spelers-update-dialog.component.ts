@@ -29,4 +29,18 @@ export class BeheerSpelersUpdateDialogComponent implements OnInit {
   return(): void {
     this.dialogRef.close(this.speler);
   }
+
+  formIsValid(): boolean {
+    return !!this.speler.naam && this.speler.naam.trim() !== '';
+  }
+
+  getFieldErrors(field: any): string[] {
+    const errors: string[] = [];
+    if (field.errors) {
+      if (field.errors['required']) {
+        errors.push('Speler naam is verplicht');
+      }
+    }
+    return errors;
+  }
 }

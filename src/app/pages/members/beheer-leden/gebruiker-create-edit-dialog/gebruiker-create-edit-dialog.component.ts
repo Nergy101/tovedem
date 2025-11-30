@@ -82,13 +82,21 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
     debounce(schemaPath.name, 500);
     debounce(schemaPath.password, 500);
     debounce(schemaPath.passwordConfirm, 500);
-    required(schemaPath.username);
+    required(schemaPath.username, {
+      message: 'Gebruikersnaam is verplicht',
+    });
     maxLength(schemaPath.username, 30, {
       message: 'Gebruikersnaam mag maximaal 30 tekens lang zijn',
     });
-    required(schemaPath.email);
-    email(schemaPath.email);
-    required(schemaPath.name);
+    required(schemaPath.email, {
+      message: 'E-mail is verplicht',
+    });
+    email(schemaPath.email, {
+      message: 'Ongeldig e-mailadres',
+    });
+    required(schemaPath.name, {
+      message: 'Naam is verplicht',
+    });
     maxLength(schemaPath.name, 30, {
       message: 'Naam mag maximaal 30 tekens lang zijn',
     });

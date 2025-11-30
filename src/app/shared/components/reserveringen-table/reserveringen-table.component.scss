@@ -26,28 +26,14 @@
   }
 }
 
-// Dark theme table styling
+// Dark theme table styling - minimal, styles.scss handles base colors
 html.darkMode .table {
-  background-color: var(--mat-sys-surface-container-lowest) !important;
-  color: var(--mat-sys-on-surface) !important;
-
   thead {
     background-color: var(--mat-sys-surface-container) !important;
-
-    th {
-      color: var(--mat-sys-on-surface) !important;
-    }
   }
 
-  tbody {
-    tr {
-      background-color: var(--mat-sys-surface-container-lowest) !important;
-      color: var(--mat-sys-on-surface) !important;
-
-      &:hover {
-        background-color: var(--mat-sys-surface-container) !important;
-      }
-    }
+  tbody tr:hover {
+    background-color: var(--mat-sys-surface-container) !important;
   }
 }
 

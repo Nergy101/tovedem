@@ -59,3 +59,132 @@ html.lightMode .border-top {
   }
 }
 
+// Table styling for both themes
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  
+  thead {
+    th {
+      border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
+      padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
+      transition: background-color $transition-base $ease-out;
+      
+      td {
+        padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// Dark theme table styling - minimal, styles.scss handles base colors
+html.darkMode .table {
+  thead {
+    background-color: var(--mat-sys-surface-container) !important;
+  }
+
+  tbody tr:hover {
+    background-color: var(--mat-sys-surface-container) !important;
+  }
+}
+
+// Light theme table styling
+html.lightMode .table {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  color: var(--mat-sys-on-surface) !important;
+  
+  thead {
+    background-color: var(--mat-sys-surface-container-low) !important;
+    
+    th {
+      color: var(--mat-sys-on-surface) !important;
+    }
+  }
+  
+  tbody {
+    tr {
+      background-color: var(--mat-sys-surface-container-lowest) !important;
+      color: var(--mat-sys-on-surface) !important;
+      
+      &:hover {
+        background-color: var(--mat-sys-surface-container-low) !important;
+      }
+    }
+  }
+}
+
+.table-responsive {
+  border-radius: $border-radius-lg;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  
+  .table {
+    min-width: 600px; // Ensure table has minimum width for scrolling
+  }
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+html.darkMode .table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+html.lightMode .table-responsive {
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+.table-width {
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
+}
+

@@ -14,7 +14,7 @@
 
 <div mat-dialog-content class="container p-4">
   <div class="row">
-    <form (ngSubmit)="submit()">
+    <form #sponsorForm="ngForm">
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Voornaam</mat-label>
@@ -24,7 +24,13 @@
             name="voornaam"
             required
             [(ngModel)]="sponsor.voornaam"
+            #voornaamField="ngModel"
           />
+          @if (voornaamField.touched && voornaamField.invalid) {
+            @for (error of getFieldErrors(voornaamField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Achternaam</mat-label>
@@ -34,18 +40,29 @@
             name="achternaam"
             required
             [(ngModel)]="sponsor.achternaam"
+            #achternaamField="ngModel"
           />
+          @if (achternaamField.touched && achternaamField.invalid) {
+            @for (error of getFieldErrors(achternaamField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
       </div>
 
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Type</mat-label>
-          <mat-select [(value)]="sponsor.type" required>
+          <mat-select [(ngModel)]="sponsor.type" required #typeField="ngModel" name="type">
             @for (type of sponsorTypes; track type) {
             <mat-option [value]="type">{{ type }}</mat-option>
             }
           </mat-select>
+          @if (typeField.touched && typeField.invalid) {
+            @for (error of getFieldErrors(typeField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Email</mat-label>
@@ -53,8 +70,15 @@
             matInput
             type="email"
             name="email"
+            email
             [(ngModel)]="sponsor.email"
+            #emailField="ngModel"
           />
+          @if (emailField.touched && emailField.invalid) {
+            @for (error of getFieldErrors(emailField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
       </div>
 
@@ -69,7 +93,7 @@
           <button
             mat-flat-button
             color="primary"
-            type="submit"
+            type="button"
             class="flex-grow-1"
             [disabled]="loading() || !formIsValid()"
             (click)="submit()"

@@ -12,7 +12,7 @@
 
 <div mat-dialog-content class="container p-4">
   <div class="row">
-    <form (ngSubmit)="submit()">
+    <form #reserveringForm="ngForm">
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Voornaam</mat-label>
@@ -24,7 +24,13 @@
             tabindex="0"
             required
             [(ngModel)]="voornaam"
+            #voornaamField="ngModel"
           />
+          @if (voornaamField.touched && voornaamField.invalid) {
+            @for (error of getFieldErrors(voornaamField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Achternaam</mat-label>
@@ -34,7 +40,13 @@
             name="achternaam"
             required
             [(ngModel)]="achternaam"
+            #achternaamField="ngModel"
           />
+          @if (achternaamField.touched && achternaamField.invalid) {
+            @for (error of getFieldErrors(achternaamField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
       </div>
       <div class="row">
@@ -46,11 +58,18 @@
           <mat-label>Tickets datum 1</mat-label>
           <input
             matInput
-            type="text"
+            type="number"
             name="datum_tijd_1_aantal"
             required
+            min="0"
             [(ngModel)]="datum_tijd_1_aantal"
+            #datum1AantalField="ngModel"
           />
+          @if (datum1AantalField.touched && datum1AantalField.invalid) {
+            @for (error of getFieldErrors(datum1AantalField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
         <div class="col-6">
           Datum 2:
@@ -60,11 +79,18 @@
           <mat-label>Tickets datum 2</mat-label>
           <input
             matInput
-            type="text"
+            type="number"
             name="datum_tijd_2_aantal"
             required
+            min="0"
             [(ngModel)]="datum_tijd_2_aantal"
+            #datum2AantalField="ngModel"
           />
+          @if (datum2AantalField.touched && datum2AantalField.invalid) {
+            @for (error of getFieldErrors(datum2AantalField); track error) {
+              <mat-error>{{ error }}</mat-error>
+            }
+          }
         </mat-form-field>
       </div>
       <div class="row">
@@ -102,7 +128,7 @@
           <button
             mat-flat-button
             color="primary"
-            type="submit"
+            type="button"
             class="flex-grow-1"
             [disabled]="loading() || !formIsValid()"
             (click)="submit()"

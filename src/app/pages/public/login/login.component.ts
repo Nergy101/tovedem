@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { Rol } from '../../../models/domain/rol.model';
@@ -28,6 +29,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
+    MatTooltipModule,
     RouterModule
 ],
     templateUrl: './login.component.html',
@@ -44,8 +46,8 @@ export class LoginComponent {
   loginForm = form(this.loginModel, (schemaPath) => {
     debounce(schemaPath.usernameOrEmail, 500);
     debounce(schemaPath.password, 500);
-    required(schemaPath.usernameOrEmail);
-    required(schemaPath.password);
+    required(schemaPath.usernameOrEmail, { message: 'E-mail of gebruikersnaam is verplicht' });
+    required(schemaPath.password, { message: 'Wachtwoord is verplicht' });
   });
 
   hidePassword = signal(true);

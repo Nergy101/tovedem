@@ -63,6 +63,22 @@ export class LosseVerkoopCreateDialogComponent {
     );
   }
 
+  getFieldErrors(field: any): string[] {
+    const errors: string[] = [];
+    if (field.errors) {
+      if (field.errors['required']) {
+        errors.push('Aantal is verplicht');
+      }
+      if (field.errors['min']) {
+        errors.push('Aantal moet minimaal 1 zijn');
+      }
+      if (field.errors['max']) {
+        errors.push('Aantal mag maximaal 20 zijn');
+      }
+    }
+    return errors;
+  }
+
   async getTotalTickets(): Promise<number> {
     const voorstelling = this.voorstelling();
     const selectedDag = this.selectedDag();

@@ -4,7 +4,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -106,6 +106,19 @@ export class SponsorCreateEditDialogComponent implements OnInit {
       this.sponsor.achternaam.trim() !== '' &&
       !!this.sponsor.type
     );
+  }
+
+  getFieldErrors(field: any): string[] {
+    const errors: string[] = [];
+    if (field.errors) {
+      if (field.errors['required']) {
+        errors.push('Dit veld is verplicht');
+      }
+      if (field.errors['email']) {
+        errors.push('Ongeldig e-mailadres');
+      }
+    }
+    return errors;
   }
 }
 

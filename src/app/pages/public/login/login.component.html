@@ -1,4 +1,6 @@
-<div class="container d-flex align-items-center justify-content-center min-vh-100">
+<div
+  class="container d-flex align-items-center justify-content-center min-vh-100"
+>
   <div class="row justify-content-center w-100">
     <div class="col-xl-6 col-12">
       <mat-card class="flex flex-grow-1">
@@ -8,15 +10,23 @@
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content class="mt-2 row gap-4">
-          <form (ngSubmit)="login()"
-            class="col-md-6 col-12 w-100 d-flex flex-column gap-2">
+          <form class="col-md-6 col-12 w-100 d-flex flex-column gap-2">
             <mat-form-field>
               <mat-label>E-mail of Gebruikersnaam</mat-label>
-              <input matInput type="text"
+              <input
+                matInput
+                type="text"
                 autocomplete="username"
-                [field]="loginForm.usernameOrEmail" />
-              @if (loginForm.usernameOrEmail().touched() && loginForm.usernameOrEmail().invalid()) {
-                <mat-error>E-mail of gebruikersnaam is verplicht</mat-error>
+                [field]="loginForm.usernameOrEmail"
+              />
+              @if (loginForm.usernameOrEmail().touched() &&
+              loginForm.usernameOrEmail().invalid()) {
+              <mat-error>
+                @for (error of loginForm.usernameOrEmail().errors(); track
+                error) {
+                {{ error.message }}
+                }
+              </mat-error>
               }
             </mat-form-field>
             <mat-form-field>
@@ -24,6 +34,7 @@
               <input
                 matInput
                 [type]="hidePassword() ? 'password' : 'text'"
+                autocomplete="current-password"
                 [field]="loginForm.password"
               />
               <button
@@ -31,27 +42,53 @@
                 matSuffix
                 type="button"
                 (click)="hidePassword.set(!hidePassword())"
-                [attr.aria-label]="'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')"
+                [attr.aria-label]="
+                  'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')
+                "
               >
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                <mat-icon>{{
+                  hidePassword() ? "visibility_off" : "visibility"
+                }}</mat-icon>
               </button>
-              @if (loginForm.password().touched() && loginForm.password().invalid()) {
-                <mat-error>Wachtwoord is verplicht</mat-error>
+              @if (loginForm.password().touched() &&
+              loginForm.password().invalid()) {
+              <mat-error>
+                @for (error of loginForm.password().errors(); track error) {
+                {{ error.message }}
+                }
+              </mat-error>
               }
-            </mat-form-field><mat-card-actions>
-              <button class="flex-grow-1"
-                type="submit"
-                color="primary"
-                mat-flat-button
-                [disabled]="!loginForm().valid() || loading()"
-                (click)="login()">
-                Login
-              </button>
+            </mat-form-field>
+            <mat-card-actions>
+              <span
+                [matTooltip]="
+                  !loginForm().valid()
+                    ? 'Vul het formulier in om in te loggen'
+                    : ''
+                "
+                [matTooltipDisabled]="loginForm().valid()"
+                style="display: flex; flex: 1"
+              >
+                <button
+                  class="flex-grow-1"
+                  type="button"
+                  color="primary"
+                  mat-flat-button
+                  (click)="login()"
+                  [disabled]="!loginForm().valid() || loading()"
+                >
+                  Login
+                </button>
+              </span>
             </mat-card-actions>
           </form>
-          <div class="col-md-6 col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center">
+          <div
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center"
+          >
             <p>Nog geen account?</p>
-            <a [routerLink]="['/signup']" mat-flat-button color="accent">Maak er een aan</a>
+            <a [routerLink]="['/signup']" mat-flat-button color="accent"
+              >Maak er een aan</a
+            >
           </div>
         </mat-card-content>
       </mat-card>

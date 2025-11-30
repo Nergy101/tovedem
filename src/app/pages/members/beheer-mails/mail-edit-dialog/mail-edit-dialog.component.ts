@@ -60,4 +60,19 @@ export class MailEditDialogComponent implements OnInit {
   return(): void {
     this.dialogRef.close(this.mail);
   }
+
+  formIsValid(): boolean {
+    return !!this.mail.naam && this.mail.naam.trim() !== '' &&
+           !!this.mail.inhoud && this.mail.inhoud.trim() !== '';
+  }
+
+  getFieldErrors(field: any): string[] {
+    const errors: string[] = [];
+    if (field.errors) {
+      if (field.errors['required']) {
+        errors.push('Dit veld is verplicht');
+      }
+    }
+    return errors;
+  }
 }

@@ -166,6 +166,19 @@ export class ReserveringEditDialogComponent implements OnInit {
     );
   }
 
+  getFieldErrors(field: any): string[] {
+    const errors: string[] = [];
+    if (field.errors) {
+      if (field.errors['required']) {
+        errors.push('Dit veld is verplicht');
+      }
+      if (field.errors['min']) {
+        errors.push('Waarde moet minimaal 0 zijn');
+      }
+    }
+    return errors;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private objectToFormData(obj: Record<string, any>): FormData {
     const formData = new FormData();
