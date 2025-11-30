@@ -7,11 +7,11 @@
     <mat-divider class="divider"></mat-divider>
     <div class="pt-4 row">
       <div class="col-lg-3 col-12">
-        @if(firstImg){
+        @if(firstImg()){
         <img
           class="img-fluid groep-image"
           [alt]="'Foto van ' + (groep()?.naam || 'groep')"
-          ngSrc="{{ firstImg }}"
+          ngSrc="{{ firstImg() }}"
           priority
           width="500"
           height="300"
@@ -30,7 +30,7 @@
   </div>
 
   <div class="row mat-elevation-z2">
-    @if(slides.length > 0) {
+    @if(slides().length > 0) {
     <mdb-carousel
       [controls]="false"
       [indicators]="true"
@@ -39,7 +39,7 @@
       [ride]="true"
       [wrap]="true"
     >
-      @for (slide of slides; track $index) {
+      @for (slide of slides(); track $index) {
       <mdb-carousel-item class="carousel-item">
         <img class="carousel-image" [src]="slide.src" [alt]="slide.title" />
         <div class="carousel-caption d-none d-md-block">

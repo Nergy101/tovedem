@@ -8,12 +8,12 @@
   @defer (when !!content1() && !!content2() && !!content3()) {
   <div class="row">
     <div class="col-lg-2 col-12">
-      @if(!!img_1){
+      @if(!!img_1()){
       <div class="image-wrapper">
         <img
           alt="Informatie over lid worden bij Tovedem"
           class="card-image"
-          [ngSrc]="getImageUrl(collectionId, recordId, img_1)"
+          [ngSrc]="getImageUrl(collectionId(), recordId(), img_1())"
           priority
           width="400"
           height="280"
@@ -43,13 +43,13 @@
   <div class="row pt-4">
     <div class="col-lg-8 col-12" [innerHTML]="content2()"></div>
     <div class="col-lg-4 col-12">
-      @if(!!img_2){
+      @if(!!img_2()){
 
       <div class="image-wrapper">
         <img
           alt="Informatie over lid worden bij Tovedem"
           class="card-image"
-          [ngSrc]="getImageUrl(collectionId, recordId, img_2)"
+          [ngSrc]="getImageUrl(collectionId(), recordId(), img_2())"
           priority
           width="600"
           height="280"
@@ -66,12 +66,12 @@
   </div>
   <div class="row pt-4">
     <div class="col-lg-3 col-12">
-      @if(!!img_3){
+      @if(!!img_3()){
       <div class="image-wrapper">
         <img
           alt="Informatie over lid worden bij Tovedem"
           class="card-image"
-          [ngSrc]="getImageUrl(collectionId, recordId, img_3)"
+          [ngSrc]="getImageUrl(collectionId(), recordId(), img_3())"
           priority
           width="420"
           height="280"
@@ -120,7 +120,8 @@
           type="text"
           required
           name="voornaam"
-          [(ngModel)]="voornaam"
+          [ngModel]="voornaam()"
+          (ngModelChange)="voornaam.set($event)"
         />
       </mat-form-field>
       <mat-form-field class="col-md-4 col-12">
@@ -131,7 +132,8 @@
           type="text"
           required
           name="achternaam"
-          [(ngModel)]="achternaam"
+          [ngModel]="achternaam()"
+          (ngModelChange)="achternaam.set($event)"
         />
       </mat-form-field>
       <mat-form-field class="col-md-4 col-12">
@@ -140,7 +142,8 @@
           placeholder="14-11-1990"
           matInput
           [matDatepicker]="picker1"
-          [(ngModel)]="geboorteDatum"
+          [ngModel]="geboorteDatum()"
+          (ngModelChange)="geboorteDatum.set($event)"
           required
           name="picker1"
         />
@@ -160,13 +163,14 @@
           type="email"
           required
           name="email"
-          [(ngModel)]="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
         />
       </mat-form-field>
 
       <mat-form-field class="col-md-4 col-12">
         <mat-label>Groep</mat-label>
-        <mat-select [(value)]="selectedGroep" required>
+        <mat-select [value]="selectedGroep()" (valueChange)="selectedGroep.set($event)" required>
           @for (groep of groepen(); track $index) {
           <mat-option [value]="groep.id">{{ groep.naam }}</mat-option>
           }
@@ -178,7 +182,8 @@
       <mat-form-field class="flex">
         <mat-label>Bericht</mat-label>
         <textarea
-          [(ngModel)]="message"
+          [ngModel]="message()"
+          (ngModelChange)="message.set($event)"
           matInput
           rows="10"
           required

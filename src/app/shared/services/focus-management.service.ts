@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Injector, afterNextRender } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
@@ -15,6 +15,7 @@ import { filter } from 'rxjs';
 })
 export class FocusManagementService {
   private router = inject(Router);
+  private injector = inject(Injector);
   private previousFocusElement: HTMLElement | null = null;
   private focusableElements: string =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -35,17 +36,17 @@ export class FocusManagementService {
    * Focus the main content area after route navigation
    */
   focusMainContent(): void {
-    // Small delay to ensure DOM is updated
-    setTimeout(() => {
+    // Wait for next render to ensure DOM is updated
+    afterNextRender(() => {
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
         mainContent.focus();
         // Remove focus after a moment (for screen readers to announce)
-        setTimeout(() => {
+        afterNextRender(() => {
           mainContent.blur();
-        }, 100);
+        }, { injector: this.injector });
       }
-    }, 100);
+    }, { injector: this.injector });
   }
 
   /**

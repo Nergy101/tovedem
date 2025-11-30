@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -24,7 +24,6 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-sinterklaas-verzoek-create-dialog',
   imports: [
-    CommonModule,
     MatIconModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -35,8 +34,8 @@ import { ToastrService } from 'ngx-toastr';
     MatDatepickerModule,
     FormsModule,
     MatButton,
-    MatIconButton,
-  ],
+    MatIconButton
+],
   providers: [
     provideNativeDateAdapter(),
     DatePipe,
@@ -53,12 +52,12 @@ export class SinterklaasVerzoekCreateDialogComponent implements OnInit {
   dialogRef = inject(MatDialogRef<SinterklaasVerzoekCreateDialogComponent>);
   data = inject(MAT_DIALOG_DATA);
 
-  name: string | null = null;
-  email: string | null = null;
-  subject: string | null = null;
-  message: string | null = null;
-  status: string = 'nieuw';
-  plannedDate: Date | null = null;
+  name = signal<string | null>(null);
+  email = signal<string | null>(null);
+  subject = signal<string | null>(null);
+  message = signal<string | null>(null);
+  status = signal<string>('nieuw');
+  plannedDate = signal<Date | null>(null);
 
   statussen = ['nieuw', 'inbehandeling', 'ingepland', 'afgerond'];
 
@@ -69,17 +68,17 @@ export class SinterklaasVerzoekCreateDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.data?.existingVerzoek) {
       const existing = this.data.existingVerzoek;
-      this.name = existing.name;
-      this.email = existing.email;
-      this.subject = existing.subject;
-      this.message = existing.message;
-      this.status = existing.status;
+      this.name.set(existing.name);
+      this.email.set(existing.email);
+      this.subject.set(existing.subject);
+      this.message.set(existing.message);
+      this.status.set(existing.status);
       if (existing.plannedDate) {
         // Try to parse the plannedDate string to a Date object
         // It might be in format "12-nov-2025 19:30" or "5 december 2024" or ISO format
         const parsedDate = this.parseDutchDate(existing.plannedDate);
         if (parsedDate) {
-          this.plannedDate = parsedDate;
+          this.plannedDate.set(parsedDate);
         }
       }
     }
@@ -178,14 +177,14 @@ export class SinterklaasVerzoekCreateDialogComponent implements OnInit {
 
   formIsValid(): boolean {
     return (
-      !!this.name &&
-      this.name.trim() !== '' &&
-      !!this.email &&
-      this.email.trim() !== '' &&
-      !!this.subject &&
-      this.subject.trim() !== '' &&
-      !!this.message &&
-      this.message.trim() !== ''
+      !!this.name() &&
+      this.name()!.trim() !== '' &&
+      !!this.email() &&
+      this.email()!.trim() !== '' &&
+      !!this.subject() &&
+      this.subject()!.trim() !== '' &&
+      !!this.message() &&
+      this.message()!.trim() !== ''
     );
   }
 
@@ -196,20 +195,21 @@ export class SinterklaasVerzoekCreateDialogComponent implements OnInit {
 
     try {
       const verzoekData: any = {
-        name: this.name!,
-        email: this.email!,
-        subject: this.subject!,
-        message: this.message!,
-        status: this.status,
+        name: this.name()!,
+        email: this.email()!,
+        subject: this.subject()!,
+        message: this.message()!,
+        status: this.status(),
       };
 
       // Format plannedDate as "12-nov-2025" if it exists
-      if (this.plannedDate) {
+      const plannedDateValue = this.plannedDate();
+      if (plannedDateValue) {
         // Format as "12-nov-2025" (day-month-year with short month name)
-        const day = this.plannedDate.getDate();
+        const day = plannedDateValue.getDate();
         const monthNames = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
-        const month = monthNames[this.plannedDate.getMonth()];
-        const year = this.plannedDate.getFullYear();
+        const month = monthNames[plannedDateValue.getMonth()];
+        const year = plannedDateValue.getFullYear();
         verzoekData.plannedDate = `${day}-${month}-${year}`;
       } else {
         verzoekData.plannedDate = null;

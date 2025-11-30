@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnDestroy,
@@ -33,7 +33,6 @@ import { Subscription } from 'rxjs';
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatIconModule,
-    CommonModule,
     RouterModule,
     MatInputModule,
     FormsModule,
@@ -44,8 +43,8 @@ import { Subscription } from 'rxjs';
     MatCheckboxModule,
     MatDividerModule,
     MdbCarouselModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
   templateUrl: './sinterklaas.component.html',
   styleUrl: './sinterklaas.component.scss',
 })
@@ -55,12 +54,11 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
     { id: number; title: string; description: string; src: string }[] | null
   > = signal(null);
 
-  name: string | null = null;
-  email: string | null = null;
-  subject: string | null = null;
-  message: string | null = null;
-  images: { id: number; title: string; description: string; src: string }[] =
-    [];
+  name = signal<string | null>(null);
+  email = signal<string | null>(null);
+  subject = signal<string | null>(null);
+  message = signal<string | null>(null);
+  images = signal<{ id: number; title: string; description: string; src: string }[]>([]);
   status: string | null = null;
   submitted = signal(false);
 
@@ -94,10 +92,10 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
           if (resultObj.result.success) {
             try {
               await this.client.collection('sinterklaas_verzoeken').create({
-                name: this.name,
-                email: this.email,
-                subject: this.subject,
-                message: this.message,
+                name: this.name(),
+                email: this.email(),
+                subject: this.subject(),
+                message: this.message(),
                 status: 'nieuw',
               });
 
@@ -105,10 +103,10 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
                 'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
               );
 
-              this.name = null;
-              this.email = null;
-              this.subject = null;
-              this.message = null;
+              this.name.set(null);
+              this.email.set(null);
+              this.subject.set(null);
+              this.message.set(null);
               
               this.submitted.set(true);
             } catch (error) {
@@ -139,10 +137,10 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
     this.content.set(record.tekst_1);
 
-    this.images = record.afbeeldingen.map((img: string) => ({
+    this.images.set(record.afbeeldingen.map((img: string) => ({
       id: img,
       src: this.getImageUrl(record.collectionId, record.id, img),
-    }));
+    })));
   }
 
   resetForm(): void {

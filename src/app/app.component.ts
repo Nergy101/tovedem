@@ -1,6 +1,15 @@
 import { registerLocaleData } from '@angular/common';
 import localeNL from '@angular/common/locales/nl';
-import { Component, LOCALE_ID, ViewChild, effect, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  LOCALE_ID,
+  ViewChild,
+  effect,
+  inject,
+  OnInit,
+  Injector,
+  afterNextRender,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -49,6 +58,7 @@ export class AppComponent implements OnInit {
   breakpointService = inject(BreakpointService);
   themeService = inject(ThemeService);
   focusManagementService = inject(FocusManagementService);
+  injector = inject(Injector);
 
   @ViewChild(MatDrawer) drawer?: MatDrawer;
 
@@ -58,18 +68,24 @@ export class AppComponent implements OnInit {
       if (this.authService.isLoggedIn()) {
         if (this.sideDrawerService.isOpen()) {
           // allow to render the drawer and open it
-          setTimeout(() => {
-            this.drawer?.open();
-          }, 100);
+          afterNextRender(
+            () => {
+              this.drawer?.open();
+            },
+            { injector: this.injector }
+          );
 
           return;
         }
       }
       localStorage.setItem('sideDrawerOpen', 'false');
       // allow to render the drawer and open it
-      setTimeout(() => {
-        this.drawer?.close();
-      }, 100);
+      afterNextRender(
+        () => {
+          this.drawer?.close();
+        },
+        { injector: this.injector }
+      );
     });
   }
 

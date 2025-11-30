@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -12,13 +12,12 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 @Component({
   selector: 'app-image-upload-dialog',
   imports: [
-    CommonModule,
     MatDialogModule,
     MatButton,
     MatIcon,
     MatProgressSpinnerModule,
-    MatProgressBarModule,
-  ],
+    MatProgressBarModule
+],
   templateUrl: './image-upload-dialog.component.html',
   styleUrl: './image-upload-dialog.component.scss',
 })

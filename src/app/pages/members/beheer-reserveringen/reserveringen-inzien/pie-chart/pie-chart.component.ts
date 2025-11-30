@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   AfterContentChecked,
   Component,
@@ -26,7 +26,7 @@ export interface ChartOptions {
 
 @Component({
   selector: 'app-pie-chart',
-  imports: [CommonModule, NgApexchartsModule],
+  imports: [NgApexchartsModule],
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.scss',
 })

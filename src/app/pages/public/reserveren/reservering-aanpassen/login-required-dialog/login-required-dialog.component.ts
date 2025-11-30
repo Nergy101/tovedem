@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-required-dialog',
-  imports: [MatDialogModule, CommonModule, MatButton],
+  imports: [MatDialogModule, MatButton],
   templateUrl: './login-required-dialog.component.html',
   styleUrls: ['./login-required-dialog.component.scss'],
 })

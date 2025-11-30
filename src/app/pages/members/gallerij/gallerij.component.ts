@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   computed,
@@ -27,14 +27,13 @@ import { ImageUploadDialogComponent } from './image-upload-dialog/image-upload-d
 @Component({
   selector: 'app-gallerij',
   imports: [
-    CommonModule,
     MatCardModule,
     MatButtonModule,
     MatIconButton,
     MatIcon,
     MatPaginatorModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './gallerij.component.html',
   styleUrl: './gallerij.component.scss',
 })

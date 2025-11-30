@@ -35,7 +35,7 @@ import { NgOptimizedImage } from '@angular/common';
 export class GroepComponent implements OnInit {
   groepsNaam: string;
   url = 'https://pocketbase.nergy.space/';
-  firstImg = '';
+  firstImg = signal('');
   client = inject(PocketbaseService);
 
   groep: WritableSignal<Groep | null> = signal(null);
@@ -46,7 +46,7 @@ export class GroepComponent implements OnInit {
 
   spelers: WritableSignal<Speler[] | null> = signal(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  slides: any[] = [];
+  slides = signal<any[]>([]);
 
   seoService = inject(SeoService);
 
@@ -108,16 +108,16 @@ export class GroepComponent implements OnInit {
 
     this.afgelopenVoorstellingen.set(voorstellingen);
 
-    this.slides = groep.afbeeldingen?.map((img: string) => ({
+    this.slides.set(groep.afbeeldingen?.map((img: string) => ({
       id: img,
       src: this.getImageUrl(groep.collectionId, groep.id, img),
-    })) ?? [];
-    this.firstImg = this.slides[0]?.src ?? '';
+    })) ?? []);
+    this.firstImg.set(this.slides()[0]?.src ?? '');
 
     // Add Organization structured data
     if (groep) {
       const groupUrl = `https://tovedem.nergy.space/groep/${groep.naam}`;
-      const images = this.slides.map((slide) => slide.src);
+      const images = this.slides().map((slide) => slide.src);
 
       this.seoService.updateOpenGraphTags({
         title: `Tovedem - Groep - ${groep.naam}`,

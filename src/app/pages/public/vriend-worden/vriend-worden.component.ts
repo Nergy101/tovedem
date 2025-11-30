@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnDestroy,
@@ -28,21 +28,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-vriend-worden',
-    imports: [MatProgressSpinnerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        CommonModule,
-        RouterModule,
-        MatInputModule,
-        FormsModule,
-        MatDatepickerModule,
-        MatButtonModule,
-        RouterModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatDividerModule,
-        MatTooltipModule,
-    ],
+    imports: [MatProgressSpinnerModule, MatFormFieldModule, MatIconModule, RouterModule, MatInputModule, FormsModule, MatDatepickerModule, MatButtonModule, RouterModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatTooltipModule],
     templateUrl: './vriend-worden.component.html',
     styleUrl: './vriend-worden.component.scss'
 })

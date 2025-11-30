@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,7 +28,6 @@ import { SeoService } from '../../../shared/services/seo.service';
   styleUrl: './agenda.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     MatCardModule,
     MatButtonModule,
     VoorstellingLineComponent,
@@ -37,8 +36,8 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    FormsModule,
-  ],
+    FormsModule
+],
 })
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';

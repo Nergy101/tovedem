@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   inject,
@@ -21,15 +21,14 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
 @Component({
     selector: 'app-login',
     imports: [
-        CommonModule,
-        MatInputModule,
-        FormsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        RouterModule,
-    ],
+    MatInputModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    RouterModule
+],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   Input,
@@ -24,12 +24,11 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
   imports: [
     MatProgressSpinnerModule,
     MatButtonModule,
-    CommonModule,
     MatCardModule,
     MatButtonModule,
     MatDividerModule,
-    NavButtonComponent,
-  ],
+    NavButtonComponent
+],
 })
 export class ReserveringGeslaagdComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
@@ -66,6 +65,7 @@ export class ReserveringGeslaagdComponent implements OnInit {
     });
 
     // Clear confetti after a certain duration
+    // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
     setTimeout(() => confetti.reset(), 3000);
   }
 }

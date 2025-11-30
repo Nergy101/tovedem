@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -14,12 +14,11 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 @Component({
   selector: 'app-nieuws-image-dialog',
   imports: [
-    CommonModule,
     MatDialogModule,
     MatButton,
     MatProgressSpinner,
-    MatIcon,
-  ],
+    MatIcon
+],
   templateUrl: './nieuws-image-dialog.component.html',
   styleUrl: './nieuws-image-dialog.component.scss',
 })

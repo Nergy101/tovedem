@@ -165,11 +165,11 @@ export class ReserverenComponent implements OnInit {
     );
   });
 
-  loaded = false;
+  loaded = signal(false);
 
   voorstellingOmschrijving = '';
-  voorstellingsNaam = '';
-  groepsNaam = '';
+  voorstellingsNaam = signal('');
+  groepsNaam = signal('');
   datum1: Date | null = null;
   datum2: Date | null = null;
   today = new Date();
@@ -193,7 +193,7 @@ export class ReserverenComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.loadData();
-    this.loaded = true;
+    this.loaded.set(true);
   }
 
   async loadData(): Promise<void> {
@@ -203,7 +203,7 @@ export class ReserverenComponent implements OnInit {
         this.voorstellingId
       );
 
-      this.voorstellingsNaam = voorstelling.titel;
+      this.voorstellingsNaam.set(voorstelling.titel);
       this.datum1 = new Date(voorstelling.datum_tijd_1 ?? '');
       this.datum2 = new Date(voorstelling.datum_tijd_2 ?? '');
 
@@ -212,7 +212,7 @@ export class ReserverenComponent implements OnInit {
         voorstelling.groep
       );
 
-      this.groepsNaam = groep.naam;
+      this.groepsNaam.set(groep.naam);
 
       // Add TheaterEvent structured data
       this.seoService.updateOpenGraphTags({

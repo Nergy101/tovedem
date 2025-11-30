@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -29,7 +29,6 @@ import { ThemeService } from '../../../shared/services/theme.service';
 @Component({
   selector: 'app-beheer-sponsoren',
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule,
     FormsModule,
@@ -37,8 +36,8 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatInputModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
   templateUrl: './beheer-sponsoren.component.html',
   styleUrl: './beheer-sponsoren.component.scss',
 })

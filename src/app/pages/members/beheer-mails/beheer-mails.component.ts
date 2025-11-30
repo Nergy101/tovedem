@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -27,7 +27,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-beheer-mails',
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule,
     FormsModule,
@@ -35,8 +34,8 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
   templateUrl: './beheer-mails.component.html',
   styleUrl: './beheer-mails.component.scss',
 })

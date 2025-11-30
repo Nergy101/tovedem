@@ -10,7 +10,7 @@
   <mat-divider class="divider" style="margin-bottom: 1rem"></mat-divider>
 
   <div class="row">
-    @if(images.length > 0) {
+    @if(images().length > 0) {
     <mdb-carousel
       [controls]="false"
       [indicators]="true"
@@ -21,7 +21,7 @@
       class="mat-elevation-z3"
       style="align-content: center"
     >
-      @for (slide of images; track $index) {
+      @for (slide of images(); track $index) {
 
       <mdb-carousel-item sclass="carousel-item">
         <img
@@ -59,7 +59,8 @@
         type="text"
         required
         name="name"
-        [(ngModel)]="name"
+        [ngModel]="name()"
+        (ngModelChange)="name.set($event)"
       />
     </mat-form-field>
     <mat-form-field class="col-12 col-md-4">
@@ -70,7 +71,8 @@
         type="email"
         required
         name="email"
-        [(ngModel)]="email"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
       />
     </mat-form-field>
     <mat-form-field class="col-12 col-md-4">
@@ -81,13 +83,15 @@
         type="text"
         required
         name="subject"
-        [(ngModel)]="subject"
+        [ngModel]="subject()"
+        (ngModelChange)="subject.set($event)"
       />
     </mat-form-field>
     <mat-form-field class="col-12">
       <mat-label>Bericht</mat-label>
       <textarea
-        [(ngModel)]="message"
+        [ngModel]="message()"
+        (ngModelChange)="message.set($event)"
         matInput
         rows="10"
         required
@@ -98,18 +102,18 @@
     <div class="d-flex">
       <span
         [matTooltip]="
-          !name || !email || !subject || !message
+          !name() || !email() || !subject() || !message()
             ? 'Vul het formulier in om te verzenden'
             : ''
         "
-        [matTooltipDisabled]="!(!name || !email || !subject || !message)"
+        [matTooltipDisabled]="!(!name() || !email() || !subject() || !message())"
         style="display: flex; flex: 1"
       >
         <button
           class="flex"
           mat-flat-button
           (click)="verstuurSinterklaasMail()"
-          [disabled]="!name || !email || !subject || !message"
+          [disabled]="!name() || !email() || !subject() || !message()"
         >
           Verzenden
         </button>

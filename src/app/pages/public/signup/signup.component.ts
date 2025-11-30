@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,14 +18,13 @@ import { ErrorService } from '../../../shared/services/error.service';
 @Component({
   selector: 'app-signup',
   imports: [
-    CommonModule,
     MatInputModule,
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-    RouterModule,
-  ],
+    RouterModule
+],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })

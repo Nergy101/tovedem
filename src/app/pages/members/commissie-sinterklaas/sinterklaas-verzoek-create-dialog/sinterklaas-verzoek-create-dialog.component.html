@@ -24,7 +24,8 @@
             name="name"
             tabindex="0"
             required
-            [(ngModel)]="name"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
             placeholder="Volledige naam"
           />
         </mat-form-field>
@@ -35,7 +36,8 @@
             type="email"
             name="email"
             required
-            [(ngModel)]="email"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
             placeholder="email@voorbeeld.nl"
           />
         </mat-form-field>
@@ -49,13 +51,14 @@
             type="text"
             name="subject"
             required
-            [(ngModel)]="subject"
+            [ngModel]="subject()"
+            (ngModelChange)="subject.set($event)"
             placeholder="Onderwerp van het verzoek"
           />
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Status</mat-label>
-          <mat-select [(ngModel)]="status" name="status">
+          <mat-select [ngModel]="status()" (ngModelChange)="status.set($event)" name="status">
             @for (statusOption of statussen; track statusOption) {
             <mat-option [value]="statusOption">{{
               statusOption.charAt(0).toUpperCase() + statusOption.slice(1)
@@ -73,7 +76,8 @@
             rows="6"
             name="message"
             required
-            [(ngModel)]="message"
+            [ngModel]="message()"
+            (ngModelChange)="message.set($event)"
             placeholder="Typ hier het bericht"
           ></textarea>
         </mat-form-field>
@@ -85,7 +89,8 @@
           <input
             matInput
             [matDatepicker]="picker"
-            [(ngModel)]="plannedDate"
+            [ngModel]="plannedDate()"
+            (ngModelChange)="plannedDate.set($event)"
             name="plannedDate"
             placeholder="Selecteer een datum"
           />

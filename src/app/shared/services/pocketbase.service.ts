@@ -45,13 +45,6 @@ export class PocketbaseService {
 
     // Force enable debug mode - remove this line to disable
     this.debugMode = true;
-
-    console.log('[Cache] PocketbaseService initialized');
-    console.log('[Cache] Debug mode:', this.debugMode);
-    console.log('[Cache] Environment production:', this.environment.production);
-    if (this.debugMode) {
-      console.log('[Cache] Debug mode enabled. Cache TTL: 15 minutes');
-    }
   }
 
   async create<T>(collectionName: string, item: Partial<T>): Promise<T> {
@@ -113,27 +106,15 @@ export class PocketbaseService {
       sort?: string;
     }
   ): Promise<T[]> {
-    // Always log to verify method is being called
-    console.log(`[Cache] getAll() called - collection: ${collectionName}`, {
-      debugMode: this.debugMode,
-      options,
-    });
-
     const cacheKey = this.generateCacheKey('getAll', collectionName, options);
-    console.log(`[Cache] Generated cache key: ${cacheKey}`);
 
     const cached = this.getCached<T[]>(cacheKey);
     if (cached !== null) {
-      console.log(`[Cache] Returning cached data for: ${cacheKey}`);
       return cached as T[];
     }
 
-    console.log(`[Cache] Cache miss - fetching from API: ${collectionName}`);
     const data = await this.getCollection(collectionName).getFullList(options);
     const typedData = data as T[];
-    console.log(`[Cache] Storing in cache: ${cacheKey}`, {
-      dataLength: typedData.length,
-    });
     this.setCached(cacheKey, typedData);
     return typedData;
   }
@@ -186,18 +167,9 @@ export class PocketbaseService {
         }
       });
       keysToDelete.forEach((key) => this.cache.delete(key));
-      if (this.debugMode) {
-        console.log(
-          `[Cache CLEARED] ${keysToDelete.length} entries for collection: ${collectionName}`
-        );
-      }
     } else {
       // Clear all cache
-      const size = this.cache.size;
       this.cache.clear();
-      if (this.debugMode) {
-        console.log(`[Cache CLEARED] All ${size} entries`);
-      }
     }
   }
 
@@ -245,14 +217,7 @@ export class PocketbaseService {
    */
   logCacheStats(): void {
     const stats = this.getCacheStats();
-    console.group('[Cache Statistics]');
-    console.log(`Cache size: ${stats.size}/${stats.maxSize}`);
-    if (stats.entries.length > 0) {
-      console.table(stats.entries);
-    } else {
-      console.log('No cached entries');
-    }
-    console.groupEnd();
+    // Cache statistics logging removed
   }
 
   /**
@@ -273,9 +238,6 @@ export class PocketbaseService {
   private getCached<T>(cacheKey: string): T | null {
     const entry = this.cache.get(cacheKey);
     if (!entry) {
-      if (this.debugMode) {
-        console.log(`[Cache MISS] ${cacheKey}`);
-      }
       return null;
     }
 
@@ -285,18 +247,9 @@ export class PocketbaseService {
     if (age > entry.ttl) {
       // Cache expired, remove it
       this.cache.delete(cacheKey);
-      if (this.debugMode) {
-        console.log(
-          `[Cache EXPIRED] ${cacheKey} (age: ${Math.round(age / 1000)}s)`
-        );
-      }
       return null;
     }
 
-    if (this.debugMode) {
-      const remainingTtl = Math.round((entry.ttl - age) / 1000);
-      console.log(`[Cache HIT] ${cacheKey} (TTL remaining: ${remainingTtl}s)`);
-    }
     return entry.data as T;
   }
 
@@ -309,9 +262,6 @@ export class PocketbaseService {
       const firstKey = this.cache.keys().next().value;
       if (firstKey) {
         this.cache.delete(firstKey);
-        if (this.debugMode) {
-          console.log(`[Cache] Removed oldest entry to make room: ${firstKey}`);
-        }
       }
     }
 
@@ -320,14 +270,6 @@ export class PocketbaseService {
       timestamp: Date.now(),
       ttl: ttl ?? this.defaultTtl,
     });
-
-    if (this.debugMode) {
-      console.log(
-        `[Cache STORED] ${cacheKey} (TTL: ${Math.round(
-          (ttl ?? this.defaultTtl) / 1000
-        )}s)`
-      );
-    }
   }
 
   /**

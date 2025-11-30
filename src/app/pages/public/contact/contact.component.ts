@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,19 +24,18 @@ import { SeoService } from '../../../shared/services/seo.service';
 @Component({
     selector: 'app-contact',
     imports: [
-        CommonModule,
-        RouterModule,
-        MatButtonModule,
-        MatCardModule,
-        MatInputModule,
-        MatIconModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatTooltipModule,
-        MatDividerModule
-    ],
+    RouterModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatTooltipModule,
+    MatDividerModule
+],
     providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
     templateUrl: './contact.component.html',
     styleUrl: './contact.component.scss'

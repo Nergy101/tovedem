@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -15,11 +15,10 @@ import { Sponsor } from '../../../../models/domain/sponsor.model';
   selector: 'app-verificatie-match-dialog',
   imports: [
     MatDialogModule,
-    CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
   templateUrl: './verificatie-match-dialog.component.html',
   styleUrl: './verificatie-match-dialog.component.scss',
 })

@@ -1,14 +1,14 @@
-@defer (when loaded) {
+@defer (when loaded()) {
 <div class="container">
   <div class="row" style="padding-top: 2em">
     <mat-card>
       <mat-card-header>
         <mat-card-title>
-          <h2>Reserveren voor voorstelling: {{ voorstellingsNaam }}</h2>
+          <h2>Reserveren voor voorstelling: {{ voorstellingsNaam() }}</h2>
         </mat-card-title>
         <mat-card-subtitle>
           <h4>
-            opgevoerd door: {{ groepsNaam }}, locatie:
+            opgevoerd door: {{ groepsNaam() }}, locatie:
             <a href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland" target="_blank" rel="noopener noreferrer">
               <span>De Schalm</span>
             </a>

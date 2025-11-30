@@ -1,8 +1,8 @@
-const constants = require(`${__hooks}/constants.js`);
+const constants = require('./constants.js');
 
 /* Send an email after somebody did a vriend worden verzoek */
 onRecordAfterCreateSuccess((e) => {
-  const mailing = require(`${__hooks}/mailing.js`);
+  const mailing = require('./mailing.js');
 
   const verzoek = e.record;
 

@@ -577,6 +577,7 @@ export class PrintenComponent implements OnInit {
         }
       );
       // Navigate to reserveringen page after a short delay
+      // Using setTimeout is fine here as router.navigate() doesn't need Angular change detection
       setTimeout(() => {
         this.router.navigate(['/beheer-reserveringen'], {
           queryParams: this.selectedVoorstelling()

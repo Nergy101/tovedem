@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import {
   Component,
   OnDestroy,
@@ -39,7 +39,6 @@ import { SeoService } from '../../../shared/services/seo.service';
   styleUrl: './lid-worden.component.scss',
   imports: [
     MatProgressSpinnerModule,
-    CommonModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
@@ -51,8 +50,8 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatSelectModule,
     MatDividerModule,
     MatTooltipModule,
-    NgOptimizedImage,
-  ],
+    NgOptimizedImage
+],
   providers: [
     provideNativeDateAdapter(),
     DatePipe,
@@ -61,22 +60,22 @@ import { SeoService } from '../../../shared/services/seo.service';
 })
 export class LidWordenComponent implements OnInit, OnDestroy {
   //info om lid te worden
-  recordId = '';
-  collectionId = '';
+  recordId = signal('');
+  collectionId = signal('');
   content1: WritableSignal<string | null> = signal(null);
   content2: WritableSignal<string | null> = signal(null);
   content3: WritableSignal<string | null> = signal(null);
-  img_1 = '';
-  img_2 = '';
-  img_3 = '';
+  img_1 = signal('');
+  img_2 = signal('');
+  img_3 = signal('');
 
   //formulier
-  voornaam: string | null = null;
-  achternaam: string | null = null;
-  email: string | null = null;
-  message: string | null = null;
-  geboorteDatum?: Date;
-  selectedGroep: Groep | null = null;
+  voornaam = signal<string | null>(null);
+  achternaam = signal<string | null>(null);
+  email = signal<string | null>(null);
+  message = signal<string | null>(null);
+  geboorteDatum = signal<Date | undefined>(undefined);
+  selectedGroep = signal<Groep | null>(null);
   groepen: WritableSignal<Groep[]> = signal([]);
 
   loading = signal(false);
@@ -104,11 +103,11 @@ export class LidWordenComponent implements OnInit, OnDestroy {
       await this.client.getAll('lid_worden')
     )[0] as unknown as BaseModel;
 
-    this.recordId = record.id;
-    this.collectionId = record.collectionId;
-    this.img_1 = record.img_1;
-    this.img_2 = record.img_2;
-    this.img_3 = record.img_3;
+    this.recordId.set(record.id);
+    this.collectionId.set(record.collectionId);
+    this.img_1.set(record.img_1);
+    this.img_2.set(record.img_2);
+    this.img_3.set(record.img_3);
 
     this.content1.set(record.tekst_1);
     this.content2.set(record.tekst_2);
@@ -152,16 +151,16 @@ export class LidWordenComponent implements OnInit, OnDestroy {
           if (resultObj.result.success) {
             try {
               await this.clientB.collection('leden').create({
-                voornaam: this.voornaam,
-                achternaam: this.achternaam,
-                groep: this.selectedGroep,
-                bericht: this.message,
-                geboorte_datum: this.geboorteDatum,
-                email: this.email,
+                voornaam: this.voornaam(),
+                achternaam: this.achternaam(),
+                groep: this.selectedGroep(),
+                bericht: this.message(),
+                geboorte_datum: this.geboorteDatum(),
+                email: this.email(),
               });
 
               this.toastr.success(
-                `Bedankt voor de aanmelding, ${this.voornaam}.`,
+                `Bedankt voor de aanmelding, ${this.voornaam()}.`,
                 'Aanvraag verzonden!'
               );
 
@@ -173,43 +172,52 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               });
 
               // Clear confetti after a certain duration
+              // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
               setTimeout(() => confetti.reset(), 3000);
 
-              this.voornaam = null;
-              this.achternaam = null;
-              this.email = null;
-              this.message = null;
-              this.geboorteDatum = undefined;
-              this.selectedGroep = null;
+              this.voornaam.set(null);
+              this.achternaam.set(null);
+              this.email.set(null);
+              this.message.set(null);
+              this.geboorteDatum.set(undefined);
+              this.selectedGroep.set(null);
               
               this.submitted.set(true);
+              this.loading.set(false);
             } catch (error) {
               console.error(error);
               this.toastr.error(
                 'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
               );
+              this.loading.set(false);
             }
+          } else {
+            this.loading.set(false);
           }
+        },
+        error: () => {
+          this.loading.set(false);
+          this.toastr.error(
+            'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+          );
         },
       })
     );
-
-    this.loading.set(false);
   }
 
   formIsValid(): boolean {
     return (
-      !!this.voornaam &&
-      this.voornaam != '' &&
-      !!this.achternaam &&
-      this.achternaam != '' &&
-      !!this.selectedGroep &&
-      !!this.email &&
-      this.email != '' &&
-      !!this.geboorteDatum &&
-      !!this.selectedGroep &&
-      !!this.message &&
-      this.message != ''
+      !!this.voornaam() &&
+      this.voornaam() != '' &&
+      !!this.achternaam() &&
+      this.achternaam() != '' &&
+      !!this.selectedGroep() &&
+      !!this.email() &&
+      this.email() != '' &&
+      !!this.geboorteDatum() &&
+      !!this.selectedGroep() &&
+      !!this.message() &&
+      this.message() != ''
     );
   }
 

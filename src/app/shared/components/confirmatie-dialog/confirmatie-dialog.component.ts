@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -9,7 +9,7 @@ import {
 
 @Component({
   selector: 'app-confirmatie-dialog',
-  imports: [MatDialogModule, CommonModule, MatButton],
+  imports: [MatDialogModule, MatButton],
   templateUrl: './confirmatie-dialog.component.html',
   styleUrls: ['./confirmatie-dialog.component.scss'],
 })

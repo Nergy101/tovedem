@@ -122,8 +122,8 @@ export class ReserveringAanpassenComponent {
   loaded = signal(false);
 
   voorstellingOmschrijving = '';
-  voorstellingsNaam = '';
-  groepsNaam = '';
+  voorstellingsNaam = signal('');
+  groepsNaam = signal('');
   datum1: Date | null = null;
   datum2: Date | null = null;
   today = new Date();
@@ -307,7 +307,7 @@ export class ReserveringAanpassenComponent {
           this.opmerking.set(reservering.opmerking || '');
 
           // Set voorstelling data
-          this.voorstellingsNaam = voorstelling.titel;
+          this.voorstellingsNaam.set(voorstelling.titel);
           this.datum1 = new Date(voorstelling.datum_tijd_1);
           if (voorstelling.datum_tijd_2) {
             this.datum2 = new Date(voorstelling.datum_tijd_2);
@@ -340,9 +340,9 @@ export class ReserveringAanpassenComponent {
 
           // Set groep data (if available)
           if (groep) {
-            this.groepsNaam = groep.naam;
+            this.groepsNaam.set(groep.naam);
           } else {
-            this.groepsNaam = 'Onbekend';
+            this.groepsNaam.set('Onbekend');
             console.warn('Groep data niet beschikbaar');
           }
 

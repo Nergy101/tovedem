@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -30,7 +30,6 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-beheer-leden',
   imports: [
-    CommonModule,
     MatIconModule,
     MatButtonModule,
     FormsModule,
@@ -39,8 +38,8 @@ import { MatCardModule } from '@angular/material/card';
     MatMenuModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatCardModule,
-  ],
+    MatCardModule
+],
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',
 })

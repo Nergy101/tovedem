@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   Component,
   inject,
@@ -18,14 +18,13 @@ import { Environment } from '../../../environment';
 @Component({
   selector: 'app-footer',
   imports: [
-    CommonModule,
     MatListModule,
     RouterModule,
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-    NgOptimizedImage,
-  ],
+    NgOptimizedImage
+],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
