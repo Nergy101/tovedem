@@ -1,3 +1,13 @@
+/* Set default status "nieuw" for new members */
+onRecordBeforeCreateRequest((e) => {
+  const lid = e.record;
+  
+  // Set default status to "nieuw" if not already set
+  if (!lid.get("status") || lid.get("status") === "") {
+    lid.set("status", "nieuw");
+  }
+}, "leden");
+
 /* Send an email after somebody did a nieuwe lid aanmelding */
 onRecordAfterCreateSuccess((e) => {
   const constants = require(`${__hooks}/constants.js`);

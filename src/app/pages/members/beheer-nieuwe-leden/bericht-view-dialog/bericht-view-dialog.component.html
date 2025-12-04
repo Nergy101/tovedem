@@ -11,6 +11,28 @@
 </div>
 
 <mat-dialog-content class="container p-4">
+  <div class="info-section">
+    @if (voornaam) {
+    <div class="info-row">
+      <strong>Voornaam:</strong> {{ voornaam }}
+    </div>
+    }
+    @if (achternaam) {
+    <div class="info-row">
+      <strong>Achternaam:</strong> {{ achternaam }}
+    </div>
+    }
+    @if (geboortedatum) {
+    <div class="info-row">
+      <strong>Geboortedatum:</strong> {{ formatDate(geboortedatum) }}
+    </div>
+    }
+    @if (groep) {
+    <div class="info-row">
+      <strong>Groep:</strong> {{ groep }}
+    </div>
+    }
+  </div>
   <div class="bericht-content">{{ bericht }}</div>
 </mat-dialog-content>
 

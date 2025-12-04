@@ -11,6 +11,21 @@ mat-dialog-content {
   overflow-y: auto;
 }
 
+.info-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.info-row {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
 .bericht-content {
   white-space: pre-wrap;
   word-wrap: break-word;

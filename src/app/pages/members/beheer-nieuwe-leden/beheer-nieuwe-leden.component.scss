@@ -67,24 +67,24 @@ html.lightMode .table {
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
-  
+
   .table {
     min-width: 900px; // Ensure table has minimum width for scrolling
   }
-  
+
   &::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.5);
     }
@@ -93,14 +93,14 @@ html.lightMode .table {
 
 html.darkMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.5);
     }
@@ -111,16 +111,16 @@ html.darkMode .table-responsive {
 html.darkMode mat-card.table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   .table {
     background-color: transparent !important;
   }
-  
+
   // Ensure all text inside is visible
   * {
     color: var(--mat-sys-on-surface) !important;
   }
-  
+
   // But allow table-specific styling to override
   .table thead th,
   .table tbody td {
@@ -131,7 +131,7 @@ html.darkMode mat-card.table-responsive {
 html.lightMode mat-card.table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
   color: var(--mat-sys-on-surface) !important;
-  
+
   .table {
     background-color: transparent !important;
   }
@@ -139,14 +139,14 @@ html.lightMode mat-card.table-responsive {
 
 html.lightMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.4);
     }
@@ -168,66 +168,65 @@ html.lightMode .table-responsive {
 
 .bericht-button {
   text-transform: none;
-  text-align: left;
+  text-align: center;
   padding: 0.5em 0.75em;
-  min-width: auto;
+  width: 100%;
   font-weight: 500;
   line-height: inherit;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5em;
   border-radius: 4px;
   transition: all 0.2s ease;
   background-color: rgba(125, 179, 232, 0.1);
-  color: #7db3e8;
-  
+
   .bericht-icon {
     font-size: 18px;
     width: 18px;
     height: 18px;
-    color: #7db3e8;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
-  
+
+  ::ng-deep .mat-mdc-button-base .mat-icon {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
   .bericht-text {
     flex: 1;
   }
-  
+
   &:hover {
     background-color: rgba(125, 179, 232, 0.2);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(125, 179, 232, 0.2);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
 }
 
-// Dark theme adjustments
-html.darkMode .bericht-button {
-  background-color: rgba(125, 179, 232, 0.15);
-  color: #9bc5f0;
-  
-  .bericht-icon {
-    color: #9bc5f0;
-  }
-  
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.25);
+// Status select styling
+.status-select {
+  width: 100%;
+  min-width: 150px;
+
+  ::ng-deep {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 40px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
   }
 }
-
-// Light theme adjustments
-html.lightMode .bericht-button {
-  background-color: rgba(125, 179, 232, 0.1);
-  color: #5a9bd4;
-  
-  .bericht-icon {
-    color: #5a9bd4;
-  }
-  
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.2);
-  }
-}
-

@@ -8,6 +8,7 @@ export interface Lid extends BaseModel {
   groep?: string;
   bericht: string;
   geboorte_datum: string;
+  status?: 'nieuw' | 'geverifieerd' | 'gekoppeld';
   expand?: {
     groep?: Groep;
   };

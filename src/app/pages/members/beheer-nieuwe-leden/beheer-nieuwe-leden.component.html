@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="container">
     <div class="row">
-      <p class="display-1">Nieuwe Leden Aanmeldingen</p>
+      <p class="display-1">Leden Aanmeldingen</p>
     </div>
 
     <div class="row pt-4">
@@ -26,12 +26,9 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Voornaam</th>
-              <th scope="col">Achternaam</th>
               <th scope="col">Email</th>
-              <th scope="col">Geboortedatum</th>
-              <th scope="col">Groep</th>
               <th scope="col">Bericht</th>
+              <th scope="col">Status</th>
               <th scope="col">Aangemaakt</th>
               @if (!!authService.isGlobalAdmin) {
               <th></th>
@@ -39,47 +36,37 @@
             </tr>
           </thead>
           <tbody>
-            @for (lid of leden(); track $index) {
+            @for (lid of leden(); track lid.id) {
             <tr>
-              <td>{{ lid.voornaam }}</td>
-              <td>{{ lid.achternaam }}</td>
               <td>{{ lid.email }}</td>
-              <td>{{ formatDate(lid.geboorte_datum) }}</td>
-              <td>
-                @if (lid.expand?.groep) {
-                {{ lid.expand?.groep?.naam ?? "N.V.T." }}
-                } @else { - }
-              </td>
               <td>
                 @if (lid.bericht && lid.bericht.length > 0) {
                 <button
                   mat-button
-                  color="primary"
                   class="bericht-button"
-                  (click)="
-                    openBerichtDialog(
-                      lid.bericht,
-                      lid.voornaam + ' ' + lid.achternaam
-                    )
-                  "
-                  [matTooltip]="
-                    lid.bericht.length > 50
-                      ? 'Klik om volledig bericht te bekijken'
-                      : 'Klik om bericht te bekijken'
-                  "
+                  (click)="openBerichtDialog(lid)"
+                  [matTooltip]="'Klik om volledig bericht te bekijken'"
                 >
-                  <mat-icon class="bericht-icon">visibility</mat-icon>
-                  <span class="bericht-text">
-                    {{
-                      lid.bericht.length > 50
-                        ? (lid.bericht | slice : 0 : 50) + "..."
-                        : lid.bericht
-                    }}
-                  </span>
+                  <mat-icon [style.color]="'#000'"
+                    >chat_bubble_outline</mat-icon
+                  >
+                  <span>Bekijken</span>
                 </button>
                 } @else {
                 <span>-</span>
                 }
+              </td>
+              <td>
+                <mat-form-field appearance="outline" class="status-select">
+                  <mat-select
+                    [value]="lid.status || 'nieuw'"
+                    (selectionChange)="updateStatus(lid, $event.value)"
+                  >
+                    <mat-option value="nieuw">Nieuw</mat-option>
+                    <mat-option value="geverifieerd">Geverifieerd</mat-option>
+                    <mat-option value="gekoppeld">Gekoppeld</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </td>
               <td>{{ formatDate(lid.created) }}</td>
 
@@ -98,7 +85,7 @@
             } @empty {
             <tr>
               <td
-                [attr.colspan]="authService.isGlobalAdmin ? 8 : 7"
+                [attr.colspan]="authService.isGlobalAdmin ? 5 : 4"
                 style="text-align: center; padding: 2em"
               >
                 Geen aanmeldingen gevonden

@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom, debounceTime, tap } from 'rxjs';
@@ -36,6 +37,7 @@ import { BerichtViewDialogComponent } from './bericht-view-dialog/bericht-view-d
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatCardModule,
@@ -80,27 +82,32 @@ export class BeheerNieuweLedenComponent implements OnInit {
 
   private async loadLeden(searchTerm?: string): Promise<void> {
     try {
+      let loadedLeden: Lid[];
       if (!searchTerm || searchTerm === '') {
-        this.leden.set(
-          await this.client.directClient.collection('leden').getFullList({
-            expand: 'groep',
-            sort: '-created',
-          })
-        );
+        loadedLeden = await this.client.directClient.collection('leden').getFullList({
+          expand: 'groep',
+          sort: '-created',
+        });
       } else {
-        this.leden.set(
-          await this.client.directClient.collection('leden').getFullList({
-            expand: 'groep',
-            sort: '-created',
-            filter: this.client.directClient.filter(
-              'voornaam ~ {:search} || achternaam ~ {:search} || email ~ {:search}',
-              {
-                search: searchTerm,
-              }
-            ),
-          })
-        );
+        loadedLeden = await this.client.directClient.collection('leden').getFullList({
+          expand: 'groep',
+          sort: '-created',
+          filter: this.client.directClient.filter(
+            'voornaam ~ {:search} || achternaam ~ {:search} || email ~ {:search}',
+            {
+              search: searchTerm,
+            }
+          ),
+        });
       }
+      
+      // Ensure each lid has a status
+      loadedLeden = loadedLeden.map(lid => ({
+        ...lid,
+        status: lid.status || 'nieuw'
+      }));
+      
+      this.leden.set(loadedLeden);
     } catch (error) {
       console.error('Error loading leden:', error);
       this.toastr.error('Fout bij het laden van nieuwe ledenaanmeldingen');
@@ -152,14 +159,46 @@ export class BeheerNieuweLedenComponent implements OnInit {
     });
   }
 
-  openBerichtDialog(bericht: string, naam: string): void {
+  openBerichtDialog(lid: Lid): void {
     this.dialog.open(BerichtViewDialogComponent, {
       data: {
-        bericht: bericht,
-        naam: naam,
+        bericht: lid.bericht,
+        naam: lid.voornaam + ' ' + lid.achternaam,
+        voornaam: lid.voornaam,
+        achternaam: lid.achternaam,
+        geboortedatum: lid.geboorte_datum,
+        groep: lid.expand?.groep?.naam,
       },
       width: '600px',
       maxWidth: '90vw',
     });
+  }
+
+  getStatus(lid: Lid): 'nieuw' | 'geverifieerd' | 'gekoppeld' {
+    return lid.status || 'nieuw';
+  }
+
+  async updateStatus(lid: Lid, newStatus: 'nieuw' | 'geverifieerd' | 'gekoppeld'): Promise<void> {
+    if (lid.status === newStatus) {
+      return; // No change needed
+    }
+
+    try {
+      await this.client.directClient.collection('leden').update(lid.id, {
+        status: newStatus,
+      });
+
+      // Update local state
+      this.leden.update((leden) =>
+        leden!.map((l) => 
+          l.id === lid.id ? { ...l, status: newStatus } : l
+        )
+      );
+
+      this.toastr.success(`Status bijgewerkt naar "${newStatus}"`);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      this.toastr.error('Fout bij het bijwerken van de status');
+    }
   }
 }
