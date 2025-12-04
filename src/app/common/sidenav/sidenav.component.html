@@ -104,10 +104,7 @@
           </button>
         </li>
       </p>
-      } @if( authService.userHasAllRoles(['admin']) ||
-      authService.userHasAllRoles(['bestuur']) ||
-      authService.userHasAllRoles(['commissie']) ||
-      authService.userHasAllRoles(['beheer']) || authService.isGlobalAdmin) {
+      } @if( authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
       <p>
         <li>
           <button
@@ -137,6 +134,7 @@
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <p>
+        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -150,6 +148,8 @@
             Voorstellingen <mat-icon>curtains</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa', 'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -163,6 +163,8 @@
             Reserveringen <mat-icon>payments</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -176,6 +178,8 @@
             De Kassa <mat-icon>point_of_sale</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa', 'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -189,6 +193,8 @@
             Printen <mat-icon>print</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -202,6 +208,8 @@
             Leden <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.isLoggedIn() || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -215,6 +223,8 @@
             Leden Aanmeldingen <mat-icon>person_add</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -228,6 +238,8 @@
             Sponsoren <mat-icon>favorite</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -241,6 +253,7 @@
             Emails <mat-icon>mail</mat-icon>
           </button>
         </li>
+        }
       </p>
     </mat-expansion-panel>
     <div style="width: 100%">

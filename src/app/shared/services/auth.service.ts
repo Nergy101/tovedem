@@ -77,6 +77,17 @@ export class AuthService {
     return false;
   }
 
+  userHasAnyRole(roles: string[]): boolean {
+    if (this.userData()?.expand?.rollen) {
+      const rollenVanGebruiker = this.userData()?.expand?.rollen?.map(
+        (r: Rol) => r.rol
+      );
+
+      return roles.some((role) => rollenVanGebruiker.includes(role));
+    }
+    return false;
+  }
+
   registerUser(userRecord: Gebruiker): void {
     this.userRecord.set(userRecord);
   }

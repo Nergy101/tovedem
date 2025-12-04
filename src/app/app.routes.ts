@@ -57,16 +57,16 @@ export const routes: Routes = [
   {
     path: 'reserveren',
     loadComponent: () =>
-      import('./pages/public/reserveren/reserveer-formulier/reserveren.component').then(
-        (m) => m.ReserverenComponent
-      ),
+      import(
+        './pages/public/reserveren/reserveer-formulier/reserveren.component'
+      ).then((m) => m.ReserverenComponent),
   },
   {
     path: 'reservering-geslaagd',
     loadComponent: () =>
-      import('./pages/public/reserveren/reservering-geslaagd/reservering-geslaagd.component').then(
-        (m) => m.ReserveringGeslaagdComponent
-      ),
+      import(
+        './pages/public/reserveren/reservering-geslaagd/reservering-geslaagd.component'
+      ).then((m) => m.ReserveringGeslaagdComponent),
   },
   {
     path: 'steunen',
@@ -114,10 +114,10 @@ export const routes: Routes = [
   {
     path: 'beheer-reserveringen',
     loadComponent: () =>
-      import('./pages/members/beheer-reserveringen/beheer-reserveringen.component').then(
-        (m) => m.BeheerReserveringenComponent
-      ),
-    canActivate: [loggedInGuard(['admin'])],
+      import(
+        './pages/members/beheer-reserveringen/beheer-reserveringen.component'
+      ).then((m) => m.BeheerReserveringenComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa'])],
   },
   {
     path: 'kassa',
@@ -125,7 +125,7 @@ export const routes: Routes = [
       import('./pages/members/kassa/kassa.component').then(
         (m) => m.KassaComponent
       ),
-    canActivate: [loggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa'])],
   },
   {
     path: 'printen',
@@ -133,22 +133,23 @@ export const routes: Routes = [
       import('./pages/members/printen/printen.component').then(
         (m) => m.PrintenComponent
       ),
-    canActivate: [loggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa', 'commissie'])],
   },
   {
     path: 'reservering-aanpassen/:id/:guid',
     loadComponent: () =>
-      import('./pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component').then(
-        (m) => m.ReserveringAanpassenComponent
-      ),
+      import(
+        './pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component'
+      ).then((m) => m.ReserveringAanpassenComponent),
+    canActivate: [loggedInGuard],
   },
   {
     path: 'beheer-voorstellingen',
     loadComponent: () =>
-      import('./pages/members/beheer-voorstellingen/beheer-voorstellingen.component').then(
-        (m) => m.BeheerVoorstellingenComponent
-      ),
-    canActivate: [loggedInGuard(['admin'])],
+      import(
+        './pages/members/beheer-voorstellingen/beheer-voorstellingen.component'
+      ).then((m) => m.BeheerVoorstellingenComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
   {
     path: 'beheer-leden',
@@ -156,7 +157,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-leden/beheer-leden.component').then(
         (m) => m.BeheerLedenComponent
       ),
-    canActivate: [loggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
   {
     path: 'beheer-spelers',
@@ -164,7 +165,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-spelers/beheer-spelers.component').then(
         (m) => m.BeheerSpelersComponent
       ),
-    canActivate: [loggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
   {
     path: 'beheer-mails',
@@ -172,23 +173,23 @@ export const routes: Routes = [
       import('./pages/members/beheer-mails/beheer-mails.component').then(
         (m) => m.BeheerMailsComponent
       ),
-    canActivate: [loggedInGuard(['admin'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
   {
     path: 'beheer-sponsoren',
     loadComponent: () =>
-      import('./pages/members/beheer-sponsoren/beheer-sponsoren.component').then(
-        (m) => m.BeheerSponsorenComponent
-      ),
-    canActivate: [loggedInGuard(['admin'])],
+      import(
+        './pages/members/beheer-sponsoren/beheer-sponsoren.component'
+      ).then((m) => m.BeheerSponsorenComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
   {
     path: 'beheer-nieuwe-leden',
     loadComponent: () =>
-      import('./pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component').then(
-        (m) => m.BeheerNieuweLedenComponent
-      ),
-    canActivate: [loggedInGuard(['admin'])],
+      import(
+        './pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component'
+      ).then((m) => m.BeheerNieuweLedenComponent),
+    canActivate: [loggedInGuard],
   },
   {
     path: 'productie-info/Tovedem',
@@ -204,7 +205,7 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent
       ),
-    canActivate: [loggedInGuard(['lid'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
   },
   {
     path: 'productie-info/Mejotos',
@@ -212,15 +213,15 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent
       ),
-    canActivate: [loggedInGuard(['lid'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
   },
   {
     path: 'commissie-sinterklaas',
     loadComponent: () =>
-      import('./pages/members/commissie-sinterklaas/commissie-sinterklaas.component').then(
-        (m) => m.CommissieSinterklaasComponent
-      ),
-    canActivate: [loggedInGuard],
+      import(
+        './pages/members/commissie-sinterklaas/commissie-sinterklaas.component'
+      ).then((m) => m.CommissieSinterklaasComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie'])],
   },
   {
     path: 'gallerij',
@@ -228,7 +229,7 @@ export const routes: Routes = [
       import('./pages/members/gallerij/gallerij.component').then(
         (m) => m.GallerijComponent
       ),
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
   },
   {
     path: 'beheer-nieuws',
@@ -236,7 +237,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-nieuws/beheer-nieuws.component').then(
         (m) => m.BeheerNieuwsComponent
       ),
-    canActivate: [loggedInGuardNieuwsCommissie],
+    canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
 ];
 
@@ -255,7 +256,8 @@ function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
     if (requiredRoles.length == 0 && authService.isLoggedIn()) {
       return true;
     } else if (requiredRoles.length > 0 && authService.isLoggedIn()) {
-      if (authService.userHasAllRoles(requiredRoles)) {
+      // Check if user has ANY of the required roles (not all)
+      if (authService.userHasAnyRole(requiredRoles)) {
         return true;
       }
     }
@@ -283,9 +285,8 @@ function loggedInGuardNieuwsCommissie(): CanActivateFn {
     }
 
     // Check if user has one of the required roles: admin, commissie, or beheer
-    const userRoles = authService.userData()?.expand?.rollen?.map(
-      (r: Rol) => r.rol
-    ) || [];
+    const userRoles =
+      authService.userData()?.expand?.rollen?.map((r: Rol) => r.rol) || [];
 
     if (
       userRoles.includes('admin') ||
