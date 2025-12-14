@@ -28,7 +28,8 @@
             & {{ voorstelling().datum_tijd_2 | date : "d" }}
           </div>
           <div class="date-month-year">
-            {{ voorstelling().datum_tijd_1 | date : "LLLL" }} {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
+            {{ voorstelling().datum_tijd_1 | date : "LLLL" }}
+            {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
           </div>
         </div>
         }
@@ -37,7 +38,9 @@
     <div class="card-info">
       <mat-card-header>
         <mat-card-title>{{ voorstelling().titel }}</mat-card-title>
-        <mat-card-subtitle class="group-name">{{ voorstelling().expand.groep.naam }}</mat-card-subtitle>
+        <mat-card-subtitle class="group-name">{{
+          voorstelling().expand.groep.naam
+        }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ voorstelling().ondertitel }}</p>
@@ -49,7 +52,7 @@
           [queryParams]="{ voorstellingId: this.voorstelling().id }"
         >
           <mat-icon icon>shopping_cart_checkout</mat-icon>
-          Reserveer nu
+          <span class="button-text">Reserveer nu</span>
         </app-nav-button>
       </mat-card-actions>
       }

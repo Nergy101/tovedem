@@ -1,28 +1,26 @@
 <div class="container mat-elevation-z2">
-    @defer (when !!content()) {
-    <div class="row">
-        <h1 class="text-center" style="text-decoration: underline;">
-            <span>
-                Dank voor uw Reservering.
-            </span>
-        </h1>
-        <div class="text-center">Uw reservering is geslaagd! U ontvangt een
-            bevestiging per mail.
-            Wij hebben er alvast heel veel zin in.
-        </div>
-        <h2 class="text-center">Tot snel!!</h2>
+  @defer (when !!content()) {
+  <div class="row">
+    <h1 class="text-center" style="text-decoration: underline">
+      <span> Dank voor uw reservering</span>
+    </h1>
+    <div class="text-center">
+      U ontvangt een bevestiging per mail. <br />
+      Wij hebben er alvast heel veel zin in.
     </div>
-    <mat-card-actions class="custom-buttons">
-        <div class="text-center">
-            <app-nav-button [navigationParts]="['/']">
-                Terug naar Home
-            </app-nav-button>
-        </div>
-    </mat-card-actions>
+    <h2 class="text-center mt-2">Tot snel!</h2>
+  </div>
+  <mat-card-actions class="custom-buttons">
+    <div class="text-center">
+      <app-nav-button [navigationParts]="['/']">
+        Terug naar Home
+      </app-nav-button>
+    </div>
+  </mat-card-actions>
 
-    } @placeholder {
-    <div class="center">
-        <mat-spinner></mat-spinner>
-    </div>
-    }
+  } @placeholder {
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
 </div>

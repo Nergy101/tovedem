@@ -664,10 +664,6 @@ html.lightMode .mat-mdc-card {
   border: 1px solid rgba(125, 179, 232, 0.4);
   box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
 
-  * {
-    color: #000000 !important;
-  }
-
   &:hover {
     box-shadow: 0 12px 40px 0 rgba(125, 179, 232, 0.2);
   }

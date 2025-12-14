@@ -1,4 +1,3 @@
-
 import {
   Component,
   Input,
@@ -27,8 +26,8 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatCardModule,
     MatButtonModule,
     MatDividerModule,
-    NavButtonComponent
-],
+    NavButtonComponent,
+  ],
 })
 export class ReserveringGeslaagdComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
@@ -55,6 +54,15 @@ export class ReserveringGeslaagdComponent implements OnInit {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
     this.content.set(record.tekst_1);
+
+    this.scrollToTop();
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 
   celebrate(): void {

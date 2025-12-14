@@ -76,7 +76,6 @@ export class ContactComponent implements OnDestroy {
       'Neem contact op met Tovedem. Wij zijn gevestigd in De Schalm, Orangjelaan 10, 3454 BT De Meern.'
     );
 
-    // Add LocalBusiness structured data
     this.seoService.updateStructuredDataForLocalBusiness({
       name: 'Tovedem',
       address: {
