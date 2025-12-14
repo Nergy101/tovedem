@@ -1,9 +1,20 @@
-<a href="#main-content" class="skip-to-content" (click)="skipToMainContent()">Spring naar hoofdinhoud</a>
-<a href="#navbar" class="skip-to-content" (click)="skipToNavigation()">Spring naar navigatie</a>
-<a href="#footer" class="skip-to-content" (click)="skipToFooter()">Spring naar footer</a>
+<a href="#main-content" class="skip-to-content" (click)="skipToMainContent()"
+  >Spring naar hoofdinhoud</a
+>
+<a href="#navbar" class="skip-to-content" (click)="skipToNavigation()"
+  >Spring naar navigatie</a
+>
+<a href="#footer" class="skip-to-content" (click)="skipToFooter()"
+  >Spring naar footer</a
+>
 <header>
   <div class="demo-alert">
-    <span>Welkom in de proef-versie van de nieuwe Tovedem website. <a href="https://www.tovedem.nl/" target="_blank">Klik hier</a> om terug te gaan naar de echte website.</span>
+    <span
+      >Welkom in de eerste versie van de nieuwe Tovedem website. Reserveer hier
+      je tickets voor de voorstellingen.
+      <a href="https://www.tovedem.nl/" target="_blank">Klik hier</a> om terug
+      te gaan naar de originele website.</span
+    >
   </div>
   <nav id="navbar">
     <app-navbar></app-navbar>
@@ -11,7 +22,11 @@
 </header>
 
 <mat-drawer-container class="custom-bg" autosize [hasBackdrop]="false">
-  <mat-drawer #drawer class="sidenav custom-bg" [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'">
+  <mat-drawer
+    #drawer
+    class="sidenav custom-bg"
+    [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'"
+  >
     <div class="drawer-content">
       <app-sidenav></app-sidenav>
     </div>
