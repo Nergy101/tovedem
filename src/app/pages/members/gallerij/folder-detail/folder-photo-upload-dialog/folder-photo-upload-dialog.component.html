@@ -1,0 +1,101 @@
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">
+    Foto's toevoegen aan {{ data.folder.naam }}
+  </h2>
+</div>
+
+<div mat-dialog-content class="container p-4">
+  <div class="row">
+    <div class="col-12">
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="onFilesSelected($event)"
+        class="file-input"
+        id="file-input"
+      />
+      <label for="file-input" class="file-input-label">
+        <mat-icon>cloud_upload</mat-icon>
+        Kies foto's (meerdere selectie mogelijk)
+      </label>
+    </div>
+  </div>
+
+  @if (selectedFiles().length > 0) {
+  <div class="row mt-4">
+    <div class="col-12">
+      <h4>Geselecteerde foto's ({{ selectedFiles().length }})</h4>
+      <div class="preview-grid">
+        @for (item of selectedFiles(); track item.previewUrl; let i = $index) {
+        <div class="preview-item">
+          <img
+            [src]="item.previewUrl"
+            [alt]="item.file.name"
+            class="preview-image"
+          />
+          <div class="preview-overlay">
+            <button
+              mat-icon-button
+              class="remove-btn"
+              (click)="removeFile(i)"
+              [disabled]="loading()"
+              aria-label="Verwijder foto"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div class="file-name">{{ item.file.name }}</div>
+          <div class="file-size">{{ getFileSize(item.file.size) }}</div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  } @if (loading()) {
+  <div class="row mt-4">
+    <div class="col-12">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="uploadProgress()"
+      ></mat-progress-bar>
+      <p class="upload-status text-center mt-2">
+        Uploaden... {{ uploadProgress() }}%
+      </p>
+    </div>
+  </div>
+  }
+
+  <div class="row mt-4">
+    <div class="col-md-6 col-12 d-flex justify-content-center">
+      <button
+        mat-stroked-button
+        mat-dialog-close
+        class="flex-grow-1"
+        [disabled]="loading()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Annuleren
+      </button>
+    </div>
+    <div class="col-md-6 col-12 d-flex justify-content-center">
+      @if (loading()) {
+      <button mat-flat-button color="primary" class="flex-grow-1" disabled>
+        <mat-spinner diameter="20" class="me-2"></mat-spinner>
+        Uploaden...
+      </button>
+      } @else {
+      <button
+        mat-flat-button
+        color="primary"
+        class="flex-grow-1"
+        [disabled]="selectedFiles().length === 0"
+        (click)="submit()"
+      >
+        <mat-icon>upload</mat-icon>
+        Uploaden ({{ selectedFiles().length }})
+      </button>
+      }
+    </div>
+  </div>
+</div>

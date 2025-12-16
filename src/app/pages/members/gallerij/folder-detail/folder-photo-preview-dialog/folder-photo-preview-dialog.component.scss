@@ -1,0 +1,115 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  padding: 1rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+}
+
+// Dark theme actions bar
+:host-context(html.darkMode) {
+  .actions,
+  ::ng-deep .actions,
+  ::ng-deep mat-dialog-actions.actions,
+  ::ng-deep mat-dialog-actions {
+    background-color: #1a1d24 !important;
+    background: #1a1d24 !important;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5) !important;
+
+    * {
+      background-color: transparent !important;
+    }
+  }
+}
+
+// Light theme actions bar
+:host-context(html.lightMode) {
+  .actions,
+  ::ng-deep .actions,
+  ::ng-deep mat-dialog-actions.actions {
+    background-color: #ffffff !important;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Dark theme buttons
+:host-context(html.darkMode) {
+  ::ng-deep .actions {
+    button,
+    .mat-mdc-button,
+    button[mat-button],
+    .mat-mdc-button-base {
+      color: #ffffff !important;
+      font-weight: 500;
+      border: 2px solid rgba(125, 179, 232, 0.5) !important;
+      border-radius: 4px;
+      background-color: transparent !important;
+
+      .mdc-button__label,
+      .mat-mdc-button-persistent-ripple,
+      .mat-ripple-element {
+        color: #ffffff !important;
+      }
+
+      mat-icon,
+      .mat-icon {
+        color: #ffffff !important;
+      }
+
+      &:hover {
+        background-color: rgba(125, 179, 232, 0.2) !important;
+        border-color: #7db3e8 !important;
+      }
+    }
+  }
+}
+
+// Light theme buttons
+:host-context(html.lightMode) {
+  ::ng-deep .actions {
+    button,
+    .mat-mdc-button,
+    button[mat-button],
+    .mat-mdc-button-base {
+      color: #000000 !important;
+      font-weight: 500;
+      border: 2px solid rgba(125, 179, 232, 0.5) !important;
+      border-radius: 4px;
+      background-color: transparent !important;
+
+      .mdc-button__label,
+      .mat-mdc-button-persistent-ripple,
+      .mat-ripple-element {
+        color: #000000 !important;
+      }
+
+      mat-icon,
+      .mat-icon {
+        color: #000000 !important;
+      }
+
+      &:hover {
+        background-color: rgba(125, 179, 232, 0.1) !important;
+        border-color: #7db3e8 !important;
+      }
+    }
+  }
+}

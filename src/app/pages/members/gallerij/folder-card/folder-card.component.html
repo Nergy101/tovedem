@@ -1,0 +1,30 @@
+<mat-card
+  class="folder-card"
+  appearance="outlined"
+  (click)="navigateToFolder()"
+>
+  <div class="photo-stack">
+    @if (hasPhotos()) { @for (photo of stackPhotos(); track photo; let i =
+    $index) {
+    <img
+      class="stack-photo"
+      [src]="getPhotoUrl(photo, i)"
+      [alt]="'Foto ' + (i + 1) + ' van ' + folder().naam"
+      [style.z-index]="3 - i"
+    />
+    } } @else {
+    <div class="no-photos">
+      <span>Geen foto's</span>
+    </div>
+    }
+  </div>
+  <mat-card-content class="folder-info">
+    <h3 class="folder-name">{{ folder().naam }}</h3>
+    <div class="folder-meta">
+      @if (folder().jaar) {
+      <span class="folder-year">{{ folder().jaar }}</span>
+      }
+      <span class="folder-count">{{ photoCount() }} foto's</span>
+    </div>
+  </mat-card-content>
+</mat-card>

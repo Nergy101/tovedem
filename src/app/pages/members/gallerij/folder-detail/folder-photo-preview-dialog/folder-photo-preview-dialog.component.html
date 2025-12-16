@@ -1,0 +1,46 @@
+<div class="container">
+  <mat-dialog-content class="d-flex justify-content-center align-items-center">
+    <img
+      [src]="getFileUrl()"
+      alt="Foto in volledig scherm"
+      (load)="onImageLoaded()"
+    />
+
+    @if (loading) {
+    <mat-spinner aria-label="Afbeelding wordt geladen"></mat-spinner>
+    }
+  </mat-dialog-content>
+
+  @if (!loading) {
+  <mat-dialog-actions class="d-flex justify-content-between actions">
+    <button mat-button (click)="onLeftArrowDown()" aria-label="Vorige foto">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon> Vorige - pijltjes toets
+      naar links
+    </button>
+
+    <div>
+      <button
+        mat-button
+        mat-dialog-close
+        (click)="onEscapeDown()"
+        aria-label="Sluit foto weergave"
+      >
+        <mat-icon aria-hidden="true">close</mat-icon> Sluiten - escape toets
+      </button>
+      <button
+        mat-button
+        (click)="onEnterDown()"
+        aria-label="Open foto in nieuw tabblad"
+      >
+        <mat-icon aria-hidden="true">aspect_ratio</mat-icon> Openen - enter
+        toets
+      </button>
+    </div>
+
+    <button mat-button (click)="onRightArrowDown()" aria-label="Volgende foto">
+      Volgende - pijltjes toets naar rechts
+      <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
+    </button>
+  </mat-dialog-actions>
+  }
+</div>

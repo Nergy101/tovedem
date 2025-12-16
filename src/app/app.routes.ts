@@ -232,6 +232,14 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
   },
   {
+    path: 'gallerij/:folderId',
+    loadComponent: () =>
+      import(
+        './pages/members/gallerij/folder-detail/folder-detail.component'
+      ).then((m) => m.FolderDetailComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
+  },
+  {
     path: 'beheer-nieuws',
     loadComponent: () =>
       import('./pages/members/beheer-nieuws/beheer-nieuws.component').then(

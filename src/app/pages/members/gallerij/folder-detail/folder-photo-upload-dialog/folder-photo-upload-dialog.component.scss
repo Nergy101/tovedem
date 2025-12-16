@@ -1,0 +1,111 @@
+.header {
+  padding: 16px 24px 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  border: 2px dashed rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  &:hover {
+    border-color: rgba(125, 179, 232, 0.8);
+    background-color: rgba(125, 179, 232, 0.05);
+  }
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(128, 128, 128, 0.1);
+
+  .preview-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .preview-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px;
+
+    .remove-btn {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        background-color: rgba(220, 53, 69, 0.8);
+      }
+    }
+  }
+
+  .file-name {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-size {
+    padding: 0 8px 4px;
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+}
+
+.upload-status {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+// Dark mode adjustments
+:host-context(html.darkMode) {
+  .file-input-label {
+    border-color: rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      border-color: rgba(125, 179, 232, 0.8);
+      background-color: rgba(125, 179, 232, 0.1);
+    }
+  }
+
+  .preview-item {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}

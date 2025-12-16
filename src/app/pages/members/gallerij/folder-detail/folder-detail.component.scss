@@ -1,0 +1,95 @@
+.year-badge {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.grid {
+  padding: 1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  gap: 1rem;
+  justify-content: center;
+}
+
+.gallery {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  flex-direction: column;
+}
+
+.empty-state {
+  text-align: center;
+  color: rgba(128, 128, 128, 0.8);
+
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+}
+
+.photo-card {
+  overflow: hidden;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  mat-card-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+
+    button {
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
+    }
+  }
+}
+
+// Dark mode icon buttons
+html.darkMode .grid mat-card mat-card-actions button[mat-icon-button] {
+  color: #ffffff !important;
+
+  mat-icon {
+    color: #ffffff !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2) !important;
+  }
+}
+
+html.lightMode .grid mat-card mat-card-actions button[mat-icon-button] {
+  color: #000000 !important;
+
+  mat-icon {
+    color: #000000 !important;
+  }
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.1) !important;
+  }
+}

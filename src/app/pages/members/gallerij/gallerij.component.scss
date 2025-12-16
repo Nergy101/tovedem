@@ -1,63 +1,32 @@
-.grid {
-  padding: 1em;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
-  gap: 1rem;
-  justify-content: center;
+.gallery-tabs {
+  margin-top: 1rem;
 }
 
-.gallery {
-  min-height: 634px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.tab-content {
+  min-height: 400px;
+  padding: 1.5rem 0;
+}
+
+.folders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  padding: 1rem;
 }
 
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  min-height: 300px;
 }
 
-// Ensure card actions are visible and properly styled
-.grid mat-card mat-card-actions {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 0.5rem !important;
-  padding: 0.5rem !important;
+.empty-state {
+  flex-direction: column;
+  color: rgba(128, 128, 128, 0.8);
 
-  button {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-  }
-}
-
-// Ensure icon buttons in gallery cards look good in dark theme
-html.darkMode .grid mat-card mat-card-actions button[mat-icon-button] {
-  color: #ffffff !important;
-
-  mat-icon {
-    color: #ffffff !important;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.2) !important;
-  }
-}
-
-html.lightMode .grid mat-card mat-card-actions button[mat-icon-button] {
-  color: #000000 !important;
-
-  mat-icon {
-    color: #000000 !important;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.1) !important;
+  p {
+    font-size: 1.1rem;
   }
 }

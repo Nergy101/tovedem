@@ -5,11 +5,13 @@
   display: flex;
   flex-direction: column;
   border-radius: $border-radius-lg;
-  transition: box-shadow $transition-base $ease-out;
+  transition: transform $transition-base $ease-out,
+    box-shadow $transition-base $ease-out;
   overflow: hidden;
   padding: 0;
 
   &:hover {
+    transform: translateY(-4px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }

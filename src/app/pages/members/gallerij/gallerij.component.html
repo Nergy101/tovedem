@@ -4,56 +4,87 @@
       <p class="display-1">Galerij</p>
     </div>
 
-    <div class="row my-4">
-      <button mat-fab extended color="primary" (click)="openUploadDialog()">
-        <mat-icon>add_circle</mat-icon>
-        Afbeelding toevoegen
-      </button>
-    </div>
-
-    <mat-card class="gallery" appearance="outlined">
-      @if (loading()) {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
-      } @else {
-      <div class="grid">
-        @for (item of items(); track item.id) {
-        <mat-card appearance="outlined">
-          <img
-            mat-card-image
-            [src]="getFileUrl(item)"
-            [alt]="'Galerij afbeelding ' + ($index + 1)"
-            placeholder="assets/Place-Holder-Image.jpg"
-          />
-          <mat-card-actions>
-            <button
-              mat-icon-button
-              (click)="openImage(item)"
-              aria-label="Bekijk afbeelding in volledig scherm"
-            >
-              <mat-icon aria-hidden="true">visibility</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="deleteImage(item)"
-              aria-label="Verwijder afbeelding"
-            >
-              <mat-icon aria-hidden="true">delete</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-        }
-      </div>
-
-      <mat-paginator
-        [length]="paginatorLength()"
-        [pageSize]="pageSize()"
-        [pageSizeOptions]="pageSizeOptions()"
-        (page)="onPageChange($event)"
-        [showFirstLastButtons]="true"
-      ></mat-paginator>
-      }
-    </mat-card>
+    <mat-tab-group
+      mat-stretch-tabs
+      class="mat-elevation-z3 gallery-tabs"
+      (selectedIndexChange)="onTabChange($event)"
+    >
+      <mat-tab label="Alle">
+        <div class="tab-content">
+          @if (loading()) {
+          <div class="center">
+            <mat-spinner></mat-spinner>
+          </div>
+          } @else if (filteredFolders().length === 0) {
+          <div class="center empty-state">
+            <p>Geen foto folders gevonden</p>
+          </div>
+          } @else {
+          <div class="folders-grid">
+            @for (folder of filteredFolders(); track folder.id) {
+            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            }
+          </div>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Tovedem">
+        <div class="tab-content">
+          @if (loading()) {
+          <div class="center">
+            <mat-spinner></mat-spinner>
+          </div>
+          } @else if (filteredFolders().length === 0) {
+          <div class="center empty-state">
+            <p>Geen foto folders gevonden voor Tovedem</p>
+          </div>
+          } @else {
+          <div class="folders-grid">
+            @for (folder of filteredFolders(); track folder.id) {
+            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            }
+          </div>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Cloos">
+        <div class="tab-content">
+          @if (loading()) {
+          <div class="center">
+            <mat-spinner></mat-spinner>
+          </div>
+          } @else if (filteredFolders().length === 0) {
+          <div class="center empty-state">
+            <p>Geen foto folders gevonden voor Cloos</p>
+          </div>
+          } @else {
+          <div class="folders-grid">
+            @for (folder of filteredFolders(); track folder.id) {
+            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            }
+          </div>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Mejoto's">
+        <div class="tab-content">
+          @if (loading()) {
+          <div class="center">
+            <mat-spinner></mat-spinner>
+          </div>
+          } @else if (filteredFolders().length === 0) {
+          <div class="center empty-state">
+            <p>Geen foto folders gevonden voor Mejoto's</p>
+          </div>
+          } @else {
+          <div class="folders-grid">
+            @for (folder of filteredFolders(); track folder.id) {
+            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            }
+          </div>
+          }
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>
