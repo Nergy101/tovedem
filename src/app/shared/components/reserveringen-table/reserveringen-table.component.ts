@@ -31,6 +31,7 @@ export class ReserveringenTableComponent {
   selectedDag = input.required<'datum1' | 'datum2'>();
   sponsors = input.required<Sponsor[]>();
   showEditButton = input<boolean>(true);
+  showVerificationColumn = input<boolean>(true);
 
   checkboxChange = output<{ reservering: Reservering; dag: 1 | 2 }>();
   editClick = output<Reservering>();
@@ -43,12 +44,22 @@ export class ReserveringenTableComponent {
   sortedReserveringen = computed(() => {
     const reserveringen = this.reserveringen();
     const sort = this.sortState();
+    const selectedDag = this.selectedDag();
+
+    // Filter out reservations with 0 tickets for the selected day
+    const filtered = reserveringen.filter((r) => {
+      const aantal =
+        selectedDag === 'datum1'
+          ? r.datum_tijd_1_aantal
+          : r.datum_tijd_2_aantal;
+      return aantal > 0;
+    });
 
     if (!sort.active || !sort.direction) {
-      return reserveringen;
+      return filtered;
     }
 
-    const sorted = [...reserveringen].sort((a, b) => {
+    const sorted = [...filtered].sort((a, b) => {
       let aValue: string;
       let bValue: string;
 
@@ -113,4 +124,3 @@ export class ReserveringenTableComponent {
     return this.selectedVoorstelling()?.prijs_per_kaartje ?? 0;
   }
 }
-

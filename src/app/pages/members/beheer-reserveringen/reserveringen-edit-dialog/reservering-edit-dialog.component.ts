@@ -95,13 +95,16 @@ export class ReserveringEditDialogComponent implements OnInit {
   existingReserveringData: {
     reservering: Reservering;
     voorstelling: Voorstelling;
+    kassaOnlyMode?: boolean;
   } = inject(MAT_DIALOG_DATA);
   existingReservering!: Reservering;
   existingVoorstelling!: Voorstelling;
+  kassaOnlyMode = false;
 
   async ngOnInit(): Promise<void> {
     this.existingReservering = this.existingReserveringData.reservering;
     this.existingVoorstelling = this.existingReserveringData.voorstelling;
+    this.kassaOnlyMode = this.existingReserveringData.kassaOnlyMode ?? false;
 
     if (this.existingReservering) {
       this.voornaam = this.existingReservering.voornaam;
@@ -125,27 +128,35 @@ export class ReserveringEditDialogComponent implements OnInit {
   async submit(): Promise<void> {
     this.loading.set(true);
 
-    const reservering = {
-      id: this.existingReservering?.id,
-      created: this.existingReservering?.created_at,
-      updated: this.existingReservering?.updated_at,
-      voornaam: this.voornaam,
-      achternaam: this.achternaam,
-      email: this.email,
-      datum_tijd_1_aantal: this.datum_tijd_1_aantal,
-      datum_tijd_2_aantal: this.datum_tijd_2_aantal,
-      is_vriend_van_tovedem: this.is_lid_van_tovedem,
-      is_lid_van_vereniging: this.is_lid_van_vereniging,
-      opmerking: this.opmerking,
-      voorstelling: this.existingVoorstelling?.id,
-      aanwezig_datum_1: this.existingReservering?.aanwezig_datum_1,
-      aanwezig_datum_2: this.existingReservering?.aanwezig_datum_2,
-      guid: this.existingReservering?.guid,
-      verificatie_status: this.existingReservering?.verificatie_status,
-      verificatie_sponsor_id: this.existingReservering?.verificatie_sponsor_id,
-    } as Reservering;
+    // In kassa-only mode, only update the aantal fields
+    const reservering = this.kassaOnlyMode
+      ? {
+          id: this.existingReservering?.id,
+          datum_tijd_1_aantal: this.datum_tijd_1_aantal,
+          datum_tijd_2_aantal: this.datum_tijd_2_aantal,
+        }
+      : {
+          id: this.existingReservering?.id,
+          created: this.existingReservering?.created_at,
+          updated: this.existingReservering?.updated_at,
+          voornaam: this.voornaam,
+          achternaam: this.achternaam,
+          email: this.email,
+          datum_tijd_1_aantal: this.datum_tijd_1_aantal,
+          datum_tijd_2_aantal: this.datum_tijd_2_aantal,
+          is_vriend_van_tovedem: this.is_lid_van_tovedem,
+          is_lid_van_vereniging: this.is_lid_van_vereniging,
+          opmerking: this.opmerking,
+          voorstelling: this.existingVoorstelling?.id,
+          aanwezig_datum_1: this.existingReservering?.aanwezig_datum_1,
+          aanwezig_datum_2: this.existingReservering?.aanwezig_datum_2,
+          guid: this.existingReservering?.guid,
+          verificatie_status: this.existingReservering?.verificatie_status,
+          verificatie_sponsor_id:
+            this.existingReservering?.verificatie_sponsor_id,
+        };
 
-    const formData = this.objectToFormData(reservering);
+    const formData = this.objectToFormData(reservering as Reservering);
 
     const upserted = await this.client
       .collection('reserveringen')
@@ -156,6 +167,10 @@ export class ReserveringEditDialogComponent implements OnInit {
   }
 
   formIsValid(): boolean {
+    // In kassa-only mode, only aantal fields matter (no validation needed for disabled fields)
+    if (this.kassaOnlyMode) {
+      return true;
+    }
     return (
       !!this.voornaam &&
       this.voornaam != '' &&

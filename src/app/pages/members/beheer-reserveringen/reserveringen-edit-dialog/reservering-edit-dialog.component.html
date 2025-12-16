@@ -25,12 +25,12 @@
             required
             [(ngModel)]="voornaam"
             #voornaamField="ngModel"
+            [disabled]="kassaOnlyMode"
           />
-          @if (voornaamField.touched && voornaamField.invalid) {
-            @for (error of getFieldErrors(voornaamField); track error) {
-              <mat-error>{{ error }}</mat-error>
-            }
-          }
+          @if (voornaamField.touched && voornaamField.invalid) { @for (error of
+          getFieldErrors(voornaamField); track error) {
+          <mat-error>{{ error }}</mat-error>
+          } }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Achternaam</mat-label>
@@ -41,12 +41,12 @@
             required
             [(ngModel)]="achternaam"
             #achternaamField="ngModel"
+            [disabled]="kassaOnlyMode"
           />
-          @if (achternaamField.touched && achternaamField.invalid) {
-            @for (error of getFieldErrors(achternaamField); track error) {
-              <mat-error>{{ error }}</mat-error>
-            }
-          }
+          @if (achternaamField.touched && achternaamField.invalid) { @for (error
+          of getFieldErrors(achternaamField); track error) {
+          <mat-error>{{ error }}</mat-error>
+          } }
         </mat-form-field>
       </div>
       <div class="row">
@@ -65,11 +65,10 @@
             [(ngModel)]="datum_tijd_1_aantal"
             #datum1AantalField="ngModel"
           />
-          @if (datum1AantalField.touched && datum1AantalField.invalid) {
-            @for (error of getFieldErrors(datum1AantalField); track error) {
-              <mat-error>{{ error }}</mat-error>
-            }
-          }
+          @if (datum1AantalField.touched && datum1AantalField.invalid) { @for
+          (error of getFieldErrors(datum1AantalField); track error) {
+          <mat-error>{{ error }}</mat-error>
+          } }
         </mat-form-field>
         <div class="col-6">
           Datum 2:
@@ -86,21 +85,28 @@
             [(ngModel)]="datum_tijd_2_aantal"
             #datum2AantalField="ngModel"
           />
-          @if (datum2AantalField.touched && datum2AantalField.invalid) {
-            @for (error of getFieldErrors(datum2AantalField); track error) {
-              <mat-error>{{ error }}</mat-error>
-            }
-          }
+          @if (datum2AantalField.touched && datum2AantalField.invalid) { @for
+          (error of getFieldErrors(datum2AantalField); track error) {
+          <mat-error>{{ error }}</mat-error>
+          } }
         </mat-form-field>
       </div>
       <div class="row">
         <div class="col-md-6 col-12">
-          <mat-checkbox [(ngModel)]="is_lid_van_tovedem" name="is_lid_van_tovedem">
+          <mat-checkbox
+            [(ngModel)]="is_lid_van_tovedem"
+            name="is_lid_van_tovedem"
+            [disabled]="kassaOnlyMode"
+          >
             Vriend van Tovedem
           </mat-checkbox>
         </div>
         <div class="col-md-6 col-12">
-          <mat-checkbox [(ngModel)]="is_lid_van_vereniging" name="is_lid_van_vereniging">
+          <mat-checkbox
+            [(ngModel)]="is_lid_van_vereniging"
+            name="is_lid_van_vereniging"
+            [disabled]="kassaOnlyMode"
+          >
             Lid van vereniging
           </mat-checkbox>
         </div>
@@ -113,6 +119,7 @@
             type="text"
             name="opmerking"
             [(ngModel)]="opmerking"
+            [disabled]="kassaOnlyMode"
           />
         </mat-form-field>
       </div>

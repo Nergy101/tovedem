@@ -9,8 +9,9 @@
         <th scope="col">Aantal</th>
         <th scope="col">Vriend</th>
         <th scope="col">Lid</th>
+        @if (showVerificationColumn()) {
         <th scope="col">Verificatie</th>
-        @if (showEditButton()) {
+        } @if (showEditButton()) {
         <th scope="col"></th>
         }
       </tr>
@@ -20,7 +21,9 @@
       <tr [class.aanwezig-row]="getAanwezig(item)">
         <td>
           <mat-checkbox
-            (change)="onCheckboxChange(item, selectedDag() === 'datum1' ? 1 : 2)"
+            (change)="
+              onCheckboxChange(item, selectedDag() === 'datum1' ? 1 : 2)
+            "
             [color]="'primary'"
             [checked]="getAanwezig(item)"
           >
@@ -53,6 +56,7 @@
           </mat-checkbox>
         </td>
 
+        @if (showVerificationColumn()) {
         <td>
           @if (getVerificationStatus(item) === 'verified') {
           <mat-icon
@@ -76,8 +80,8 @@
             (click)="onVerificationClick(item)"
             >flag</mat-icon
           >
-          } @else if (getVerificationStatus(item) === 'unverified_no_membership')
-          {
+          } @else if (getVerificationStatus(item) ===
+          'unverified_no_membership') {
           <mat-icon
             class="verification-flag unverified-no-membership"
             matTooltip="Geen match en geen lid/vriend status - klik om aan te passen"
@@ -93,8 +97,7 @@
           >
           }
         </td>
-
-        @if (showEditButton()) {
+        } @if (showEditButton()) {
         <td class="d-flex justify-content-end">
           <button mat-icon-button (click)="onEditClick(item)">
             <mat-icon>edit</mat-icon>
@@ -106,4 +109,3 @@
     </tbody>
   </table>
 </div>
-

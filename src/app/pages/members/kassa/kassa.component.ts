@@ -185,6 +185,18 @@ export class KassaComponent implements OnInit {
     );
   });
 
+  isKassaOnly = computed(() => {
+    // Check if user has kassa role but NOT admin role
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    }
+    return (
+      this.authService.userHasAnyRole(['kassa']) &&
+      !this.authService.isGlobalAdmin &&
+      !this.authService.userHasAllRoles(['admin'])
+    );
+  });
+
   constructor() {
     this.titleService.setTitle('Tovedem - De Kassa');
 
@@ -243,7 +255,7 @@ export class KassaComponent implements OnInit {
 
       // Load reserveringen for all voorstellingen today
       await this.loadReserveringenVoorVandaag();
-      
+
       // Load losse verkoop for selected voorstelling
       await this.loadLosseVerkoop();
     } catch (error) {
@@ -475,6 +487,7 @@ export class KassaComponent implements OnInit {
     const dialogData = {
       reservering,
       voorstelling: this.selectedVoorstelling(),
+      kassaOnlyMode: this.isKassaOnly(),
     };
 
     const dialogRef = this.dialog.open(ReserveringEditDialogComponent, {
