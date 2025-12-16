@@ -197,7 +197,7 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent
       ),
-    canActivate: [loggedInGuard(['lid'])],
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
   },
   {
     path: 'productie-info/Cloos',
@@ -224,18 +224,18 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie'])],
   },
   {
-    path: 'gallerij',
+    path: 'galerij',
     loadComponent: () =>
-      import('./pages/members/gallerij/gallerij.component').then(
-        (m) => m.GallerijComponent
+      import('./pages/members/galerij/galerij.component').then(
+        (m) => m.GalerijComponent
       ),
     canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
   },
   {
-    path: 'gallerij/:folderId',
+    path: 'galerij/:folderId',
     loadComponent: () =>
       import(
-        './pages/members/gallerij/folder-detail/folder-detail.component'
+        './pages/members/galerij/folder-detail/folder-detail.component'
       ).then((m) => m.FolderDetailComponent),
     canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
   },

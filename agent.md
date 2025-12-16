@@ -36,7 +36,7 @@ src/
 │   │   ├── members/         # Member-only pages (requires authentication)
 │   │   │   ├── beheer-*/    # Admin management pages (requires admin role)
 │   │   │   ├── profiel/     # User profile
-│   │   │   ├── gallerij/    # Gallery
+│   │   │   ├── galerij/     # Gallery
 │   │   │   └── productie-info/  # Production info for members
 │   │   └── public/          # Public pages (no auth required)
 │   │       ├── home/        # Homepage
@@ -78,7 +78,7 @@ src/
 ### Routing
 
 - Public routes: `/`, `/agenda`, `/contact`, `/reserveren`, etc.
-- Member routes: `/profiel`, `/gallerij`, `/productie-info/*`
+- Member routes: `/profiel`, `/galerij`, `/productie-info/*`
 - Admin routes: `/beheer-reserveringen`, `/beheer-leden`, `/beheer-voorstellingen`, etc.
 - Route guards are applied inline in route definitions
 
@@ -205,6 +205,3 @@ Based on models and usage:
 5. Use toast notifications for user feedback
 6. Keep styling consistent with Material Design 3 theme
 7. Test responsive behavior (uses Bootstrap breakpoints)
-
-
-

@@ -59,7 +59,7 @@ export class FolderDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const folderId = this.route.snapshot.paramMap.get('folderId');
     if (!folderId) {
-      this.router.navigate(['/gallerij']);
+      this.router.navigate(['/galerij']);
       return;
     }
 
@@ -75,7 +75,7 @@ export class FolderDetailComponent implements OnInit {
     } catch (error) {
       console.error('Error loading folder:', error);
       this.toastr.error('Fout bij het laden van de folder');
-      this.router.navigate(['/gallerij']);
+      this.router.navigate(['/galerij']);
     } finally {
       this.loading.set(false);
     }
@@ -200,6 +200,6 @@ export class FolderDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/gallerij']);
+    this.router.navigate(['/galerij']);
   }
 }

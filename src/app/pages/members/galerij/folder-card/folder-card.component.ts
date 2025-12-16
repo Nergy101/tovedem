@@ -38,6 +38,6 @@ export class FolderCardComponent {
   }
 
   navigateToFolder(): void {
-    this.router.navigate(['/gallerij', this.folder().id]);
+    this.router.navigate(['/galerij', this.folder().id]);
   }
 }

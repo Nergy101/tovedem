@@ -104,7 +104,8 @@
           </button>
         </li>
       </p>
-      } @if( authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
+      } @if( authService.userHasAnyRole(['admin', 'bestuur']) ||
+      authService.isGlobalAdmin) {
       <p>
         <li>
           <button
@@ -134,7 +135,8 @@
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <p>
-        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
+        @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -148,8 +150,8 @@
             Voorstellingen <mat-icon>curtains</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa', 'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
+        'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -163,8 +165,8 @@
             Reserveringen <mat-icon>payments</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -178,8 +180,8 @@
             De Kassa <mat-icon>point_of_sale</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa', 'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
+        'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -193,8 +195,8 @@
             Printen <mat-icon>print</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -208,8 +210,7 @@
             Leden <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.isLoggedIn() || authService.isGlobalAdmin) {
+        } @if (authService.isLoggedIn() || authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -223,8 +224,8 @@
             Leden Aanmeldingen <mat-icon>person_add</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -238,8 +239,8 @@
             Sponsoren <mat-icon>favorite</mat-icon>
           </button>
         </li>
-        }
-        @if (authService.userHasAnyRole(['admin', 'bestuur']) || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -259,7 +260,8 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if (authService.isGlobalAdmin) {
+    } @if (authService.userHasAnyRole(['admin', 'bestuur', 'commissie', 'lid'])
+    || authService.isGlobalAdmin) {
     <mat-expansion-panel style="width: 100%">
       <mat-expansion-panel-header>
         <mat-panel-title> Galerij </mat-panel-title>
@@ -272,7 +274,7 @@
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
-            routerLink="/gallerij"
+            routerLink="/galerij"
           >
             Galerij <mat-icon>image</mat-icon>
           </button>

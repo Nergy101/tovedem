@@ -10,17 +10,17 @@ import { FolderCardComponent } from './folder-card/folder-card.component';
 type TabType = 'alle' | 'tovedem' | 'cloos' | 'mejotos';
 
 @Component({
-  selector: 'app-gallerij',
+  selector: 'app-galerij',
   imports: [
     MatCardModule,
     MatProgressSpinnerModule,
     MatTabsModule,
     FolderCardComponent,
   ],
-  templateUrl: './gallerij.component.html',
-  styleUrl: './gallerij.component.scss',
+  templateUrl: './galerij.component.html',
+  styleUrl: './galerij.component.scss',
 })
-export class GallerijComponent implements OnInit {
+export class GalerijComponent implements OnInit {
   private client = inject(PocketbaseService);
   private toastr = inject(ToastrService);
 
@@ -65,7 +65,7 @@ export class GallerijComponent implements OnInit {
         .collection('voorstellingen_folders')
         .getFullList({
           expand: 'voorstelling,voorstelling.groep',
-          sort: '-jaar,naam',
+          sort: '-voorstelling.datum_tijd_1,naam',
         })) as unknown as VoorstellingFolder[];
 
       this.allFolders.set(folders);
