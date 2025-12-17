@@ -1,9 +1,4 @@
-
-import {
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Field, form, required, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,8 +16,8 @@ import { SeoService } from '../../../shared/services/seo.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
 @Component({
-    selector: 'app-login',
-    imports: [
+  selector: 'app-login',
+  imports: [
     MatInputModule,
     Field,
     MatCardModule,
@@ -30,27 +25,30 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
     MatFormFieldModule,
     MatIconModule,
     MatTooltipModule,
-    RouterModule
-],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+    RouterModule,
+  ],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   // Signal Forms: Create form model and form instance
   // NOTE: Signal Forms are experimental in Angular 21
   loginModel = signal<LoginFormModel>({
     usernameOrEmail: '',
-    password: ''
+    password: '',
   });
 
   loginForm = form(this.loginModel, (schemaPath) => {
     debounce(schemaPath.usernameOrEmail, 500);
     debounce(schemaPath.password, 500);
-    required(schemaPath.usernameOrEmail, { message: 'E-mail of gebruikersnaam is verplicht' });
+    required(schemaPath.usernameOrEmail, {
+      message: 'E-mail of gebruikersnaam is verplicht',
+    });
     required(schemaPath.password, { message: 'Wachtwoord is verplicht' });
   });
 
   hidePassword = signal(true);
+  loginError = signal<string | null>(null);
 
   seoService = inject(SeoService);
 
@@ -68,6 +66,7 @@ export class LoginComponent {
   async login(): Promise<void> {
     if (this.loginForm().valid()) {
       this.loading.set(true);
+      this.loginError.set(null);
       const formData = this.loginModel();
 
       try {
@@ -78,29 +77,40 @@ export class LoginComponent {
           });
 
         if (authData) {
-          this.authService.registerUser(authData.record as unknown as Gebruiker);
-          
+          this.authService.registerUser(
+            authData.record as unknown as Gebruiker
+          );
+
           // Only open side drawer if user is not just a 'bezoeker'
-          const userRoles = (authData.record as unknown as Gebruiker).expand?.rollen?.map((r: Rol) => r.rol) || [];
-          const isOnlyBezoeker = userRoles.length === 1 && userRoles[0] === 'bezoeker';
-          
+          const userRoles =
+            (authData.record as unknown as Gebruiker).expand?.rollen?.map(
+              (r: Rol) => r.rol
+            ) || [];
+          const isOnlyBezoeker =
+            userRoles.length === 1 && userRoles[0] === 'bezoeker';
+
           if (!isOnlyBezoeker) {
             this.sideDrawerService.open();
           }
-          
+
           this.router.navigate(['profiel']);
         }
       } catch {
-        const formData = this.loginModel();
-        const authData = await this.pocketbase.client.collection("_superusers").authWithPassword(
-          formData.usernameOrEmail,
-          formData.password
-        );
+        // Try superuser login
+        try {
+          const authData = await this.pocketbase.client
+            .collection('_superusers')
+            .authWithPassword(formData.usernameOrEmail, formData.password);
 
-        if (authData.record) {
-          this.authService.registerUser(authData.record as unknown as Gebruiker);
-          this.sideDrawerService.open();
-          this.router.navigate(['profiel']);
+          if (authData.record) {
+            this.authService.registerUser(
+              authData.record as unknown as Gebruiker
+            );
+            this.sideDrawerService.open();
+            this.router.navigate(['profiel']);
+          }
+        } catch {
+          this.loginError.set('E-mail/gebruikersnaam of wachtwoord is onjuist');
         }
       } finally {
         this.loading.set(false);

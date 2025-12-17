@@ -63,7 +63,7 @@
     </div>
   </div>
 
-  @if (!isOnlyBezoeker()) {
+  @if (canAccessProductieInfo()) {
   <div class="row justify-content-around mt-4">
     <mat-card
       class="col-3 action-card"
@@ -97,18 +97,16 @@
       </mat-card-actions>
     </mat-card>
   </div>
-
+  } @if (canAccessKassa() || canAccessAlgemeneInformatie()) {
   <div class="row justify-content-around mt-4">
-    <mat-card
-      class="col-5 action-card"
-      (click)="navigateTo('/beheer-reserveringen')"
-    >
+    @if (canAccessKassa()) {
+    <mat-card class="col-5 action-card" (click)="navigateTo('/kassa')">
       <mat-card-title class="text-center">Kassa</mat-card-title>
       <mat-card-actions class="actions">
         <mat-icon>shopping_cart</mat-icon>
       </mat-card-actions>
     </mat-card>
-
+    } @if (canAccessAlgemeneInformatie()) {
     <mat-card
       class="col-5 action-card"
       (click)="navigateTo('/algemene-informatie')"
@@ -118,6 +116,7 @@
         <mat-icon>info</mat-icon>
       </mat-card-actions>
     </mat-card>
+    }
   </div>
   } @if (authService.isLoggedIn()) {
   <div class="row justify-content-center mt-4">

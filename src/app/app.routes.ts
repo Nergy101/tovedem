@@ -247,6 +247,14 @@ export const routes: Routes = [
       ),
     canActivate: [loggedInGuard(['admin', 'bestuur'])],
   },
+  {
+    path: 'algemene-informatie',
+    loadComponent: () =>
+      import(
+        './pages/members/algemene-informatie/algemene-informatie.component'
+      ).then((m) => m.AlgemeneInformatieComponent),
+    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
+  },
 ];
 
 function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {

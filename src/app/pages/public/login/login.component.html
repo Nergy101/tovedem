@@ -59,6 +59,17 @@
               </mat-error>
               }
             </mat-form-field>
+            @if (loginError()) {
+            <div
+              class="login-error"
+              role="alert"
+              aria-live="assertive"
+              style="color: #f44336"
+            >
+              <mat-icon aria-hidden="true">error</mat-icon>
+              <span>{{ loginError() }}</span>
+            </div>
+            }
             <mat-card-actions>
               <span
                 [matTooltip]="

@@ -1,4 +1,11 @@
-import { Component, OnInit, computed, inject, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
@@ -22,23 +29,23 @@ import { Reservering } from '../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 
 @Component({
-    selector: 'app-profiel',
-    imports: [
-        CommonModule,
-        MatExpansionModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatButtonModule,
-        MatListModule,
-        MatCardModule,
-        MatProgressSpinnerModule,
-        MatDividerModule,
-        MatPaginatorModule,
-        NgOptimizedImage
-    ],
-    templateUrl: './profiel.component.html',
-    styleUrl: './profiel.component.scss'
+  selector: 'app-profiel',
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    MatPaginatorModule,
+    NgOptimizedImage,
+  ],
+  templateUrl: './profiel.component.html',
+  styleUrl: './profiel.component.scss',
 })
 export class ProfielComponent implements OnInit {
   authService: AuthService = inject(AuthService);
@@ -63,7 +70,33 @@ export class ProfielComponent implements OnInit {
       return false;
     }
     const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
-    return mappedRollen.length === 1 && mappedRollen[0] === 'bezoeker' && !this.authService.userHasAllRoles(['lid']);
+    return (
+      mappedRollen.length === 1 &&
+      mappedRollen[0] === 'bezoeker' &&
+      !this.authService.userHasAllRoles(['lid'])
+    );
+  });
+
+  // Role-based access checks for profile cards
+  canAccessProductieInfo = computed(() => {
+    return (
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAnyRole(['admin', 'bestuur', 'lid'])
+    );
+  });
+
+  canAccessKassa = computed(() => {
+    return (
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAnyRole(['admin', 'bestuur', 'kassa'])
+    );
+  });
+
+  canAccessAlgemeneInformatie = computed(() => {
+    return (
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAnyRole(['admin', 'bestuur', 'lid'])
+    );
   });
 
   user = this.authService?.userData;
@@ -102,16 +135,21 @@ export class ProfielComponent implements OnInit {
     }
 
     // Load reserveringen for bezoekers or superusers with matching email
-    const userEmail = this.user()?.email || this.authService.client?.authStore?.model?.email;
-    if ((this.isOnlyBezoeker() || this.authService.isGlobalAdmin) && userEmail) {
+    const userEmail =
+      this.user()?.email || this.authService.client?.authStore?.model?.email;
+    if (
+      (this.isOnlyBezoeker() || this.authService.isGlobalAdmin) &&
+      userEmail
+    ) {
       await this.loadReserveringen();
     }
   }
 
   async loadReserveringen(): Promise<void> {
     // Get email from user record or from superuser authStore
-    const userEmail = this.user()?.email || this.authService.client?.authStore?.model?.email;
-    
+    const userEmail =
+      this.user()?.email || this.authService.client?.authStore?.model?.email;
+
     if (!userEmail) {
       return;
     }
@@ -121,9 +159,12 @@ export class ProfielComponent implements OnInit {
       const reserveringen = await this.pocketbaseService.directClient
         .collection('reserveringen')
         .getFullList({
-          filter: this.pocketbaseService.directClient.filter('email = {:email}', {
-            email: userEmail,
-          }),
+          filter: this.pocketbaseService.directClient.filter(
+            'email = {:email}',
+            {
+              email: userEmail,
+            }
+          ),
           expand: 'voorstelling',
           sort: '-created',
         });
@@ -153,7 +194,7 @@ export class ProfielComponent implements OnInit {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
   }
-  
+
   logout(): void {
     this.authService.unregisterUser();
     this.router.navigate(['/login']);

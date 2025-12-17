@@ -9,16 +9,15 @@ mat-expansion-panel {
 .action-card {
   color: var(--mat-sys-primary);
   padding: 0.5rem;
+  border-radius: 1em;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 
   &:hover {
     color: white;
     cursor: pointer;
     background-color: var(--mat-sys-primary);
-    transition: background-color 0.1s ease;
-    transition: color 0.1s ease;
+    transform: translateY(-4px);
   }
-
-  border-radius: 1em;
 
   .actions {
     display: flex;
