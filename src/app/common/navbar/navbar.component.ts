@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenu } from '@angular/material/menu';
@@ -18,7 +25,7 @@ import { ThemeService } from '../../shared/services/theme.service';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
@@ -40,6 +47,13 @@ export class NavbarComponent implements OnInit {
     return this.router.url.includes('groep') ? 'active' : '';
   }
 
+  /**
+   * Check if user has access to at least one sidenav section
+   */
+  get hasAccessToSidenavPages(): boolean {
+    return this.authService.hasAccessToSidenav();
+  }
+
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }
@@ -58,10 +72,12 @@ export class NavbarComponent implements OnInit {
   @HostListener('keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent): void {
     const target = event.target as HTMLElement;
-    
+
     // Handle Escape key to close menus
     if (event.key === 'Escape') {
-      const activeMenu = document.querySelector('.mat-mdc-menu-panel.mat-mdc-menu-panel--open');
+      const activeMenu = document.querySelector(
+        '.mat-mdc-menu-panel.mat-mdc-menu-panel--open'
+      );
       if (activeMenu) {
         event.preventDefault();
         event.stopPropagation();
@@ -73,17 +89,23 @@ export class NavbarComponent implements OnInit {
     // Handle arrow keys in menu navigation
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       const menuItems = Array.from(
-        document.querySelectorAll<HTMLElement>('.mat-mdc-menu-panel button[role="menuitem"]')
+        document.querySelectorAll<HTMLElement>(
+          '.mat-mdc-menu-panel button[role="menuitem"]'
+        )
       );
-      
+
       if (menuItems.length > 0) {
-        const currentIndex = menuItems.findIndex(item => item === document.activeElement);
+        const currentIndex = menuItems.findIndex(
+          (item) => item === document.activeElement
+        );
         let nextIndex: number;
 
         if (event.key === 'ArrowDown') {
-          nextIndex = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
+          nextIndex =
+            currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
         } else {
-          nextIndex = currentIndex > 0 ? currentIndex - 1 : menuItems.length - 1;
+          nextIndex =
+            currentIndex > 0 ? currentIndex - 1 : menuItems.length - 1;
         }
 
         event.preventDefault();

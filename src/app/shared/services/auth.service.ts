@@ -7,6 +7,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Gebruiker } from '../../models/domain/gebruiker.model';
 import { Rol } from '../../models/domain/rol.model';
 import { PocketbaseService } from './pocketbase.service';
@@ -18,17 +20,19 @@ import { SideDrawerService } from './side-drawer.service';
 export class AuthService {
   sideDrawerService = inject(SideDrawerService);
   pocketbaseService = inject(PocketbaseService);
+  router = inject(Router);
   client = this.pocketbaseService.directClient; // Use directClient to bypass caching for auth-related operations
 
-  public userRecord: WritableSignal<Gebruiker | null | undefined> =
-    signal<Gebruiker | null | undefined>(undefined);
+  public userRecord: WritableSignal<Gebruiker | null | undefined> = signal<
+    Gebruiker | null | undefined
+  >(undefined);
 
   public userData: Signal<Gebruiker | null> = computed(() => {
     return this.userRecord() ?? null;
   });
 
   get isGlobalAdmin(): boolean {
-    return this.client?.authStore?.model?.collectionName === "_superusers";
+    return this.client?.authStore?.model?.collectionName === '_superusers';
   }
 
   public isLoggedIn: Signal<boolean> = computed(() => {
@@ -38,7 +42,8 @@ export class AuthService {
 
   constructor() {
     // check the localstorage for userData
-    const existingUserData = this.client.authStore.record as unknown as Gebruiker;
+    const existingUserData = this.client.authStore
+      .record as unknown as Gebruiker;
 
     if (existingUserData) {
       if (this.client.authStore.isValid) {
@@ -48,13 +53,41 @@ export class AuthService {
       }
     }
 
-    // Automatically close side drawer for bezoekers
+    // Automatically close side drawer for users without sidenav access
     effect(() => {
       const user = this.userData();
-      if (user && this.isOnlyBezoeker()) {
+      if (user && !this.hasAccessToSidenav()) {
         this.sideDrawerService.close();
       }
     });
+
+    // Auto-close sidenav on navigation if user has no access
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (!this.hasAccessToSidenav()) {
+          this.sideDrawerService.close();
+        }
+      });
+  }
+
+  /**
+   * Check if the user has access to any sidenav content
+   * This requires at least one recognized role (excluding bezoeker)
+   */
+  hasAccessToSidenav(): boolean {
+    return (
+      this.userHasAnyRole([
+        'admin',
+        'bestuur',
+        'commissie',
+        'lid',
+        'beheer',
+        'sint_commissie',
+        'lees_commissie',
+        'kassa',
+      ]) || this.isGlobalAdmin
+    );
   }
 
   isOnlyBezoeker(): boolean {
@@ -63,7 +96,11 @@ export class AuthService {
       return false;
     }
     const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
-    return mappedRollen.length === 1 && mappedRollen[0] === 'bezoeker' && !this.userHasAllRoles(['lid']);
+    return (
+      mappedRollen.length === 1 &&
+      mappedRollen[0] === 'bezoeker' &&
+      !this.userHasAllRoles(['lid'])
+    );
   }
 
   userHasAllRoles(roles: string[]): boolean {

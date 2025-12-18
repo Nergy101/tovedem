@@ -162,6 +162,22 @@ mat-icon {
   color: var(--mat-sys-primary);
 }
 
+// Desktop sidenav toggle - show on desktop, hide on mobile
+.desktop-sidenav-toggle {
+  display: none;
+
+  @media (min-width: 1200px) {
+    display: inline-flex;
+  }
+}
+
+// Mobile sidenav toggle - show on mobile, hide on desktop
+.mobile-sidenav-toggle {
+  @media (min-width: 1200px) {
+    display: none !important;
+  }
+}
+
 .mat-menu-panel {
   background-color: var(--mat-sys-surface-container-low) !important;
   border-radius: $border-radius-lg !important;

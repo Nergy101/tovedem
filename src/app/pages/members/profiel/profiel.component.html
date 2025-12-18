@@ -24,16 +24,10 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="d-flex justify-content-center">
-      <div class="display-5">Wat wil je doen?</div>
-    </div>
-  </div>
-
+  @if (authService.hasAccessToSidenav()) {
   <div class="row justify-content-center mt-4">
     <div class="col-xl-6 col-12 d-flex">
-      @if (authService.isLoggedIn() && !isOnlyBezoeker()) { @if
-      (sideDrawerService.isOpen()) {
+      @if (sideDrawerService.isOpen()) {
       <button class="flex-grow-1" mat-button (click)="closeSideDrawer()">
         <mat-icon>chevron_left</mat-icon>
         Sluit leden paneel
@@ -47,9 +41,10 @@
         <mat-icon>chevron_right</mat-icon>
         Open leden paneel
       </button>
-      } }
+      }
     </div>
   </div>
+  }
 
   <div class="row justify-content-center mt-4">
     <div class="col-xl-6 col-12">
@@ -246,11 +241,15 @@
         </mat-list-item>
 
         <mat-list-item role="listitem">
+          <b>Email:</b> {{ user()?.email }}
+        </mat-list-item>
+
+        <mat-list-item role="listitem">
           <b>Rollen:</b> {{ userRoles() }}
         </mat-list-item>
 
         <mat-list-item role="listitem">
-          <b>Groep:</b> {{ user()?.expand?.groep?.naam ?? "n.v.t." }}
+          <b>Groep:</b> {{ user()?.expand?.groep?.naam ?? "geen" }}
         </mat-list-item>
 
         <mat-list-item role="listitem">

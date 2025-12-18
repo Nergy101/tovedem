@@ -61,7 +61,7 @@ export class ProfielComponent implements OnInit {
       const mappedRollen = rollen.map((r: Rol) => r.rol) as string[];
       return mappedRollen.join(', ');
     }
-    return '';
+    return 'geen';
   });
 
   isOnlyBezoeker = computed(() => {

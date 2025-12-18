@@ -1,11 +1,15 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
   <div class="container-fluid p-2">
-    <a class="navbar-brand" routerLink="/" matTooltip="Naar homepage" aria-label="Tovedem homepage"
+    <a
+      class="navbar-brand"
+      routerLink="/"
+      matTooltip="Naar homepage"
+      aria-label="Tovedem homepage"
       ><img
         class="logo"
         src="/assets/TovedemLogo.svg"
         alt="Tovedem logo"
-        style="height: 50px; width: auto;"
+        style="height: 50px; width: auto"
     /></a>
     <div class="d-flex align-items-center gap-2">
       <button
@@ -13,13 +17,34 @@
         type="button"
         aria-label="Toggle theme"
         (click)="toggleTheme()"
-        [matTooltip]="themeService.isDarkTheme() ? 'Schakel naar licht thema' : 'Schakel naar donker thema'"
+        [matTooltip]="
+          themeService.isDarkTheme()
+            ? 'Schakel naar licht thema'
+            : 'Schakel naar donker thema'
+        "
       >
-        <mat-icon>{{ themeService.isDarkTheme() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        <mat-icon>{{
+          themeService.isDarkTheme() ? "light_mode" : "dark_mode"
+        }}</mat-icon>
       </button>
-      @if (authService.isLoggedIn()){
+      @if (hasAccessToSidenavPages) {
       <button
-        class="navbar-toggler justify-self-end"
+        mat-icon-button
+        class="desktop-sidenav-toggle"
+        type="button"
+        aria-label="Toggle side navigation"
+        (click)="toggleSideDrawer()"
+        [matTooltip]="
+          sideDrawerService.isOpen() ? 'Sluit zijmenu' : 'Open zijmenu'
+        "
+      >
+        <mat-icon>{{
+          sideDrawerService.isOpen() ? "menu_open" : "menu"
+        }}</mat-icon>
+      </button>
+      } @if (authService.isLoggedIn()){
+      <button
+        class="navbar-toggler mobile-sidenav-toggle justify-self-end"
         type="button"
         aria-label="Toggle side navigation"
         (click)="toggleSideDrawer()"
@@ -92,7 +117,11 @@
             >
               Groepen<mat-icon aria-hidden="true">groups</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" class="mat-menu-panel" aria-label="Groepen submenu">
+            <mat-menu
+              #menu="matMenu"
+              class="mat-menu-panel"
+              aria-label="Groepen submenu"
+            >
               <ul class="links navbar-nav nav-pills nav-fill p-2" role="menu">
                 <li class="groepsnaam" role="none">
                   <button
@@ -224,7 +253,10 @@
                 style="pointer-events: none"
               >
                 <img
-                  [alt]="'Avatar van ' + (authService.userData()?.name || 'gebruiker')"
+                  [alt]="
+                    'Avatar van ' +
+                    (authService.userData()?.name || 'gebruiker')
+                  "
                   style="max-height: 2em; border-radius: 0.2em"
                   [src]="
                     'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
