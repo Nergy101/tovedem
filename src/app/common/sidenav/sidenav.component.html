@@ -3,12 +3,15 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    <mat-expansion-panel style="width: 100%">
+    <mat-expansion-panel
+      style="width: 100%"
+      [class.section-active]="isSectionActive(['/productie-info'])"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Productie informatie </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -48,7 +51,7 @@
             Mejoto's <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
     </mat-expansion-panel>
 
     <div style="width: 100%">
@@ -61,7 +64,12 @@
     authService.userHasAllRoles(['lees_commissie']) ||
     authService.userHasAllRoles(['commissie']) ||
     authService.userHasAllRoles(['beheer']) || authService.isGlobalAdmin) {
-    <mat-expansion-panel style="width: 100%">
+    <mat-expansion-panel
+      style="width: 100%"
+      [class.section-active]="
+        isSectionActive(['/commissie-sinterklaas', '/beheer-nieuws'])
+      "
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>Commissies</mat-panel-title>
         <mat-panel-description> </mat-panel-description>
@@ -70,7 +78,7 @@
       authService.userHasAllRoles(['bestuur']) ||
       authService.userHasAllRoles(['sint_commissie']) ||
       authService.isGlobalAdmin) {
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -81,15 +89,15 @@
             routerLink="/commissie-sinterklaas"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Sinterklaas <mat-icon>redeem</mat-icon>
+            <span>Sinterklaas</span> <mat-icon>redeem</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
       } @if( authService.userHasAllRoles(['admin']) ||
       authService.userHasAllRoles(['bestuur']) ||
       authService.userHasAllRoles(['lees_commissie']) ||
       authService.isGlobalAdmin) {
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -100,13 +108,13 @@
             routerLink="/beheer-voorstellingen"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Lees Commissie <mat-icon>auto_stories</mat-icon>
+            <span>Lees Commissie</span> <mat-icon>auto_stories</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
       } @if( authService.userHasAnyRole(['admin', 'bestuur']) ||
       authService.isGlobalAdmin) {
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -117,10 +125,10 @@
             routerLink="/beheer-nieuws"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Nieuws Commissie <mat-icon>article</mat-icon>
+            <span>Nieuws Commissie</span> <mat-icon>article</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
       }
     </mat-expansion-panel>
 
@@ -129,12 +137,26 @@
     </div>
     } @if ( authService.userHasAllRoles(['admin']) ||
     authService.userHasAllRoles(['bestuur']) || authService.isGlobalAdmin) {
-    <mat-expansion-panel style="width: 100%">
+    <mat-expansion-panel
+      style="width: 100%"
+      [class.section-active]="
+        isSectionActive([
+          '/beheer-voorstellingen',
+          '/beheer-reserveringen',
+          '/kassa',
+          '/printen',
+          '/beheer-leden',
+          '/beheer-nieuwe-leden',
+          '/beheer-sponsoren',
+          '/beheer-mails'
+        ])
+      "
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Beheer </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>
+      <ul>
         @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
         authService.isGlobalAdmin) {
         <li>
@@ -147,7 +169,7 @@
             routerLink="/beheer-voorstellingen"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Voorstellingen <mat-icon>curtains</mat-icon>
+            <span>Voorstellingen</span> <mat-icon>curtains</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
@@ -162,7 +184,7 @@
             routerLink="/beheer-reserveringen"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Reserveringen <mat-icon>payments</mat-icon>
+            <span>Reserveringen</span> <mat-icon>payments</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa']) ||
@@ -177,7 +199,7 @@
             routerLink="/kassa"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            De Kassa <mat-icon>point_of_sale</mat-icon>
+            <span>De Kassa</span> <mat-icon>point_of_sale</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
@@ -192,7 +214,7 @@
             routerLink="/printen"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Printen <mat-icon>print</mat-icon>
+            <span>Printen</span> <mat-icon>print</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
@@ -207,7 +229,7 @@
             routerLink="/beheer-leden"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Leden <mat-icon>diversity_3</mat-icon>
+            <span>Leden</span> <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
         } @if (authService.isLoggedIn() || authService.isGlobalAdmin) {
@@ -221,7 +243,7 @@
             routerLink="/beheer-nieuwe-leden"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Leden Aanmeldingen <mat-icon>person_add</mat-icon>
+            <span>Leden Aanmeldingen</span> <mat-icon>person_add</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
@@ -236,7 +258,7 @@
             routerLink="/beheer-sponsoren"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Sponsoren <mat-icon>favorite</mat-icon>
+            <span>Sponsoren</span> <mat-icon>favorite</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
@@ -251,23 +273,26 @@
             routerLink="/beheer-mails"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Emails <mat-icon>mail</mat-icon>
+            <span>Emails</span> <mat-icon>mail</mat-icon>
           </button>
         </li>
         }
-      </p>
+      </ul>
     </mat-expansion-panel>
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.userHasAnyRole(['admin', 'bestuur', 'commissie', 'lid'])
     || authService.isGlobalAdmin) {
-    <mat-expansion-panel style="width: 100%">
+    <mat-expansion-panel
+      style="width: 100%"
+      [class.section-active]="isSectionActive(['/galerij'])"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Galerij </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -275,11 +300,13 @@
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
             routerLink="/galerij"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
           >
-            Galerij <mat-icon>image</mat-icon>
+            <span>Galerij</span> <mat-icon>image</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
     </mat-expansion-panel>
 
     <div style="width: 100%">
@@ -291,7 +318,7 @@
         <mat-panel-title> Developers </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>
+      <ul>
         <li>
           <button
             mat-raised-button
@@ -300,7 +327,7 @@
             data-bs-target=".navbar-collapse.show"
             (click)="navigate('https://pocketbase.nergy.space/_/#/collections')"
           >
-            Admin <mat-icon>admin_panel_settings</mat-icon>
+            <span>Admin</span> <mat-icon>admin_panel_settings</mat-icon>
           </button>
         </li>
         <li>
@@ -325,7 +352,7 @@
             ZoHo <mat-icon>mark_email_read</mat-icon>
           </button>
         </li>
-      </p>
+      </ul>
     </mat-expansion-panel>
 
     <div style="width: 100%">

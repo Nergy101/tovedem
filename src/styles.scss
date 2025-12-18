@@ -101,11 +101,11 @@ html.lightMode {
   --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
 
   background-color: #ffffff;
-  color: #000000 !important;
+  // color: #000000;
 
   body {
     background-color: var(--mat-sys-background);
-    color: #000000 !important;
+    // color: #000000;
   }
 }
 
@@ -166,7 +166,7 @@ body.lightMode {
   display: flex;
   font-size: vars.$font-size-base;
   line-height: vars.$line-height-normal;
-  color: #000000 !important;
+  color: #000000;
   background-color: transparent !important;
   transition: background-color vars.$transition-base vars.$ease-out,
     color vars.$transition-base vars.$ease-out;
@@ -179,14 +179,14 @@ body.lightMode {
 html.darkMode *,
 html.darkMode *::before,
 html.darkMode *::after {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 // Light mode: Force ALL text to black
 html.lightMode *,
 html.lightMode *::before,
 html.lightMode *::after {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Exceptions for specific elements that should NOT be forced
@@ -224,7 +224,7 @@ html.darkMode .text-black {
 
 html.lightMode .text-dark,
 html.lightMode .text-black {
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode .text-muted,
@@ -253,7 +253,7 @@ html.lightMode .display-3,
 html.lightMode .display-4,
 html.lightMode .display-5,
 html.lightMode .display-6 {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Typography hierarchy - Dark theme white text
@@ -274,7 +274,7 @@ html.lightMode .h1 {
   line-height: vars.$line-height-tight;
   letter-spacing: vars.$letter-spacing-tight;
   margin-bottom: vars.$spacing-6;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode h2,
@@ -294,7 +294,7 @@ html.lightMode .h2 {
   line-height: vars.$line-height-tight;
   letter-spacing: vars.$letter-spacing-normal;
   margin-bottom: vars.$spacing-5;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode h3,
@@ -314,7 +314,7 @@ html.lightMode .h3 {
   line-height: vars.$line-height-normal;
   letter-spacing: vars.$letter-spacing-normal;
   margin-bottom: vars.$spacing-4;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode h4,
@@ -332,7 +332,7 @@ html.lightMode .h4 {
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
   margin-bottom: vars.$spacing-3;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode h5,
@@ -350,7 +350,7 @@ html.lightMode .h5 {
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
   margin-bottom: vars.$spacing-2;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode h6,
@@ -368,7 +368,7 @@ html.lightMode .h6 {
   font-weight: vars.$font-weight-medium;
   line-height: vars.$line-height-normal;
   margin-bottom: vars.$spacing-2;
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.darkMode p {
@@ -380,7 +380,7 @@ html.darkMode p {
 html.lightMode p {
   margin-bottom: vars.$spacing-4;
   line-height: vars.$line-height-relaxed;
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Force all text elements to white (dark) or black (light)
@@ -417,7 +417,7 @@ html.lightMode i,
 html.lightMode blockquote,
 html.lightMode pre,
 html.lightMode code {
-  color: #000000 !important;
+  color: #000000;
 }
 
 a {
@@ -660,7 +660,7 @@ html.darkMode .mat-mdc-card {
 
 html.lightMode .mat-mdc-card {
   background-color: #ffffff !important;
-  color: #000000 !important;
+  color: #000000;
   border: 1px solid rgba(125, 179, 232, 0.4);
   box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
 
@@ -677,7 +677,7 @@ html.darkMode mat-list-item * {
 
 html.lightMode mat-list-item,
 html.lightMode mat-list-item * {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Force Material dialog content to theme colors
@@ -688,7 +688,7 @@ html.darkMode mat-dialog-container * {
 
 html.lightMode mat-dialog-container,
 html.lightMode mat-dialog-container * {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Style dialog close buttons in header
@@ -713,11 +713,11 @@ html.darkMode mat-dialog-container .header .mat-mdc-icon-button {
 
 html.lightMode mat-dialog-container .header button[mat-icon-button],
 html.lightMode mat-dialog-container .header .mat-mdc-icon-button {
-  color: #000000 !important;
+  color: #000000;
 
   mat-icon,
   .mat-icon {
-    color: #000000 !important;
+    color: #000000;
   }
 
   &:hover {
@@ -725,7 +725,7 @@ html.lightMode mat-dialog-container .header .mat-mdc-icon-button {
 
     mat-icon,
     .mat-icon {
-      color: #000000 !important;
+      color: #000000;
     }
   }
 }
@@ -792,19 +792,19 @@ html.darkMode mat-dialog-container .actions button[mat-button] {
 html.lightMode mat-dialog-container .actions button,
 html.lightMode mat-dialog-container .actions .mat-mdc-button,
 html.lightMode mat-dialog-container .actions button[mat-button] {
-  color: #000000 !important;
+  color: #000000;
   font-weight: 500;
   border: 2px solid rgba(125, 179, 232, 0.5) !important;
   border-radius: 4px;
   background-color: transparent !important;
 
   .mdc-button__label {
-    color: #000000 !important;
+    color: #000000;
   }
 
   mat-icon,
   .mat-icon {
-    color: #000000 !important;
+    color: #000000;
   }
 
   &:hover {
@@ -821,7 +821,7 @@ html.darkMode mat-tab-label * {
 
 html.lightMode mat-tab-label,
 html.lightMode mat-tab-label * {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Make tab labels smaller on mobile
@@ -876,7 +876,7 @@ html.darkMode mat-expansion-panel * {
 
 html.lightMode mat-expansion-panel,
 html.lightMode mat-expansion-panel * {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Ensure Material expansion panels have solid backgrounds
@@ -898,7 +898,7 @@ html.darkMode .mat-mdc-menu-panel * {
 html.lightMode mat-menu,
 html.lightMode .mat-mdc-menu-panel,
 html.lightMode .mat-mdc-menu-panel * {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Force Material tooltip to theme colors
@@ -917,23 +917,23 @@ html.darkMode .mdc-tooltip__surface {
 
 html.lightMode mat-tooltip,
 html.lightMode .mat-mdc-tooltip {
-  color: #000000 !important;
+  color: #000000;
 }
 
 html.lightMode .mat-mdc-tooltip__surface,
 html.lightMode .mdc-tooltip__surface {
   background-color: rgba(255, 255, 255, 0.95) !important;
-  color: #000000 !important;
+  color: #000000;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
-  --mdc-plain-tooltip-supporting-text-color: #000000 !important;
+  --mdc-plain-tooltip-supporting-text-color: #000000;
 }
 
 // Also target the overlay container
 html.lightMode .cdk-overlay-container .mat-mdc-tooltip,
 html.lightMode .cdk-overlay-container .mdc-tooltip {
   --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
-  --mdc-plain-tooltip-supporting-text-color: #000000 !important;
+  --mdc-plain-tooltip-supporting-text-color: #000000;
 }
 
 html.darkMode .cdk-overlay-container .mat-mdc-tooltip,
@@ -1244,7 +1244,7 @@ html.lightMode .mat-mdc-form-field {
   .mat-mdc-form-field-input-control input,
   .mat-mdc-form-field-textarea-control textarea,
   .mdc-text-field__input {
-    color: #000000 !important;
+    color: #000000;
 
     // Hide placeholders in Material form fields - Material handles labels instead
     &::placeholder {
@@ -1307,7 +1307,7 @@ html.lightMode .mat-mdc-form-field {
 
   // Select dropdown styling
   .mat-mdc-select-value {
-    color: #000000 !important;
+    color: #000000;
   }
 
   .mat-mdc-select-arrow {
@@ -1353,7 +1353,7 @@ html.darkMode select {
 html.lightMode input,
 html.lightMode textarea,
 html.lightMode select {
-  color: #000000 !important;
+  color: #000000;
   background-color: #eaf1fc !important;
 
   // Dark placeholder text
@@ -1436,7 +1436,7 @@ html.lightMode [innerHTML],
 html.lightMode [innerHTML] *,
 html.lightMode div[innerHTML],
 html.lightMode div[innerHTML] * {
-  color: #000000 !important;
+  color: #000000;
 
   p,
   div,
@@ -1458,7 +1458,7 @@ html.lightMode div[innerHTML] * {
   i,
   a,
   blockquote {
-    color: #000000 !important;
+    color: #000000;
   }
 }
 
@@ -1479,7 +1479,7 @@ html.lightMode .table th,
 html.lightMode .table-dark,
 html.lightMode .table-dark td,
 html.lightMode .table-dark th {
-  color: #000000 !important;
+  color: #000000;
 }
 
 // Utility classes

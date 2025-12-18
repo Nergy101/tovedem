@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
@@ -37,6 +37,11 @@ export class SidenavComponent {
   authService = inject(AuthService);
   breakpointService = inject(BreakpointService);
   client = inject(PocketbaseService);
+  private router = inject(Router);
+
+  isSectionActive(routes: string[]): boolean {
+    return routes.some((route) => this.router.url.startsWith(route));
+  }
 
   close(): void {
     this.sideDrawerService.close();

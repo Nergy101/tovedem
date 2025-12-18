@@ -8,6 +8,7 @@ ul {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
 }
 
@@ -16,14 +17,42 @@ li {
   display: flex;
   width: 100%;
 
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
+  button {
+    outline: 1px solid var(--mat-sys-outline-variant);
+    transition: transform 0.2s ease, background-color 0.2s ease,
+      outline-color 0.2s ease;
+  }
+
   .active {
-    color: var(--mat-sys-on-primary);
+    color: white !important;
     background-color: var(--mat-sys-primary);
+    outline-color: var(--mat-sys-primary);
+
+    mat-icon {
+      color: white !important;
+    }
+    span {
+      color: white !important;
+    }
   }
 
   :hover {
-    color: var(--mat-sys-on-primary);
+    color: var(--mat-sys-on-primary) !important;
     background-color: var(--mat-sys-primary);
+    outline-color: var(--mat-sys-primary);
+    transform: translateY(-2px);
+
+    span {
+      color: white !important;
+    }
+    mat-icon {
+      color: var(--mat-sys-on-primary) !important;
+    }
   }
 }
 
@@ -36,13 +65,30 @@ a {
   display: flex;
   gap: 0.5em;
   justify-content: space-evenly;
+
   @media screen and (max-width: 428px) {
-    padding-top: 4em;
+    margin-top: 4em;
   }
   @media screen and (max-width: 768px) {
-    padding-top: 4em;
+    margin-top: 2em;
   }
   @media screen and (max-width: 1200px) {
-    padding-top: 2em;
+    margin-top: 2em;
+  }
+}
+
+mat-expansion-panel {
+  border: 1px solid var(--mat-sys-outline-variant);
+
+  &.section-active {
+    ::ng-deep .mat-expansion-panel-header {
+      background-color: var(--mat-sys-primary) !important;
+      margin: 0;
+
+      .mat-expansion-panel-header-title,
+      .mat-expansion-indicator::after {
+        color: white !important;
+      }
+    }
   }
 }

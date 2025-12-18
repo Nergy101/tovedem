@@ -17,3 +17,5 @@ export interface VoorstellingFolder extends BaseModel {
     voorstelling?: VoorstellingFolderVoorstelling;
   };
 }
+
+

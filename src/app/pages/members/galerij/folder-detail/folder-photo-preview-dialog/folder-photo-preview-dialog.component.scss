@@ -89,7 +89,7 @@ img {
     .mat-mdc-button,
     button[mat-button],
     .mat-mdc-button-base {
-      color: #000000 !important;
+      color: #000000;
       font-weight: 500;
       border: 2px solid rgba(125, 179, 232, 0.5) !important;
       border-radius: 4px;
@@ -98,12 +98,12 @@ img {
       .mdc-button__label,
       .mat-mdc-button-persistent-ripple,
       .mat-ripple-element {
-        color: #000000 !important;
+        color: #000000;
       }
 
       mat-icon,
       .mat-icon {
-        color: #000000 !important;
+        color: #000000;
       }
 
       &:hover {

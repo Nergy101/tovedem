@@ -83,10 +83,10 @@ html.darkMode .grid mat-card mat-card-actions button[mat-icon-button] {
 }
 
 html.lightMode .grid mat-card mat-card-actions button[mat-icon-button] {
-  color: #000000 !important;
+  color: #000000;
 
   mat-icon {
-    color: #000000 !important;
+    color: #000000;
   }
 
   &:hover {
