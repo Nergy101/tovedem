@@ -21,7 +21,7 @@
         <h2 class="text-center" style="font-size: x-large">Het Nieuws</h2>
         <mat-tab-group mat-stretch-tabs class="mat-elevation-z3">
           @for (nieuws of nieuwsToPublish(); track $index) {
-          <mat-tab [label]="(nieuws.publishDate | date : 'dd-MM-yyyy') ?? ''">
+          <mat-tab [label]="getNieuwsLabel(nieuws) ?? ''">
             <app-nieuws-card [nieuws]="nieuws"></app-nieuws-card>
           </mat-tab>
           }

@@ -236,4 +236,16 @@ export class HomePaginaComponent implements OnInit {
   archiveren(nieuws: Nieuws): boolean {
     return new Date(nieuws.archiveDate ?? '') > new Date();
   }
+
+  getNieuwsLabel(nieuws: Nieuws): string {
+    return `${
+      nieuws.publishDate
+        ? new Date(nieuws.publishDate).toLocaleDateString('nl-NL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })
+        : ''
+    } | ${nieuws.titel}`;
+  }
 }
