@@ -37,6 +37,7 @@ export class ReserveringenTableComponent {
   checkboxChange = output<{ reservering: Reservering; dag: 1 | 2 }>();
   editClick = output<Reservering>();
   verificationClick = output<Reservering>();
+  opmerkingClick = output<Reservering>();
 
   verificationService = inject(VerificationService);
 
@@ -107,6 +108,10 @@ export class ReserveringenTableComponent {
 
   onVerificationClick(reservering: Reservering): void {
     this.verificationClick.emit(reservering);
+  }
+
+  onOpmerkingClick(reservering: Reservering): void {
+    this.opmerkingClick.emit(reservering);
   }
 
   getAantal(reservering: Reservering): number {

@@ -31,7 +31,6 @@ import { SeoService } from '../../../shared/services/seo.service';
     NieuwsCardComponent,
     MdbCarouselModule,
     NgOptimizedImage,
-    DatePipe,
   ],
 })
 export class HomePaginaComponent implements OnInit {

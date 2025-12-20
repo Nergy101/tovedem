@@ -681,6 +681,18 @@ export class KassaComponent implements OnInit {
     this.toastr.success('Losse verkoop succesvol verwijderd');
   }
 
+  openOpmerkingDialog(reservering: Reservering): void {
+    this.dialog.open(InformatieDialogComponent, {
+      data: {
+        title: `Opmerking van ${reservering.voornaam} ${reservering.achternaam}`,
+        content: reservering.opmerking || 'Geen opmerking',
+      },
+      width: '600px',
+      maxWidth: '90vw',
+      hasBackdrop: true,
+    });
+  }
+
   openInformatieDialog(): void {
     this.dialog.open(InformatieDialogComponent, {
       data: {

@@ -34,6 +34,7 @@ import { Sponsor } from '../../../../models/domain/sponsor.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { ReserveringSearchFormModel } from '../../../../models/form-models/reservering-search-form.model';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { InformatieDialogComponent } from '../../../../shared/components/informatie-dialog/informatie-dialog.component';
 import { ReserveringenTableComponent } from '../../../../shared/components/reserveringen-table/reserveringen-table.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../../shared/services/theme.service';
@@ -511,5 +512,17 @@ export class ReserveringenInzienComponent implements OnInit {
         this.toastr.success('Verificatie status bijgewerkt');
       }
     }
+  }
+
+  openOpmerkingDialog(reservering: Reservering): void {
+    this.dialog.open(InformatieDialogComponent, {
+      data: {
+        title: `Opmerking van ${reservering.voornaam} ${reservering.achternaam}`,
+        content: reservering.opmerking || 'Geen opmerking',
+      },
+      width: '600px',
+      maxWidth: '90vw',
+      hasBackdrop: true,
+    });
   }
 }

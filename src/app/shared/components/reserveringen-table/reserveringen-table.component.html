@@ -9,6 +9,7 @@
         <th scope="col" mat-sort-header="voornaam">Voornaam</th>
         <th scope="col" mat-sort-header="achternaam">Achternaam</th>
         <th scope="col">Email</th>
+        <th scope="col">Opmerking</th>
         <th scope="col">Aantal</th>
         <th scope="col">Vriend</th>
         <th scope="col">Lid</th>
@@ -39,6 +40,21 @@
         <td>{{ item.voornaam }}</td>
         <td>{{ item.achternaam }}</td>
         <td>{{ item.email }}</td>
+        <td>
+          @if (item.opmerking && item.opmerking.length > 0) {
+          <button
+            mat-button
+            class="opmerking-button"
+            (click)="onOpmerkingClick(item)"
+            [matTooltip]="'Klik om opmerking te bekijken'"
+          >
+            <mat-icon [style.color]="'#000'">chat_bubble_outline</mat-icon>
+            <span>Bekijken</span>
+          </button>
+          } @else {
+          <span>-</span>
+          }
+        </td>
         <td>
           {{ getAantal(item) }} ({{
             getAantal(item) * getPrijsPerKaartje() | currency : "EUR"
