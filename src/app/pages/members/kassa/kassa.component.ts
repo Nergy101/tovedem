@@ -72,6 +72,8 @@ export class KassaComponent implements OnInit {
 
   reserveringen = signal<Reservering[]>([]);
   filteredReserveringen = signal<Reservering[]>([]);
+  vandaag = signal(new Date());
+
   sponsors = signal<Sponsor[]>([]);
   losseVerkoop = signal<LosseVerkoop[]>([]);
   losseVerkoopOfSelectedVoorstellingDag = computed(() => {
@@ -616,6 +618,18 @@ export class KassaComponent implements OnInit {
     return !!(
       (voorstelling.datum_tijd_1 && isDateToday(voorstelling.datum_tijd_1)) ||
       (voorstelling.datum_tijd_2 && isDateToday(voorstelling.datum_tijd_2))
+    );
+  }
+
+  isDatum1Today(voorstelling: Voorstelling): boolean {
+    return !!(
+      voorstelling.datum_tijd_1 && isDateToday(voorstelling.datum_tijd_1)
+    );
+  }
+
+  isDatum2Today(voorstelling: Voorstelling): boolean {
+    return !!(
+      voorstelling.datum_tijd_2 && isDateToday(voorstelling.datum_tijd_2)
     );
   }
 

@@ -18,7 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { filter, map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CookieBannerComponent } from './common/cookie-banner/cookie-banner.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { NavbarComponent } from './common/navbar/navbar.component';
@@ -59,6 +61,15 @@ export class AppComponent implements OnInit {
   themeService = inject(ThemeService);
   focusManagementService = inject(FocusManagementService);
   injector = inject(Injector);
+  private router = inject(Router);
+
+  isHomePage = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects === '/')
+    ),
+    { initialValue: this.router.url === '/' }
+  );
 
   @ViewChild(MatDrawer) drawer?: MatDrawer;
 

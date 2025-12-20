@@ -4,6 +4,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: 1em;
   width: 100%;
   max-width: 100vw;
   box-sizing: border-box;
@@ -37,6 +38,7 @@ h2 {
 }
 
 .homepage-wrapper {
+  margin-top: 4em;
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
@@ -51,11 +53,11 @@ h2 {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  
+
   @media (max-width: 768px) {
     padding: $spacing-4;
   }
-  
+
   :not(:last-child) {
     display: block;
     margin-bottom: $spacing-8;
@@ -67,7 +69,7 @@ h2 {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  
+
   @media (max-width: 768px) {
     margin-bottom: $spacing-12;
   }
@@ -105,7 +107,6 @@ h2 {
   overflow: hidden;
   @media screen and (max-width: 768px) {
     padding-top: 2em;
-    
   }
 }
 
@@ -114,18 +115,18 @@ h2 {
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  max-width: fit-content;  
+  max-width: fit-content;
   padding: $spacing-4 $spacing-6;
   border-radius: $border-radius-xl;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15),
-              0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: $spacing-8;
   transition: box-shadow $transition-base $ease-out;
-  
+
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
-  
+
   @media (max-width: 768px) {
     padding: $spacing-3 $spacing-4;
   }
@@ -134,11 +135,11 @@ h2 {
 .logo-image {
   width: 300px;
   height: auto;
-  
+
   @media (max-width: 768px) {
     width: 250px;
   }
-  
+
   @media (max-width: 480px) {
     width: 200px;
   }
@@ -186,7 +187,8 @@ h2 {
   transition: box-shadow $transition-base $ease-out;
 
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
   @media (max-width: 768px) {

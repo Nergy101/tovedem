@@ -63,16 +63,40 @@
               voorstelling.id) {
               <div class="mb-2">
                 <strong class="me-2">{{ voorstelling.titel }}</strong>
-                @if (isVoorstellingToday(voorstelling)) { @if
-                (voorstelling.datum_tijd_1) {
-                <span class="badge bg-primary me-2">{{
-                  voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
-                }}</span>
-                } @if (voorstelling.datum_tijd_2) {
-                <span class="badge bg-primary me-2">{{
-                  voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
-                }}</span>
-                } } @else { @if (selectedDag() === 'datum1' &&
+                @if (isVoorstellingToday(voorstelling)) {
+                <!-- Toon eerst de datum van vandaag -->
+                @if (voorstelling.datum_tijd_1 && isDatum1Today(voorstelling)) {
+                <div>
+                  <span class="badge bg-success me-2"
+                    >Vandaag ({{
+                      voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                    }})</span
+                  >
+                </div>
+                @if (voorstelling.datum_tijd_2) {
+                <div class="mt-1">
+                  <span class="badge bg-secondary me-2">{{
+                    voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                  }}</span>
+                </div>
+                } } @else if (voorstelling.datum_tijd_2 &&
+                isDatum2Today(voorstelling)) {
+                <div>
+                  <span class="badge bg-success me-2"
+                    >VANDAAG ({{
+                      voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                    }})</span
+                  >
+                </div>
+                @if (voorstelling.datum_tijd_1) {
+                <div class="mt-1">
+                  <span class="badge bg-secondary me-2"
+                    >andere datum ({{
+                      voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                    }})</span
+                  >
+                </div>
+                } } } @else { @if (selectedDag() === 'datum1' &&
                 voorstelling.datum_tijd_1) {
                 <span class="badge bg-primary me-2">{{
                   voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
@@ -124,8 +148,6 @@
         </button>
         } @else {
         <mat-icon matPrefix>search</mat-icon>
-        } @if (searching()) {
-        <mat-spinner matSuffix diameter="20"></mat-spinner>
         }
       </mat-form-field>
     </div>
@@ -133,12 +155,19 @@
     @if (filteredReserveringen().length > 0) {
     <div class="col-12">
       <mat-card appearance="outlined">
+        @if (searching()) {
+        <div class="center">
+          <mat-spinner></mat-spinner>
+        </div>
+        } @else {
+
         <mat-card-header>
           <h2>
-            Reserveringen voor vandaag ({{ filteredReserveringen().length }})
+            Reserveringen voor vandaag: {{ filteredReserveringen().length }}
           </h2>
         </mat-card-header>
         <app-reserveringen-table
+          [showIndexColumn]="true"
           [reserveringen]="filteredReserveringen()"
           [selectedVoorstelling]="selectedVoorstelling()"
           [selectedDag]="selectedDag()"
@@ -149,6 +178,7 @@
           (editClick)="openEditDialog($event)"
           (verificationClick)="openVerificatieDialog($event)"
         ></app-reserveringen-table>
+        }
       </mat-card>
     </div>
     } @else if (reserveringen().length === 0) {

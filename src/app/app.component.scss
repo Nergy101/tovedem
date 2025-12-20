@@ -76,8 +76,8 @@
   flex: 1;
 
   @media (max-width: 1024px) {
-    padding-top: $spacing-24;
     padding-bottom: $spacing-12;
+    // margin-top: 3em;
   }
 }
 
@@ -132,13 +132,11 @@ footer {
 }
 
 .sidenav {
-  margin-top: $spacing-20;
-  padding: $spacing-1;
+  margin-top: $spacing-16;
 }
 
 .drawer-content {
   flex: 1;
-  padding-top: $spacing-4;
   display: flex;
   flex-flow: column nowrap;
   min-height: 100vh;

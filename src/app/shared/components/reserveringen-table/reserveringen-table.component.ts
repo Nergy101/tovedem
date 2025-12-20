@@ -30,6 +30,7 @@ export class ReserveringenTableComponent {
   selectedVoorstelling = input.required<Voorstelling | null>();
   selectedDag = input.required<'datum1' | 'datum2'>();
   sponsors = input.required<Sponsor[]>();
+  showIndexColumn = input<boolean>(false);
   showEditButton = input<boolean>(true);
   showVerificationColumn = input<boolean>(true);
 

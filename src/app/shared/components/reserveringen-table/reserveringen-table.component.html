@@ -2,6 +2,9 @@
   <table class="table" matSort (matSortChange)="onSortChange($event)">
     <thead>
       <tr>
+        @if (showIndexColumn()) {
+        <th scope="col">#</th>
+        }
         <th scope="col">Aanwezig</th>
         <th scope="col" mat-sort-header="voornaam">Voornaam</th>
         <th scope="col" mat-sort-header="achternaam">Achternaam</th>
@@ -17,8 +20,11 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of sortedReserveringen(); track item.id) {
+      @for (item of sortedReserveringen(); track item.id; let index = $index) {
       <tr [class.aanwezig-row]="getAanwezig(item)">
+        @if (showIndexColumn()) {
+        <td>{{ index + 1 }}</td>
+        }
         <td>
           <mat-checkbox
             (change)="

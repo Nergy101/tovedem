@@ -159,7 +159,7 @@ mat-icon {
 }
 
 .navbar-icon {
-  color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-background);
 }
 
 // Desktop sidenav toggle - show on desktop, hide on mobile
@@ -173,6 +173,7 @@ mat-icon {
 
 // Mobile sidenav toggle - show on mobile, hide on desktop
 .mobile-sidenav-toggle {
+  color: var(--mat-sys-on-background);
   @media (min-width: 1200px) {
     display: none !important;
   }
