@@ -152,7 +152,7 @@ footer {
 
 // Light theme drawer content
 :host-context(html.lightMode) .drawer-content {
-  background-color: transparent;
+  background-color: #fff;
 }
 
 mat-icon {

@@ -26,11 +26,6 @@ mat-expansion-panel {
   }
 }
 
-.open-leden-paneel-btn {
-  border: 2px solid var(--mat-sys-primary) !important;
-  border-radius: 4px;
-}
-
 .reserveringen-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
