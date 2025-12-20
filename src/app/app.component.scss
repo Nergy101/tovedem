@@ -133,6 +133,14 @@ footer {
 
 .sidenav {
   margin-top: $spacing-16;
+
+  &.sidenav-mobile-home {
+    margin-top: calc($spacing-16 + 2rem);
+
+    @media (max-width: 1024px) {
+      margin-top: 10em;
+    }
+  }
 }
 
 .drawer-content {

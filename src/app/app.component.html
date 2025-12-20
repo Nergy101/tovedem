@@ -8,7 +8,6 @@
   >Spring naar footer</a
 >
 <header>
-  @if (isHomePage()) {
   <div class="demo-alert">
     <span
       >Welkom in de eerste versie van de nieuwe Tovedem website. Reserveer hier
@@ -17,7 +16,6 @@
       te gaan naar de originele website.</span
     >
   </div>
-  }
   <nav id="navbar">
     <app-navbar></app-navbar>
   </nav>
@@ -26,7 +24,7 @@
 <mat-drawer-container class="custom-bg" autosize [hasBackdrop]="false">
   <mat-drawer
     #drawer
-    class="sidenav custom-bg"
+    class="sidenav custom-bg sidenav-mobile-home"
     [mode]="breakpointService.isDesktopScreen() ? 'side' : 'over'"
   >
     <div class="drawer-content">
