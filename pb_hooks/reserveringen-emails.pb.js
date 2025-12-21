@@ -28,32 +28,34 @@ onRecordAfterCreateSuccess((e) => {
   e.next();
 }, "reserveringen");
 
-/* Send an email after somebody updated a reservation */
-onRecordAfterUpdateSuccess((e) => {
-  const mailing = require(`${__hooks}/mailing.js`);
+//? Dit gingen we toch niet meer doen?
 
-  const reservatie = e.record;
-  $app.expandRecord(reservatie, ["voorstelling"], null);
-  const voorstelling = reservatie.expandedOne("voorstelling");
+// /* Send an email after somebody updated a reservation */
+// onRecordAfterUpdateSuccess((e) => {
+//   const mailing = require(`${__hooks}/mailing.js`);
 
-  const mailInfo = mailing.getMail("reservatie_confirmatie");
+//   const reservatie = e.record;
+//   $app.expandRecord(reservatie, ["voorstelling"], null);
+//   const voorstelling = reservatie.expandedOne("voorstelling");
 
-  const filledMailTemplate = mailing.getReservatieMailHtml(
-    mailInfo,
-    reservatie,
-    voorstelling
-  );
+//   const mailInfo = mailing.getMail("reservatie_confirmatie");
 
-  const message = new MailerMessage({
-    from: {
-      address: $app.settings().meta.senderAddress,
-      name: $app.settings().meta.senderName,
-    },
-    to: [{ address: e.record.get("email") }],
-    subject: mailInfo.get("onderwerp"),
-    html: filledMailTemplate,
-  });
+//   const filledMailTemplate = mailing.getReservatieMailHtml(
+//     mailInfo,
+//     reservatie,
+//     voorstelling
+//   );
 
-  $app.newMailClient().send(message);
-  e.next();
-}, "reserveringen");
+//   const message = new MailerMessage({
+//     from: {
+//       address: $app.settings().meta.senderAddress,
+//       name: $app.settings().meta.senderName,
+//     },
+//     to: [{ address: e.record.get("email") }],
+//     subject: mailInfo.get("onderwerp"),
+//     html: filledMailTemplate,
+//   });
+
+//   $app.newMailClient().send(message);
+//   e.next();
+// }, "reserveringen");
