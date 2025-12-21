@@ -164,6 +164,33 @@ mat-card-content {
     margin: 0;
     font-weight: $font-weight-normal;
   }
+
+  .start-times {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-2;
+    margin-top: $spacing-3;
+    padding: $spacing-2 $spacing-3;
+    background: var(--mat-sys-surface-container);
+    border-radius: $border-radius-md;
+    border-left: 3px solid #7db3e8;
+
+    .time-icon {
+      color: #7db3e8;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .times-text {
+      font-size: $font-size-sm;
+      color: var(--mat-sys-on-surface);
+      line-height: 1.6;
+      text-transform: capitalize;
+    }
+  }
 }
 
 mat-card-actions {

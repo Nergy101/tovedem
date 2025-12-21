@@ -49,7 +49,7 @@ export class HomePaginaComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const today = new Date().toISOString();
+    const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
     const voorstellingen = await this.client.getAll<Voorstelling>(
       'voorstellingen',
       {

@@ -44,6 +44,22 @@
       </mat-card-header>
       <mat-card-content>
         <p>{{ voorstelling().ondertitel }}</p>
+        @if(voorstelling().datum_tijd_1 || voorstelling().datum_tijd_2) {
+        <div class="start-times">
+          <mat-icon class="time-icon">schedule</mat-icon>
+          <span class="times-text">
+            @if(voorstelling().datum_tijd_1) {
+            {{ voorstelling().datum_tijd_1 | date : "d LLLL" : "" : "nl" }}
+            {{ voorstelling().datum_tijd_1 | date : "HH:mm" }}
+            } @if(voorstelling().datum_tijd_1 && voorstelling().datum_tijd_2) {
+            <br />
+            } @if(voorstelling().datum_tijd_2) {
+            {{ voorstelling().datum_tijd_2 | date : "d LLLL" : "" : "nl" }}
+            {{ voorstelling().datum_tijd_2 | date : "HH:mm" }}
+            }
+          </span>
+        </div>
+        }
       </mat-card-content>
       @if(inToekomst()) {
       <mat-card-actions>
