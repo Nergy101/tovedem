@@ -67,24 +67,24 @@ html.lightMode .table {
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
-  
+
   .table {
     min-width: 800px; // Ensure table has minimum width for scrolling
   }
-  
+
   &::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.5);
     }
@@ -93,14 +93,14 @@ html.lightMode .table {
 
 html.darkMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.5);
     }
@@ -109,14 +109,14 @@ html.darkMode .table-responsive {
 
 html.lightMode .table-responsive {
   background-color: var(--mat-sys-surface-container-lowest) !important;
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.4);
     }
@@ -134,7 +134,12 @@ html.lightMode .table-responsive {
   background-color: rgba(76, 175, 80, 0.1) !important; // Light green background
 
   &:hover {
-    background-color: rgba(76, 175, 80, 0.15) !important; // Slightly darker on hover
+    background-color: rgba(
+      76,
+      175,
+      80,
+      0.15
+    ) !important; // Slightly darker on hover
   }
 }
 
@@ -226,4 +231,3 @@ html.darkMode .opmerking-button {
     background-color: rgba(125, 179, 232, 0.25);
   }
 }
-

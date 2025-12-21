@@ -129,27 +129,65 @@
     </div>
 
     <div class="col-12 mb-3">
-      <mat-form-field class="w-100">
-        <mat-label>Zoek op naam of email</mat-label>
-        <input
-          matInput
-          [value]="searchTerm()"
-          (input)="onSearchTermChanged($any($event.target).value)"
-          placeholder="Voornaam, achternaam of email"
-        />
-        @if (searchTerm()) {
-        <button
-          matPrefix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="onSearchTermChanged('')"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-        } @else {
-        <mat-icon matPrefix>search</mat-icon>
-        }
-      </mat-form-field>
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <h2>Filters</h2>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="d-flex flex-column gap-3">
+            <div
+              class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
+            >
+              <mat-form-field class="flex-grow-1">
+                <mat-label>Zoek op naam of email</mat-label>
+                <input
+                  matInput
+                  [value]="searchTerm()"
+                  (input)="onSearchTermChanged($any($event.target).value)"
+                  placeholder="Voornaam, achternaam of email"
+                />
+                @if (searchTerm()) {
+                <button
+                  matPrefix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="onSearchTermChanged('')"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+                } @else {
+                <mat-icon matPrefix>search</mat-icon>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="">
+            <mat-button-toggle-group
+              [value]="aanwezigFilter()"
+              (change)="onAanwezigFilterChange($event.value)"
+              aria-label="Filter op aanwezigheid"
+            >
+              <mat-button-toggle value="alle">Alle</mat-button-toggle>
+              <mat-button-toggle value="niet_aanwezig"
+                >Niet aanwezig</mat-button-toggle
+              >
+              <mat-button-toggle value="aanwezig">Aanwezig</mat-button-toggle>
+            </mat-button-toggle-group>
+            @if (selectedVoorstelling() && isAdmin()) {
+            <button
+              mat-fab
+              extended
+              color="primary"
+              (click)="addLosseVerkoop()"
+              class="losse-verkoop-btn mx-3"
+            >
+              <mat-icon>add_circle</mat-icon>
+              Losse verkoop
+            </button>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     @if (filteredReserveringen().length > 0) {

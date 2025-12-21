@@ -3,6 +3,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -44,6 +45,7 @@ import { lastValueFrom } from 'rxjs';
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
+    MatButtonToggleModule,
     DatePipe,
     CurrencyPipe,
     ReserveringenTableComponent,
@@ -64,6 +66,7 @@ export class KassaComponent implements OnInit {
 
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
+  aanwezigFilter = signal<'alle' | 'niet_aanwezig' | 'aanwezig'>('alle');
 
   voorstellingen = signal<Voorstelling[]>([]);
   voorstellingenVoorVandaag = signal<Voorstelling[]>([]);
@@ -440,31 +443,50 @@ export class KassaComponent implements OnInit {
 
   filterReserveringen(): void {
     const search = this.searchTerm().toLowerCase().trim();
+    const aanwezigFilter = this.aanwezigFilter();
+    const selectedDag = this.selectedDag();
 
-    if (!search) {
-      this.filteredReserveringen.set(this.reserveringen());
-      return;
+    let filtered = this.reserveringen();
+
+    // Filter op aanwezigheidsstatus
+    if (aanwezigFilter !== 'alle') {
+      filtered = filtered.filter((reservering) => {
+        const isAanwezig =
+          selectedDag === 'datum1'
+            ? reservering.aanwezig_datum_1
+            : reservering.aanwezig_datum_2;
+
+        return aanwezigFilter === 'aanwezig' ? isAanwezig : !isAanwezig;
+      });
     }
 
-    const filtered = this.reserveringen().filter((reservering) => {
-      const voornaam = reservering.voornaam.toLowerCase();
-      const achternaam = reservering.achternaam.toLowerCase();
-      const email = reservering.email.toLowerCase();
-      const naam = `${voornaam} ${achternaam}`.toLowerCase();
+    // Filter op zoekterm
+    if (search) {
+      filtered = filtered.filter((reservering) => {
+        const voornaam = reservering.voornaam.toLowerCase();
+        const achternaam = reservering.achternaam.toLowerCase();
+        const email = reservering.email.toLowerCase();
+        const naam = `${voornaam} ${achternaam}`.toLowerCase();
 
-      return (
-        voornaam.includes(search) ||
-        achternaam.includes(search) ||
-        email.includes(search) ||
-        naam.includes(search)
-      );
-    });
+        return (
+          voornaam.includes(search) ||
+          achternaam.includes(search) ||
+          email.includes(search) ||
+          naam.includes(search)
+        );
+      });
+    }
 
     this.filteredReserveringen.set(filtered);
   }
 
   onSearchTermChanged(newValue: string): void {
     this.searchTerm.set(newValue);
+  }
+
+  onAanwezigFilterChange(value: 'alle' | 'niet_aanwezig' | 'aanwezig'): void {
+    this.aanwezigFilter.set(value);
+    this.filterReserveringen();
   }
 
   onCheckboxChange(event: { reservering: Reservering; dag: 1 | 2 }): void {

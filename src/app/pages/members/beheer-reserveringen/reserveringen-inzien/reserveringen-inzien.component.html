@@ -223,8 +223,14 @@
               selectedDag() === 'datum1' ? seriesDatum1() : seriesDatum2()
             "
             [labels]="labels()"
-            [totalUsed]="selectedDag() === 'datum1' ? totalUsedDatum1() : totalUsedDatum2()"
-            [totalAvailable]="selectedDag() === 'datum1' ? totalAvailableDatum1() : totalAvailableDatum2()"
+            [totalUsed]="
+              selectedDag() === 'datum1' ? totalUsedDatum1() : totalUsedDatum2()
+            "
+            [totalAvailable]="
+              selectedDag() === 'datum1'
+                ? totalAvailableDatum1()
+                : totalAvailableDatum2()
+            "
           ></app-pie-chart>
         </div>
       </mat-card>

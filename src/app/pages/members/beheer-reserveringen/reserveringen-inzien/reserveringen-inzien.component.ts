@@ -101,7 +101,7 @@ export class ReserveringenInzienComponent implements OnInit {
   // Signal Forms: Create form model and form instance for search
   // NOTE: Signal Forms are experimental in Angular 21
   reservatieSearchModel = signal<ReserveringSearchFormModel>({
-    searchTerm: ''
+    searchTerm: '',
   });
 
   reservatieSearchForm = form(this.reservatieSearchModel, (schemaPath) => {
