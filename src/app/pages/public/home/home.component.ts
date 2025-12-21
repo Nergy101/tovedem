@@ -59,7 +59,7 @@ export class HomePaginaComponent implements OnInit {
       {
         sort: 'datum_tijd_1',
         expand: 'groep',
-        filter: `gearchiveerd != true && (datum_tijd_1 >= "${today}" || datum_tijd_2 >= "${today}")`,
+        filter: `gearchiveerd != true && (datum_tijd_1 >= "${today}" || datum_tijd_2 >= "${today}") && (publicatie_datum <= "${today}" || publicatie_datum = "" || publicatie_datum = null)`,
       }
     );
     const nieuws = await this.client.getAll<Nieuws>('nieuws');

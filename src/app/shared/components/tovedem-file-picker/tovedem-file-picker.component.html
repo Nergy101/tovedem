@@ -1,5 +1,10 @@
 <!--? https://www.npmjs.com/package/ngx-awesome-uploader#install -->
 <ngx-awesome-uploader
-    [adapter]="adapter"
-    (uploadSuccess)="internalOnFileUploaded($event)">
+  [adapter]="adapter"
+  [uploadType]="'single'"
+  [fileExtensions]="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+  [fileMaxSize]="10"
+  [showPreviewContainer]="false"
+  (uploadSuccess)="internalOnFileUploaded($event)"
+>
 </ngx-awesome-uploader>

@@ -1,35 +1,64 @@
 :host {
-  margin: 2em;
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  margin: 1em 0;
+  display: block;
+  width: 100%;
 }
 
-// Hide the drag-and-drop zone, only show the file picker button
+// Make sure ngx-awesome-uploader and all its content is visible
 ::ng-deep {
-  // Hide drag-and-drop containers
-  .file-drop-container,
-  .file-drop-wrapper,
-  .file-drop-content,
-  .file-drop-area,
-  .file-drop-zone,
-  [class*="file-drop"],
-  [class*="drop-zone"] {
+  ngx-awesome-uploader {
+    display: block !important;
+    width: 100%;
+    min-height: 100px;
+  }
+  
+  // Hide duplicate file inputs - only keep one visible
+  ngx-awesome-uploader input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+    top: 0;
+    left: 0;
+  }
+  
+  // Hide all but the first file input
+  ngx-awesome-uploader input[type="file"]:not(:first-of-type) {
     display: none !important;
   }
   
-  // Hide any drag-and-drop related elements
-  ngx-awesome-uploader > div:first-child,
-  ngx-awesome-uploader > div[class*="drop"],
-  ngx-awesome-uploader > div[class*="drag"] {
-    display: none !important;
-  }
-  
-  // Show only the file picker button
-  .file-picker-button,
-  button[type="button"],
-  ngx-awesome-uploader button {
+  // Ensure buttons are visible and clickable
+  ngx-awesome-uploader button,
+  ngx-awesome-uploader .file-picker-button,
+  ngx-awesome-uploader [role="button"],
+  ngx-awesome-uploader [class*="button"],
+  ngx-awesome-uploader a[class*="picker"] {
     display: inline-block !important;
     visibility: visible !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    z-index: 5 !important;
+    position: relative !important;
+  }
+  
+  // Style the drag-and-drop area to be visible
+  ngx-awesome-uploader .file-drop-container,
+  ngx-awesome-uploader .file-drop-wrapper,
+  ngx-awesome-uploader .file-drop-content,
+  ngx-awesome-uploader .file-drop-area,
+  ngx-awesome-uploader .file-drop-zone,
+  ngx-awesome-uploader > div:first-child {
+    display: block !important;
+    visibility: visible !important;
+    border: 2px dashed #ccc;
+    padding: 2em;
+    text-align: center;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    min-height: 100px;
+    position: relative;
+    cursor: pointer;
   }
 }

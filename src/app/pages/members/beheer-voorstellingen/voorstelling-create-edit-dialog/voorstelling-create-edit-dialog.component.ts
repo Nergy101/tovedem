@@ -40,7 +40,7 @@ import { Groep } from '../../../../models/domain/groep.model';
 import { Speler } from '../../../../models/domain/speler.model';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { VoorstellingFormModel } from '../../../../models/form-models/voorstelling-form.model';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { ImagePickerWithPreviewComponent } from '../../../../shared/components/image-picker-with-preview/image-picker-with-preview.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { DateTimeService } from '../../../../shared/services/datetime.service';
 
@@ -62,7 +62,7 @@ import { DateTimeService } from '../../../../shared/services/datetime.service';
     MatSelect,
     QuillModule,
     MatOption,
-    TovedemFilePickerComponent,
+    ImagePickerWithPreviewComponent,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -293,7 +293,9 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
     });
 
     if (formData.afbeelding?.file) {
-      formDataObj.append('afbeelding', formData.afbeelding.file);
+      // Ensure the file is properly appended to FormData
+      // The file can be either a File or Blob, both are supported by FormData
+      formDataObj.append('afbeelding', formData.afbeelding.file, formData.afbeelding.fileName || 'afbeelding');
     }
 
     if (this.existingVoorstelling) {
@@ -319,6 +321,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       afbeelding: filePreviewModel,
     }));
   }
+
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private objectToFormData(obj: Record<string, any>): FormData {

@@ -25,7 +25,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { QuillModule } from 'ngx-quill';
 import { Nieuws } from '../../../../models/domain/nieuws.model';
-import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
+import { ImagePickerWithPreviewComponent } from '../../../../shared/components/image-picker-with-preview/image-picker-with-preview.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { DateTimeService } from '../../../../shared/services/datetime.service';
 
@@ -43,7 +43,7 @@ import { DateTimeService } from '../../../../shared/services/datetime.service';
     MatDatepicker,
     MatInput,
     QuillModule,
-    TovedemFilePickerComponent,
+    ImagePickerWithPreviewComponent,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -85,6 +85,12 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
   existingNieuwsData: { existingNieuws: Nieuws | null } =
     inject(MAT_DIALOG_DATA);
   existingNieuws?: Nieuws;
+
+  constructor() {
+    // Update preview URL when afbeelding changes
+    // We need to watch afbeelding, but since it's not a signal, we'll use a different approach
+    // We'll update it in onFileUploaded instead
+  }
 
   async ngOnInit(): Promise<void> {
     this.existingNieuws = this.existingNieuwsData?.existingNieuws || undefined;
@@ -128,7 +134,9 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
     const formData = this.objectToFormData(nieuws);
 
     if (this.afbeelding?.file) {
-      formData.append('afbeelding', this.afbeelding.file);
+      // Ensure the file is properly appended to FormData
+      // The file can be either a File or Blob, both are supported by FormData
+      formData.append('afbeelding', this.afbeelding.file, this.afbeelding.fileName || 'afbeelding');
     }
 
     if (this.existingNieuws) {
@@ -149,6 +157,7 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
   onFileUploaded(filePreviewModel: FilePreviewModel): void {
     this.afbeelding = filePreviewModel;
   }
+
 
   formIsValid(): boolean {
     return (

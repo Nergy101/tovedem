@@ -95,7 +95,7 @@ export class AgendaComponent implements OnInit {
       'voorstellingen',
       {
         sort: 'datum_tijd_1',
-        filter: `(datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}") && gearchiveerd != true`,
+        filter: `(datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}") && gearchiveerd != true && (publicatie_datum <= "${this.today}" || publicatie_datum = "" || publicatie_datum = null)`,
         expand: 'groep',
       }
     );
