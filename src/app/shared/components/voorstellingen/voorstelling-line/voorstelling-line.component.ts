@@ -8,6 +8,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { NavButtonComponent } from '../../nav-button/nav-button.component';
+import { AmsterdamDatePipe } from '../../../pipes/amsterdam-date.pipe';
+import { DateTimeService } from '../../../services/datetime.service';
+import { isFutureDate } from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-voorstelling-line',
@@ -21,17 +24,26 @@ import { NavButtonComponent } from '../../nav-button/nav-button.component';
     MatDividerModule,
     NavButtonComponent,
     MatTooltipModule,
+    AmsterdamDatePipe,
   ],
 })
 export class VoorstellingLineComponent {
   voorstelling = input.required<Voorstelling>();
   router = inject(Router);
+  dateTimeService = inject(DateTimeService);
 
   getYearFormat(): number {
-    return new Date(this.voorstelling().datum_tijd_1).getFullYear();
+    return (
+      this.dateTimeService.getYear(this.voorstelling().datum_tijd_1) ??
+      new Date().getFullYear()
+    );
   }
 
-  getImageUrl(collectionId: string, recordId: string, imageId: string): string {
+  getImageUrl(
+    collectionId: string,
+    recordId: string,
+    imageId: string
+  ): string {
     return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 
@@ -40,15 +52,15 @@ export class VoorstellingLineComponent {
     if (!datum2 || datum2.trim() === '') {
       return false;
     }
-    // Check if it's a valid date
-    const date = new Date(datum2);
-    return !isNaN(date.getTime());
+    // Check if it's a valid date by attempting to convert to Amsterdam time
+    const dt = this.dateTimeService.toAmsterdamTime(datum2);
+    return dt !== null;
   }
 
   inToekomst(): boolean {
     return (
-      new Date(this.voorstelling().datum_tijd_1 ?? '') > new Date() ||
-      new Date(this.voorstelling().datum_tijd_2 ?? '') > new Date()
+      isFutureDate(this.voorstelling().datum_tijd_1) ||
+      isFutureDate(this.voorstelling().datum_tijd_2)
     );
   }
 

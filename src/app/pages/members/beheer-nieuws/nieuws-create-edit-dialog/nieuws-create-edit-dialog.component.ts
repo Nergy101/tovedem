@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -23,12 +22,12 @@ import {
 import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
-import { DateTime } from 'luxon';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { QuillModule } from 'ngx-quill';
 import { Nieuws } from '../../../../models/domain/nieuws.model';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { DateTimeService } from '../../../../shared/services/datetime.service';
 
 @Component({
   selector: 'app-nieuws-create-edit-dialog',
@@ -48,7 +47,6 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './nieuws-create-edit-dialog.component.html',
@@ -82,7 +80,7 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
   };
 
   client = inject(PocketbaseService).client;
-  datePipe = inject(DatePipe);
+  dateTimeService = inject(DateTimeService);
   dialogRef = inject(MatDialogRef<NieuwsCreateEditDialogComponent>);
   existingNieuwsData: { existingNieuws: Nieuws | null } =
     inject(MAT_DIALOG_DATA);
@@ -94,12 +92,16 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
     if (this.existingNieuws) {
       this.titel = this.existingNieuws.titel;
       this.inhoud = this.existingNieuws.inhoud;
-      this.publishDate = this.existingNieuws.publishDate
-        ? new Date(this.existingNieuws.publishDate)
-        : undefined;
-      this.archiveDate = this.existingNieuws.archiveDate
-        ? new Date(this.existingNieuws.archiveDate)
-        : undefined;
+      // Convert UTC dates from PocketBase to Amsterdam local time for display
+      const publishDateAmsterdam = this.existingNieuws.publishDate
+        ? this.dateTimeService.toAmsterdamTime(this.existingNieuws.publishDate)
+        : null;
+      const archiveDateAmsterdam = this.existingNieuws.archiveDate
+        ? this.dateTimeService.toAmsterdamTime(this.existingNieuws.archiveDate)
+        : null;
+
+      this.publishDate = publishDateAmsterdam?.toJSDate();
+      this.archiveDate = archiveDateAmsterdam?.toJSDate();
     }
   }
 
@@ -111,16 +113,16 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
       inhoud: this.inhoud,
       publishDate: undefined,
       archiveDate: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
+    // Convert Amsterdam local time (user input) to UTC for storage
     if (this.publishDate) {
-      const publishDate = DateTime.fromISO(this.publishDate.toISOString());
-      nieuws.publishDate = publishDate.toISO();
+      nieuws.publishDate = this.dateTimeService.toUTC(this.publishDate, '00:00');
     }
 
     if (this.archiveDate) {
-      const archiveDate = DateTime.fromISO(this.archiveDate.toISOString());
-      nieuws.archiveDate = archiveDate.toISO();
+      nieuws.archiveDate = this.dateTimeService.toUTC(this.archiveDate, '00:00');
     }
 
     const formData = this.objectToFormData(nieuws);
@@ -158,10 +160,11 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
     );
   }
 
-  getFieldErrors(field: any): string[] {
+  getFieldErrors(field: unknown): string[] {
     const errors: string[] = [];
-    if (field.errors) {
-      if (field.errors['required']) {
+    const fieldWithErrors = field as { errors?: { required?: boolean } };
+    if (fieldWithErrors.errors) {
+      if (fieldWithErrors.errors['required']) {
         errors.push('Dit veld is verplicht');
       }
     }
@@ -183,5 +186,3 @@ export class NieuwsCreateEditDialogComponent implements OnInit {
     return formData;
   }
 }
-
-

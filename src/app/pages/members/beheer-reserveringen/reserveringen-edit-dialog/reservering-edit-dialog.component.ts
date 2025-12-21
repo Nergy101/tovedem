@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,11 +43,10 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     QuillModule,
     NgxMaterialTimepickerModule,
     MatCardModule,
-    DatePipe,
+    AmsterdamDatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './reservering-edit-dialog.component.html',
@@ -90,7 +89,6 @@ export class ReserveringEditDialogComponent implements OnInit {
   };
 
   client = inject(PocketbaseService).client;
-  datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<ReserveringEditDialogComponent>);
   existingReserveringData: {
     reservering: Reservering;

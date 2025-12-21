@@ -67,8 +67,8 @@
                   ></mat-calendar>
                 </mat-card>
                 <h2>
-                  Datum: {{ datum1 | date : "dd LLLL yyyy" }} <br />
-                  Start tijd: {{ datum1 | date : "HH:mm" }}
+                  Datum: {{ datum1Str | amsterdamDate:'dd LLLL yyyy' }} <br />
+                  Start tijd: {{ datum1Str | amsterdamDate:'HH:mm' }}
                 </h2>
                 @if(isDatum1Past()) {
                 <p class="reservering-gesloten">Reservering gesloten</p>
@@ -132,8 +132,8 @@
                   ></mat-calendar>
                 </mat-card>
                 <h2>
-                  Datum: {{ datum2 | date : "dd LLLL yyyy" }} <br />
-                  Start tijd: {{ datum2 | date : "HH:mm" }}
+                  Datum: {{ datum2Str | amsterdamDate:'dd LLLL yyyy' }} <br />
+                  Start tijd: {{ datum2Str | amsterdamDate:'HH:mm' }}
                 </h2>
                 @if(isDatum2Past()) {
                 <p class="reservering-gesloten">Reservering gesloten</p>

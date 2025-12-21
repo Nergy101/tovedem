@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -21,6 +20,8 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { VoorstellingLineComponent } from '../../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { DateTimeService } from '../../../shared/services/datetime.service';
+import { getTodayStartAsUTC, getYearFromDate } from '../../../shared/utils/date.utils';
 
 @Component({
   selector: 'app-agenda',
@@ -36,15 +37,17 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    FormsModule
-],
+    FormsModule,
+  ],
 })
 export class AgendaComponent implements OnInit {
   url = 'https://pocketbase.nergy.space/';
   client = inject(PocketbaseService);
   seoService = inject(SeoService);
+  dateTimeService = inject(DateTimeService);
 
-  today = new Date().toISOString();
+  // Use timezone-aware "today" for query filters
+  today = getTodayStartAsUTC();
 
   voorstellingenShort: WritableSignal<Voorstelling[]> = signal([]);
   voorstellingenLong: WritableSignal<Voorstelling[]> = signal([]);
@@ -71,7 +74,10 @@ export class AgendaComponent implements OnInit {
           (voorstelling) =>
             voorstelling.titel.toLowerCase().includes(search) ||
             voorstelling.ondertitel?.toLowerCase().includes(search) ||
-            (voorstelling.expand?.groep as any)?.naam?.toLowerCase().includes(search)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (voorstelling.expand?.groep as any)?.naam
+              ?.toLowerCase()
+              .includes(search)
         ),
       }))
       .filter((yearGroup) => yearGroup.items.length > 0);
@@ -125,6 +131,7 @@ export class AgendaComponent implements OnInit {
     // Add EventSeries structured data
     if (voorstellingenInDeToekomst.length > 0) {
       const events = voorstellingenInDeToekomst.map((voorstelling) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const eventData: any = {
           '@type': 'TheaterEvent',
           name: voorstelling.titel,
@@ -198,17 +205,21 @@ export class AgendaComponent implements OnInit {
     fullList: Voorstelling[]
   ): { year: number; items: Voorstelling[] }[] {
     return Object.values(
-      fullList.reduce((result, item) => {
-        const year = new Date(item.datum_tijd_1).getFullYear();
+      fullList.reduce(
+        (result, item) => {
+          // Use timezone-aware year extraction
+          const year = getYearFromDate(item.datum_tijd_1) ?? new Date().getFullYear();
 
-        if (!result[year]) {
-          result[year] = { year, items: [] };
-        }
+          if (!result[year]) {
+            result[year] = { year, items: [] };
+          }
 
-        result[year].items.push(item);
+          result[year].items.push(item);
 
-        return result;
-      }, {} as Record<number, { year: number; items: Voorstelling[] }>)
+          return result;
+        },
+        {} as Record<number, { year: number; items: Voorstelling[] }>
+      )
     );
   }
 }

@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -35,7 +34,6 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
-import { DateTime } from 'luxon';
 import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { QuillModule } from 'ngx-quill';
 import { Groep } from '../../../../models/domain/groep.model';
@@ -44,6 +42,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { VoorstellingFormModel } from '../../../../models/form-models/voorstelling-form.model';
 import { TovedemFilePickerComponent } from '../../../../shared/components/tovedem-file-picker/tovedem-file-picker.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { DateTimeService } from '../../../../shared/services/datetime.service';
 
 @Component({
   selector: 'app-voorstelling-create-edit-dialog',
@@ -67,7 +66,6 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './voorstelling-create-edit-dialog.component.html',
@@ -157,7 +155,7 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
   spelers: WritableSignal<Speler[]> = signal([]);
 
   client = inject(PocketbaseService).client;
-  datePipe = inject(DatePipe);
+  dateTimeService = inject(DateTimeService);
   dialogRef = inject(MatDialogRef<VoorstellingCreateEditDialogComponent>);
   existingVoorstellingData: { existingVoorstelling: Voorstelling } =
     inject(MAT_DIALOG_DATA);
@@ -172,33 +170,42 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
 
     if (this.existingVoorstelling) {
       // Populate form model with existing data
+      // Convert UTC dates from PocketBase to Amsterdam local time for display
+      const datum1Amsterdam = this.dateTimeService.toAmsterdamTime(
+        this.existingVoorstelling.datum_tijd_1
+      );
+      const datum2Amsterdam = this.existingVoorstelling.datum_tijd_2
+        ? this.dateTimeService.toAmsterdamTime(
+            this.existingVoorstelling.datum_tijd_2
+          )
+        : null;
+      const publicatieDatumAmsterdam = this.existingVoorstelling.publicatie_datum
+        ? this.dateTimeService.toAmsterdamTime(
+            this.existingVoorstelling.publicatie_datum
+          )
+        : null;
+
       this.voorstellingModel.set({
         titel: this.existingVoorstelling.titel,
-        ondertitel: this.existingVoorstelling.ondertitel || null, // Optional in PocketBase
-        regie: this.existingVoorstelling.regie, // Required in PocketBase
-        omschrijving: this.existingVoorstelling.omschrijving, // Required in PocketBase
+        ondertitel: this.existingVoorstelling.ondertitel || null,
+        regie: this.existingVoorstelling.regie,
+        omschrijving: this.existingVoorstelling.omschrijving,
         selectedGroep:
           this.groepen().find(
             (g) => g.id == this.existingVoorstelling?.expand?.groep?.id
           ) || null,
-        datum1: new Date(this.existingVoorstelling.datum_tijd_1),
-        datum2: this.existingVoorstelling.datum_tijd_2
-          ? new Date(this.existingVoorstelling.datum_tijd_2)
-          : null,
-        tijd1: this.formatDateTo24HourString(
-          new Date(this.existingVoorstelling.datum_tijd_1)
-        ),
-        tijd2: this.existingVoorstelling.datum_tijd_2
-          ? this.formatDateTo24HourString(
-              new Date(this.existingVoorstelling.datum_tijd_2)
-            )
-          : '',
+        // Convert Luxon DateTime to JavaScript Date for datepicker
+        datum1: datum1Amsterdam?.toJSDate() ?? null,
+        datum2: datum2Amsterdam?.toJSDate() ?? null,
+        // Format time in Amsterdam timezone (HH:mm)
+        tijd1: datum1Amsterdam?.toFormat('HH:mm') ?? '',
+        tijd2: datum2Amsterdam?.toFormat('HH:mm') ?? '',
         beschikbare_stoelen_datum_tijd_1:
           this.existingVoorstelling.beschikbare_stoelen_datum_tijd_1,
         beschikbare_stoelen_datum_tijd_2:
           this.existingVoorstelling.beschikbare_stoelen_datum_tijd_2,
         prijs_per_kaartje: this.existingVoorstelling.prijs_per_kaartje,
-        publicatie_datum: new Date(this.existingVoorstelling.publicatie_datum),
+        publicatie_datum: publicatieDatumAmsterdam?.toJSDate() ?? null,
         selectedSpelers: [],
         afbeelding: null,
       });
@@ -255,30 +262,28 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
+    // Convert Amsterdam local time (user input) to UTC for storage
+    // The user enters date and time as they appear in Amsterdam
     if (formData.tijd1 && formData.datum1) {
-      const tijd1 = this.parseTimeToDate(formData.tijd1);
-      const date1 = DateTime.fromISO(formData.datum1.toISOString());
-      const date1ISO = date1
-        .set({ hour: tijd1.getHours(), minute: tijd1.getMinutes() })
-        .toISO();
-      voorstelling.datum_tijd_1 = date1ISO;
+      voorstelling.datum_tijd_1 = this.dateTimeService.toUTC(
+        formData.datum1,
+        formData.tijd1
+      );
     }
 
     if (formData.tijd2 && formData.datum2) {
-      const tijd2 = this.parseTimeToDate(formData.tijd2);
-      const date2 = DateTime.fromISO(formData.datum2.toISOString());
-      const date2ISO = date2
-        .set({ hour: tijd2.getHours(), minute: tijd2.getMinutes() })
-        .toISO();
-      voorstelling.datum_tijd_2 = date2ISO;
+      voorstelling.datum_tijd_2 = this.dateTimeService.toUTC(
+        formData.datum2,
+        formData.tijd2
+      );
     }
 
     if (formData.publicatie_datum) {
-      const publicatie_datum = DateTime.fromISO(
-        formData.publicatie_datum.toISOString()
+      // Publicatie datum is just a date (no time), so treat it as start of day in Amsterdam
+      voorstelling.publicatie_datum = this.dateTimeService.toUTC(
+        formData.publicatie_datum,
+        '00:00'
       );
-      const PublicatieDateISO = publicatie_datum.toISO();
-      voorstelling.publicatie_datum = PublicatieDateISO;
     }
 
     const formDataObj = this.objectToFormData(voorstelling);
@@ -331,36 +336,5 @@ export class VoorstellingCreateEditDialogComponent implements OnInit {
       }
     });
     return formData;
-  }
-
-  parseTimeToDate(time: string): Date {
-    // Create a new "blank" Date with today's date but time set to 00:00
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
-
-    // Parse HH:MM format (24-hour format from HTML time input)
-    const timePattern = /^(\d{2}):(\d{2})$/;
-    const match = time.match(timePattern);
-
-    if (match) {
-      const hours = parseInt(match[1], 10);
-      const minutes = parseInt(match[2], 10);
-
-      // Set the parsed hours and minutes
-      date.setHours(hours, minutes);
-    }
-
-    return date;
-  }
-
-  formatDateTo24HourString(date: Date): string {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    // Pad hours and minutes with leading zero if needed
-    const hoursStr = hours < 10 ? `0${hours}` : hours.toString();
-    const minutesStr = minutes < 10 ? `0${minutes}` : minutes.toString();
-
-    return `${hoursStr}:${minutesStr}`;
   }
 }

@@ -10,6 +10,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { SideDrawerService } from '../../../shared/services/side-drawer.service';
 
 import { CommonModule } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -43,6 +44,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
     MatDividerModule,
     MatPaginatorModule,
     NgOptimizedImage,
+    AmsterdamDatePipe,
   ],
   templateUrl: './profiel.component.html',
   styleUrl: './profiel.component.scss',

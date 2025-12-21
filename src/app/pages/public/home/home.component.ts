@@ -6,7 +6,6 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDivider } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -18,6 +17,9 @@ import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieu
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { DateTimeService } from '../../../shared/services/datetime.service';
+import { getTodayStartAsUTC } from '../../../shared/utils/date.utils';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -35,6 +37,7 @@ import { SeoService } from '../../../shared/services/seo.service';
 })
 export class HomePaginaComponent implements OnInit {
   client = inject(PocketbaseService);
+  dateTimeService = inject(DateTimeService);
 
   voorstellingen: WritableSignal<Voorstelling[]> = signal([]);
   nieuws: WritableSignal<Nieuws[]> = signal([]);
@@ -49,7 +52,8 @@ export class HomePaginaComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+    // Use timezone-aware "today" filter (Amsterdam timezone)
+    const today = getTodayStartAsUTC();
     const voorstellingen = await this.client.getAll<Voorstelling>(
       'voorstellingen',
       {
@@ -78,6 +82,7 @@ export class HomePaginaComponent implements OnInit {
     });
 
     // Enhanced structured data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const structuredData: any = {
       '@context': 'https://schema.org',
       '@graph': [
@@ -132,6 +137,7 @@ export class HomePaginaComponent implements OnInit {
     // Add upcoming event if available
     if (voorstellingen.length > 0 && voorstellingen[0]) {
       const firstVoorstelling = voorstellingen[0];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const eventData: any = {
         '@type': 'TheaterEvent',
         name: firstVoorstelling.titel,
@@ -185,6 +191,7 @@ export class HomePaginaComponent implements OnInit {
 
     // Add Article structured data for published news items
     if (this.nieuwsToPublish().length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const articles = this.nieuwsToPublish().map((item): any => {
         const articleUrl = `https://tovedem.nergy.space`;
         const imageUrl = item.afbeelding
@@ -225,26 +232,24 @@ export class HomePaginaComponent implements OnInit {
 
     this.seoService.updateStructuredData(structuredData);
   }
+
   publiceren(nieuws: Nieuws): boolean {
+    // Use timezone-aware date comparisons
     return (
-      new Date(nieuws.publishDate ?? '') < new Date() &&
-      new Date(nieuws.archiveDate ?? '') > new Date()
+      this.dateTimeService.isPast(nieuws.publishDate) &&
+      this.dateTimeService.isFuture(nieuws.archiveDate)
     );
   }
 
   archiveren(nieuws: Nieuws): boolean {
-    return new Date(nieuws.archiveDate ?? '') > new Date();
+    return this.dateTimeService.isFuture(nieuws.archiveDate);
   }
 
   getNieuwsLabel(nieuws: Nieuws): string {
-    return `${
-      nieuws.publishDate
-        ? new Date(nieuws.publishDate).toLocaleDateString('nl-NL', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-          })
-        : ''
-    } | ${nieuws.titel}`;
+    // Use timezone-aware date formatting
+    const formattedDate = nieuws.publishDate
+      ? this.dateTimeService.formatDate(nieuws.publishDate, 'dd-MM-yyyy')
+      : '';
+    return `${formattedDate} | ${nieuws.titel}`;
   }
 }

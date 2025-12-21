@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 import {
   Component,
   OnInit,
@@ -34,13 +34,12 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    DatePipe,
+    AmsterdamDatePipe,
     MatDatepickerModule,
     MatCardModule,
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './beheer-nieuws.component.html',

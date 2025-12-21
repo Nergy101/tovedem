@@ -24,12 +24,12 @@
         @if(!!voorstelling().datum_tijd_1 && !!voorstelling().datum_tijd_2){
         <div class="date-badge">
           <div class="date-numbers">
-            {{ voorstelling().datum_tijd_1 | date : "d" }}
-            & {{ voorstelling().datum_tijd_2 | date : "d" }}
+            {{ voorstelling().datum_tijd_1 | amsterdamDate : "d" }}
+            & {{ voorstelling().datum_tijd_2 | amsterdamDate : "d" }}
           </div>
           <div class="date-month-year">
-            {{ voorstelling().datum_tijd_1 | date : "LLLL" }}
-            {{ voorstelling().datum_tijd_1 | date : "yyyy" }}
+            {{ voorstelling().datum_tijd_1 | amsterdamDate : "LLLL" }}
+            {{ voorstelling().datum_tijd_1 | amsterdamDate : "yyyy" }}
           </div>
         </div>
         }
@@ -49,13 +49,13 @@
           <mat-icon class="time-icon">schedule</mat-icon>
           <span class="times-text">
             @if(voorstelling().datum_tijd_1) {
-            {{ voorstelling().datum_tijd_1 | date : "d LLLL" : "" : "nl" }}
-            {{ voorstelling().datum_tijd_1 | date : "HH:mm" }}
+            {{ voorstelling().datum_tijd_1 | amsterdamDate : "d LLLL" }}
+            {{ voorstelling().datum_tijd_1 | amsterdamDate : "HH:mm" }}
             } @if(voorstelling().datum_tijd_1 && voorstelling().datum_tijd_2) {
             <br />
             } @if(voorstelling().datum_tijd_2) {
-            {{ voorstelling().datum_tijd_2 | date : "d LLLL" : "" : "nl" }}
-            {{ voorstelling().datum_tijd_2 | date : "HH:mm" }}
+            {{ voorstelling().datum_tijd_2 | amsterdamDate : "d LLLL" }}
+            {{ voorstelling().datum_tijd_2 | amsterdamDate : "HH:mm" }}
             }
           </span>
         </div>

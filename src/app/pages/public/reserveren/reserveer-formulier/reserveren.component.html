@@ -150,8 +150,8 @@
                 ></mat-calendar>
               </mat-card>
               <h4>
-                Datum: {{ datum1 | date : "dd LLLL yyyy" }} <br />
-                Start tijd: {{ datum1 | date : "HH:mm" }}
+                Datum: {{ datum1Str | amsterdamDate:'dd LLLL yyyy' }} <br />
+                Start tijd: {{ datum1Str | amsterdamDate:'HH:mm' }}
               </h4>
               @if(isDatum1Past()) {
               <p class="reservering-gesloten">Reservering gesloten</p>
@@ -187,7 +187,7 @@
                     aria-describedby="aantal-datum1-error aantal-datum1-hint"
                     [attr.aria-label]="
                       'Aantal mensen voor datum 1: ' +
-                      (datum1 | date : 'dd LLLL yyyy')
+                      (datum1Str | amsterdamDate:'dd LLLL yyyy')
                     "
                   />
 
@@ -253,8 +253,8 @@
                 ></mat-calendar>
               </mat-card>
               <h4>
-                Datum: {{ datum2 | date : "dd LLLL yyyy" }} <br />
-                Start tijd: {{ datum2 | date : "HH:mm" }}
+                Datum: {{ datum2Str | amsterdamDate:'dd LLLL yyyy' }} <br />
+                Start tijd: {{ datum2Str | amsterdamDate:'HH:mm' }}
               </h4>
               @if(isDatum2Past()) {
               <p class="reservering-gesloten">Reservering gesloten</p>
@@ -292,7 +292,7 @@
                     aria-describedby="aantal-datum2-error aantal-datum2-hint"
                     [attr.aria-label]="
                       'Aantal mensen voor datum 2: ' +
-                      (datum2 | date : 'dd LLLL yyyy')
+                      (datum2Str | amsterdamDate:'dd LLLL yyyy')
                     "
                   />
                   <button

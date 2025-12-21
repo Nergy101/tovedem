@@ -38,11 +38,11 @@
           <tbody>
             @for (item of items(); track item.id) {
             <tr>
-              <td>{{ item.created | date : "dd LLLL yyyy" }}</td>
+              <td>{{ item.created | amsterdamDate:'dd LLLL yyyy' }}</td>
               <td>{{ item.titel }}</td>
               <td>{{ item.expand?.groep?.naam }}</td>
-              <td>{{ item.datum_tijd_1 | date : "MMM d, yyyy [HH:mm]" }}</td>
-              <td>{{ item.datum_tijd_2 | date : "MMM d, yyyy [HH:mm]" }}</td>
+              <td>{{ item.datum_tijd_1 | amsterdamDate:'table' }}</td>
+              <td>{{ item.datum_tijd_2 | amsterdamDate:'table' }}</td>
               <td>
                 @if ((item.expand?.spelers?.length || 0) > 0) {
                 <button mat-button [matMenuTriggerFor]="menu">
