@@ -95,7 +95,8 @@ export class BeheerVoorstellingenComponent implements OnInit {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
-      minWidth: '90vw',
+      minWidth: '60vw',
+      maxWidth: '70vw',
     });
 
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
@@ -110,7 +111,8 @@ export class BeheerVoorstellingenComponent implements OnInit {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: use_voorstelling },
       hasBackdrop: true,
-      minWidth: '90vw',
+      minWidth: '60vw',
+      maxWidth: '70vw',
     });
 
     const updated: Voorstelling = await lastValueFrom(dialogRef.afterClosed());

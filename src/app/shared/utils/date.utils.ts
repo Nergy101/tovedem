@@ -8,6 +8,19 @@ import { Voorstelling } from '../../models/domain/voorstelling.model';
 const TIMEZONE = 'Europe/Amsterdam';
 
 /**
+ * Normalize a date string to valid ISO 8601 format.
+ * Handles formats like "2026-03-06 19:00:00.000Z" by replacing space with 'T'.
+ *
+ * @param dateString - Date string that may have space instead of 'T'
+ * @returns Normalized ISO 8601 string
+ */
+function normalizeToISO8601(dateString: string): string {
+  // Replace space with 'T' to make it valid ISO 8601
+  // Handles formats like "2026-03-06 19:00:00.000Z" -> "2026-03-06T19:00:00.000Z"
+  return dateString.replace(' ', 'T');
+}
+
+/**
  * Normalize a UTC datetime string to YYYY-MM-DD format in Amsterdam timezone.
  * This correctly handles the date as it would appear in Amsterdam.
  *
@@ -20,8 +33,9 @@ export function normalizeDateToDay(date: Date | string): string {
   let dt: DateTime;
 
   if (typeof date === 'string') {
-    // Parse as UTC and convert to Amsterdam
-    dt = DateTime.fromISO(date, { zone: 'utc' }).setZone(TIMEZONE);
+    // Normalize to ISO 8601 format and parse as UTC, then convert to Amsterdam
+    const normalizedDate = normalizeToISO8601(date);
+    dt = DateTime.fromISO(normalizedDate, { zone: 'utc' }).setZone(TIMEZONE);
   } else {
     // JavaScript Date - convert to Amsterdam timezone
     dt = DateTime.fromJSDate(date).setZone(TIMEZONE);
@@ -116,7 +130,11 @@ export function getVoorstellingDagForDate(
 export function isFutureDate(utcString: string | null | undefined): boolean {
   if (!utcString) return false;
 
-  const dt = DateTime.fromISO(utcString, { zone: 'utc' }).setZone(TIMEZONE);
+  // Normalize to ISO 8601 format before parsing
+  const normalizedString = normalizeToISO8601(utcString);
+  const dt = DateTime.fromISO(normalizedString, { zone: 'utc' }).setZone(
+    TIMEZONE
+  );
   if (!dt.isValid) return false;
 
   const now = DateTime.now().setZone(TIMEZONE);
@@ -132,7 +150,11 @@ export function isFutureDate(utcString: string | null | undefined): boolean {
 export function isPastDate(utcString: string | null | undefined): boolean {
   if (!utcString) return false;
 
-  const dt = DateTime.fromISO(utcString, { zone: 'utc' }).setZone(TIMEZONE);
+  // Normalize to ISO 8601 format before parsing
+  const normalizedString = normalizeToISO8601(utcString);
+  const dt = DateTime.fromISO(normalizedString, { zone: 'utc' }).setZone(
+    TIMEZONE
+  );
   if (!dt.isValid) return false;
 
   const now = DateTime.now().setZone(TIMEZONE);
@@ -161,7 +183,11 @@ export function getYearFromDate(
 ): number | null {
   if (!utcString) return null;
 
-  const dt = DateTime.fromISO(utcString, { zone: 'utc' }).setZone(TIMEZONE);
+  // Normalize to ISO 8601 format before parsing
+  const normalizedString = normalizeToISO8601(utcString);
+  const dt = DateTime.fromISO(normalizedString, { zone: 'utc' }).setZone(
+    TIMEZONE
+  );
   if (!dt.isValid) return null;
 
   return dt.year;

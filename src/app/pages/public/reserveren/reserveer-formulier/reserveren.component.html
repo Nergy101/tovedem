@@ -150,8 +150,19 @@
                 ></mat-calendar>
               </mat-card>
               <h4>
-                Datum: {{ datum1Str | amsterdamDate:'dd LLLL yyyy' }} <br />
-                Start tijd: {{ datum1Str | amsterdamDate:'HH:mm' }}
+                <span class="icon-text">
+                  <mat-icon matTooltip="Datum" matTooltipPosition="left"
+                    >calendar_month</mat-icon
+                  >
+                  {{ datum1Str | amsterdamDate : "d LLLL yyyy" }}
+                </span>
+                <br />
+                <span class="icon-text">
+                  <mat-icon matTooltip="Start tijd" matTooltipPosition="left"
+                    >schedule</mat-icon
+                  >
+                  {{ datum1Str | amsterdamDate : "HH:mm" }}
+                </span>
               </h4>
               @if(isDatum1Past()) {
               <p class="reservering-gesloten">Reservering gesloten</p>
@@ -172,7 +183,7 @@
                     exceeds20LimitDate1()
                   "
                 >
-                  <mat-label>Hoeveel mensen?</mat-label>
+                  <mat-label>Voor hoeveel mensen?</mat-label>
                   <input
                     matInput
                     style="text-align: center"
@@ -187,7 +198,7 @@
                     aria-describedby="aantal-datum1-error aantal-datum1-hint"
                     [attr.aria-label]="
                       'Aantal mensen voor datum 1: ' +
-                      (datum1Str | amsterdamDate:'dd LLLL yyyy')
+                      (datum1Str | amsterdamDate : 'd LLLL yyyy')
                     "
                   />
 
@@ -253,8 +264,19 @@
                 ></mat-calendar>
               </mat-card>
               <h4>
-                Datum: {{ datum2Str | amsterdamDate:'dd LLLL yyyy' }} <br />
-                Start tijd: {{ datum2Str | amsterdamDate:'HH:mm' }}
+                <span class="icon-text">
+                  <mat-icon matTooltip="Datum" matTooltipPosition="left"
+                    >calendar_month</mat-icon
+                  >
+                  {{ datum2Str | amsterdamDate : "d LLLL yyyy" }}
+                </span>
+                <br />
+                <span class="icon-text">
+                  <mat-icon matTooltip="Start tijd" matTooltipPosition="left"
+                    >schedule</mat-icon
+                  >
+                  {{ datum2Str | amsterdamDate : "HH:mm" }}
+                </span>
               </h4>
               @if(isDatum2Past()) {
               <p class="reservering-gesloten">Reservering gesloten</p>
@@ -276,7 +298,7 @@
                   "
                 >
                   <mat-label style="text-align: center"
-                    >Hoeveel mensen?</mat-label
+                    >Voor hoeveel mensen?</mat-label
                   >
                   <input
                     style="text-align: center"
@@ -292,7 +314,7 @@
                     aria-describedby="aantal-datum2-error aantal-datum2-hint"
                     [attr.aria-label]="
                       'Aantal mensen voor datum 2: ' +
-                      (datum2Str | amsterdamDate:'dd LLLL yyyy')
+                      (datum2Str | amsterdamDate : 'd LLLL yyyy')
                     "
                   />
                   <button
@@ -347,9 +369,9 @@
           <div class="row">
             <div class="d-flex align-items-center flex-column">
               <div class="row">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column mt-4">
                   <mat-form-field>
-                    <mat-label>Opmerking</mat-label>
+                    <mat-label>Opmerking (optioneel)</mat-label>
                     <textarea
                       matInput
                       #input
@@ -359,8 +381,8 @@
                       aria-describedby="opmerking-hint"
                       aria-label="Optionele opmerking voor de reservering"
                     ></textarea>
-                    <mat-hint align="end" id="opmerking-hint"
-                      >{{
+                    <mat-hint align="end" id="opmerking-hint">
+                      {{
                         reserveringForm.opmerking().value().length || 0
                       }}/250</mat-hint
                     >
@@ -371,7 +393,7 @@
                     [field]="reserveringForm.vriendVanTovedem"
                     color="primary"
                     matTooltip="Je bent sponsor of donateur van Tovedem."
-                    [matTooltipPosition]="'left'"
+                    matTooltipPosition="left"
                     id="vriend-checkbox"
                     aria-label="Ben je vriend van Tovedem? Je bent sponsor of donateur van Tovedem."
                   >
@@ -383,7 +405,7 @@
                     [field]="reserveringForm.lidVanTovedemMejotos"
                     color="primary"
                     matTooltip="Je bent lid van een van de groepen binnen Tovedem."
-                    [matTooltipPosition]="'left'"
+                    matTooltipPosition="left"
                     id="lid-checkbox"
                     aria-label="Ben je lid van Tovedem, Cloos of Mejoto's? Je bent lid van een van de groepen binnen Tovedem."
                   >

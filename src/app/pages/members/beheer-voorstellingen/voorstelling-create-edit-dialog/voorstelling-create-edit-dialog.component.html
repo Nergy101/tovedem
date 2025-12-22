@@ -175,7 +175,7 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-12">
-          <h3>Regie*</h3>
+          <mat-label>Regie*</mat-label>
           <quill-editor
             class="regie"
             [modules]="modules"
@@ -186,7 +186,7 @@
           ></quill-editor>
         </div>
         <div class="col-md-6 col-12">
-          <h3>Omschrijving*</h3>
+          <mat-label>Omschrijving*</mat-label>
           <quill-editor
             [modules]="modules"
             name="omschrijving"
@@ -197,7 +197,7 @@
         </div>
       </div>
       <div class="row">
-        <h3>Afbeelding</h3>
+        <mat-label>Afbeelding</mat-label>
         <app-image-picker-with-preview
           (fileUploaded)="onFileUploaded($event)"
         ></app-image-picker-with-preview>

@@ -21,7 +21,10 @@ import { VoorstellingLineComponent } from '../../../shared/components/voorstelli
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { DateTimeService } from '../../../shared/services/datetime.service';
-import { getTodayStartAsUTC, getYearFromDate } from '../../../shared/utils/date.utils';
+import {
+  getTodayStartAsUTC,
+  getYearFromDate,
+} from '../../../shared/utils/date.utils';
 
 @Component({
   selector: 'app-agenda',
@@ -205,21 +208,19 @@ export class AgendaComponent implements OnInit {
     fullList: Voorstelling[]
   ): { year: number; items: Voorstelling[] }[] {
     return Object.values(
-      fullList.reduce(
-        (result, item) => {
-          // Use timezone-aware year extraction
-          const year = getYearFromDate(item.datum_tijd_1) ?? new Date().getFullYear();
+      fullList.reduce((result, item) => {
+        // Use timezone-aware year extraction
+        const year =
+          getYearFromDate(item.datum_tijd_1) ?? new Date().getFullYear();
 
-          if (!result[year]) {
-            result[year] = { year, items: [] };
-          }
+        if (!result[year]) {
+          result[year] = { year, items: [] };
+        }
 
-          result[year].items.push(item);
+        result[year].items.push(item);
 
-          return result;
-        },
-        {} as Record<number, { year: number; items: Voorstelling[] }>
-      )
+        return result;
+      }, {} as Record<number, { year: number; items: Voorstelling[] }>)
     );
   }
 }

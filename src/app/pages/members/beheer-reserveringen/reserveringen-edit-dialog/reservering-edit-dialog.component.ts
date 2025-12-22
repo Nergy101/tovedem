@@ -66,8 +66,9 @@ export class ReserveringEditDialogComponent implements OnInit {
 
   loading = signal(false);
 
-  datum1?: Date;
-  datum2?: Date;
+  // Store UTC strings for proper timezone handling with amsterdamDate pipe
+  datum1Str?: string;
+  datum2Str?: string;
 
   modules = {
     toolbar: [
@@ -114,12 +115,9 @@ export class ReserveringEditDialogComponent implements OnInit {
       this.is_lid_van_vereniging =
         this.existingReservering.is_lid_van_vereniging;
       this.opmerking = this.existingReservering.opmerking;
-      this.datum1 = this.existingVoorstelling?.datum_tijd_1
-        ? new Date(this.existingVoorstelling?.datum_tijd_1)
-        : undefined;
-      this.datum2 = this.existingVoorstelling?.datum_tijd_2
-        ? new Date(this.existingVoorstelling?.datum_tijd_2)
-        : undefined;
+      // Store as ISO strings for amsterdamDate pipe
+      this.datum1Str = this.existingVoorstelling?.datum_tijd_1;
+      this.datum2Str = this.existingVoorstelling?.datum_tijd_2;
     }
   }
 

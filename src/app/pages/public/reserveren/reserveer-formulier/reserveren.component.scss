@@ -128,3 +128,14 @@ input[type="number"] {
     color: #d32f2f !important;
   }
 }
+
+// Icon and text alignment
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+
+  mat-icon {
+    vertical-align: middle;
+  }
+}

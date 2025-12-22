@@ -25,7 +25,6 @@ export class DateTimeService {
    * @returns Luxon DateTime in Europe/Amsterdam timezone
    */
   toAmsterdamTime(utcString: string | null | undefined): DateTime | null {
-    console.log('utcString', utcString);
     if (!utcString) return null;
 
     // Normalize the string: replace space with 'T' to make it valid ISO 8601
@@ -34,7 +33,7 @@ export class DateTimeService {
 
     // Parse as UTC and convert to Amsterdam timezone
     const dt = DateTime.fromISO(normalizedString, { zone: 'utc' });
-    console.log('dt', dt, 'isValid', dt.isValid);
+
     if (!dt.isValid) return null;
 
     return dt.setZone(this.TIMEZONE);
