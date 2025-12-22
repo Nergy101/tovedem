@@ -22,9 +22,9 @@
             @for (voorstelling of voorstellingen(); track voorstelling.id) {
             <mat-option [value]="voorstelling">
               {{ voorstelling.titel }}:
-              {{ voorstelling.datum_tijd_1 | date : "dd-MM-yyyy" }}
+              {{ voorstelling.datum_tijd_1 | amsterdamDate:'dd-MM-yyyy' }}
               @if (voorstelling.datum_tijd_2) { en
-              {{ voorstelling.datum_tijd_2 | date : "dd-MM-yyyy" }}
+              {{ voorstelling.datum_tijd_2 | amsterdamDate:'dd-MM-yyyy' }}
               }
             </mat-option>
             }
@@ -43,13 +43,13 @@
           >
             <mat-button-toggle value="datum1">
               Dag 1 ({{
-                selectedVoorstelling()?.datum_tijd_1 | date : "dd-MM-yyyy"
+                selectedVoorstelling()?.datum_tijd_1 | amsterdamDate:'dd-MM-yyyy'
               }})
             </mat-button-toggle>
             @if (selectedVoorstelling()?.datum_tijd_2) {
             <mat-button-toggle value="datum2">
               Dag 2 ({{
-                selectedVoorstelling()?.datum_tijd_2 | date : "dd-MM-yyyy"
+                selectedVoorstelling()?.datum_tijd_2 | amsterdamDate:'dd-MM-yyyy'
               }})
             </mat-button-toggle>
             }

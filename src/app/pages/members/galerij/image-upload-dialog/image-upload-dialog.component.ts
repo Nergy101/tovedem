@@ -1,13 +1,15 @@
 
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ToastrService } from 'ngx-toastr';
+import { FilePreviewModel } from 'ngx-awesome-uploader';
 import { ErrorService } from '../../../../shared/services/error.service';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { ImagePickerWithPreviewComponent } from '../../../../shared/components/image-picker-with-preview/image-picker-with-preview.component';
 
 @Component({
   selector: 'app-image-upload-dialog',
@@ -16,12 +18,13 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatButton,
     MatIcon,
     MatProgressSpinnerModule,
-    MatProgressBarModule
-],
+    MatProgressBarModule,
+    ImagePickerWithPreviewComponent,
+  ],
   templateUrl: './image-upload-dialog.component.html',
   styleUrl: './image-upload-dialog.component.scss',
 })
-export class ImageUploadDialogComponent implements OnDestroy {
+export class ImageUploadDialogComponent {
   dialogRef = inject(MatDialogRef<ImageUploadDialogComponent>);
   client = inject(PocketbaseService);
   toastr = inject(ToastrService);
@@ -30,29 +33,11 @@ export class ImageUploadDialogComponent implements OnDestroy {
   loading = signal(false);
   uploadProgress = signal(0);
   selectedFile?: File;
-  previewUrl = signal<string | null>(null);
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.selectedFile = file;
-      
-      // Create object URL for preview
-      if (this.previewUrl()) {
-        URL.revokeObjectURL(this.previewUrl()!);
-      }
-      const url = URL.createObjectURL(file);
-      this.previewUrl.set(url);
+  onFileUploaded(filePreviewModel: FilePreviewModel): void {
+    if (filePreviewModel?.file instanceof File) {
+      this.selectedFile = filePreviewModel.file;
     }
-  }
-
-  getFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
   }
 
   async submit(): Promise<void> {
@@ -98,10 +83,4 @@ export class ImageUploadDialogComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    // Clean up object URL to prevent memory leaks
-    if (this.previewUrl()) {
-      URL.revokeObjectURL(this.previewUrl()!);
-    }
-  }
 }

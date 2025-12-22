@@ -1,0 +1,53 @@
+<div class="image-picker-container">
+  <div class="picker-section" [class.disabled]="hasFile()">
+    @if (!hasFile()) {
+    <app-tovedem-file-picker
+      (fileUploaded)="onFileUploaded($event)"
+    ></app-tovedem-file-picker>
+    } @else {
+    <div class="disabled-overlay">
+      <p>Een afbeelding is al geselecteerd</p>
+      <button mat-stroked-button (click)="removeFile()" color="warn">
+        <mat-icon>delete</mat-icon>
+        Verwijder afbeelding
+      </button>
+    </div>
+    }
+  </div>
+  @if (selectedFile?.file) {
+  <div class="preview-section">
+    <div class="preview-container">
+      <div class="preview-header">
+        <h4>Preview</h4>
+        <button
+          mat-icon-button
+          (click)="removeFile()"
+          color="warn"
+          aria-label="Verwijder afbeelding"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      @if (previewUrl() && imageKey() > 0) {
+      <img
+        [src]="previewUrl()!"
+        [alt]="selectedFile?.fileName || 'Preview'"
+        class="preview-image"
+      />
+      }
+      <div class="file-info">
+        <p>
+          <strong>Bestandsnaam:</strong>
+          {{ selectedFile?.fileName }}
+        </p>
+        @if (selectedFile?.file) {
+        <p>
+          <strong>Grootte:</strong>
+          {{ getFileSize(selectedFile?.file?.size || 0) }}
+        </p>
+        }
+      </div>
+    </div>
+  </div>
+  }
+</div>

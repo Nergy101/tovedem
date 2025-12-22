@@ -17,6 +17,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 
 @Component({
   selector: 'app-losse-verkoop-create-dialog',
@@ -30,6 +31,7 @@ import { ConfirmatieDialogComponent } from '../../../../shared/components/confir
     FormsModule,
     MatButton,
     MatIconButton,
+    AmsterdamDatePipe,
   ],
   templateUrl: './losse-verkoop-create-dialog.component.html',
   styleUrl: './losse-verkoop-create-dialog.component.scss',
@@ -40,27 +42,25 @@ export class LosseVerkoopCreateDialogComponent {
   loading = signal(false);
 
   dialogRef = inject(MatDialogRef<LosseVerkoopCreateDialogComponent>);
-  data: { voorstelling: Voorstelling; selectedDag: 'datum1' | 'datum2' } = inject(MAT_DIALOG_DATA);
+  data: { voorstelling: Voorstelling; selectedDag: 'datum1' | 'datum2' } =
+    inject(MAT_DIALOG_DATA);
 
   voorstelling = computed(() => this.data.voorstelling);
   selectedDag = computed(() => this.data.selectedDag);
 
   aantal: number | null = null;
 
-
-  getSelectedDatum(): Date {
+  getSelectedDatum(): string | null {
     const dag = this.selectedDag();
     if (dag === 'datum1') {
-      return new Date(this.voorstelling()?.datum_tijd_1 ?? new Date());
+      return this.voorstelling()?.datum_tijd_1 ?? null;
     } else {
-      return new Date(this.voorstelling()?.datum_tijd_2 ?? new Date());
+      return this.voorstelling()?.datum_tijd_2 ?? null;
     }
   }
 
   formIsValid(): boolean {
-    return (
-      this.aantal !== null && this.aantal > 0 && this.aantal <= 20
-    );
+    return this.aantal !== null && this.aantal > 0 && this.aantal <= 20;
   }
 
   getFieldErrors(field: any): string[] {
@@ -85,14 +85,18 @@ export class LosseVerkoopCreateDialogComponent {
     const nieuweAantal = this.aantal ?? 0;
 
     // Get beschikbare stoelen for selected day
-    const beschikbareStoelen = selectedDag === 'datum1' 
-      ? voorstelling.beschikbare_stoelen_datum_tijd_1 
-      : voorstelling.beschikbare_stoelen_datum_tijd_2;
+    const beschikbareStoelen =
+      selectedDag === 'datum1'
+        ? voorstelling.beschikbare_stoelen_datum_tijd_1
+        : voorstelling.beschikbare_stoelen_datum_tijd_2;
 
     // Get all reservations for this voorstelling
-    const reserveringen = await this.client.getAll<Reservering>('reserveringen', {
-      filter: `voorstelling = "${voorstelling.id}"`,
-    });
+    const reserveringen = await this.client.getAll<Reservering>(
+      'reserveringen',
+      {
+        filter: `voorstelling = "${voorstelling.id}"`,
+      }
+    );
 
     // Calculate total reservations for selected day
     let totalReserveringen = 0;
@@ -105,9 +109,12 @@ export class LosseVerkoopCreateDialogComponent {
     });
 
     // Get all losse verkoop for this voorstelling and day
-    const losseVerkoop = await this.client.getAll<LosseVerkoop>('losse_verkoop', {
-      filter: `voorstelling = "${voorstelling.id}" && datum = "${selectedDag}"`,
-    });
+    const losseVerkoop = await this.client.getAll<LosseVerkoop>(
+      'losse_verkoop',
+      {
+        filter: `voorstelling = "${voorstelling.id}" && datum = "${selectedDag}"`,
+      }
+    );
 
     // Calculate total losse verkoop
     let totalLosseVerkoop = 0;
@@ -124,24 +131,26 @@ export class LosseVerkoopCreateDialogComponent {
 
     const voorstelling = this.voorstelling();
     const selectedDag = this.selectedDag();
-    const beschikbareStoelen = selectedDag === 'datum1' 
-      ? voorstelling.beschikbare_stoelen_datum_tijd_1 
-      : voorstelling.beschikbare_stoelen_datum_tijd_2;
+    const beschikbareStoelen =
+      selectedDag === 'datum1'
+        ? voorstelling.beschikbare_stoelen_datum_tijd_1
+        : voorstelling.beschikbare_stoelen_datum_tijd_2;
 
     // Check if total would exceed beschikbare stoelen
     const totalTickets = await this.getTotalTickets();
-    
+
     if (totalTickets > beschikbareStoelen) {
       // Show confirmation dialog
       const confirmDialogRef = this.dialog.open(ConfirmatieDialogComponent, {
         data: {
           title: 'Waarschuwing',
-          message: 'Weet je zeker dat je over de ingestelde stoelenlimiet heen wil?',
+          message:
+            'Weet je zeker dat je over de ingestelde stoelenlimiet heen wil?',
         },
       });
 
       const confirmed = await confirmDialogRef.afterClosed().toPromise();
-      
+
       if (!confirmed) {
         // User cancelled, don't proceed
         return;

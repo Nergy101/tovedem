@@ -42,6 +42,8 @@ import { ReserveringFormModel } from '../../../../models/form-models/reservering
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../../shared/services/seo.service';
 import { ErrorService } from '../../../../shared/services/error.service';
+import { DateTimeService } from '../../../../shared/services/datetime.service';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 
 @Component({
   selector: 'app-reserveren',
@@ -58,6 +60,7 @@ import { ErrorService } from '../../../../shared/services/error.service';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    AmsterdamDatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -71,6 +74,7 @@ export class ReserverenComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   seoService = inject(SeoService);
   errorService = inject(ErrorService);
+  dateTimeService = inject(DateTimeService);
 
   router = inject(Router);
 
@@ -181,13 +185,13 @@ export class ReserverenComponent implements OnInit {
 
   formIsValid = computed(() => {
     // Don't allow submission if both dates are in the past
-    if (this.isDatum1Past() && (!this.datum2 || this.isDatum2Past())) {
+    if (this.isDatum1Past() && (!this.datum2Str || this.isDatum2Past())) {
       return false;
     }
     if (
-      this.datum2 &&
+      this.datum2Str &&
       this.isDatum2Past() &&
-      (!this.datum1 || this.isDatum1Past())
+      (!this.datum1Str || this.isDatum1Past())
     ) {
       return false;
     }
@@ -212,26 +216,34 @@ export class ReserverenComponent implements OnInit {
   voorstellingOmschrijving = '';
   voorstellingsNaam = signal('');
   groepsNaam = signal('');
-  datum1: Date | null = null;
-  datum2: Date | null = null;
-  today = new Date();
+
+  // Store UTC strings for proper timezone handling
+  datum1Str: string | null = null;
+  datum2Str: string | null = null;
+
+  // Convert to JS Date for mat-calendar component (which needs Date objects)
+  get datum1(): Date | null {
+    if (!this.datum1Str) return null;
+    const dt = this.dateTimeService.toAmsterdamTime(this.datum1Str);
+    return dt?.toJSDate() ?? null;
+  }
+
+  get datum2(): Date | null {
+    if (!this.datum2Str) return null;
+    const dt = this.dateTimeService.toAmsterdamTime(this.datum2Str);
+    return dt?.toJSDate() ?? null;
+  }
 
   isDatum1Past = computed(() => {
-    if (!this.datum1) return false;
+    if (!this.datum1Str) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(
-      this.datum1.getTime() - 8 * 60 * 60 * 1000
-    );
-    return this.today >= eightHoursBefore;
+    return this.dateTimeService.isPastHoursBefore(this.datum1Str, 8);
   });
 
   isDatum2Past = computed(() => {
-    if (!this.datum2) return false;
+    if (!this.datum2Str) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(
-      this.datum2.getTime() - 8 * 60 * 60 * 1000
-    );
-    return this.today >= eightHoursBefore;
+    return this.dateTimeService.isPastHoursBefore(this.datum2Str, 8);
   });
 
   @Input()
@@ -250,8 +262,9 @@ export class ReserverenComponent implements OnInit {
       );
 
       this.voorstellingsNaam.set(voorstelling.titel);
-      this.datum1 = new Date(voorstelling.datum_tijd_1 ?? '');
-      this.datum2 = new Date(voorstelling.datum_tijd_2 ?? '');
+      // Store UTC strings directly
+      this.datum1Str = voorstelling.datum_tijd_1 ?? null;
+      this.datum2Str = voorstelling.datum_tijd_2 ?? null;
 
       const groep = await this.client.getOne<Groep>(
         'groepen',
@@ -424,7 +437,7 @@ export class ReserverenComponent implements OnInit {
     effect(() => {
       const model = this.reserveringModel();
       let updated = false;
-      let newModel = { ...model };
+      const newModel = { ...model };
 
       if (model.amountOfPeopleDate1 > 20) {
         newModel.amountOfPeopleDate1 = 20;

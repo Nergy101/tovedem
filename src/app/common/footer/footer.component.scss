@@ -9,7 +9,8 @@
 
 .links {
   padding-top: $spacing-8;
-  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, border-color $transition-base $ease-out;
+  transition: background-color $transition-base $ease-out,
+    color $transition-base $ease-out, border-color $transition-base $ease-out;
 }
 
 // Dark theme links section
@@ -38,7 +39,8 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  transition: background-color $transition-base $ease-out, color $transition-base $ease-out, border-color $transition-base $ease-out;
+  transition: background-color $transition-base $ease-out,
+    color $transition-base $ease-out, border-color $transition-base $ease-out;
 }
 
 // Dark theme privacy section
@@ -50,31 +52,44 @@
   .service-status {
     margin-left: auto;
     color: #d4d6da;
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     text-decoration: underline;
 
     &:hover {
-      color: #7db3e8 !important;
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
     }
   }
 
   a {
     color: #d4d6da;
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     text-decoration: underline;
 
     :visited {
       color: #d4d6da;
     }
+
+    &:hover {
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
+    }
   }
 
   .privacy-link {
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     color: #d4d6da;
     text-decoration: underline;
 
     &:hover {
-      color: #7db3e8 !important;
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
     }
   }
 }
@@ -88,31 +103,44 @@
   .service-status {
     margin-left: auto;
     color: #1a1d24;
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     text-decoration: underline;
 
     &:hover {
-      color: #7db3e8 !important;
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
     }
   }
 
   a {
     color: #1a1d24;
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     text-decoration: underline;
 
     :visited {
       color: #1a1d24;
     }
+
+    &:hover {
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
+    }
   }
 
   .privacy-link {
-    transition: color $transition-base $ease-out;
+    padding-bottom: 2px;
+    transition: color $transition-base $ease-out,
+      transform $transition-base $ease-out;
     color: #1a1d24;
     text-decoration: underline;
 
     &:hover {
-      color: #7db3e8 !important;
+      color: var(--mat-sys-primary) !important;
+      transform: translateY(-2px);
     }
   }
 }
@@ -178,10 +206,50 @@ ul {
   cursor: pointer;
   padding: 0;
   margin: 0;
+  margin-left: $spacing-4;
 
   li {
-    margin-bottom: $spacing-2;
     transition: color $transition-base $ease-out;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: $spacing-2;
+      text-decoration: none;
+      color: var(--mat-sys-on-surface-variant) !important;
+      padding-bottom: 2px;
+      transition: color $transition-base $ease-out,
+        transform $transition-base $ease-out;
+
+      &:hover {
+        color: var(--mat-sys-primary) !important;
+        transform: translateY(-2px);
+
+        mat-icon {
+          color: var(--mat-sys-primary) !important;
+        }
+
+        svg {
+          fill: var(--mat-sys-primary) !important;
+        }
+      }
+
+      mat-icon {
+        transition: color $transition-base $ease-out;
+        font-size: 1.2em;
+        width: 1.2em;
+        height: 1.2em;
+        color: var(--mat-sys-on-surface-variant) !important;
+      }
+
+      svg {
+        width: 1.2em;
+        height: 1.2em;
+        fill: currentColor;
+        transition: fill $transition-base $ease-out;
+        flex-shrink: 0;
+      }
+    }
 
     button {
       text-decoration: underline;
@@ -201,6 +269,14 @@ ul {
 // Dark theme ul
 :host-context(html.darkMode) ul {
   li {
+    a {
+      color: #e8e9eb;
+
+      &:visited {
+        color: #e8e9eb;
+      }
+    }
+
     button {
       color: #a8c8f0 !important;
     }
@@ -214,6 +290,14 @@ ul {
 // Light theme ul
 :host-context(html.lightMode) ul {
   li {
+    a {
+      color: #000000;
+
+      &:visited {
+        color: #000000;
+      }
+    }
+
     button {
       color: #005e93 !important;
     }
@@ -247,10 +331,13 @@ h2 {
 
 .adres {
   text-decoration: underline;
-  transition: color $transition-base $ease-out;
+  padding-bottom: 2px;
+  transition: color $transition-base $ease-out,
+    transform $transition-base $ease-out;
 
   &:hover {
-    color: #7db3e8 !important;
+    color: var(--mat-sys-primary) !important;
+    transform: translateY(-2px);
   }
 }
 
@@ -314,4 +401,10 @@ button {
     color: #7db3e8 !important;
     background-color: rgba(125, 179, 232, 0.1);
   }
+}
+
+.link-row-title {
+  color: var(--mat-sys-on-surface-variant) !important;
+  padding: 0;
+  margin: 0;
 }

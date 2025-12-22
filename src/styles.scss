@@ -476,8 +476,7 @@ button {
 // Enhanced focus indicators for all interactive elements
 // Ensure visible focus indicators for keyboard navigation (accessibility)
 *:focus-visible {
-  outline: 3px solid var(--mat-sys-primary);
-  outline-offset: 2px;
+  outline: 1px solid var(--mat-sys-primary);
   border-radius: vars.$border-radius-sm;
   box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.3);
 }

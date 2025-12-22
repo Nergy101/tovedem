@@ -30,6 +30,8 @@ import { ErrorService } from '../../../../shared/services/error.service';
 import { LoginRequiredDialogComponent } from './login-required-dialog/login-required-dialog.component';
 import { PastDateDialogComponent } from './past-date-dialog/past-date-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
+import { DateTimeService } from '../../../../shared/services/datetime.service';
 
 @Component({
   selector: 'app-reservering-aanpassen',
@@ -48,6 +50,7 @@ import { ConfirmatieDialogComponent } from '../../../../shared/components/confir
     MatButtonModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    AmsterdamDatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -68,6 +71,7 @@ export class ReserveringAanpassenComponent {
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
   errorService = inject(ErrorService);
+  dateTimeService = inject(DateTimeService);
 
   name = signal('');
   surname = signal('');
@@ -92,21 +96,15 @@ export class ReserveringAanpassenComponent {
   });
 
   isDatum1Past = computed(() => {
-    if (!this.datum1) return false;
+    if (!this.datum1Str) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(
-      this.datum1.getTime() - 8 * 60 * 60 * 1000
-    );
-    return this.today >= eightHoursBefore;
+    return this.dateTimeService.isPastHoursBefore(this.datum1Str, 8);
   });
 
   isDatum2Past = computed(() => {
-    if (!this.datum2) return false;
+    if (!this.datum2Str) return false;
     // Check if current time is 8 hours or more before the performance time
-    const eightHoursBefore = new Date(
-      this.datum2.getTime() - 8 * 60 * 60 * 1000
-    );
-    return this.today >= eightHoursBefore;
+    return this.dateTimeService.isPastHoursBefore(this.datum2Str, 8);
   });
 
   formIsValid = computed(() => {
@@ -124,9 +122,22 @@ export class ReserveringAanpassenComponent {
   voorstellingOmschrijving = '';
   voorstellingsNaam = signal('');
   groepsNaam = signal('');
-  datum1: Date | null = null;
-  datum2: Date | null = null;
-  today = new Date();
+  // Store UTC strings for proper timezone handling
+  datum1Str: string | null = null;
+  datum2Str: string | null = null;
+
+  // Convert to JS Date for mat-calendar component (which needs Date objects)
+  get datum1(): Date | null {
+    if (!this.datum1Str) return null;
+    const dt = this.dateTimeService.toAmsterdamTime(this.datum1Str);
+    return dt?.toJSDate() ?? null;
+  }
+
+  get datum2(): Date | null {
+    if (!this.datum2Str) return null;
+    const dt = this.dateTimeService.toAmsterdamTime(this.datum2Str);
+    return dt?.toJSDate() ?? null;
+  }
 
   constructor() {
     this.route.params
@@ -308,10 +319,8 @@ export class ReserveringAanpassenComponent {
 
           // Set voorstelling data
           this.voorstellingsNaam.set(voorstelling.titel);
-          this.datum1 = new Date(voorstelling.datum_tijd_1);
-          if (voorstelling.datum_tijd_2) {
-            this.datum2 = new Date(voorstelling.datum_tijd_2);
-          }
+          this.datum1Str = voorstelling.datum_tijd_1 ?? null;
+          this.datum2Str = voorstelling.datum_tijd_2 ?? null;
 
           // Check if voorstelling dates are in the past
           const now = new Date();

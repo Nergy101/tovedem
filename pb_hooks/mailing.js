@@ -1,3 +1,42 @@
+/**
+ * Timezone used for all date/time formatting in emails.
+ * All dates in PocketBase are stored as UTC, so we need to
+ * convert them to Europe/Amsterdam for display in emails.
+ */
+const TIMEZONE = "Europe/Amsterdam";
+
+/**
+ * Format a UTC datetime string to time only (HH:mm) in Amsterdam timezone.
+ * @param {string} utcDateString - ISO datetime string from PocketBase
+ * @returns {string} Formatted time string (e.g., "19:30")
+ */
+function formatTimeAmsterdam(utcDateString) {
+  if (!utcDateString) return "";
+  const date = new Date(utcDateString);
+  return date.toLocaleTimeString("nl-NL", {
+    timeZone: TIMEZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+/**
+ * Format a UTC datetime string to date only in Amsterdam timezone.
+ * @param {string} utcDateString - ISO datetime string from PocketBase
+ * @returns {string} Formatted date string (e.g., "vrijdag 10 januari 2026")
+ */
+function formatDateAmsterdam(utcDateString) {
+  if (!utcDateString) return "";
+  const date = new Date(utcDateString);
+  return date.toLocaleDateString("nl-NL", {
+    timeZone: TIMEZONE,
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 module.exports = {
   getMail: (mailName) => {
     const filter = `naam = '${mailName}'`;
@@ -14,37 +53,11 @@ module.exports = {
     return record;
   },
   getReservatieMailHtml: (mailInfo, reservatie, voorstelling) => {
-    const tijdOnly1 = new Date(
-      voorstelling.get("datum_tijd_1")
-    ).toLocaleTimeString("nl-NL", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    const datumOnly1 = new Date(
-      voorstelling.get("datum_tijd_1")
-    ).toLocaleDateString("nl-NL", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
-    const tijdOnly2 = new Date(
-      voorstelling.get("datum_tijd_2")
-    ).toLocaleTimeString("nl-NL", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
-    const datumOnly2 = new Date(
-      voorstelling.get("datum_tijd_2")
-    ).toLocaleDateString("nl-NL", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    // Format times and dates using Amsterdam timezone
+    const tijdOnly1 = formatTimeAmsterdam(voorstelling.get("datum_tijd_1"));
+    const datumOnly1 = formatDateAmsterdam(voorstelling.get("datum_tijd_1"));
+    const tijdOnly2 = formatTimeAmsterdam(voorstelling.get("datum_tijd_2"));
+    const datumOnly2 = formatDateAmsterdam(voorstelling.get("datum_tijd_2"));
 
     let mailHtml = mailInfo.get("inhoud");
 

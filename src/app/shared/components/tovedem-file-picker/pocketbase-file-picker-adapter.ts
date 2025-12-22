@@ -20,8 +20,22 @@ export class PocketBaseFilePickerAdapter extends FilePickerAdapter {
   }
 
   public uploadFile(fileItem: FilePreviewModel): Observable<UploadResponse> {
+    // Store the original file reference before the library processes it
+    // The library might modify the fileItem when processing the response,
+    // so we need to ensure the file property is preserved
+    const originalFile = fileItem.file;
+    
+    // Return the fileItem as the body, but ensure the file property is preserved
+    // The library uses the body to update the fileItem, so we need to make sure
+    // the file property is included in the response
+    const responseBody: FilePreviewModel = {
+      uploadResponse: fileItem.uploadResponse,
+      file: originalFile, // Explicitly preserve the original file
+      fileName: fileItem.fileName,
+    };
+    
     return of({
-      body: fileItem,
+      body: responseBody,
       status: UploadStatus.UPLOADED, // not really, but good enough
       progress: 100,
     });

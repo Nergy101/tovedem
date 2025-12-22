@@ -27,11 +27,10 @@
             [field]="voorstellingForm.titel"
           />
           @if (voorstellingForm.titel().touched() &&
-          voorstellingForm.titel().invalid()) {
-            @for (error of voorstellingForm.titel().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
+          voorstellingForm.titel().invalid()) { @for (error of
+          voorstellingForm.titel().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Ondertitel</mat-label>
@@ -58,11 +57,10 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
           @if (voorstellingForm.datum1().touched() &&
-          voorstellingForm.datum1().invalid()) {
-            @for (error of voorstellingForm.datum1().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
+          voorstellingForm.datum1().invalid()) { @for (error of
+          voorstellingForm.datum1().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
           <mat-label>Tijd 1</mat-label>
@@ -73,11 +71,10 @@
             step="60"
           />
           @if (voorstellingForm.tijd1().touched() &&
-          voorstellingForm.tijd1().invalid()) {
-            @for (error of voorstellingForm.tijd1().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
+          voorstellingForm.tijd1().invalid()) { @for (error of
+          voorstellingForm.tijd1().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
         <mat-form-field class="col-md-3 col-6">
           <mat-label>Datum 2</mat-label>
@@ -112,11 +109,10 @@
             }
           </mat-select>
           @if (voorstellingForm.selectedGroep().touched() &&
-          voorstellingForm.selectedGroep().invalid()) {
-            @for (error of voorstellingForm.selectedGroep().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
+          voorstellingForm.selectedGroep().invalid()) { @for (error of
+          voorstellingForm.selectedGroep().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Spelers</mat-label>
@@ -153,7 +149,9 @@
             [matDatepicker]="picker3"
             [field]="voorstellingForm.publicatie_datum"
           />
-          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-hint
+            >Datum vanaf wanneer de voorstelling zichtbaar wordt</mat-hint
+          >
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker3"
@@ -169,16 +167,15 @@
             [field]="voorstellingForm.prijs_per_kaartje"
           />
           @if (voorstellingForm.prijs_per_kaartje().touched() &&
-          voorstellingForm.prijs_per_kaartje().invalid()) {
-            @for (error of voorstellingForm.prijs_per_kaartje().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
+          voorstellingForm.prijs_per_kaartje().invalid()) { @for (error of
+          voorstellingForm.prijs_per_kaartje().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+          } }
         </mat-form-field>
       </div>
       <div class="row">
         <div class="col-md-6 col-12">
-          <h3>Regie*</h3>
+          <mat-label>Regie*</mat-label>
           <quill-editor
             class="regie"
             [modules]="modules"
@@ -189,7 +186,7 @@
           ></quill-editor>
         </div>
         <div class="col-md-6 col-12">
-          <h3>Omschrijving*</h3>
+          <mat-label>Omschrijving*</mat-label>
           <quill-editor
             [modules]="modules"
             name="omschrijving"
@@ -200,10 +197,10 @@
         </div>
       </div>
       <div class="row">
-        <h3>Afbeelding</h3>
-        <app-tovedem-file-picker
+        <mat-label>Afbeelding</mat-label>
+        <app-image-picker-with-preview
           (fileUploaded)="onFileUploaded($event)"
-        ></app-tovedem-file-picker>
+        ></app-image-picker-with-preview>
       </div>
       <div class="row">
         <div class="col-md-6 col-12 d-flex justify-content-center">

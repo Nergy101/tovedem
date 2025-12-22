@@ -1,4 +1,5 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import {
   Component,
   OnInit,
@@ -56,7 +57,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    DatePipe,
+    AmsterdamDatePipe,
     MatExpansionModule,
     PieChartComponent,
     MatCardModule,

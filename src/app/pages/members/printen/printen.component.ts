@@ -1,4 +1,5 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 import {
   Component,
   OnInit,
@@ -28,6 +29,7 @@ import { Sponsor } from '../../../models/domain/sponsor.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
+import { DateTimeService } from '../../../shared/services/datetime.service';
 import { jsPDF } from 'jspdf';
 
 interface CustomName {
@@ -48,7 +50,7 @@ interface CustomName {
     MatSelectModule,
     MatButtonToggleModule,
     FormsModule,
-    DatePipe,
+    AmsterdamDatePipe,
     RouterModule,
   ],
   templateUrl: './printen.component.html',
@@ -60,6 +62,7 @@ export class PrintenComponent implements OnInit {
   client = inject(PocketbaseService);
   router = inject(Router);
   toastr = inject(ToastrService);
+  dateTimeService = inject(DateTimeService);
 
   kinderenQuantity = signal(0);
   vriendVanTovedemQuantity = signal(0);
@@ -405,29 +408,10 @@ export class PrintenComponent implements OnInit {
 
   /**
    * Format date to Dutch notation (e.g., "15 maart 2024")
+   * Uses timezone-aware formatting for Europe/Amsterdam
    */
   private formatDutchDate(dateString: string): string {
-    const date = new Date(dateString);
-    const months = [
-      'januari',
-      'februari',
-      'maart',
-      'april',
-      'mei',
-      'juni',
-      'juli',
-      'augustus',
-      'september',
-      'oktober',
-      'november',
-      'december',
-    ];
-
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-
-    return `${day} ${month} ${year}`;
+    return this.dateTimeService.formatDate(dateString, 'd LLLL yyyy', 'nl');
   }
 
   /**

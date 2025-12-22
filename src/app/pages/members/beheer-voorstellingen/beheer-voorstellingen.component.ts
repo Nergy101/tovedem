@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -30,8 +29,10 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { ErrorService } from '../../../shared/services/error.service';
+import { DateTimeService } from '../../../shared/services/datetime.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { MatCardModule } from '@angular/material/card';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -41,7 +42,7 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    DatePipe,
+    AmsterdamDatePipe,
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatTooltipModule,
@@ -49,7 +50,6 @@ import { MatCardModule } from '@angular/material/card';
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './beheer-voorstellingen.component.html',
@@ -66,6 +66,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
   toastr = inject(ToastrService);
   themeService = inject(ThemeService);
   errorService = inject(ErrorService);
+  dateTimeService = inject(DateTimeService);
 
   titleService = inject(Title);
 
@@ -94,7 +95,8 @@ export class BeheerVoorstellingenComponent implements OnInit {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: null },
       hasBackdrop: true,
-      minWidth: '90vw',
+      minWidth: '60vw',
+      maxWidth: '70vw',
     });
 
     const created: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
@@ -109,7 +111,8 @@ export class BeheerVoorstellingenComponent implements OnInit {
     const dialogRef = this.dialog.open(VoorstellingCreateEditDialogComponent, {
       data: { existingVoorstelling: use_voorstelling },
       hasBackdrop: true,
-      minWidth: '90vw',
+      minWidth: '60vw',
+      maxWidth: '70vw',
     });
 
     const updated: Voorstelling = await lastValueFrom(dialogRef.afterClosed());
@@ -258,10 +261,8 @@ export class BeheerVoorstellingenComponent implements OnInit {
   }
 
   publicatieActief(publishDateString: string): boolean {
-    const publishDate = new Date(publishDateString);
-    const currentDate = new Date();
-
-    return currentDate.setHours(0, 0, 0, 0) < publishDate.setHours(0, 0, 0, 0);
+    // Use timezone-aware comparison
+    return !this.dateTimeService.isPast(publishDateString);
   }
 
   getPrimaryTintColor(): string {

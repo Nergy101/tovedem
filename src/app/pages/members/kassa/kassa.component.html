@@ -69,14 +69,14 @@
                 <div>
                   <span class="badge bg-success me-2"
                     >Vandaag ({{
-                      voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                      voorstelling.datum_tijd_1 | amsterdamDate:'dd-MM-yyyy HH:mm'
                     }})</span
                   >
                 </div>
                 @if (voorstelling.datum_tijd_2) {
                 <div class="mt-1">
                   <span class="badge bg-secondary me-2">{{
-                    voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                    voorstelling.datum_tijd_2 | amsterdamDate:'dd-MM-yyyy HH:mm'
                   }}</span>
                 </div>
                 } } @else if (voorstelling.datum_tijd_2 &&
@@ -84,7 +84,7 @@
                 <div>
                   <span class="badge bg-success me-2"
                     >VANDAAG ({{
-                      voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                      voorstelling.datum_tijd_2 | amsterdamDate:'dd-MM-yyyy HH:mm'
                     }})</span
                   >
                 </div>
@@ -92,19 +92,19 @@
                 <div class="mt-1">
                   <span class="badge bg-secondary me-2"
                     >andere datum ({{
-                      voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                      voorstelling.datum_tijd_1 | amsterdamDate:'dd-MM-yyyy HH:mm'
                     }})</span
                   >
                 </div>
                 } } } @else { @if (selectedDag() === 'datum1' &&
                 voorstelling.datum_tijd_1) {
                 <span class="badge bg-primary me-2">{{
-                  voorstelling.datum_tijd_1 | date : "dd-MM-yyyy HH:mm"
+                  voorstelling.datum_tijd_1 | amsterdamDate:'dd-MM-yyyy HH:mm'
                 }}</span>
                 } @if (selectedDag() === 'datum2' && voorstelling.datum_tijd_2)
                 {
                 <span class="badge bg-primary me-2">{{
-                  voorstelling.datum_tijd_2 | date : "dd-MM-yyyy HH:mm"
+                  voorstelling.datum_tijd_2 | amsterdamDate:'dd-MM-yyyy HH:mm'
                 }}</span>
                 } }
               </div>
@@ -242,7 +242,7 @@
               (selectedDag() === "datum1"
                 ? selectedVoorstelling()?.datum_tijd_1
                 : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-yyyy"
+              ) | amsterdamDate:'dd-MM-yyyy'
             }}
           </h2>
         </mat-card-header>
@@ -265,7 +265,7 @@
                       (item.datum === "datum1"
                         ? selectedVoorstelling()?.datum_tijd_1
                         : selectedVoorstelling()?.datum_tijd_2
-                      ) | date : "dd-MM-yyyy"
+                      ) | amsterdamDate:'dd-MM-yyyy'
                     }}
                   </td>
                   <td>
@@ -305,7 +305,7 @@
               (selectedDag() === "datum1"
                 ? selectedVoorstelling()?.datum_tijd_1
                 : selectedVoorstelling()?.datum_tijd_2
-              ) | date : "dd-MM-yyyy"
+              ) | amsterdamDate:'dd-MM-yyyy'
             }}
           </h2>
           <app-pie-chart

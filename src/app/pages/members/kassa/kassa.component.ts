@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -33,6 +33,7 @@ import {
   isDateToday,
 } from '../../../shared/utils/date.utils';
 import { lastValueFrom } from 'rxjs';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 
 @Component({
   selector: 'app-kassa',
@@ -46,10 +47,10 @@ import { lastValueFrom } from 'rxjs';
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
-    DatePipe,
     CurrencyPipe,
     ReserveringenTableComponent,
     PieChartComponent,
+    AmsterdamDatePipe,
   ],
   templateUrl: './kassa.component.html',
   styleUrl: './kassa.component.scss',

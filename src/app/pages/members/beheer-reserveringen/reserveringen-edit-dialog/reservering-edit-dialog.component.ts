@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,11 +43,10 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     QuillModule,
     NgxMaterialTimepickerModule,
     MatCardModule,
-    DatePipe,
+    AmsterdamDatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './reservering-edit-dialog.component.html',
@@ -67,8 +66,9 @@ export class ReserveringEditDialogComponent implements OnInit {
 
   loading = signal(false);
 
-  datum1?: Date;
-  datum2?: Date;
+  // Store UTC strings for proper timezone handling with amsterdamDate pipe
+  datum1Str?: string;
+  datum2Str?: string;
 
   modules = {
     toolbar: [
@@ -90,7 +90,6 @@ export class ReserveringEditDialogComponent implements OnInit {
   };
 
   client = inject(PocketbaseService).client;
-  datePipe = inject(DatePipe);
   dialogRef = inject(MatDialogRef<ReserveringEditDialogComponent>);
   existingReserveringData: {
     reservering: Reservering;
@@ -116,12 +115,9 @@ export class ReserveringEditDialogComponent implements OnInit {
       this.is_lid_van_vereniging =
         this.existingReservering.is_lid_van_vereniging;
       this.opmerking = this.existingReservering.opmerking;
-      this.datum1 = this.existingVoorstelling?.datum_tijd_1
-        ? new Date(this.existingVoorstelling?.datum_tijd_1)
-        : undefined;
-      this.datum2 = this.existingVoorstelling?.datum_tijd_2
-        ? new Date(this.existingVoorstelling?.datum_tijd_2)
-        : undefined;
+      // Store as ISO strings for amsterdamDate pipe
+      this.datum1Str = this.existingVoorstelling?.datum_tijd_1;
+      this.datum2Str = this.existingVoorstelling?.datum_tijd_2;
     }
   }
 

@@ -46,14 +46,14 @@
               <td>{{ item.titel }}</td>
               <td>
                 @if (item.publishDate) {
-                {{ item.publishDate | date : "dd-MM-yyyy" }}
+                {{ item.publishDate | amsterdamDate:'dd-MM-yyyy' }}
                 } @else {
                 <span>-</span>
                 }
               </td>
               <td>
                 @if (item.archiveDate) {
-                {{ item.archiveDate | date : "dd-MM-yyyy" }}
+                {{ item.archiveDate | amsterdamDate:'dd-MM-yyyy' }}
                 } @else {
                 <span>-</span>
                 }
@@ -131,14 +131,14 @@
               <td>{{ item.titel }}</td>
               <td>
                 @if (item.publishDate) {
-                {{ item.publishDate | date : "dd-MM-yyyy" }}
+                {{ item.publishDate | amsterdamDate:'dd-MM-yyyy' }}
                 } @else {
                 <span>-</span>
                 }
               </td>
               <td>
                 @if (item.archiveDate) {
-                {{ item.archiveDate | date : "dd-MM-yyyy" }}
+                {{ item.archiveDate | amsterdamDate:'dd-MM-yyyy' }}
                 } @else {
                 <span>-</span>
                 }

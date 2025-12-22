@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 import {
   Component,
   OnInit,
@@ -40,11 +40,10 @@ import { SinterklaasVerzoekCreateDialogComponent } from './sinterklaas-verzoek-c
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatTooltipModule,
-    DatePipe,
+    AmsterdamDatePipe,
   ],
   providers: [
     provideNativeDateAdapter(),
-    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
   ],
   templateUrl: './commissie-sinterklaas.component.html',

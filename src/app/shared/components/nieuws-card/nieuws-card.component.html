@@ -4,7 +4,7 @@
       <mat-card-header class="card-header">
         <mat-card-title class="card-title">{{ nieuws().titel }}</mat-card-title>
         <mat-card-subtitle class="card-date">
-          {{ nieuws().publishDate | date : "dd-MM-yyyy" }}
+          {{ nieuws().publishDate | amsterdamDate:'dd-MM-yyyy' }}
         </mat-card-subtitle>
       </mat-card-header>
       <div class="content-text">
