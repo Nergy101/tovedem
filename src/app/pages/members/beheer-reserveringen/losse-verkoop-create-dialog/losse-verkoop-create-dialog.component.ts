@@ -95,7 +95,7 @@ export class LosseVerkoopCreateDialogComponent {
       'reserveringen',
       {
         filter: `voorstelling = "${voorstelling.id}"`,
-      }
+      },
     );
 
     // Calculate total reservations for selected day
@@ -113,7 +113,7 @@ export class LosseVerkoopCreateDialogComponent {
       'losse_verkoop',
       {
         filter: `voorstelling = "${voorstelling.id}" && datum = "${selectedDag}"`,
-      }
+      },
     );
 
     // Calculate total losse verkoop
@@ -168,7 +168,7 @@ export class LosseVerkoopCreateDialogComponent {
 
       const createdLosseVerkoop = await this.client.create<LosseVerkoop>(
         'losse_verkoop',
-        losseVerkoop
+        losseVerkoop,
       );
 
       this.dialogRef.close(createdLosseVerkoop);

@@ -3,15 +3,15 @@ import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { Voorstelling } from '../../../../models/domain/voorstelling.model';
-import { NavButtonComponent } from '../../nav-button/nav-button.component';
 import { AmsterdamDatePipe } from '../../../pipes/amsterdam-date.pipe';
 import { DateTimeService } from '../../../services/datetime.service';
 import { isFutureDate } from '../../../utils/date.utils';
-import { MatIcon } from '@angular/material/icon';
+import { NavButtonComponent } from '../../nav-button/nav-button.component';
 
 @Component({
   selector: 'app-voorstelling-line',
