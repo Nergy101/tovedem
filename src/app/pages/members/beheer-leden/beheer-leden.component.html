@@ -157,6 +157,7 @@
                   (click)="openEditDialog(gebruiker)"
                   [disabled]="loading()"
                   [style.background-color]="getPrimaryTintColor()"
+                  aria-label="Bewerken"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -166,6 +167,7 @@
                   mat-icon-button
                   (click)="delete(gebruiker.id)"
                   [disabled]="loading()"
+                  aria-label="Verwijderen"
                 >
                   <mat-icon color="warn">delete</mat-icon>
                 </button>

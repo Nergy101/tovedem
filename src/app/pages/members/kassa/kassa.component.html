@@ -150,7 +150,7 @@
                 <button
                   matPrefix
                   mat-icon-button
-                  aria-label="Clear"
+                  aria-label="Zoekopdracht wissen"
                   (click)="onSearchTermChanged('')"
                 >
                   <mat-icon>close</mat-icon>
@@ -276,7 +276,7 @@
                     }})
                   </td>
                   <td class="d-flex justify-content-end">
-                    <button mat-icon-button (click)="deleteLosseVerkoop(item)">
+                    <button mat-icon-button (click)="deleteLosseVerkoop(item)" aria-label="Verwijderen">
                       <mat-icon color="warn">delete</mat-icon>
                     </button>
                   </td>

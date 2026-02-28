@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Field, form, required, debounce } from '@angular/forms/signals';
+import { FormField, form, required, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +19,7 @@ import { SideDrawerService } from '../../../shared/services/side-drawer.service'
   selector: 'app-login',
   imports: [
     MatInputModule,
-    Field,
+    FormField,
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,

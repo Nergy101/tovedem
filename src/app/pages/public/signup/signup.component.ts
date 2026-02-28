@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import {
-  Field,
+  FormField,
   form,
   required,
   email,
@@ -33,7 +33,7 @@ import { ErrorService } from '../../../shared/services/error.service';
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-    Field,
+    FormField,
     RouterModule,
   ],
   templateUrl: './signup.component.html',

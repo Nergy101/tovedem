@@ -27,14 +27,14 @@
           type="text"
           aria-label="Number"
           matInput
-          [field]="reservatieSearchForm.searchTerm"
+          [formField]="reservatieSearchForm.searchTerm"
           [matAutocomplete]="auto"
         />
         @if (reservatieSearchForm.searchTerm().value()) {
         <button
           matPrefix
           mat-icon-button
-          aria-label="Clear"
+          aria-label="Zoekopdracht wissen"
           (click)="clearReservatieSearch()"
         >
           <mat-icon>close</mat-icon>

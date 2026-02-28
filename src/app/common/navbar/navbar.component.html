@@ -15,7 +15,7 @@
       <button
         mat-icon-button
         type="button"
-        aria-label="Toggle theme"
+        aria-label="Thema wisselen"
         (click)="toggleTheme()"
         [matTooltip]="
           themeService.isDarkTheme()
@@ -32,7 +32,7 @@
         mat-icon-button
         class="desktop-sidenav-toggle"
         type="button"
-        aria-label="Toggle side navigation"
+        aria-label="Ledenmenu openen of sluiten"
         (click)="toggleSideDrawer()"
         [matTooltip]="
           sideDrawerService.isOpen() ? 'Sluit zijmenu' : 'Open zijmenu'
@@ -46,7 +46,7 @@
       <button
         class="navbar-toggler mobile-sidenav-toggle justify-self-end"
         type="button"
-        aria-label="Toggle side navigation"
+        aria-label="Ledenmenu openen of sluiten"
         (click)="toggleSideDrawer()"
       >
         <div class="d-flex flex-column">

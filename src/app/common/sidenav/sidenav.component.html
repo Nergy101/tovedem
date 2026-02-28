@@ -58,12 +58,7 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if ( authService.userHasAllRoles(['admin']) ||
-    authService.userHasAllRoles(['bestuur']) ||
-    authService.userHasAllRoles(['sint_commissie']) ||
-    authService.userHasAllRoles(['lees_commissie']) ||
-    authService.userHasAllRoles(['commissie']) ||
-    authService.userHasAllRoles(['beheer']) || authService.isGlobalAdmin) {
+    } @if (authService.canAccessCommissiesSection()) {
     <mat-expansion-panel
       style="width: 100%"
       [class.section-active]="
@@ -74,10 +69,7 @@
         <mat-panel-title>Commissies</mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      @if( authService.userHasAllRoles(['admin']) ||
-      authService.userHasAllRoles(['bestuur']) ||
-      authService.userHasAllRoles(['sint_commissie']) ||
-      authService.isGlobalAdmin) {
+      @if (authService.canAccessSinterklaasCommissie()) {
       <ul>
         <li>
           <button
@@ -93,10 +85,7 @@
           </button>
         </li>
       </ul>
-      } @if( authService.userHasAllRoles(['admin']) ||
-      authService.userHasAllRoles(['bestuur']) ||
-      authService.userHasAllRoles(['lees_commissie']) ||
-      authService.isGlobalAdmin) {
+      } @if (authService.canAccessLeesCommissie()) {
       <ul>
         <li>
           <button
@@ -112,8 +101,7 @@
           </button>
         </li>
       </ul>
-      } @if( authService.userHasAnyRole(['admin', 'bestuur']) ||
-      authService.isGlobalAdmin) {
+      } @if (authService.canAccessNieuwsCommissie()) {
       <ul>
         <li>
           <button
@@ -135,8 +123,7 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if ( authService.userHasAllRoles(['admin']) ||
-    authService.userHasAllRoles(['bestuur']) || authService.isGlobalAdmin) {
+    } @if (authService.canAccessBeheerSection()) {
     <mat-expansion-panel
       style="width: 100%"
       [class.section-active]="
@@ -282,8 +269,7 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if (authService.userHasAnyRole(['admin', 'bestuur', 'commissie', 'lid'])
-    || authService.isGlobalAdmin) {
+    } @if (authService.canAccessGalerij()) {
     <mat-expansion-panel
       style="width: 100%"
       [class.section-active]="isSectionActive(['/galerij'])"

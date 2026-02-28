@@ -1,446 +1,479 @@
 @defer (when loaded()) {
-<div class="container">
-  <div class="row" style="padding-top: 2em">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>
-          <h2>Reserveren voor voorstelling: {{ voorstellingsNaam() }}</h2>
-        </mat-card-title>
-        <mat-card-subtitle>
-          <h4>
-            opgevoerd door: {{ groepsNaam() }}, locatie:
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>De Schalm</span>
-            </a>
-          </h4>
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content class="p-4">
-        <!-- Aria-live region for reservation totals -->
-        <div aria-live="polite" aria-atomic="true" class="sr-only">
-          @if(loadingTotals()) {
-          <span>Reservering totalen worden geladen...</span>
-          } @else {
-          <span
-            >Datum 1: {{ totalPeopleDate1() }} van 100 mensen gereserveerd.
-            Datum 2: {{ totalPeopleDate2() }} van 100 mensen gereserveerd.</span
-          >
-          }
-        </div>
-
-        <div class="row">
-          <mat-form-field
-            class="col-md-6 col-12"
-            [class.mat-form-field-valid]="
-              reserveringForm.name().valid() && reserveringForm.name().value()
-            "
-          >
-            <mat-label>Voornaam</mat-label>
-            <input
-              matInput
-              type="text"
-              [field]="reserveringForm.name"
-              id="voornaam-input"
-              aria-describedby="voornaam-error voornaam-hint"
-              aria-required="true"
-            />
-            @if(reserveringForm.name().touched() &&
-            reserveringForm.name().invalid()) {
-            <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
-            }
-          </mat-form-field>
-          <mat-form-field
-            class="col-md-6 col-12"
-            [class.mat-form-field-valid]="
-              reserveringForm.surname().valid() &&
-              reserveringForm.surname().value()
-            "
-          >
-            <mat-label>Achternaam</mat-label>
-            <input
-              matInput
-              type="text"
-              [field]="reserveringForm.surname"
-              id="achternaam-input"
-              aria-describedby="achternaam-error achternaam-hint"
-              aria-required="true"
-            />
-            @if(reserveringForm.surname().touched() &&
-            reserveringForm.surname().invalid()) {
-            <mat-error id="achternaam-error">Achternaam is verplicht</mat-error>
-            }
-          </mat-form-field>
-          <mat-form-field
-            class="col-md-6 col-12"
-            [class.mat-form-field-valid]="
-              reserveringForm.email().valid() && reserveringForm.email().value()
-            "
-          >
-            <mat-label>E-mail</mat-label>
-            <input
-              matInput
-              type="email"
-              [field]="reserveringForm.email"
-              id="email-input"
-              aria-describedby="email-error email-hint"
-              aria-required="true"
-              autocomplete="email"
-            />
-            @if (reserveringForm.email().touched() &&
-            reserveringForm.email().invalid()) {
-            <mat-error>
-              @for (error of reserveringForm.email().errors(); track error) {
-              {{ error.message }}
-              }
-            </mat-error>
-            }
-          </mat-form-field>
-          <mat-form-field
-            class="col-md-6 col-12"
-            [class.mat-form-field-valid]="
-              reserveringForm.email2().valid() && emailMatchStatus() === 'match'
-            "
-          >
-            <mat-label>Herhaal uw E-mail</mat-label>
-            <input
-              matInput
-              type="email"
-              [field]="reserveringForm.email2"
-              id="email2-input"
-              aria-describedby="email2-error email2-hint email-match-status"
-              aria-required="true"
-              autocomplete="email"
-            />
-            @if (reserveringForm.email2().touched() &&
-            reserveringForm.email2().invalid()) {
-            <mat-error>
-              @for (error of reserveringForm.email2().errors(); track error) {
-              {{ error.message }}
-              }
-            </mat-error>
-            }
-          </mat-form-field>
-          <!-- Email match status indicator -->
-          <div id="email-match-status" aria-live="polite" class="sr-only">
-            @if(emailMatchStatus() === 'match') {
-            <span>E-mailadressen komen overeen</span>
-            } @else if(emailMatchStatus() === 'mismatch') {
-            <span>E-mailadressen komen niet overeen</span>
+  <div class="container">
+    <div class="row" style="padding-top: 2em">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <h2>Reserveren voor voorstelling: {{ voorstellingsNaam() }}</h2>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h4>
+              opgevoerd door: {{ groepsNaam() }}, locatie:
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>De Schalm</span>
+              </a>
+            </h4>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+          <!-- Aria-live region for reservation totals -->
+          <div aria-live="polite" aria-atomic="true" class="sr-only">
+            @if (loadingTotals()) {
+              <span>Reservering totalen worden geladen...</span>
+            } @else {
+              <span
+                >Datum 1: {{ totalPeopleDate1() }} van 100 mensen gereserveerd.
+                Datum 2: {{ totalPeopleDate2() }} van 100 mensen
+                gereserveerd.</span
+              >
             }
           </div>
-        </div>
-        <div class="container">
-          <div class="dates-grid">
-            @if(!!datum1) {
-            <div
-              class="flex"
-              style="flex-direction: column; align-items: center"
-            >
-              <mat-card class="inline-calendar-card" style="flex: 1">
-                <mat-calendar
-                  [startAt]="datum1"
-                  [selected]="datum1"
-                  [minDate]="datum1"
-                  [maxDate]="datum1"
-                  [startView]="'month'"
-                ></mat-calendar>
-              </mat-card>
-              <h4>
-                <span class="icon-text">
-                  <mat-icon matTooltip="Datum" matTooltipPosition="left"
-                    >calendar_month</mat-icon
-                  >
-                  {{ datum1Str | amsterdamDate : "d LLLL yyyy" }}
-                </span>
-                <br />
-                <span class="icon-text">
-                  <mat-icon matTooltip="Start tijd" matTooltipPosition="left"
-                    >schedule</mat-icon
-                  >
-                  {{ datum1Str | amsterdamDate : "HH:mm" }}
-                </span>
-              </h4>
-              @if(isDatum1Past()) {
-              <p class="reservering-gesloten">Reservering gesloten</p>
-              } @else {
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  width: 100%;
-                "
-              >
-                <mat-form-field
-                  style="max-width: 20em; text-align: center; width: 100%"
-                  [class.mat-form-field-invalid]="
-                    (!canReserveDate1() &&
-                      reserveringForm.amountOfPeopleDate1().value() > 0) ||
-                    exceeds20LimitDate1()
-                  "
-                >
-                  <mat-label>Voor hoeveel mensen?</mat-label>
-                  <input
-                    matInput
-                    style="text-align: center"
-                    type="number"
-                    [field]="reserveringForm.amountOfPeopleDate1"
-                    [class.mat-input-invalid]="
-                      (!canReserveDate1() &&
-                        reserveringForm.amountOfPeopleDate1().value() > 0) ||
-                      exceeds20LimitDate1()
-                    "
-                    id="aantal-datum1-input"
-                    aria-describedby="aantal-datum1-error aantal-datum1-hint"
-                    [attr.aria-label]="
-                      'Aantal mensen voor datum 1: ' +
-                      (datum1Str | amsterdamDate : 'd LLLL yyyy')
-                    "
-                  />
 
-                  <button
-                    matPrefix
-                    mat-icon-button
-                    type="button"
-                    (click)="decrementAmountDate1()"
-                    aria-label="Verminder aantal mensen met 1"
-                  >
-                    <mat-icon aria-hidden="true">remove</mat-icon>
-                  </button>
-                  <button
-                    matSuffix
-                    mat-icon-button
-                    type="button"
-                    (click)="incrementAmountDate1()"
-                    aria-label="Verhoog aantal mensen met 1"
-                  >
-                    <mat-icon aria-hidden="true">add</mat-icon>
-                  </button>
-
-                  @if (exceeds20LimitDate1()) {
-                  <mat-error id="aantal-datum1-error">
-                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor
-                    1 dag
-                  </mat-error>
-                  } @else if (limitReachedDate1()) {
-                  <mat-error id="aantal-datum1-error">
-                    Maximum bereikt: {{ totalPeopleDate1() }}/100 mensen
-                    gereserveerd voor datum 1
-                  </mat-error>
-                  } @else if (!canReserveDate1() &&
-                  reserveringForm.amountOfPeopleDate1().value() > 0) {
-                  <mat-error id="aantal-datum1-error">
-                    Te veel: {{ totalPeopleDate1() }}/100 gereserveerd. Met
-                    {{ reserveringForm.amountOfPeopleDate1().value() }} extra
-                    wordt de limiet overschreden.
-                  </mat-error>
-                  } @if (canReserveDate1() && !limitReachedDate1() &&
-                  !exceeds20LimitDate1()) {
-                  <mat-hint id="aantal-datum1-hint">
-                    {{ totalPeopleDate1() }}/100 mensen gereserveerd voor datum
-                    1
-                  </mat-hint>
-                  }
-                </mat-form-field>
-              </div>
-              }
-            </div>
-            } @if(!!datum2) {
-            <div
-              class="flex"
-              style="flex-direction: column; align-items: center"
-            >
-              <mat-card class="inline-calendar-card">
-                <mat-calendar
-                  [startAt]="datum2"
-                  [selected]="datum2"
-                  [minDate]="datum2"
-                  [maxDate]="datum2"
-                  [startView]="'month'"
-                ></mat-calendar>
-              </mat-card>
-              <h4>
-                <span class="icon-text">
-                  <mat-icon matTooltip="Datum" matTooltipPosition="left"
-                    >calendar_month</mat-icon
-                  >
-                  {{ datum2Str | amsterdamDate : "d LLLL yyyy" }}
-                </span>
-                <br />
-                <span class="icon-text">
-                  <mat-icon matTooltip="Start tijd" matTooltipPosition="left"
-                    >schedule</mat-icon
-                  >
-                  {{ datum2Str | amsterdamDate : "HH:mm" }}
-                </span>
-              </h4>
-              @if(isDatum2Past()) {
-              <p class="reservering-gesloten">Reservering gesloten</p>
-              } @else {
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  width: 100%;
-                "
-              >
-                <mat-form-field
-                  style="max-width: 20em; width: 100%"
-                  [class.mat-form-field-invalid]="
-                    (!canReserveDate2() &&
-                      reserveringForm.amountOfPeopleDate2().value() > 0) ||
-                    exceeds20LimitDate2()
-                  "
-                >
-                  <mat-label style="text-align: center"
-                    >Voor hoeveel mensen?</mat-label
-                  >
-                  <input
-                    style="text-align: center"
-                    matInput
-                    type="number"
-                    [field]="reserveringForm.amountOfPeopleDate2"
-                    [class.mat-input-invalid]="
-                      (!canReserveDate2() &&
-                        reserveringForm.amountOfPeopleDate2().value() > 0) ||
-                      exceeds20LimitDate2()
-                    "
-                    id="aantal-datum2-input"
-                    aria-describedby="aantal-datum2-error aantal-datum2-hint"
-                    [attr.aria-label]="
-                      'Aantal mensen voor datum 2: ' +
-                      (datum2Str | amsterdamDate : 'd LLLL yyyy')
-                    "
-                  />
-                  <button
-                    matPrefix
-                    mat-icon-button
-                    type="button"
-                    (click)="decrementAmountDate2()"
-                    aria-label="Verminder aantal mensen met 1"
-                  >
-                    <mat-icon aria-hidden="true">remove</mat-icon>
-                  </button>
-                  <button
-                    matSuffix
-                    mat-icon-button
-                    type="button"
-                    (click)="incrementAmountDate2()"
-                    aria-label="Verhoog aantal mensen met 1"
-                  >
-                    <mat-icon aria-hidden="true">add</mat-icon>
-                  </button>
-
-                  @if (exceeds20LimitDate2()) {
-                  <mat-error id="aantal-datum2-error">
-                    Er kunnen niet meer dan 20 tickets gereserveerd worden voor
-                    1 dag
-                  </mat-error>
-                  } @else if (limitReachedDate2()) {
-                  <mat-error id="aantal-datum2-error">
-                    Maximum bereikt: {{ totalPeopleDate2() }}/100 mensen
-                    gereserveerd voor datum 2
-                  </mat-error>
-                  } @else if (!canReserveDate2() &&
-                  reserveringForm.amountOfPeopleDate2().value() > 0) {
-                  <mat-error id="aantal-datum2-error">
-                    Te veel: {{ totalPeopleDate2() }}/100 gereserveerd. Met
-                    {{ reserveringForm.amountOfPeopleDate2().value() }} extra
-                    wordt de limiet overschreden.
-                  </mat-error>
-                  } @if (canReserveDate2() && !limitReachedDate2() &&
-                  !exceeds20LimitDate2()) {
-                  <mat-hint id="aantal-datum2-hint">
-                    {{ totalPeopleDate2() }}/100 mensen gereserveerd voor datum
-                    2
-                  </mat-hint>
-                  }
-                </mat-form-field>
-              </div>
-              }
-            </div>
-            }
-          </div>
           <div class="row">
-            <div class="d-flex align-items-center flex-column">
-              <div class="row">
-                <div class="d-flex flex-column mt-4">
-                  <mat-form-field>
-                    <mat-label>Opmerking (optioneel)</mat-label>
-                    <textarea
-                      matInput
-                      #input
-                      type="opmerking"
-                      [field]="reserveringForm.opmerking"
-                      id="opmerking-input"
-                      aria-describedby="opmerking-hint"
-                      aria-label="Optionele opmerking voor de reservering"
-                    ></textarea>
-                    <mat-hint align="end" id="opmerking-hint">
-                      {{
-                        reserveringForm.opmerking().value().length || 0
-                      }}/250</mat-hint
+            <mat-form-field
+              class="col-md-6 col-12"
+              [class.mat-form-field-valid]="
+                reserveringForm.name().valid() && reserveringForm.name().value()
+              "
+            >
+              <mat-label>Voornaam</mat-label>
+              <input
+                matInput
+                type="text"
+                [formField]="reserveringForm.name"
+                id="voornaam-input"
+                aria-describedby="voornaam-error voornaam-hint"
+                aria-required="true"
+              />
+              @if (
+                reserveringForm.name().touched() &&
+                reserveringForm.name().invalid()
+              ) {
+                <mat-error id="voornaam-error">Voornaam is verplicht</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field
+              class="col-md-6 col-12"
+              [class.mat-form-field-valid]="
+                reserveringForm.surname().valid() &&
+                reserveringForm.surname().value()
+              "
+            >
+              <mat-label>Achternaam</mat-label>
+              <input
+                matInput
+                type="text"
+                [formField]="reserveringForm.surname"
+                id="achternaam-input"
+                aria-describedby="achternaam-error achternaam-hint"
+                aria-required="true"
+              />
+              @if (
+                reserveringForm.surname().touched() &&
+                reserveringForm.surname().invalid()
+              ) {
+                <mat-error id="achternaam-error"
+                  >Achternaam is verplicht</mat-error
+                >
+              }
+            </mat-form-field>
+            <mat-form-field
+              class="col-md-6 col-12"
+              [class.mat-form-field-valid]="
+                reserveringForm.email().valid() &&
+                reserveringForm.email().value()
+              "
+            >
+              <mat-label>E-mail</mat-label>
+              <input
+                matInput
+                type="email"
+                [formField]="reserveringForm.email"
+                id="email-input"
+                aria-describedby="email-error email-hint"
+                aria-required="true"
+                autocomplete="email"
+              />
+              @if (
+                reserveringForm.email().touched() &&
+                reserveringForm.email().invalid()
+              ) {
+                <mat-error>{{
+              reserveringForm.email().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field
+              class="col-md-6 col-12"
+              [class.mat-form-field-valid]="
+                reserveringForm.email2().valid() &&
+                emailMatchStatus() === 'match'
+              "
+            >
+              <mat-label>Herhaal uw E-mail</mat-label>
+              <input
+                matInput
+                type="email"
+                [formField]="reserveringForm.email2"
+                id="email2-input"
+                aria-describedby="email2-error email2-hint email-match-status"
+                aria-required="true"
+                autocomplete="email"
+              />
+              @if (
+                reserveringForm.email2().touched() &&
+                reserveringForm.email2().invalid()
+              ) {
+                <mat-error>{{
+              reserveringForm.email2().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
+              }
+            </mat-form-field>
+            <!-- Email match status indicator -->
+            <div id="email-match-status" aria-live="polite" class="sr-only">
+              @if (emailMatchStatus() === "match") {
+                <span>E-mailadressen komen overeen</span>
+              } @else if (emailMatchStatus() === "mismatch") {
+                <span>E-mailadressen komen niet overeen</span>
+              }
+            </div>
+          </div>
+          <div class="container">
+            <div class="dates-grid">
+              @if (!!datum1) {
+                <div
+                  class="flex"
+                  style="flex-direction: column; align-items: center"
+                >
+                  <mat-card class="inline-calendar-card" style="flex: 1">
+                    <mat-calendar
+                      [startAt]="datum1"
+                      [selected]="datum1"
+                      [minDate]="datum1"
+                      [maxDate]="datum1"
+                      [startView]="'month'"
+                    ></mat-calendar>
+                  </mat-card>
+                  <h4>
+                    <span class="icon-text">
+                      <mat-icon matTooltip="Datum" matTooltipPosition="left"
+                        >calendar_month</mat-icon
+                      >
+                      {{ datum1Str | amsterdamDate: "d LLLL yyyy" }}
+                    </span>
+                    <br />
+                    <span class="icon-text">
+                      <mat-icon
+                        matTooltip="Start tijd"
+                        matTooltipPosition="left"
+                        >schedule</mat-icon
+                      >
+                      {{ datum1Str | amsterdamDate: "HH:mm" }}
+                    </span>
+                  </h4>
+                  @if (isDatum1Past()) {
+                    <p class="reservering-gesloten">Reservering gesloten</p>
+                  } @else {
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                      "
                     >
-                  </mat-form-field>
+                      <mat-form-field
+                        style="max-width: 20em; text-align: center; width: 100%"
+                        [class.mat-form-field-invalid]="
+                          (!canReserveDate1() &&
+                            reserveringForm.amountOfPeopleDate1().value() >
+                              0) ||
+                          exceeds20LimitDate1()
+                        "
+                      >
+                        <mat-label>Voor hoeveel mensen?</mat-label>
+                        <input
+                          matInput
+                          style="text-align: center"
+                          type="number"
+                          [formField]="reserveringForm.amountOfPeopleDate1"
+                          [class.mat-input-invalid]="
+                            (!canReserveDate1() &&
+                              reserveringForm.amountOfPeopleDate1().value() >
+                                0) ||
+                            exceeds20LimitDate1()
+                          "
+                          id="aantal-datum1-input"
+                          aria-describedby="aantal-datum1-error aantal-datum1-hint"
+                          [attr.aria-label]="
+                            'Aantal mensen voor datum 1: ' +
+                            (datum1Str | amsterdamDate: 'd LLLL yyyy')
+                          "
+                        />
+
+                        <button
+                          matPrefix
+                          mat-icon-button
+                          type="button"
+                          (click)="decrementAmountDate1()"
+                          aria-label="Verminder aantal mensen met 1"
+                        >
+                          <mat-icon aria-hidden="true">remove</mat-icon>
+                        </button>
+                        <button
+                          matSuffix
+                          mat-icon-button
+                          type="button"
+                          (click)="incrementAmountDate1()"
+                          aria-label="Verhoog aantal mensen met 1"
+                        >
+                          <mat-icon aria-hidden="true">add</mat-icon>
+                        </button>
+
+                        @if (exceeds20LimitDate1()) {
+                          <mat-error id="aantal-datum1-error">
+                            Er kunnen niet meer dan 20 tickets gereserveerd
+                            worden voor 1 dag
+                          </mat-error>
+                        } @else if (limitReachedDate1()) {
+                          <mat-error id="aantal-datum1-error">
+                            Maximum bereikt: {{ totalPeopleDate1() }}/100 mensen
+                            gereserveerd voor datum 1
+                          </mat-error>
+                        } @else if (
+                          !canReserveDate1() &&
+                          reserveringForm.amountOfPeopleDate1().value() > 0
+                        ) {
+                          <mat-error id="aantal-datum1-error">
+                            Te veel: {{ totalPeopleDate1() }}/100 gereserveerd.
+                            Met
+                            {{ reserveringForm.amountOfPeopleDate1().value() }}
+                            extra wordt de limiet overschreden.
+                          </mat-error>
+                        }
+                        @if (
+                          canReserveDate1() &&
+                          !limitReachedDate1() &&
+                          !exceeds20LimitDate1()
+                        ) {
+                          <mat-hint id="aantal-datum1-hint">
+                            {{ totalPeopleDate1() }}/100 mensen gereserveerd
+                            voor datum 1
+                          </mat-hint>
+                        }
+                      </mat-form-field>
+                    </div>
+                  }
                 </div>
-                <div class="d-flex flex-column">
-                  <mat-checkbox
-                    [field]="reserveringForm.vriendVanTovedem"
-                    color="primary"
-                    matTooltip="Je bent sponsor of donateur van Tovedem."
-                    matTooltipPosition="left"
-                    id="vriend-checkbox"
-                    aria-label="Ben je vriend van Tovedem? Je bent sponsor of donateur van Tovedem."
-                  >
-                    <span style="text-decoration: underline dotted gray">
-                      Ben je vriend van Tovedem?
+              }
+              @if (!!datum2) {
+                <div
+                  class="flex"
+                  style="flex-direction: column; align-items: center"
+                >
+                  <mat-card class="inline-calendar-card">
+                    <mat-calendar
+                      [startAt]="datum2"
+                      [selected]="datum2"
+                      [minDate]="datum2"
+                      [maxDate]="datum2"
+                      [startView]="'month'"
+                    ></mat-calendar>
+                  </mat-card>
+                  <h4>
+                    <span class="icon-text">
+                      <mat-icon matTooltip="Datum" matTooltipPosition="left"
+                        >calendar_month</mat-icon
+                      >
+                      {{ datum2Str | amsterdamDate: "d LLLL yyyy" }}
                     </span>
-                  </mat-checkbox>
-                  <mat-checkbox
-                    [field]="reserveringForm.lidVanTovedemMejotos"
-                    color="primary"
-                    matTooltip="Je bent lid van een van de groepen binnen Tovedem."
-                    matTooltipPosition="left"
-                    id="lid-checkbox"
-                    aria-label="Ben je lid van Tovedem, Cloos of Mejoto's? Je bent lid van een van de groepen binnen Tovedem."
-                  >
-                    <span style="text-decoration: underline dotted gray">
-                      Ben je lid van Tovedem, Cloos of Mejoto's?
+                    <br />
+                    <span class="icon-text">
+                      <mat-icon
+                        matTooltip="Start tijd"
+                        matTooltipPosition="left"
+                        >schedule</mat-icon
+                      >
+                      {{ datum2Str | amsterdamDate: "HH:mm" }}
                     </span>
-                  </mat-checkbox>
-                  <button
-                    color="primary"
-                    style="flex: 1; min-height: 48px"
-                    mat-flat-button
-                    [disabled]="saving() || !formIsValid()"
-                    (click)="saveReservering()"
-                    aria-label="Verstuur reservering"
-                    [attr.aria-busy]="saving()"
-                  >
-                    @if(saving()) {
-                    <mat-spinner
-                      diameter="20"
-                      style="display: inline-block; margin-right: 8px"
-                      aria-hidden="true"
-                    ></mat-spinner>
-                    } Reserveer
-                  </button>
+                  </h4>
+                  @if (isDatum2Past()) {
+                    <p class="reservering-gesloten">Reservering gesloten</p>
+                  } @else {
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                      "
+                    >
+                      <mat-form-field
+                        style="max-width: 20em; width: 100%"
+                        [class.mat-form-field-invalid]="
+                          (!canReserveDate2() &&
+                            reserveringForm.amountOfPeopleDate2().value() >
+                              0) ||
+                          exceeds20LimitDate2()
+                        "
+                      >
+                        <mat-label style="text-align: center"
+                          >Voor hoeveel mensen?</mat-label
+                        >
+                        <input
+                          style="text-align: center"
+                          matInput
+                          type="number"
+                          [formField]="reserveringForm.amountOfPeopleDate2"
+                          [class.mat-input-invalid]="
+                            (!canReserveDate2() &&
+                              reserveringForm.amountOfPeopleDate2().value() >
+                                0) ||
+                            exceeds20LimitDate2()
+                          "
+                          id="aantal-datum2-input"
+                          aria-describedby="aantal-datum2-error aantal-datum2-hint"
+                          [attr.aria-label]="
+                            'Aantal mensen voor datum 2: ' +
+                            (datum2Str | amsterdamDate: 'd LLLL yyyy')
+                          "
+                        />
+                        <button
+                          matPrefix
+                          mat-icon-button
+                          type="button"
+                          (click)="decrementAmountDate2()"
+                          aria-label="Verminder aantal mensen met 1"
+                        >
+                          <mat-icon aria-hidden="true">remove</mat-icon>
+                        </button>
+                        <button
+                          matSuffix
+                          mat-icon-button
+                          type="button"
+                          (click)="incrementAmountDate2()"
+                          aria-label="Verhoog aantal mensen met 1"
+                        >
+                          <mat-icon aria-hidden="true">add</mat-icon>
+                        </button>
+
+                        @if (exceeds20LimitDate2()) {
+                          <mat-error id="aantal-datum2-error">
+                            Er kunnen niet meer dan 20 tickets gereserveerd
+                            worden voor 1 dag
+                          </mat-error>
+                        } @else if (limitReachedDate2()) {
+                          <mat-error id="aantal-datum2-error">
+                            Maximum bereikt: {{ totalPeopleDate2() }}/100 mensen
+                            gereserveerd voor datum 2
+                          </mat-error>
+                        } @else if (
+                          !canReserveDate2() &&
+                          reserveringForm.amountOfPeopleDate2().value() > 0
+                        ) {
+                          <mat-error id="aantal-datum2-error">
+                            Te veel: {{ totalPeopleDate2() }}/100 gereserveerd.
+                            Met
+                            {{ reserveringForm.amountOfPeopleDate2().value() }}
+                            extra wordt de limiet overschreden.
+                          </mat-error>
+                        }
+                        @if (
+                          canReserveDate2() &&
+                          !limitReachedDate2() &&
+                          !exceeds20LimitDate2()
+                        ) {
+                          <mat-hint id="aantal-datum2-hint">
+                            {{ totalPeopleDate2() }}/100 mensen gereserveerd
+                            voor datum 2
+                          </mat-hint>
+                        }
+                      </mat-form-field>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="row">
+              <div class="d-flex align-items-center flex-column">
+                <div class="row">
+                  <div class="d-flex flex-column mt-4">
+                    <mat-form-field>
+                      <mat-label>Opmerking (optioneel)</mat-label>
+                      <textarea
+                        matInput
+                        #input
+                        type="opmerking"
+                        [formField]="reserveringForm.opmerking"
+                        id="opmerking-input"
+                        aria-describedby="opmerking-hint"
+                        aria-label="Optionele opmerking voor de reservering"
+                      ></textarea>
+                      <mat-hint align="end" id="opmerking-hint">
+                        {{
+                          reserveringForm.opmerking().value().length || 0
+                        }}/250</mat-hint
+                      >
+                    </mat-form-field>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <mat-checkbox
+                      [formField]="reserveringForm.vriendVanTovedem"
+                      color="primary"
+                      matTooltip="Je bent sponsor of donateur van Tovedem."
+                      matTooltipPosition="left"
+                      id="vriend-checkbox"
+                      aria-label="Ben je vriend van Tovedem? Je bent sponsor of donateur van Tovedem."
+                    >
+                      <span style="text-decoration: underline dotted gray">
+                        Ben je vriend van Tovedem?
+                      </span>
+                    </mat-checkbox>
+                    <mat-checkbox
+                      [formField]="reserveringForm.lidVanTovedemMejotos"
+                      color="primary"
+                      matTooltip="Je bent lid van een van de groepen binnen Tovedem."
+                      matTooltipPosition="left"
+                      id="lid-checkbox"
+                      aria-label="Ben je lid van Tovedem, Cloos of Mejoto's? Je bent lid van een van de groepen binnen Tovedem."
+                    >
+                      <span style="text-decoration: underline dotted gray">
+                        Ben je lid van Tovedem, Cloos of Mejoto's?
+                      </span>
+                    </mat-checkbox>
+                    <button
+                      color="primary"
+                      style="flex: 1; min-height: 48px"
+                      mat-flat-button
+                      [disabled]="saving() || !formIsValid()"
+                      (click)="saveReservering()"
+                      aria-label="Verstuur reservering"
+                      [attr.aria-busy]="saving()"
+                    >
+                      @if (saving()) {
+                        <mat-spinner
+                          diameter="20"
+                          style="display: inline-block; margin-right: 8px"
+                          aria-hidden="true"
+                        ></mat-spinner>
+                      }
+                      Reserveer
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-</div>
 } @placeholder {
-<div class="center">
-  <mat-spinner></mat-spinner>
-</div>
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
 }

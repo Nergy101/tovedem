@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Field, form, required, email, debounce } from '@angular/forms/signals';
+import { FormField, form, required, email, debounce } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -35,7 +35,7 @@ import { Subscription } from 'rxjs';
     MatIconModule,
     RouterModule,
     MatInputModule,
-    Field,
+    FormField,
     MatDatepickerModule,
     MatButtonModule,
     RouterModule,

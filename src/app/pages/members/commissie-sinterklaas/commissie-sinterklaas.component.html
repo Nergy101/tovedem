@@ -114,13 +114,14 @@
                   mat-icon-button
                   (click)="editVerzoek(item)"
                   color="primary"
+                  aria-label="Bewerken"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
               </td>
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button mat-icon-button (click)="delete(item.id)">
+                <button mat-icon-button (click)="delete(item.id)" aria-label="Verwijderen">
                   <mat-icon color="warn">delete</mat-icon>
                 </button>
               </td>

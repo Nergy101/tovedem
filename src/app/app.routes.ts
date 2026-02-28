@@ -1,8 +1,6 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router, Routes } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { Rol } from './models/domain/rol.model';
-import { AuthService } from './shared/services/auth.service';
+import { Routes } from '@angular/router';
+import { getRequiredRoles } from './shared/constants/route-access.config';
+import { globalAdminGuard, loggedInGuard } from './shared/guards/auth.guards';
 
 export const routes: Routes = [
   {
@@ -109,7 +107,7 @@ export const routes: Routes = [
       import('./pages/members/profiel/profiel.component').then(
         (m) => m.ProfielComponent,
       ),
-    canActivate: [loggedInGuard()],
+    canActivate: [loggedInGuard(getRequiredRoles('profiel'))],
   },
   {
     path: 'beheer-reserveringen',
@@ -117,7 +115,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-reserveringen/beheer-reserveringen.component').then(
         (m) => m.BeheerReserveringenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-reserveringen'))],
   },
   {
     path: 'kassa',
@@ -125,7 +123,7 @@ export const routes: Routes = [
       import('./pages/members/kassa/kassa.component').then(
         (m) => m.KassaComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa'])],
+    canActivate: [loggedInGuard(getRequiredRoles('kassa'))],
   },
   {
     path: 'printen',
@@ -133,7 +131,7 @@ export const routes: Routes = [
       import('./pages/members/printen/printen.component').then(
         (m) => m.PrintenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'kassa', 'commissie'])],
+    canActivate: [loggedInGuard(getRequiredRoles('printen'))],
   },
   {
     path: 'reservering-aanpassen/:id/:guid',
@@ -141,7 +139,9 @@ export const routes: Routes = [
       import('./pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component').then(
         (m) => m.ReserveringAanpassenComponent,
       ),
-    canActivate: [loggedInGuard()],
+    canActivate: [
+      loggedInGuard(getRequiredRoles('reservering-aanpassen/:id/:guid')),
+    ],
   },
   {
     path: 'beheer-voorstellingen',
@@ -149,7 +149,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-voorstellingen/beheer-voorstellingen.component').then(
         (m) => m.BeheerVoorstellingenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-voorstellingen'))],
   },
   {
     path: 'beheer-leden',
@@ -157,7 +157,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-leden/beheer-leden.component').then(
         (m) => m.BeheerLedenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-leden'))],
   },
   {
     path: 'beheer-spelers',
@@ -165,7 +165,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-spelers/beheer-spelers.component').then(
         (m) => m.BeheerSpelersComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-spelers'))],
   },
   {
     path: 'beheer-mails',
@@ -173,7 +173,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-mails/beheer-mails.component').then(
         (m) => m.BeheerMailsComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-mails'))],
   },
   {
     path: 'beheer-sponsoren',
@@ -181,7 +181,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-sponsoren/beheer-sponsoren.component').then(
         (m) => m.BeheerSponsorenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-sponsoren'))],
   },
   {
     path: 'beheer-nieuwe-leden',
@@ -189,7 +189,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component').then(
         (m) => m.BeheerNieuweLedenComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-nieuwe-leden'))],
   },
   {
     path: 'productie-info/Tovedem',
@@ -197,7 +197,7 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('productie-info/Tovedem'))],
   },
   {
     path: 'productie-info/Cloos',
@@ -205,7 +205,7 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('productie-info/Cloos'))],
   },
   {
     path: 'productie-info/Mejotos',
@@ -213,7 +213,7 @@ export const routes: Routes = [
       import('./pages/members/productie-info/productie-info.component').then(
         (m) => m.ProductieInfoComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('productie-info/Mejotos'))],
   },
   {
     path: 'commissie-sinterklaas',
@@ -221,7 +221,7 @@ export const routes: Routes = [
       import('./pages/members/commissie-sinterklaas/commissie-sinterklaas.component').then(
         (m) => m.CommissieSinterklaasComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie'])],
+    canActivate: [loggedInGuard(getRequiredRoles('commissie-sinterklaas'))],
   },
   {
     path: 'galerij',
@@ -229,7 +229,7 @@ export const routes: Routes = [
       import('./pages/members/galerij/galerij.component').then(
         (m) => m.GalerijComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('galerij'))],
   },
   {
     path: 'galerij/:folderId',
@@ -237,7 +237,7 @@ export const routes: Routes = [
       import('./pages/members/galerij/folder-detail/folder-detail.component').then(
         (m) => m.FolderDetailComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'commissie', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('galerij/:folderId'))],
   },
   {
     path: 'beheer-nieuws',
@@ -245,7 +245,7 @@ export const routes: Routes = [
       import('./pages/members/beheer-nieuws/beheer-nieuws.component').then(
         (m) => m.BeheerNieuwsComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur'])],
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-nieuws'))],
   },
   {
     path: 'algemene-informatie',
@@ -253,7 +253,15 @@ export const routes: Routes = [
       import('./pages/members/algemene-informatie/algemene-informatie.component').then(
         (m) => m.AlgemeneInformatieComponent,
       ),
-    canActivate: [loggedInGuard(['admin', 'bestuur', 'lid'])],
+    canActivate: [loggedInGuard(getRequiredRoles('algemene-informatie'))],
+  },
+  {
+    path: 'developers/rol-overzicht',
+    loadComponent: () =>
+      import('./pages/developers/rol-overzicht/rol-overzicht.component').then(
+        (m) => m.RolOverzichtComponent,
+      ),
+    canActivate: [globalAdminGuard()],
   },
   {
     path: 'developers/rol-overzicht',
@@ -264,44 +272,3 @@ export const routes: Routes = [
     canActivate: [globalAdminGuard()],
   },
 ];
-
-function globalAdminGuard(): CanActivateFn {
-  return () => {
-    const router = inject(Router);
-    const toastr = inject(ToastrService);
-    const authService = inject(AuthService);
-
-    if (authService.isGlobalAdmin) {
-      return true;
-    }
-
-    toastr.error('Deze pagina is alleen toegankelijk voor global admins');
-    return router.createUrlTree(['/']);
-  };
-}
-
-function loggedInGuard(requiredRoles: string[] = []): CanActivateFn {
-  return () => {
-    const router = inject(Router);
-    const toastr = inject(ToastrService);
-    const authService = inject(AuthService);
-
-    // Allow Admins
-    if (authService.isGlobalAdmin) {
-      return true;
-    }
-
-    // Check normal users
-    if (requiredRoles.length == 0 && authService.isLoggedIn()) {
-      return true;
-    } else if (requiredRoles.length > 0 && authService.isLoggedIn()) {
-      // Check if user has ANY of the required roles (not all)
-      if (authService.userHasAnyRole(requiredRoles)) {
-        return true;
-      }
-    }
-
-    toastr.error('Deze pagina bestaat niet');
-    return router.createUrlTree([]);
-  };
-}

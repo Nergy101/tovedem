@@ -118,7 +118,7 @@
           placeholder="Pieter"
           matInput
           type="text"
-          [field]="lidWordenForm.voornaam"
+          [formField]="lidWordenForm.voornaam"
         />
         @if (lidWordenForm.voornaam().touched() &&
         lidWordenForm.voornaam().invalid()) {
@@ -131,7 +131,7 @@
           placeholder="Post"
           matInput
           type="text"
-          [field]="lidWordenForm.achternaam"
+          [formField]="lidWordenForm.achternaam"
         />
         @if (lidWordenForm.achternaam().touched() &&
         lidWordenForm.achternaam().invalid()) {
@@ -144,7 +144,7 @@
           placeholder="14-11-1990"
           matInput
           [matDatepicker]="picker1"
-          [field]="lidWordenForm.geboorteDatum"
+          [formField]="lidWordenForm.geboorteDatum"
         />
         <mat-datepicker-toggle
           matIconSuffix
@@ -165,21 +165,19 @@
           matInput
           type="email"
           autocomplete="email"
-          [field]="lidWordenForm.email"
+          [formField]="lidWordenForm.email"
         />
         @if (lidWordenForm.email().touched() && lidWordenForm.email().invalid())
         {
-        <mat-error>
-          @for (error of lidWordenForm.email().errors(); track error) {
-          {{ error.message }}
-          }
-        </mat-error>
+        <mat-error>{{
+          lidWordenForm.email().errors().map((e) => e.message).join(', ').trim()
+        }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field class="col-md-4 col-12">
         <mat-label>Groep</mat-label>
-        <mat-select [field]="lidWordenForm.selectedGroep">
+        <mat-select [formField]="lidWordenForm.selectedGroep">
           @for (groep of groepen(); track $index) {
           <mat-option [value]="groep">{{ groep.naam }}</mat-option>
           }
@@ -195,7 +193,7 @@
       <mat-form-field class="flex">
         <mat-label>Bericht</mat-label>
         <textarea
-          [field]="lidWordenForm.message"
+          [formField]="lidWordenForm.message"
           matInput
           rows="10"
           placeholder="Typ hier je bericht"

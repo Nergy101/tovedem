@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  Field,
+  FormField,
   debounce,
   email,
   form,
   maxLength,
   required,
-  validate
+  validate,
 } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -47,7 +47,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatIconModule,
     MatDialogModule,
     MatInputModule,
-    Field,
+    FormField,
     FormsModule,
     MatFormFieldModule,
     MatCheckboxModule,
@@ -127,7 +127,7 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
     () =>
       'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
       this.gebruikerModel().name +
-      '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49'
+      '&backgroundColor=f1f4dc,f88c49,ffd5dc,ffdfbf,d1d4f9,c0aede&backgroundType=gradientLinear&shapeColor=69d2e7,f1f4dc,f88c49',
   );
 
   loading = signal(false);
@@ -161,13 +161,13 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
     }
 
     this.spelers.set(
-      await this.client.directClient.collection('spelers').getFullList()
+      await this.client.directClient.collection('spelers').getFullList(),
     );
     this.groepen.set(
-      await this.client.directClient.collection('groepen').getFullList()
+      await this.client.directClient.collection('groepen').getFullList(),
     );
     this.rollen.set(
-      await this.client.directClient.collection('rollen').getFullList()
+      await this.client.directClient.collection('rollen').getFullList(),
     );
   }
 
