@@ -24,6 +24,7 @@
             name="name"
             tabindex="0"
             required
+            autocomplete="name"
             [ngModel]="name()"
             (ngModelChange)="name.set($event)"
             placeholder="Volledige naam"
@@ -36,6 +37,7 @@
             type="email"
             name="email"
             required
+            autocomplete="email"
             [ngModel]="email()"
             (ngModelChange)="email.set($event)"
             placeholder="email@voorbeeld.nl"

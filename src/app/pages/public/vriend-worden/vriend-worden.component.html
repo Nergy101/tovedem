@@ -17,12 +17,13 @@
   @if (!submitted()) {
     <form class="vriend-worden-form">
       <div class="row">
-        <mat-form-field class="col-12 col-md-4">
-          <mat-label>Naam</mat-label>
+        <mat-form-field class="col-12 col-md-6">
+          <mat-label>Volledige naam</mat-label>
           <input
             placeholder="Pieter Post"
             matInput
             type="text"
+            autocomplete="name"
             [formField]="vriendWordenForm.name"
           />
           @if (vriendWordenForm.name().invalid()) {
@@ -31,7 +32,7 @@
             }}</mat-error>
           }
         </mat-form-field>
-        <mat-form-field class="col-12 col-md-4">
+        <mat-form-field class="col-12 col-md-6">
           <mat-label>E-mail</mat-label>
           <input
             matInput
@@ -48,7 +49,9 @@
             }}</mat-error>
           }
         </mat-form-field>
-        <mat-form-field class="col-12 col-md-4">
+      </div>
+      <div class="row">
+        <mat-form-field class="col-12 col-md-12">
           <mat-label>Onderwerp</mat-label>
           <input
             placeholder="Het Onderwerp"

@@ -48,50 +48,56 @@
     <mat-spinner></mat-spinner>
   </div>
   } @if (!submitted()) {
-  <form class="row sinterklaas-form">
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>Volledige naam</mat-label>
-      <input
-        placeholder="Pieter Post"
-        matInput
-        type="text"
-        [formField]="sinterklaasForm.name"
-      />
-      @if (sinterklaasForm.name().touched() && sinterklaasForm.name().invalid())
-      {
-      <mat-error>Naam is verplicht</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>E-mail</mat-label>
-      <input
-        placeholder="pieter-post@voorbeeld.nl"
-        matInput
-        type="email"
-        autocomplete="email"
-        [formField]="sinterklaasForm.email"
-      />
-      @if (sinterklaasForm.email().touched() &&
-      sinterklaasForm.email().invalid()) {
-      <mat-error>{{
-        sinterklaasForm.email().errors().map((e) => e.message).join(', ').trim()
-      }}</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field class="col-12 col-md-4">
-      <mat-label>Onderwerp</mat-label>
-      <input
-        placeholder="Het Onderwerp"
-        matInput
-        type="text"
-        [formField]="sinterklaasForm.subject"
-      />
-      @if (sinterklaasForm.subject().touched() &&
-      sinterklaasForm.subject().invalid()) {
-      <mat-error>Onderwerp is verplicht</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field class="col-12">
+  <form class="sinterklaas-form">
+    <div class="row">
+      <mat-form-field class="col-12 col-md-6">
+        <mat-label>Volledige naam</mat-label>
+        <input
+          placeholder="Pieter Post"
+          matInput
+          type="text"
+          autocomplete="name"
+          [formField]="sinterklaasForm.name"
+        />
+        @if (sinterklaasForm.name().touched() && sinterklaasForm.name().invalid())
+        {
+        <mat-error>Naam is verplicht</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="col-12 col-md-6">
+        <mat-label>E-mail</mat-label>
+        <input
+          placeholder="pieter-post@voorbeeld.nl"
+          matInput
+          type="email"
+          autocomplete="email"
+          [formField]="sinterklaasForm.email"
+        />
+        @if (sinterklaasForm.email().touched() &&
+        sinterklaasForm.email().invalid()) {
+        <mat-error>{{
+          sinterklaasForm.email().errors().map((e) => e.message).join(', ').trim()
+        }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-12 col-md-12">
+        <mat-label>Onderwerp</mat-label>
+        <input
+          placeholder="Het Onderwerp"
+          matInput
+          type="text"
+          [formField]="sinterklaasForm.subject"
+        />
+        @if (sinterklaasForm.subject().touched() &&
+        sinterklaasForm.subject().invalid()) {
+        <mat-error>Onderwerp is verplicht</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-12">
       <mat-label>Bericht</mat-label>
       <textarea
         [formField]="sinterklaasForm.message"
@@ -104,6 +110,7 @@
       <mat-error>Bericht is verplicht</mat-error>
       }
     </mat-form-field>
+    </div>
     <div class="d-flex">
       <span
         [matTooltip]="

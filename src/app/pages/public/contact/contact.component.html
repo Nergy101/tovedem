@@ -75,93 +75,99 @@
       </div>
     </div>
     @if (!submitted()) {
-    <form class="row contact-form">
-      <mat-form-field class="col-12 col-md-4">
-        <mat-label>Volledige naam</mat-label>
-        <input
-          placeholder="Pieter Post"
-          matInput
-          type="text"
-          [formField]="contactForm.name"
-        />
-        @if (contactForm.name().touched() && contactForm.name().invalid()) {
-        <mat-error>Naam is verplicht</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-12 col-md-4">
-        <mat-label>E-mail</mat-label>
-        <input
-          placeholder="pieter-post@voorbeeld.nl"
-          matInput
-          type="email"
-          autocomplete="email"
-          [formField]="contactForm.email"
-        />
-        @if (contactForm.email().touched() && contactForm.email().invalid()) {
-        <mat-error>{{
+      <form class="row contact-form">
+        <mat-form-field class="col-12 col-md-4">
+          <mat-label>Volledige naam</mat-label>
+          <input
+            type="text"
+            placeholder="Pieter Post"
+            autocomplete="name"
+            matInput
+            [formField]="contactForm.name"
+          />
+          @if (contactForm.name().touched() && contactForm.name().invalid()) {
+            <mat-error>Naam is verplicht</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-4">
+          <mat-label>E-mail</mat-label>
+          <input
+            placeholder="pieter-post@voorbeeld.nl"
+            matInput
+            type="email"
+            autocomplete="email"
+            [formField]="contactForm.email"
+          />
+          @if (contactForm.email().touched() && contactForm.email().invalid()) {
+            <mat-error>{{
           contactForm.email().errors().map((e) => e.message).join(', ').trim()
-        }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-12 col-md-4">
-        <mat-label>Onderwerp</mat-label>
-        <input
-          placeholder="Het Onderwerp"
-          matInput
-          type="text"
-          [formField]="contactForm.subject"
-        />
-        @if (contactForm.subject().touched() && contactForm.subject().invalid())
-        {
-        <mat-error>Onderwerp is verplicht</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-12">
-        <mat-label>Bericht</mat-label>
-        <textarea
-          [formField]="contactForm.message"
-          matInput
-          rows="10"
-          placeholder="Typ hier je bericht"
-        ></textarea>
-        @if (contactForm.message().touched() && contactForm.message().invalid())
-        {
-        <mat-error>Bericht is verplicht</mat-error>
-        }
-      </mat-form-field>
-      <div class="d-flex submit-button-container">
-        <span
-          [matTooltip]="
-            !contactForm().valid() ? 'Vul het formulier in om te verzenden' : ''
-          "
-          [matTooltipDisabled]="contactForm().valid()"
-          style="display: flex; flex: 1"
-        >
-          <button
-            class="flex"
-            mat-flat-button
-            [color]="'primary'"
-            type="button"
-            (click)="verstuurContactMail()"
-            [disabled]="!contactForm().valid()"
+            }}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-4">
+          <mat-label>Onderwerp</mat-label>
+          <input
+            placeholder="Het Onderwerp"
+            matInput
+            type="text"
+            [formField]="contactForm.subject"
+          />
+          @if (
+            contactForm.subject().touched() && contactForm.subject().invalid()
+          ) {
+            <mat-error>Onderwerp is verplicht</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="col-12">
+          <mat-label>Bericht</mat-label>
+          <textarea
+            [formField]="contactForm.message"
+            matInput
+            rows="10"
+            placeholder="Typ hier je bericht"
+          ></textarea>
+          @if (
+            contactForm.message().touched() && contactForm.message().invalid()
+          ) {
+            <mat-error>Bericht is verplicht</mat-error>
+          }
+        </mat-form-field>
+        <div class="d-flex submit-button-container">
+          <span
+            [matTooltip]="
+              !contactForm().valid()
+                ? 'Vul het formulier in om te verzenden'
+                : ''
+            "
+            [matTooltipDisabled]="contactForm().valid()"
+            style="display: flex; flex: 1"
           >
-            Verzenden
+            <button
+              class="flex"
+              mat-flat-button
+              [color]="'primary'"
+              type="button"
+              (click)="verstuurContactMail()"
+              [disabled]="!contactForm().valid()"
+            >
+              Verzenden
+            </button>
+          </span>
+        </div>
+      </form>
+    }
+    @if (submitted()) {
+      <mat-card
+        class="success-card"
+        style="text-align: center; padding: 2em; margin-top: 2em"
+      >
+        <mat-card-content>
+          <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
+          <button mat-flat-button color="primary" (click)="resetForm()">
+            Nog een maken?
           </button>
-        </span>
-      </div>
-    </form>
-    } @if (submitted()) {
-    <mat-card
-      class="success-card"
-      style="text-align: center; padding: 2em; margin-top: 2em"
-    >
-      <mat-card-content>
-        <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
-        <button mat-flat-button color="primary" (click)="resetForm()">
-          Nog een maken?
-        </button>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
     }
   </div>
 </div>

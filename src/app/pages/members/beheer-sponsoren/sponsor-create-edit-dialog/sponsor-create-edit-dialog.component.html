@@ -23,6 +23,7 @@
             type="text"
             name="voornaam"
             required
+            autocomplete="given-name"
             [(ngModel)]="sponsor.voornaam"
             #voornaamField="ngModel"
           />
@@ -39,6 +40,7 @@
             type="text"
             name="achternaam"
             required
+            autocomplete="family-name"
             [(ngModel)]="sponsor.achternaam"
             #achternaamField="ngModel"
           />
@@ -71,6 +73,7 @@
             type="email"
             name="email"
             email
+            autocomplete="email"
             [(ngModel)]="sponsor.email"
             #emailField="ngModel"
           />

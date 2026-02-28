@@ -56,6 +56,7 @@
               <input
                 matInput
                 type="text"
+                autocomplete="name"
                 [formField]="signupForm.name"
               />
               @if (signupForm.name().touched() && signupForm.name().invalid()) {

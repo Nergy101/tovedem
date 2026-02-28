@@ -25,6 +25,7 @@
               <input
                 matInput
                 type="email"
+                autocomplete="email"
                 [ngModel]="email()"
                 (ngModelChange)="onEmailChanged($event)"
               />
@@ -34,6 +35,7 @@
               <input
                 matInput
                 type="text"
+                autocomplete="given-name"
                 [ngModel]="name()"
                 (ngModelChange)="onNameChanged($event)"
               />
@@ -43,6 +45,7 @@
               <input
                 matInput
                 type="text"
+                autocomplete="family-name"
                 [ngModel]="surname()"
                 (ngModelChange)="onSurnameChanged($event)"
               />

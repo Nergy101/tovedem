@@ -81,7 +81,7 @@
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Naam</mat-label>
-          <input matInput type="text" [formField]="gebruikerForm.name" />
+          <input matInput type="text" autocomplete="name" [formField]="gebruikerForm.name" />
           @if (gebruikerForm.name().touched() && gebruikerForm.name().invalid()) {
             <mat-error>{{
               gebruikerForm.name().errors().map((e) => e.message).join(', ').trim()

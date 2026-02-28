@@ -6,97 +6,96 @@
   </div>
   <mat-divider class="divider" style="margin-bottom: 1rem"></mat-divider>
   @defer (when !!content1() && !!content2() && !!content3()) {
-  <div class="row">
-    <div class="col-lg-2 col-12">
-      @if(!!img_1()){
-      <div class="image-wrapper">
-        <img
-          alt="Informatie over lid worden bij Tovedem"
-          class="card-image"
-          [ngSrc]="getImageUrl(collectionId(), recordId(), img_1())"
-          priority
-          width="400"
-          height="280"
-        />
+    <div class="row">
+      <div class="col-lg-2 col-12">
+        @if (!!img_1()) {
+          <div class="image-wrapper">
+            <img
+              alt="Informatie over lid worden bij Tovedem"
+              class="card-image"
+              [ngSrc]="getImageUrl(collectionId(), recordId(), img_1())"
+              priority
+              width="400"
+              height="280"
+            />
+          </div>
+        } @else {
+          <img
+            alt="Informatie over lid worden bij Tovedem"
+            class="card-image"
+            src="/assets/Place-Holder-Image.jpg"
+          />
+        }
       </div>
-      } @else {
-      <img
-        alt="Informatie over lid worden bij Tovedem"
-        class="card-image"
-        src="/assets/Place-Holder-Image.jpg"
-      />
-      }
-    </div>
-    <div class="col-lg-9 col-12 pt-4" [innerHTML]="content1()"></div>
-    <div class="col-lg-1 col-12" style="align-items: center">
-      <button
-        mat-fab
-        matTooltip="Scoll naar Formulier"
-        aria-label="Scroll naar Formulier"
-        color="primary"
-        onClick="document.getElementById('scrollPoint').scrollIntoView({ block: 'start',  behavior: 'smooth'});"
-      >
-        <mat-icon>keyboard_double_arrow_down</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div class="row pt-4">
-    <div class="col-lg-8 col-12" [innerHTML]="content2()"></div>
-    <div class="col-lg-4 col-12">
-      @if(!!img_2()){
-
-      <div class="image-wrapper">
-        <img
-          alt="Informatie over lid worden bij Tovedem"
-          class="card-image"
-          [ngSrc]="getImageUrl(collectionId(), recordId(), img_2())"
-          priority
-          width="600"
-          height="280"
-        />
+      <div class="col-lg-9 col-12 pt-4" [innerHTML]="content1()"></div>
+      <div class="col-lg-1 col-12" style="align-items: center">
+        <button
+          mat-fab
+          matTooltip="Scoll naar Formulier"
+          aria-label="Scroll naar Formulier"
+          color="primary"
+          onClick="document.getElementById('scrollPoint').scrollIntoView({ block: 'start',  behavior: 'smooth'});"
+        >
+          <mat-icon>keyboard_double_arrow_down</mat-icon>
+        </button>
       </div>
-      } @else {
-      <img
-        alt="Informatie over lid worden bij Tovedem"
-        class="card-image"
-        src="/assets/Place-Holder-Image.jpg"
-      />
-      }
     </div>
-  </div>
-  <div class="row pt-4">
-    <div class="col-lg-3 col-12">
-      @if(!!img_3()){
-      <div class="image-wrapper">
-        <img
-          alt="Informatie over lid worden bij Tovedem"
-          class="card-image"
-          [ngSrc]="getImageUrl(collectionId(), recordId(), img_3())"
-          priority
-          width="420"
-          height="280"
-        />
+    <div class="row pt-4">
+      <div class="col-lg-8 col-12" [innerHTML]="content2()"></div>
+      <div class="col-lg-4 col-12">
+        @if (!!img_2()) {
+          <div class="image-wrapper">
+            <img
+              alt="Informatie over lid worden bij Tovedem"
+              class="card-image"
+              [ngSrc]="getImageUrl(collectionId(), recordId(), img_2())"
+              priority
+              width="600"
+              height="280"
+            />
+          </div>
+        } @else {
+          <img
+            alt="Informatie over lid worden bij Tovedem"
+            class="card-image"
+            src="/assets/Place-Holder-Image.jpg"
+          />
+        }
       </div>
-      } @else {
-      <img
-        alt="Informatie over lid worden bij Tovedem"
-        class="card-image"
-        src="/assets/Place-Holder-Image.jpg"
-        style="
-          object-fit: contain;
-          max-width: 100%;
-          border-radius: 1em;
-          align-content: center;
-        "
-      />
-      }
     </div>
-    <div class="col-lg-9 col-12 pt-2" [innerHTML]="content3()"></div>
-  </div>
+    <div class="row pt-4">
+      <div class="col-lg-3 col-12">
+        @if (!!img_3()) {
+          <div class="image-wrapper">
+            <img
+              alt="Informatie over lid worden bij Tovedem"
+              class="card-image"
+              [ngSrc]="getImageUrl(collectionId(), recordId(), img_3())"
+              priority
+              width="420"
+              height="280"
+            />
+          </div>
+        } @else {
+          <img
+            alt="Informatie over lid worden bij Tovedem"
+            class="card-image"
+            src="/assets/Place-Holder-Image.jpg"
+            style="
+              object-fit: contain;
+              max-width: 100%;
+              border-radius: 1em;
+              align-content: center;
+            "
+          />
+        }
+      </div>
+      <div class="col-lg-9 col-12 pt-2" [innerHTML]="content3()"></div>
+    </div>
   } @placeholder {
-  <div class="center">
-    <mat-spinner></mat-spinner>
-  </div>
+    <div class="center">
+      <mat-spinner></mat-spinner>
+    </div>
   }
 </div>
 <div id="scrollPoint" style="scroll-margin-top: 4em"></div>
@@ -110,133 +109,148 @@
     </div>
   </div>
   @if (!submitted()) {
-  <form class="lid-worden-form">
-    <div class="row">
-      <mat-form-field class="col-md-4 col-12">
-        <mat-label>Voornaam</mat-label>
-        <input
-          placeholder="Pieter"
-          matInput
-          type="text"
-          [formField]="lidWordenForm.voornaam"
-        />
-        @if (lidWordenForm.voornaam().touched() &&
-        lidWordenForm.voornaam().invalid()) {
-        <mat-error>Voornaam is verplicht</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-md-4 col-12">
-        <mat-label>Achternaam</mat-label>
-        <input
-          placeholder="Post"
-          matInput
-          type="text"
-          [formField]="lidWordenForm.achternaam"
-        />
-        @if (lidWordenForm.achternaam().touched() &&
-        lidWordenForm.achternaam().invalid()) {
-        <mat-error>Achternaam is verplicht</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field class="col-md-4 col-12">
-        <mat-label>Geboortedatum</mat-label>
-        <input
-          placeholder="14-11-1990"
-          matInput
-          [matDatepicker]="picker1"
-          [formField]="lidWordenForm.geboorteDatum"
-        />
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="picker1"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-        @if (lidWordenForm.geboorteDatum().touched() &&
-        lidWordenForm.geboorteDatum().invalid()) {
-        <mat-error>Geboortedatum is verplicht</mat-error>
-        }
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col-md-8 col-12">
-        <mat-label>E-mail</mat-label>
-        <input
-          placeholder="pieter-post@voorbeeld.nl"
-          matInput
-          type="email"
-          autocomplete="email"
-          [formField]="lidWordenForm.email"
-        />
-        @if (lidWordenForm.email().touched() && lidWordenForm.email().invalid())
-        {
-        <mat-error>{{
-          lidWordenForm.email().errors().map((e) => e.message).join(', ').trim()
-        }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field class="col-md-4 col-12">
-        <mat-label>Groep</mat-label>
-        <mat-select [formField]="lidWordenForm.selectedGroep">
-          @for (groep of groepen(); track $index) {
-          <mat-option [value]="groep">{{ groep.naam }}</mat-option>
+    <form class="lid-worden-form">
+      <div class="row">
+        <mat-form-field class="col-md-4 col-12">
+          <mat-label>Voornaam</mat-label>
+          <input
+            placeholder="Pieter"
+            matInput
+            type="text"
+            autocomplete="given-name"
+            [formField]="lidWordenForm.voornaam"
+          />
+          @if (
+            lidWordenForm.voornaam().touched() &&
+            lidWordenForm.voornaam().invalid()
+          ) {
+            <mat-error>Voornaam is verplicht</mat-error>
           }
-        </mat-select>
-        @if (lidWordenForm.selectedGroep().touched() &&
-        lidWordenForm.selectedGroep().invalid()) {
-        <mat-error>Groep is verplicht</mat-error>
-        }
-      </mat-form-field>
-    </div>
+        </mat-form-field>
+        <mat-form-field class="col-md-4 col-12">
+          <mat-label>Achternaam</mat-label>
+          <input
+            placeholder="Post"
+            matInput
+            type="text"
+            autocomplete="family-name"
+            [formField]="lidWordenForm.achternaam"
+          />
+          @if (
+            lidWordenForm.achternaam().touched() &&
+            lidWordenForm.achternaam().invalid()
+          ) {
+            <mat-error>Achternaam is verplicht</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="col-md-4 col-12">
+          <mat-label>Geboortedatum</mat-label>
+          <input
+            placeholder="14-11-1990"
+            autocomplete="bday"
+            matInput
+            [matDatepicker]="picker1"
+            [formField]="lidWordenForm.geboorteDatum"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          @if (
+            lidWordenForm.geboorteDatum().touched() &&
+            lidWordenForm.geboorteDatum().invalid()
+          ) {
+            <mat-error>Geboortedatum is verplicht</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-8 col-12">
+          <mat-label>E-mail</mat-label>
+          <input
+            placeholder="pieter-post@voorbeeld.nl"
+            matInput
+            type="email"
+            autocomplete="email"
+            [formField]="lidWordenForm.email"
+          />
+          @if (
+            lidWordenForm.email().touched() && lidWordenForm.email().invalid()
+          ) {
+            <mat-error>{{
+          lidWordenForm.email().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
+          }
+        </mat-form-field>
 
-    <div class="d-flex">
-      <mat-form-field class="flex">
-        <mat-label>Bericht</mat-label>
-        <textarea
-          [formField]="lidWordenForm.message"
-          matInput
-          rows="10"
-          placeholder="Typ hier je bericht"
-        ></textarea>
-        @if (lidWordenForm.message().touched() &&
-        lidWordenForm.message().invalid()) {
-        <mat-error>Bericht is verplicht</mat-error>
-        }
-      </mat-form-field>
-    </div>
-    <div class="d-flex">
-      <span
-        [matTooltip]="
-          loading() || !lidWordenForm().valid()
-            ? 'Vul het formulier in om te verzenden'
-            : ''
-        "
-        [matTooltipDisabled]="!(loading() || !lidWordenForm().valid())"
-        style="display: flex; flex: 1"
-      >
-        <button
-          class="flex"
-          mat-flat-button
-          type="button"
-          (click)="submit()"
-          [disabled]="loading() || !lidWordenForm().valid()"
+        <mat-form-field class="col-md-4 col-12">
+          <mat-label>Groep</mat-label>
+          <mat-select [formField]="lidWordenForm.selectedGroep">
+            @for (groep of groepen(); track $index) {
+              <mat-option [value]="groep">{{ groep.naam }}</mat-option>
+            }
+          </mat-select>
+          @if (
+            lidWordenForm.selectedGroep().touched() &&
+            lidWordenForm.selectedGroep().invalid()
+          ) {
+            <mat-error>Groep is verplicht</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex">
+        <mat-form-field class="flex">
+          <mat-label>Bericht</mat-label>
+          <textarea
+            [formField]="lidWordenForm.message"
+            matInput
+            rows="10"
+            placeholder="Typ hier je bericht"
+          ></textarea>
+          @if (
+            lidWordenForm.message().touched() &&
+            lidWordenForm.message().invalid()
+          ) {
+            <mat-error>Bericht is verplicht</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="d-flex">
+        <span
+          [matTooltip]="
+            loading() || !lidWordenForm().valid()
+              ? 'Vul het formulier in om te verzenden'
+              : ''
+          "
+          [matTooltipDisabled]="!(loading() || !lidWordenForm().valid())"
+          style="display: flex; flex: 1"
         >
-          Verzenden
+          <button
+            class="flex"
+            mat-flat-button
+            type="button"
+            (click)="submit()"
+            [disabled]="loading() || !lidWordenForm().valid()"
+          >
+            Verzenden
+          </button>
+        </span>
+      </div>
+    </form>
+  }
+  @if (submitted()) {
+    <mat-card
+      class="success-card"
+      style="text-align: center; padding: 2em; margin-top: 2em"
+    >
+      <mat-card-content>
+        <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
+        <button mat-flat-button color="primary" (click)="resetForm()">
+          Nog een maken?
         </button>
-      </span>
-    </div>
-  </form>
-  } @if (submitted()) {
-  <mat-card
-    class="success-card"
-    style="text-align: center; padding: 2em; margin-top: 2em"
-  >
-    <mat-card-content>
-      <h2 style="margin-bottom: 1em">We hebben je aanvraag ontvangen!</h2>
-      <button mat-flat-button color="primary" (click)="resetForm()">
-        Nog een maken?
-      </button>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
   }
 </div>
