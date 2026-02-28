@@ -98,11 +98,9 @@
           [formField]="contactForm.email"
         />
         @if (contactForm.email().touched() && contactForm.email().invalid()) {
-        <mat-error>
-          @for (error of contactForm.email().errors(); track error) {
-          {{ error.message }}
-          }
-        </mat-error>
+        <mat-error>{{
+          contactForm.email().errors().map((e) => e.message).join(', ').trim()
+        }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="col-12 col-md-4">

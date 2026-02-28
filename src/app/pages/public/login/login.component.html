@@ -21,12 +21,9 @@
               />
               @if (loginForm.usernameOrEmail().touched() &&
               loginForm.usernameOrEmail().invalid()) {
-              <mat-error>
-                @for (error of loginForm.usernameOrEmail().errors(); track
-                error) {
-                {{ error.message }}
-                }
-              </mat-error>
+              <mat-error>{{
+                loginForm.usernameOrEmail().errors().map((e) => e.message).join(', ').trim()
+              }}</mat-error>
               }
             </mat-form-field>
             <mat-form-field>
@@ -52,11 +49,9 @@
               </button>
               @if (loginForm.password().touched() &&
               loginForm.password().invalid()) {
-              <mat-error>
-                @for (error of loginForm.password().errors(); track error) {
-                {{ error.message }}
-                }
-              </mat-error>
+              <mat-error>{{
+                loginForm.password().errors().map((e) => e.message).join(', ').trim()
+              }}</mat-error>
               }
             </mat-form-field>
             @if (loginError()) {

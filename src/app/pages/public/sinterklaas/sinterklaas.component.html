@@ -73,11 +73,9 @@
       />
       @if (sinterklaasForm.email().touched() &&
       sinterklaasForm.email().invalid()) {
-      <mat-error>
-        @for (error of sinterklaasForm.email().errors(); track error) {
-        {{ error.message }}
-        }
-      </mat-error>
+      <mat-error>{{
+        sinterklaasForm.email().errors().map((e) => e.message).join(', ').trim()
+      }}</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="col-12 col-md-4">

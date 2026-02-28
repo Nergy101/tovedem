@@ -22,9 +22,9 @@
           <input matInput type="text" [formField]="gebruikerForm.username" />
           @if (gebruikerForm.username().touched() &&
           gebruikerForm.username().invalid()) {
-            @for (error of gebruikerForm.username().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
+            <mat-error>{{
+              gebruikerForm.username().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -36,10 +36,11 @@
             [formField]="gebruikerForm.email"
           />
           @if (gebruikerForm.email().touched() &&
-          gebruikerForm.email().invalid()) { @for (error of
-          gebruikerForm.email().errors(); track error) {
-          <mat-error>{{ error.message }}</mat-error>
-          } }
+          gebruikerForm.email().invalid()) {
+            <mat-error>{{
+              gebruikerForm.email().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
+          }
         </mat-form-field>
       </div>
 
@@ -49,9 +50,9 @@
           <input matInput type="password" [formField]="gebruikerForm.password" />
           @if (!isUpdate && gebruikerForm.password().touched() &&
           gebruikerForm.password().invalid()) {
-            @for (error of gebruikerForm.password().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
+            <mat-error>{{
+              gebruikerForm.password().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -62,10 +63,11 @@
             [formField]="gebruikerForm.passwordConfirm"
           />
           @if (!isUpdate && gebruikerForm.passwordConfirm().touched() &&
-          gebruikerForm.passwordConfirm().invalid()) { @for (error of
-          gebruikerForm.passwordConfirm().errors(); track error) {
-          <mat-error>{{ error.message }}</mat-error>
-          } } @else if (!isUpdate && gebruikerForm.passwordConfirm().valid() &&
+          gebruikerForm.passwordConfirm().invalid()) {
+            <mat-error>{{
+              gebruikerForm.passwordConfirm().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
+          } @else if (!isUpdate && gebruikerForm.passwordConfirm().valid() &&
           gebruikerForm.passwordConfirm().value() &&
           gebruikerForm.password().value() ===
           gebruikerForm.passwordConfirm().value()) {
@@ -81,9 +83,9 @@
           <mat-label>Naam</mat-label>
           <input matInput type="text" [formField]="gebruikerForm.name" />
           @if (gebruikerForm.name().touched() && gebruikerForm.name().invalid()) {
-            @for (error of gebruikerForm.name().errors(); track error) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
+            <mat-error>{{
+              gebruikerForm.name().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">

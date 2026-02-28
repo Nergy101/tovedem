@@ -169,11 +169,9 @@
         />
         @if (lidWordenForm.email().touched() && lidWordenForm.email().invalid())
         {
-        <mat-error>
-          @for (error of lidWordenForm.email().errors(); track error) {
-          {{ error.message }}
-          }
-        </mat-error>
+        <mat-error>{{
+          lidWordenForm.email().errors().map((e) => e.message).join(', ').trim()
+        }}</mat-error>
         }
       </mat-form-field>
 

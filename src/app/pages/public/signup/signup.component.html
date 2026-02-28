@@ -22,9 +22,9 @@
                 [formField]="signupForm.username"
               />
               @if (signupForm.username().touched() && signupForm.username().invalid()) {
-                @for (error of signupForm.username().errors(); track error) {
-                  <mat-error>{{ error.message }}</mat-error>
-                }
+                <mat-error>{{
+                  signupForm.username().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
               } @else if (signupForm.username().valid() && signupForm.username().value()) {
                 <mat-hint class="mat-hint-success">
                   Gebruikersnaam is geldig
@@ -42,9 +42,9 @@
                 [formField]="signupForm.email"
               />
               @if (signupForm.email().touched() && signupForm.email().invalid()) {
-                @for (error of signupForm.email().errors(); track error) {
-                  <mat-error>{{ error.message }}</mat-error>
-                }
+                <mat-error>{{
+                  signupForm.email().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
               } @else if (signupForm.email().valid() && signupForm.email().value()) {
                 <mat-hint class="mat-hint-success">
                   E-mailadres is geldig
@@ -85,9 +85,9 @@
                 }}</mat-icon>
               </button>
               @if (signupForm.password().touched() && signupForm.password().invalid()) {
-                @for (error of signupForm.password().errors(); track error) {
-                  <mat-error>{{ error.message }}</mat-error>
-                }
+                <mat-error>{{
+                  signupForm.password().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
               } @else if (signupForm.password().valid() && signupForm.password().value()) {
                 <mat-hint class="mat-hint-success">
                   Wachtwoord is geldig
@@ -118,9 +118,9 @@
                 }}</mat-icon>
               </button>
               @if (signupForm.passwordConfirm().touched() && signupForm.passwordConfirm().invalid()) {
-                @for (error of signupForm.passwordConfirm().errors(); track error) {
-                  <mat-error>{{ error.message }}</mat-error>
-                }
+                <mat-error>{{
+                  signupForm.passwordConfirm().errors().map((e) => e.message).join(', ').trim()
+                }}</mat-error>
               } @else if (signupForm.passwordConfirm().valid() && signupForm.passwordConfirm().value() && signupForm.password().value() === signupForm.passwordConfirm().value()) {
                 <mat-hint class="mat-hint-success">
                   Wachtwoorden komen overeen

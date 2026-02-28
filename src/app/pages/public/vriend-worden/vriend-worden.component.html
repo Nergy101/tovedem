@@ -25,8 +25,10 @@
             type="text"
             [formField]="vriendWordenForm.name"
           />
-          @for (error of vriendWordenForm.name().errors(); track error) {
-            <mat-error>{{ error.message }}</mat-error>
+          @if (vriendWordenForm.name().invalid()) {
+            <mat-error>{{
+              vriendWordenForm.name().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="col-12 col-md-4">
@@ -41,11 +43,9 @@
             vriendWordenForm.email().touched() &&
             vriendWordenForm.email().invalid()
           ) {
-            <mat-error>
-              @for (error of vriendWordenForm.email().errors(); track error) {
-                {{ error.message }}
-              }
-            </mat-error>
+            <mat-error>{{
+              vriendWordenForm.email().errors().map((e) => e.message).join(', ').trim()
+            }}</mat-error>
           }
         </mat-form-field>
         <mat-form-field class="col-12 col-md-4">
