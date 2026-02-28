@@ -123,7 +123,7 @@ Each component typically has:
 ### Adding a New Member-Only Page
 
 1. Create component in `src/app/pages/members/[page-name]/`
-2. Add route with `canActivate: [loggedInGuard]` in `app.routes.ts`
+2. Add route with `canActivate: [loggedInGuard()]` in `app.routes.ts`
 3. Add navigation link in member navigation
 
 ### Adding a New Admin Page

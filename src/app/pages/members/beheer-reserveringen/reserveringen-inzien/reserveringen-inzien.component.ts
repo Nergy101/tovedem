@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import {
   Component,
   OnInit,
@@ -9,8 +8,8 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { Field, form, debounce } from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
+import { Field, debounce, form } from '@angular/forms/signals';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -24,11 +23,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, filter, lastValueFrom, map, startWith } from 'rxjs';
+import { Observable, lastValueFrom, map, startWith } from 'rxjs';
 import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { Sponsor } from '../../../../models/domain/sponsor.model';
@@ -37,6 +37,7 @@ import { ReserveringSearchFormModel } from '../../../../models/form-models/reser
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { InformatieDialogComponent } from '../../../../shared/components/informatie-dialog/informatie-dialog.component';
 import { ReserveringenTableComponent } from '../../../../shared/components/reserveringen-table/reserveringen-table.component';
+import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../../shared/services/theme.service';
 import { VerificationService } from '../../../../shared/services/verification.service';
@@ -44,7 +45,6 @@ import { LosseVerkoopCreateDialogComponent } from '../losse-verkoop-create-dialo
 import { ReserveringEditDialogComponent } from '../reserveringen-edit-dialog/reservering-edit-dialog.component';
 import { VerificatieMatchDialogComponent } from '../verificatie-match-dialog/verificatie-match-dialog.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-reserveringen-inzien',
@@ -95,7 +95,7 @@ export class ReserveringenInzienComponent implements OnInit {
   sponsors = signal<Sponsor[]>([]);
   losseVerkoopOfSelectedVoorstellingDag = computed(() => {
     return this.losseVerkoopOfSelectedVoorstelling().filter(
-      (losseVerkoop) => losseVerkoop.datum === this.selectedDag()
+      (losseVerkoop) => losseVerkoop.datum === this.selectedDag(),
     );
   });
 
@@ -218,12 +218,12 @@ export class ReserveringenInzienComponent implements OnInit {
             'voorstelling.id = {:voorstellingId}',
             {
               voorstellingId: selectedVoorstelling.id,
-            }
+            },
           ),
         })
         .then((reserveringen) => {
           this.reserveringenOfSelectedVoorstelling.set(
-            reserveringen as unknown as Reservering[]
+            reserveringen as unknown as Reservering[],
           );
           this.loading.set(false);
         })
@@ -246,12 +246,12 @@ export class ReserveringenInzienComponent implements OnInit {
         .getFullList({
           filter: this.client.directClient.filter(
             'voorstelling.id = {:voorstellingId}',
-            { voorstellingId: selectedVoorstelling.id }
+            { voorstellingId: selectedVoorstelling.id },
           ),
         })
         .then((losseVerkoop) => {
           this.losseVerkoopOfSelectedVoorstelling.set(
-            losseVerkoop as unknown as LosseVerkoop[]
+            losseVerkoop as unknown as LosseVerkoop[],
           );
         });
     });
@@ -260,7 +260,7 @@ export class ReserveringenInzienComponent implements OnInit {
     this.filteredOptions = toObservable(this.reservatieSearchModel).pipe(
       takeUntilDestroyed(),
       startWith(this.reservatieSearchModel()),
-      map((model) => this._filter(model.searchTerm || ''))
+      map((model) => this._filter(model.searchTerm || '')),
     );
 
     effect(() => {
@@ -268,7 +268,7 @@ export class ReserveringenInzienComponent implements OnInit {
       if (voorstellingId) {
         const voorstelling =
           this.voorstellingen().find(
-            (voorstelling) => voorstelling.id === voorstellingId
+            (voorstelling) => voorstelling.id === voorstellingId,
           ) ?? null;
         this.selectedVoorstelling.set(voorstelling);
       }
@@ -280,12 +280,12 @@ export class ReserveringenInzienComponent implements OnInit {
       await this.client.directClient.collection('voorstellingen').getFullList({
         sort: 'datum_tijd_1',
         filter: 'gearchiveerd != true',
-      })
+      }),
     );
 
     // Load sponsors for verification matching
     this.sponsors.set(
-      await this.client.directClient.collection('sponsoren').getFullList()
+      await this.client.directClient.collection('sponsoren').getFullList(),
     );
   }
 
@@ -310,8 +310,8 @@ export class ReserveringenInzienComponent implements OnInit {
     if (updatedReservering) {
       this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
         reserveringen.map((x) =>
-          x.id === updatedReservering.id ? updatedReservering : x
-        )
+          x.id === updatedReservering.id ? updatedReservering : x,
+        ),
       );
 
       this.toastr.success('Reservering succesvol aangepast');
@@ -333,8 +333,8 @@ export class ReserveringenInzienComponent implements OnInit {
   setSelectedOption(value: Reservering): void {
     this.selectedOption.set(
       this.reserveringenOfSelectedVoorstelling().find(
-        (x) => x.id === value.id
-      ) ?? null
+        (x) => x.id === value.id,
+      ) ?? null,
     );
   }
 
@@ -354,7 +354,7 @@ export class ReserveringenInzienComponent implements OnInit {
     this.client.update<Reservering>('reserveringen', reservering);
 
     this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
-      reserveringen.map((x) => (x.id === reservering.id ? reservering : x))
+      reserveringen.map((x) => (x.id === reservering.id ? reservering : x)),
     );
   }
 
@@ -395,7 +395,7 @@ export class ReserveringenInzienComponent implements OnInit {
 
     await this.client.delete('losse_verkoop', losseVerkoopToDelete.id);
     this.losseVerkoopOfSelectedVoorstelling.update((losseVerkoop) =>
-      losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id)
+      losseVerkoop.filter((x) => x.id !== losseVerkoopToDelete.id),
     );
 
     this.toastr.success('Losse verkoop succesvol verwijderd');
@@ -408,7 +408,7 @@ export class ReserveringenInzienComponent implements OnInit {
       (option) =>
         option.voornaam.toLowerCase().includes(filterValue) ||
         option.achternaam.toLowerCase().includes(filterValue) ||
-        option.email.toLowerCase().includes(filterValue)
+        option.email.toLowerCase().includes(filterValue),
     );
   }
 
@@ -419,13 +419,13 @@ export class ReserveringenInzienComponent implements OnInit {
     const { status, matchingSponsors } =
       this.verificationService.checkVerificationStatus(
         reservering,
-        this.sponsors()
+        this.sponsors(),
       );
 
     // Get all potential matches (both exact and partial) for display in dialog
     const allMatchingSponsors = this.verificationService.getAllMatchingSponsors(
       reservering,
-      this.sponsors()
+      this.sponsors(),
     );
 
     const dialogRef = this.dialog.open(VerificatieMatchDialogComponent, {
@@ -455,14 +455,14 @@ export class ReserveringenInzienComponent implements OnInit {
 
         await this.client.update<Reservering>(
           'reserveringen',
-          updatedReservering
+          updatedReservering,
         );
 
         // Update local state
         this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
           reserveringen.map((x) =>
-            x.id === reservering.id ? updatedReservering : x
-          )
+            x.id === reservering.id ? updatedReservering : x,
+          ),
         );
 
         this.toastr.success('Vriend status bevestigd');
@@ -477,18 +477,18 @@ export class ReserveringenInzienComponent implements OnInit {
 
         await this.client.update<Reservering>(
           'reserveringen',
-          updatedReservering
+          updatedReservering,
         );
 
         // Update local state
         this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
           reserveringen.map((x) =>
-            x.id === reservering.id ? updatedReservering : x
-          )
+            x.id === reservering.id ? updatedReservering : x,
+          ),
         );
 
         this.toastr.success(
-          'Verificatie status gereset - wordt automatisch opnieuw berekend'
+          'Verificatie status gereset - wordt automatisch opnieuw berekend',
         );
       } else if (result.status) {
         // Update reservering with manual verification
@@ -500,14 +500,14 @@ export class ReserveringenInzienComponent implements OnInit {
 
         await this.client.update<Reservering>(
           'reserveringen',
-          updatedReservering
+          updatedReservering,
         );
 
         // Update local state
         this.reserveringenOfSelectedVoorstelling.update((reserveringen) =>
           reserveringen.map((x) =>
-            x.id === reservering.id ? updatedReservering : x
-          )
+            x.id === reservering.id ? updatedReservering : x,
+          ),
         );
 
         this.toastr.success('Verificatie status bijgewerkt');

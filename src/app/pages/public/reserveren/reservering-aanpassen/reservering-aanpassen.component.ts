@@ -146,7 +146,7 @@ export class ReserveringAanpassenComponent {
           this.reserveringId.set(params.id);
           this.reserveringGuid.set(params.guid);
         }),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe();
 
@@ -177,7 +177,7 @@ export class ReserveringAanpassenComponent {
               this.reserveringId()!,
               {
                 expand: 'voorstelling.groep',
-              }
+              },
             );
 
             // Check if expand was successful
@@ -191,7 +191,7 @@ export class ReserveringAanpassenComponent {
               // Expand partially failed, try strategy 2
               throw new Error('Expand failed');
             }
-          } catch (error) {
+          } catch (_) {
             // Strategy 2: Try with only voorstelling expand
             try {
               reservering = await this.client.getOne<Reservering>(
@@ -199,7 +199,7 @@ export class ReserveringAanpassenComponent {
                 this.reserveringId()!,
                 {
                   expand: 'voorstelling',
-                }
+                },
               );
 
               if (reservering.expand?.voorstelling) {
@@ -208,7 +208,7 @@ export class ReserveringAanpassenComponent {
                 try {
                   groep = await this.client.getOne<Groep>(
                     'groepen',
-                    voorstelling.groep
+                    voorstelling.groep,
                   );
                 } catch (groepError) {
                   console.warn('Could not fetch groep:', groepError);
@@ -217,26 +217,26 @@ export class ReserveringAanpassenComponent {
               } else {
                 throw new Error('Voorstelling expand failed');
               }
-            } catch (error2) {
+            } catch (_) {
               // Strategy 3: Fetch everything separately
               try {
                 reservering = await this.client.getOne<Reservering>(
                   'reserveringen',
-                  this.reserveringId()!
+                  this.reserveringId()!,
                 );
 
                 if (reservering.voorstelling) {
                   try {
                     voorstelling = await this.client.getOne<Voorstelling>(
                       'voorstellingen',
-                      reservering.voorstelling
+                      reservering.voorstelling,
                     );
 
                     if (voorstelling.groep) {
                       try {
                         groep = await this.client.getOne<Groep>(
                           'groepen',
-                          voorstelling.groep
+                          voorstelling.groep,
                         );
                       } catch (groepError) {
                         console.warn('Could not fetch groep:', groepError);
@@ -245,21 +245,21 @@ export class ReserveringAanpassenComponent {
                   } catch (voorstellingError) {
                     console.warn(
                       'Could not fetch voorstelling:',
-                      voorstellingError
+                      voorstellingError,
                     );
                     throw new Error('Voorstelling not found');
                   }
                 } else {
                   throw new Error('Reservering has no voorstelling reference');
                 }
-              } catch (error3) {
+              } catch (_) {
                 // All strategies failed
                 this.toastr.error(
                   'De reservering kon niet worden geladen. De reservering of gerelateerde gegevens zijn mogelijk verwijderd.',
                   'Fout',
                   {
                     positionClass: 'toast-bottom-right',
-                  }
+                  },
                 );
                 this.router.navigate(['/']);
                 return;
@@ -274,7 +274,7 @@ export class ReserveringAanpassenComponent {
               'Fout',
               {
                 positionClass: 'toast-bottom-right',
-              }
+              },
             );
             this.router.navigate(['/']);
             return;
@@ -287,7 +287,7 @@ export class ReserveringAanpassenComponent {
               'Ongeldige link',
               {
                 positionClass: 'toast-bottom-right',
-              }
+              },
             );
             this.router.navigate(['/']);
             return;
@@ -300,7 +300,7 @@ export class ReserveringAanpassenComponent {
               'Fout',
               {
                 positionClass: 'toast-bottom-right',
-              }
+              },
             );
             this.router.navigate(['/']);
             return;
@@ -370,7 +370,7 @@ export class ReserveringAanpassenComponent {
               'Niet Geautoriseerd',
               {
                 positionClass: 'toast-bottom-right',
-              }
+              },
             );
           } else {
             this.toastr.error(
@@ -378,13 +378,13 @@ export class ReserveringAanpassenComponent {
               'Fout',
               {
                 positionClass: 'toast-bottom-right',
-              }
+              },
             );
           }
           this.router.navigate(['/']);
         }
       },
-      { allowSignalWrites: true }
+      { allowSignalWrites: true },
     );
   }
 
@@ -463,7 +463,7 @@ export class ReserveringAanpassenComponent {
       // Use ErrorService for consistent error handling
       const appError = this.errorService.parseError(
         error,
-        'Reservering aanpassen'
+        'Reservering aanpassen',
       );
       const errorMessage = this.errorService.getUserMessage(appError);
 
@@ -474,7 +474,7 @@ export class ReserveringAanpassenComponent {
           'Niet Geautoriseerd',
           {
             positionClass: 'toast-bottom-right',
-          }
+          },
         );
       } else {
         this.toastr.error(errorMessage, 'Fout', {
@@ -553,7 +553,7 @@ export class ReserveringAanpassenComponent {
     } catch (error: unknown) {
       const errorMessage = this.errorService.getErrorMessage(
         error,
-        'Reservering intrekken'
+        'Reservering intrekken',
       );
       this.toastr.error(errorMessage, 'Fout', {
         positionClass: 'toast-bottom-right',

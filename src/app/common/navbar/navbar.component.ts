@@ -1,14 +1,13 @@
 import {
   Component,
+  HostListener,
   inject,
   OnInit,
-  HostListener,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule, MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
@@ -30,7 +29,7 @@ import { ThemeService } from '../../shared/services/theme.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   authService = inject(AuthService);
   router = inject(Router);
   breakpointService = inject(BreakpointService);
@@ -38,10 +37,6 @@ export class NavbarComponent implements OnInit {
   themeService = inject(ThemeService);
 
   @ViewChild('groepenMenu') groepenMenu?: MatMenu;
-
-  ngOnInit(): void {
-    // Theme is now managed by ThemeService
-  }
 
   get groepenClass(): string {
     return this.router.url.includes('groep') ? 'active' : '';
@@ -76,7 +71,7 @@ export class NavbarComponent implements OnInit {
     // Handle Escape key to close menus
     if (event.key === 'Escape') {
       const activeMenu = document.querySelector(
-        '.mat-mdc-menu-panel.mat-mdc-menu-panel--open'
+        '.mat-mdc-menu-panel.mat-mdc-menu-panel--open',
       );
       if (activeMenu) {
         event.preventDefault();
@@ -90,13 +85,13 @@ export class NavbarComponent implements OnInit {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       const menuItems = Array.from(
         document.querySelectorAll<HTMLElement>(
-          '.mat-mdc-menu-panel button[role="menuitem"]'
-        )
+          '.mat-mdc-menu-panel button[role="menuitem"]',
+        ),
       );
 
       if (menuItems.length > 0) {
         const currentIndex = menuItems.findIndex(
-          (item) => item === document.activeElement
+          (item) => item === document.activeElement,
         );
         let nextIndex: number;
 

@@ -4,20 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogModule,
   MatDialogRef,
-  MatDialog,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
-import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
-import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
+import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 
 @Component({
   selector: 'app-losse-verkoop-create-dialog',
@@ -95,7 +95,7 @@ export class LosseVerkoopCreateDialogComponent {
       'reserveringen',
       {
         filter: `voorstelling = "${voorstelling.id}"`,
-      }
+      },
     );
 
     // Calculate total reservations for selected day
@@ -113,7 +113,7 @@ export class LosseVerkoopCreateDialogComponent {
       'losse_verkoop',
       {
         filter: `voorstelling = "${voorstelling.id}" && datum = "${selectedDag}"`,
-      }
+      },
     );
 
     // Calculate total losse verkoop
@@ -168,7 +168,7 @@ export class LosseVerkoopCreateDialogComponent {
 
       const createdLosseVerkoop = await this.client.create<LosseVerkoop>(
         'losse_verkoop',
-        losseVerkoop
+        losseVerkoop,
       );
 
       this.dialogRef.close(createdLosseVerkoop);

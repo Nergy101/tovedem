@@ -2,14 +2,15 @@ import { registerLocaleData } from '@angular/common';
 import localeNL from '@angular/common/locales/nl';
 import {
   Component,
+  Injector,
   LOCALE_ID,
+  OnInit,
   ViewChild,
+  afterNextRender,
   effect,
   inject,
-  OnInit,
-  Injector,
-  afterNextRender,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,18 +19,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 import { filter, map } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CookieBannerComponent } from './common/cookie-banner/cookie-banner.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { SidenavComponent } from './common/sidenav/sidenav.component';
 import { AuthService } from './shared/services/auth.service';
 import { BreakpointService } from './shared/services/breakpoint.service';
+import { FocusManagementService } from './shared/services/focus-management.service';
 import { SideDrawerService } from './shared/services/side-drawer.service';
 import { ThemeService } from './shared/services/theme.service';
-import { FocusManagementService } from './shared/services/focus-management.service';
 registerLocaleData(localeNL);
 
 @Component({
@@ -54,7 +59,7 @@ registerLocaleData(localeNL);
     CookieBannerComponent,
   ],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   authService = inject(AuthService);
   sideDrawerService = inject(SideDrawerService);
   breakpointService = inject(BreakpointService);
@@ -66,9 +71,9 @@ export class AppComponent implements OnInit {
   isHomePage = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      map((event) => event.urlAfterRedirects === '/')
+      map((event) => event.urlAfterRedirects === '/'),
     ),
-    { initialValue: this.router.url === '/' }
+    { initialValue: this.router.url === '/' },
   );
 
   @ViewChild(MatDrawer) drawer?: MatDrawer;
@@ -83,7 +88,7 @@ export class AppComponent implements OnInit {
             () => {
               this.drawer?.open();
             },
-            { injector: this.injector }
+            { injector: this.injector },
           );
 
           return;
@@ -95,13 +100,9 @@ export class AppComponent implements OnInit {
         () => {
           this.drawer?.close();
         },
-        { injector: this.injector }
+        { injector: this.injector },
       );
     });
-  }
-
-  ngOnInit(): void {
-    // Theme is now managed by ThemeService
   }
 
   skipToMainContent(): void {
@@ -114,5 +115,11 @@ export class AppComponent implements OnInit {
 
   skipToFooter(): void {
     this.focusManagementService.skipToFooter();
+  }
+
+  demoAlertExpanded = false;
+
+  toggleDemoAlert(): void {
+    this.demoAlertExpanded = !this.demoAlertExpanded;
   }
 }
