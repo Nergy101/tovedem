@@ -1,14 +1,20 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, computed, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
+import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { Sponsor } from '../../../models/domain/sponsor.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
-import { inject } from '@angular/core';
 import { VerificationService } from '../../../shared/services/verification.service';
 
 @Component({
@@ -94,7 +100,7 @@ export class ReserveringenTableComponent {
   getVerificationStatus(reservering: Reservering): string {
     return this.verificationService.getVerificationStatus(
       reservering,
-      this.sponsors()
+      this.sponsors(),
     );
   }
 

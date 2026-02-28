@@ -8,13 +8,27 @@
   >Spring naar footer</a
 >
 <header>
-  <div class="demo-alert">
-    <span
-      >Welkom in de eerste versie van de nieuwe Tovedem website. Reserveer hier
+  <div
+    class="demo-alert"
+    [class.demo-alert--expanded]="demoAlertExpanded"
+    (click)="toggleDemoAlert()"
+    role="button"
+    tabindex="0"
+    (keydown.enter)="toggleDemoAlert()"
+    (keydown.space)="toggleDemoAlert(); $event.preventDefault()"
+  >
+    <mat-icon class="demo-alert__icon" aria-hidden="true">info</mat-icon>
+    <span class="demo-alert__text">
+      Welkom in de eerste versie van de nieuwe Tovedem website. Reserveer hier
       je tickets voor de voorstellingen.
-      <a href="https://www.tovedem.nl/" target="_blank">Klik hier</a> om terug
-      te gaan naar de originele website.</span
-    >
+      <a
+        href="https://www.tovedem.nl/"
+        target="_blank"
+        (click)="$event.stopPropagation()"
+        >Klik hier</a
+      >
+      om terug te gaan naar de originele website.
+    </span>
   </div>
   <nav id="navbar">
     <app-navbar></app-navbar>

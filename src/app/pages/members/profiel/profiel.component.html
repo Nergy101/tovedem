@@ -25,183 +25,201 @@
   </div>
 
   @if (authService.hasAccessToSidenav()) {
-  <div class="row justify-content-center mt-4">
-    <div class="col-xl-6 col-12 d-flex">
-      @if (sideDrawerService.isOpen()) {
-      <button class="flex-grow-1" mat-raised-button (click)="closeSideDrawer()">
-        <mat-icon>chevron_left</mat-icon>
-        Sluit leden paneel
-      </button>
-      } @else {
-      <button
-        class="flex-grow-1 open-leden-paneel-btn"
-        mat-raised-button
-        (click)="openSideDrawer()"
-      >
-        <mat-icon>chevron_right</mat-icon>
-        Open leden paneel
-      </button>
-      }
+    <div class="row justify-content-center mt-4">
+      <div class="col-xl-6 col-12 d-flex">
+        @if (sideDrawerService.isOpen()) {
+          <button
+            class="flex-grow-1"
+            mat-raised-button
+            (click)="closeSideDrawer()"
+          >
+            <mat-icon>chevron_left</mat-icon>
+            Sluit leden paneel
+          </button>
+        } @else {
+          <button
+            class="flex-grow-1 open-leden-paneel-btn"
+            mat-raised-button
+            (click)="openSideDrawer()"
+          >
+            <mat-icon>chevron_right</mat-icon>
+            Open leden paneel
+          </button>
+        }
+      </div>
     </div>
-  </div>
   }
 
   <div class="row justify-content-center mt-4">
     <div class="col-xl-6 col-12">
       @if (!breakpointService.isMobileScreen()) {
-      <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
-      }@else {
-      <div style="max-width: 400px">
-        <ng-container *ngTemplateOutlet="expansionPanel"> </ng-container>
-      </div>
+        <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
+      } @else {
+        <div style="max-width: 400px">
+          <ng-container *ngTemplateOutlet="expansionPanel"> </ng-container>
+        </div>
       }
     </div>
   </div>
 
   @if (canAccessProductieInfo()) {
-  <div class="row justify-content-around mt-4">
-    <mat-card
-      class="col-3 action-card"
-      (click)="navigateTo('/productie-info/Tovedem')"
-    >
-      <mat-card-title class="text-center profile-card-title"
-        >Tovedem</mat-card-title
+    <div class="row justify-content-around mt-4">
+      <mat-card
+        class="col-3 action-card"
+        (click)="navigateTo('/productie-info/Tovedem')"
       >
-      <mat-card-actions class="actions">
-        <mat-icon>diversity_1</mat-icon>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card-title class="text-center profile-card-title"
+          >Tovedem</mat-card-title
+        >
+        <mat-card-actions class="actions">
+          <mat-icon>diversity_1</mat-icon>
+        </mat-card-actions>
+      </mat-card>
 
-    <mat-card
-      class="col-3 action-card"
-      (click)="navigateTo('/productie-info/Cloos')"
-    >
-      <mat-card-title class="text-center">Cloos</mat-card-title>
-      <mat-card-actions class="actions">
-        <mat-icon>diversity_2</mat-icon>
-      </mat-card-actions>
-    </mat-card>
+      <mat-card
+        class="col-3 action-card"
+        (click)="navigateTo('/productie-info/Cloos')"
+      >
+        <mat-card-title class="text-center">Cloos</mat-card-title>
+        <mat-card-actions class="actions">
+          <mat-icon>diversity_2</mat-icon>
+        </mat-card-actions>
+      </mat-card>
 
-    <mat-card
-      class="col-3 action-card"
-      (click)="navigateTo('/productie-info/Mejotos')"
-    >
-      <mat-card-title class="text-center">Mejoto's</mat-card-title>
-      <mat-card-actions class="actions">
-        <mat-icon>diversity_3</mat-icon>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-  } @if (canAccessKassa() || canAccessAlgemeneInformatie()) {
-  <div class="row justify-content-around mt-4">
-    @if (canAccessKassa()) {
-    <mat-card class="col-5 action-card" (click)="navigateTo('/kassa')">
-      <mat-card-title class="text-center">Kassa</mat-card-title>
-      <mat-card-actions class="actions">
-        <mat-icon>shopping_cart</mat-icon>
-      </mat-card-actions>
-    </mat-card>
-    } @if (canAccessAlgemeneInformatie()) {
-    <mat-card
-      class="col-5 action-card"
-      (click)="navigateTo('/algemene-informatie')"
-    >
-      <mat-card-title class="text-center">Algemene Informatie</mat-card-title>
-      <mat-card-actions class="actions">
-        <mat-icon>info</mat-icon>
-      </mat-card-actions>
-    </mat-card>
-    }
-  </div>
-  } @if (authService.isLoggedIn()) {
-  <div class="row justify-content-center mt-4">
-    <div class="col-xl-10 col-12">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Uw reserveringen</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          @if (loadingReserveringen()) {
-          <div class="d-flex justify-content-center p-4">
-            <mat-spinner diameter="40"></mat-spinner>
-          </div>
-          } @else if (reserveringen() && reserveringen()!.length > 0) {
-          <div class="reserveringen-grid">
-            @for (reservering of paginatedReserveringen(); track reservering.id)
-            {
-            <mat-card class="reservering-card">
-              <mat-card-header>
-                <mat-card-title>
-                  {{
-                    reservering.expand?.voorstelling?.titel ||
-                      "Onbekende voorstelling"
-                  }}
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                @if (reservering.datum_tijd_1_aantal > 0) {
-                <p class="mb-2">
-                  <strong>Datum/tijd 1:</strong>
-                  {{ reservering.datum_tijd_1_aantal }} persoon(en)
-                </p>
-                } @if (reservering.datum_tijd_2_aantal > 0) {
-                <p class="mb-2">
-                  <strong>Datum/tijd 2:</strong>
-                  {{ reservering.datum_tijd_2_aantal }} persoon(en)
-                </p>
-                } @if (reservering.opmerking) {
-                <p class="mb-2">
-                  <strong>Opmerking:</strong> {{ reservering.opmerking }}
-                </p>
-                }
-                <p class="mb-0 text-muted">
-                  <small
-                    >Aangemaakt:
-                    {{
-                      reservering.created | amsterdamDate:"dd LLLL yyyy 'om' HH:mm"
-                    }}</small
-                  >
-                </p>
-              </mat-card-content>
-              @if (reservering.guid) {
-              <mat-card-actions>
-                <button
-                  mat-raised-button
-                  color="primary"
-                  (click)="
-                    navigateTo(
-                      '/reservering-aanpassen/' +
-                        reservering.id +
-                        '/' +
-                        reservering.guid
-                    )
-                  "
-                >
-                  <mat-icon>edit</mat-icon>
-                  Aanpassen
-                </button>
-              </mat-card-actions>
-              }
-            </mat-card>
-            }
-          </div>
-          @if (reserveringen() && reserveringen()!.length > 4) {
-          <mat-paginator
-            [length]="reserveringen()!.length"
-            [pageSize]="pageSize()"
-            [pageIndex]="pageIndex()"
-            [pageSizeOptions]="[4, 8, 12, 16]"
-            (page)="onPageChange($event)"
-            showFirstLastButtons
-          >
-          </mat-paginator>
-          } } @else {
-          <p class="text-center p-4">U heeft nog geen reserveringen.</p>
-          }
-        </mat-card-content>
+      <mat-card
+        class="col-3 action-card"
+        (click)="navigateTo('/productie-info/Mejotos')"
+      >
+        <mat-card-title class="text-center">Mejoto's</mat-card-title>
+        <mat-card-actions class="actions">
+          <mat-icon>diversity_3</mat-icon>
+        </mat-card-actions>
       </mat-card>
     </div>
-  </div>
+  }
+  @if (canAccessKassa() || canAccessAlgemeneInformatie()) {
+    <div class="row justify-content-around mt-4">
+      @if (canAccessKassa()) {
+        <mat-card class="col-5 action-card" (click)="navigateTo('/kassa')">
+          <mat-card-title class="text-center">Kassa</mat-card-title>
+          <mat-card-actions class="actions">
+            <mat-icon>shopping_cart</mat-icon>
+          </mat-card-actions>
+        </mat-card>
+      }
+      @if (canAccessAlgemeneInformatie()) {
+        <mat-card
+          class="col-5 action-card"
+          (click)="navigateTo('/algemene-informatie')"
+        >
+          <mat-card-title class="text-center"
+            >Algemene Informatie</mat-card-title
+          >
+          <mat-card-actions class="actions">
+            <mat-icon>info</mat-icon>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+  @if (authService.isLoggedIn()) {
+    <div class="row justify-content-center mt-4">
+      <div class="col-xl-10 col-12">
+        <mat-card>
+          <mat-card-header
+            style="margin-right: auto; margin-left: auto; margin-bottom: 1rem"
+          >
+            <mat-card-title>Uw reserveringen</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            @if (loadingReserveringen()) {
+              <div class="d-flex justify-content-center p-4">
+                <mat-spinner diameter="40"></mat-spinner>
+              </div>
+            } @else if (reserveringen() && reserveringen()!.length > 0) {
+              <div class="reserveringen-grid">
+                @for (
+                  reservering of paginatedReserveringen();
+                  track reservering.id
+                ) {
+                  <mat-card class="reservering-card">
+                    <mat-card-header>
+                      <mat-card-title>
+                        {{
+                          reservering.expand?.voorstelling?.titel ||
+                            "Onbekende voorstelling"
+                        }}
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      @if (reservering.datum_tijd_1_aantal > 0) {
+                        <p class="mb-2">
+                          <strong>Datum/tijd 1:</strong>
+                          {{ reservering.datum_tijd_1_aantal }} persoon(en)
+                        </p>
+                      }
+                      @if (reservering.datum_tijd_2_aantal > 0) {
+                        <p class="mb-2">
+                          <strong>Datum/tijd 2:</strong>
+                          {{ reservering.datum_tijd_2_aantal }} persoon(en)
+                        </p>
+                      }
+                      @if (reservering.opmerking) {
+                        <p class="mb-2">
+                          <strong>Opmerking:</strong>
+                          {{ reservering.opmerking }}
+                        </p>
+                      }
+                      <p class="mb-0 text-muted">
+                        <small
+                          >Aangemaakt:
+                          {{
+                            reservering.created
+                              | amsterdamDate: "dd LLLL yyyy 'om' HH:mm"
+                          }}</small
+                        >
+                      </p>
+                    </mat-card-content>
+                    @if (reservering.guid) {
+                      <mat-card-actions>
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          (click)="
+                            navigateTo(
+                              '/reservering-aanpassen/' +
+                                reservering.id +
+                                '/' +
+                                reservering.guid
+                            )
+                          "
+                        >
+                          <mat-icon>edit</mat-icon>
+                          Aanpassen
+                        </button>
+                      </mat-card-actions>
+                    }
+                  </mat-card>
+                }
+              </div>
+              @if (reserveringen() && reserveringen()!.length > 4) {
+                <mat-paginator
+                  [length]="reserveringen()!.length"
+                  [pageSize]="pageSize()"
+                  [pageIndex]="pageIndex()"
+                  [pageSizeOptions]="[4, 8, 12, 16]"
+                  (page)="onPageChange($event)"
+                  showFirstLastButtons
+                >
+                </mat-paginator>
+              }
+            } @else {
+              <p class="text-center p-4">U heeft nog geen reserveringen.</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   }
 
   <div class="row d-flex flex-grow-1 mt-4">
@@ -228,43 +246,43 @@
       </mat-expansion-panel-header>
       <mat-list role="list">
         @if (this.authService.isGlobalAdmin) {
-        <mat-list-item role="listitem">
-          Je bent een <b>Admin</b>.
-        </mat-list-item>
-        }@else{
-        <mat-list-item role="listitem">
-          <b>Echte naam:</b> {{ user()?.name }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            Je bent een <b>Admin</b>.
+          </mat-list-item>
+        } @else {
+          <mat-list-item role="listitem">
+            <b>Echte naam:</b> {{ user()?.name }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Account naam:</b> {{ user()?.username }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Account naam:</b> {{ user()?.username }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Email:</b> {{ user()?.email }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Email:</b> {{ user()?.email }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Rollen:</b> {{ userRoles() }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Rollen:</b> {{ userRoles() }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Groep:</b> {{ user()?.expand?.groep?.naam ?? "geen" }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Groep:</b> {{ user()?.expand?.groep?.naam ?? "geen" }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Uniek ID:</b> {{ user()?.id }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Uniek ID:</b> {{ user()?.id }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Aangemaakt op:</b>
-          {{ user()?.created | amsterdamDate:'dd LLLL yyyy' }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Aangemaakt op:</b>
+            {{ user()?.created | amsterdamDate: "dd LLLL yyyy" }}
+          </mat-list-item>
 
-        <mat-list-item role="listitem">
-          <b>Laatst aangepast:</b>
-          {{ user()?.updated | amsterdamDate:'dd LLLL yyyy' }}
-        </mat-list-item>
+          <mat-list-item role="listitem">
+            <b>Laatst aangepast:</b>
+            {{ user()?.updated | amsterdamDate: "dd LLLL yyyy" }}
+          </mat-list-item>
         }
       </mat-list>
       <mat-expansion-panel>

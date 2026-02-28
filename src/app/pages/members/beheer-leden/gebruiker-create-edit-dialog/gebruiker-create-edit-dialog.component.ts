@@ -2,21 +2,20 @@ import {
   Component,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
-  computed,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   Field,
-  form,
-  required,
-  email,
-  minLength,
-  maxLength,
   debounce,
-  validate,
+  email,
+  form,
+  maxLength,
+  required,
+  validate
 } from '@angular/forms/signals';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -33,13 +32,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
+import { ToastrService } from 'ngx-toastr';
 import { Gebruiker } from '../../../../models/domain/gebruiker.model';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Rol } from '../../../../models/domain/rol.model';
 import { Speler } from '../../../../models/domain/speler.model';
 import { GebruikerFormModel } from '../../../../models/form-models/gebruiker-form.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-gebruiker-create-edit-dialog',

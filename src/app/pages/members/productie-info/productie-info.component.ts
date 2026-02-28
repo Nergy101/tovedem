@@ -18,18 +18,17 @@ import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { Speler } from '../../../models/domain/speler.model';
 
-
 @Component({
-    selector: 'app-productie-info',
-    imports: [
-        MatProgressSpinnerModule,
-        RouterModule,
-        MdbCarouselModule,
-        MatListModule,
-        MatTreeModule,
-    ],
-    templateUrl: './productie-info.component.html',
-    styleUrl: './productie-info.component.scss'
+  selector: 'app-productie-info',
+  imports: [
+    MatProgressSpinnerModule,
+    RouterModule,
+    MdbCarouselModule,
+    MatListModule,
+    MatTreeModule,
+  ],
+  templateUrl: './productie-info.component.html',
+  styleUrl: './productie-info.component.scss',
 })
 export class ProductieInfoComponent implements OnInit {
   groepsNaam: string;
@@ -44,11 +43,14 @@ export class ProductieInfoComponent implements OnInit {
   afgelopenVoorstellingen: WritableSignal<Voorstelling[] | null> = signal(null);
 
   spelers: WritableSignal<Speler[] | null> = signal(null);
-  slides: WritableSignal<{ id: number; title: string; description: string; src: string }[] | null> = signal(null);
+  slides: WritableSignal<
+    { id: number; title: string; description: string; src: string }[] | null
+  > = signal(null);
 
   titleService = inject(Title);
+  router = inject(Router);
 
-  constructor(private router: Router) {
+  constructor() {
     this.groepsNaam = this.router.url.substring(16);
 
     effect(() => {
@@ -65,13 +67,19 @@ export class ProductieInfoComponent implements OnInit {
         expand: 'groep',
         filter: 'gearchiveerd != true',
       })
-    ).filter((x) => (x as unknown as Voorstelling).groep.includes(this.groepsNaam.substring(0, 3))) as unknown as Voorstelling[];
+    ).filter((x) =>
+      (x as unknown as Voorstelling).groep.includes(
+        this.groepsNaam.substring(0, 3),
+      ),
+    ) as unknown as Voorstelling[];
 
     const groep = (
       await this.client.directClient.collection('groepen').getFullList({
         sort: '-created',
       })
-    ).filter((x) => (x as unknown as Groep).naam.includes(this.groepsNaam.substring(0, 2)))[0] as unknown as Groep;
+    ).filter((x) =>
+      (x as unknown as Groep).naam.includes(this.groepsNaam.substring(0, 2)),
+    )[0] as unknown as Groep;
 
     this.groep.set(groep);
     this.voorstellingen.set(voorstellingen);
@@ -84,15 +92,18 @@ export class ProductieInfoComponent implements OnInit {
       await this.client.directClient.collection('voorstellingen').getFullList({
         filter: 'gearchiveerd != true',
       })
-    ).sort((x, y) => (new Date((x as unknown as Voorstelling).created) < new Date((y as unknown as Voorstelling).created) ? 1 : -1))[0] as unknown as Voorstelling;
+    ).sort((x, y) =>
+      new Date((x as unknown as Voorstelling).created) <
+      new Date((y as unknown as Voorstelling).created)
+        ? 1
+        : -1,
+    )[0] as unknown as Voorstelling;
 
-    const eerstVolgendeVoorstellingMetSpelers =
-      await this.client.directClient.collection('voorstellingen').getOne(
-        eerstVolgendeVoorstelling.id,
-        {
-          expand: 'spelers',
-        }
-      ) as unknown as Voorstelling;
+    const eerstVolgendeVoorstellingMetSpelers = (await this.client.directClient
+      .collection('voorstellingen')
+      .getOne(eerstVolgendeVoorstelling.id, {
+        expand: 'spelers',
+      })) as unknown as Voorstelling;
 
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
     this.aankomendeVoorstelling.set(laatstAangemaakteVoorstelling ?? null);

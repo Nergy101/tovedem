@@ -11,6 +11,7 @@ import { NavButtonComponent } from '../../nav-button/nav-button.component';
 import { AmsterdamDatePipe } from '../../../pipes/amsterdam-date.pipe';
 import { DateTimeService } from '../../../services/datetime.service';
 import { isFutureDate } from '../../../utils/date.utils';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-voorstelling-line',
@@ -25,6 +26,7 @@ import { isFutureDate } from '../../../utils/date.utils';
     NavButtonComponent,
     MatTooltipModule,
     AmsterdamDatePipe,
+    MatIcon,
   ],
 })
 export class VoorstellingLineComponent {
@@ -39,11 +41,7 @@ export class VoorstellingLineComponent {
     );
   }
 
-  getImageUrl(
-    collectionId: string,
-    recordId: string,
-    imageId: string
-  ): string {
+  getImageUrl(collectionId: string, recordId: string, imageId: string): string {
     return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}`;
   }
 

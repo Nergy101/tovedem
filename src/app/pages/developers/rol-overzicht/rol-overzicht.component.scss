@@ -1,0 +1,46 @@
+.container {
+  padding-bottom: 2rem;
+}
+
+.intro {
+  margin-bottom: 1.5rem;
+  color: var(--mat-app-text-color, inherit);
+  opacity: 0.9;
+}
+
+.section {
+  margin-bottom: 2rem;
+
+  h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .toelichting {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+}
+
+.superusers-message {
+  margin: 0;
+  font-style: italic;
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell,
+td.mat-cell {
+  padding: 0.5rem 1rem;
+}
+
+.mat-mdc-card {
+  margin-bottom: 1rem;
+}
+
+.mat-mdc-card-content {
+  overflow-x: auto;
+}

@@ -1,50 +1,52 @@
 <div class="container mat-elevation-z2">
   <div class="row align-items-center justify-content-evenly g-3">
     <div class="col-lg-4 col-md-12 col-12 image-column">
-      @if(voorstelling().afbeelding) {
-      <img
-        class="card-image"
-        [matTooltip]="voorstelling().ondertitel"
-        [src]="
-          getImageUrl(
-            voorstelling().collectionId,
-            voorstelling().id,
-            voorstelling().afbeelding!
-          )
-        "
-        alt="voorstelling afbeelding"
-      />
+      @if (voorstelling().afbeelding) {
+        <img
+          class="card-image"
+          [matTooltip]="voorstelling().ondertitel"
+          [src]="
+            getImageUrl(
+              voorstelling().collectionId,
+              voorstelling().id,
+              voorstelling().afbeelding!
+            )
+          "
+          alt="voorstelling afbeelding"
+        />
       }
     </div>
 
-    @if(!!voorstelling().datum_tijd_1){
-    <div class="dateFormat col-lg-3 col-md-6 col-12">
-      <div class="display-6">
-        <span>
-          {{ voorstelling().datum_tijd_1 | amsterdamDate:'dd' }}
+    @if (!!voorstelling().datum_tijd_1) {
+      <div class="dateFormat col-lg-3 col-md-6 col-12">
+        <div class="display-6">
+          <span>
+            {{ voorstelling().datum_tijd_1 | amsterdamDate: "dd" }}
+          </span>
+          @if (hasDatumTijd2()) {
+            <mat-divider class="divider"></mat-divider>
+            <span>
+              {{ voorstelling().datum_tijd_2 | amsterdamDate: "dd" }}
+            </span>
+          }
+        </div>
+        <span class="display-6">
+          {{ voorstelling().datum_tijd_1 | amsterdamDate: "LLLL" }}
+          <br />
+          {{ voorstelling().expand.groep.naam }}
         </span>
-        @if(hasDatumTijd2()) {
-        <mat-divider class="divider"></mat-divider>
-        <span>
-          {{ voorstelling().datum_tijd_2 | amsterdamDate:'dd' }}
-        </span>
-        }
       </div>
-      <span class="display-6">
-        {{ voorstelling().datum_tijd_1 | amsterdamDate:'LLLL' }}
-        {{ voorstelling().expand.groep.naam }}
-      </span>
-    </div>
     }
 
-    @if(inToekomst()) {
-    <app-nav-button
-      class="col-lg-2 col-md-4 col-12"
-      [navigationParts]="['/reserveren']"
-      [queryParams]="{ voorstellingId: this.voorstelling().id }"
-    >
-      Reserveren
-    </app-nav-button>
+    @if (inToekomst()) {
+      <app-nav-button
+        class="col-lg-2 col-md-4 col-12"
+        [navigationParts]="['/reserveren']"
+        [queryParams]="{ voorstellingId: this.voorstelling().id }"
+      >
+        <mat-icon icon>shopping_cart_checkout</mat-icon>
+        <span class="button-text">Reserveer nu</span>
+      </app-nav-button>
     }
   </div>
 </div>

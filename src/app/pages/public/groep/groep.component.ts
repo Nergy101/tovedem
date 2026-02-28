@@ -27,7 +27,7 @@ import { NgOptimizedImage } from '@angular/common';
     RouterModule,
     MdbCarouselModule,
     MatListModule,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
   templateUrl: './groep.component.html',
   styleUrl: './groep.component.scss',
@@ -49,8 +49,9 @@ export class GroepComponent implements OnInit {
   slides = signal<any[]>([]);
 
   seoService = inject(SeoService);
+  router = inject(Router);
 
-  constructor(private router: Router) {
+  constructor() {
     this.groepsNaam = this.router.url.substring(7);
 
     effect(() => {
@@ -58,7 +59,7 @@ export class GroepComponent implements OnInit {
       if (groepsNaam) {
         this.seoService.update(
           `Tovedem - Groep - ${groepsNaam}`,
-          `Informatie over ${groepsNaam}, een toneelgroep binnen Tovedem.`
+          `Informatie over ${groepsNaam}, een toneelgroep binnen Tovedem.`,
         );
       }
     });
@@ -72,7 +73,7 @@ export class GroepComponent implements OnInit {
         filter: 'gearchiveerd != true',
       })
     ).filter((x: Voorstelling) =>
-      x.groep.includes(this.groepsNaam.substring(0, 3))
+      x.groep.includes(this.groepsNaam.substring(0, 3)),
     );
 
     const groep = (
@@ -100,7 +101,7 @@ export class GroepComponent implements OnInit {
         eerstVolgendeVoorstelling.id,
         {
           expand: 'spelers',
-        }
+        },
       );
 
     this.spelers.set(eerstVolgendeVoorstellingMetSpelers?.expand?.spelers);
@@ -108,10 +109,12 @@ export class GroepComponent implements OnInit {
 
     this.afgelopenVoorstellingen.set(voorstellingen);
 
-    this.slides.set(groep.afbeeldingen?.map((img: string) => ({
-      id: img,
-      src: this.getImageUrl(groep.collectionId, groep.id, img),
-    })) ?? []);
+    this.slides.set(
+      groep.afbeeldingen?.map((img: string) => ({
+        id: img,
+        src: this.getImageUrl(groep.collectionId, groep.id, img),
+      })) ?? [],
+    );
     this.firstImg.set(this.slides()[0]?.src ?? '');
 
     // Add Organization structured data
@@ -121,7 +124,9 @@ export class GroepComponent implements OnInit {
 
       this.seoService.updateOpenGraphTags({
         title: `Tovedem - Groep - ${groep.naam}`,
-        description: groep.omschrijving || `Informatie over ${groep.naam}, een toneelgroep binnen Tovedem.`,
+        description:
+          groep.omschrijving ||
+          `Informatie over ${groep.naam}, een toneelgroep binnen Tovedem.`,
         url: groupUrl,
         type: 'website',
         siteName: 'Tovedem',

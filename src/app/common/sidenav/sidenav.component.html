@@ -325,6 +325,19 @@
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
+            routerLink="/developers/rol-overzicht"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span>Rol-overzicht</span> <mat-icon>list</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
             (click)="navigate('https://pocketbase.nergy.space/_/#/collections')"
           >
             <span>Admin</span> <mat-icon>admin_panel_settings</mat-icon>

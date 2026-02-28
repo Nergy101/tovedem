@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Field, form, required, email, debounce } from '@angular/forms/signals';
+import { Field, debounce, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,13 +21,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import confetti from 'canvas-confetti';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { BaseModel } from 'pocketbase';
 import { Subscription } from 'rxjs';
-import confetti from 'canvas-confetti';
 import { Environment } from '../../../../environment';
 import { Groep } from '../../../models/domain/groep.model';
 import { LidWordenFormModel } from '../../../models/form-models/lid-worden-form.model';
@@ -113,7 +113,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   constructor() {
     this.seoService.update(
       'Tovedem - Lid Worden',
-      'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.'
+      'Word lid van Tovedem! Ontdek hoe je lid kunt worden van onze toneelgroep in De Meern.',
     );
   }
 
@@ -168,7 +168,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
               body: JSON.stringify({
                 token,
               }),
-            }
+            },
           );
 
           const resultObj = await response.json();
@@ -187,7 +187,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
 
               this.toastr.success(
                 `Bedankt voor de aanmelding, ${formData.voornaam}.`,
-                'Aanvraag verzonden!'
+                'Aanvraag verzonden!',
               );
 
               // Fire confetti!
@@ -216,7 +216,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
             } catch (error) {
               console.error(error);
               this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
               );
               this.loading.set(false);
             }
@@ -227,10 +227,10 @@ export class LidWordenComponent implements OnInit, OnDestroy {
         error: () => {
           this.loading.set(false);
           this.toastr.error(
-            'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+            'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
           );
         },
-      })
+      }),
     );
   }
 

@@ -64,7 +64,6 @@ h2 {
 
   :not(:last-child) {
     display: block;
-    margin-bottom: $spacing-8;
   }
 }
 
@@ -122,12 +121,15 @@ h2 {
   max-width: fit-content;
   padding: $spacing-4 $spacing-6;
   border-radius: $border-radius-xl;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: $spacing-8;
   transition: box-shadow $transition-base $ease-out;
 
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
@@ -197,7 +199,8 @@ h2 {
   transition: box-shadow $transition-base $ease-out;
 
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
@@ -213,9 +216,12 @@ h2 {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  align-items: center;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
     gap: $spacing-4;
+    max-width: unset !important;
+    width: unset !important;
   }
 }
