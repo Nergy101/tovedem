@@ -1,4 +1,3 @@
-
 import {
   AfterContentChecked,
   Component,
@@ -10,6 +9,7 @@ import {
 import {
   ApexChart,
   ApexDataLabels,
+  ApexLegend,
   ApexNonAxisChartSeries,
   ApexResponsive,
   ChartComponent,

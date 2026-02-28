@@ -43,7 +43,7 @@
             <input
               matInput
               type="text"
-              [field]="reserveringForm.name"
+              [formField]="reserveringForm.name"
               id="voornaam-input"
               aria-describedby="voornaam-error voornaam-hint"
               aria-required="true"
@@ -64,7 +64,7 @@
             <input
               matInput
               type="text"
-              [field]="reserveringForm.surname"
+              [formField]="reserveringForm.surname"
               id="achternaam-input"
               aria-describedby="achternaam-error achternaam-hint"
               aria-required="true"
@@ -84,7 +84,7 @@
             <input
               matInput
               type="email"
-              [field]="reserveringForm.email"
+              [formField]="reserveringForm.email"
               id="email-input"
               aria-describedby="email-error email-hint"
               aria-required="true"
@@ -109,7 +109,7 @@
             <input
               matInput
               type="email"
-              [field]="reserveringForm.email2"
+              [formField]="reserveringForm.email2"
               id="email2-input"
               aria-describedby="email2-error email2-hint email-match-status"
               aria-required="true"
@@ -188,7 +188,7 @@
                     matInput
                     style="text-align: center"
                     type="number"
-                    [field]="reserveringForm.amountOfPeopleDate1"
+                    [formField]="reserveringForm.amountOfPeopleDate1"
                     [class.mat-input-invalid]="
                       (!canReserveDate1() &&
                         reserveringForm.amountOfPeopleDate1().value() > 0) ||
@@ -304,7 +304,7 @@
                     style="text-align: center"
                     matInput
                     type="number"
-                    [field]="reserveringForm.amountOfPeopleDate2"
+                    [formField]="reserveringForm.amountOfPeopleDate2"
                     [class.mat-input-invalid]="
                       (!canReserveDate2() &&
                         reserveringForm.amountOfPeopleDate2().value() > 0) ||
@@ -376,7 +376,7 @@
                       matInput
                       #input
                       type="opmerking"
-                      [field]="reserveringForm.opmerking"
+                      [formField]="reserveringForm.opmerking"
                       id="opmerking-input"
                       aria-describedby="opmerking-hint"
                       aria-label="Optionele opmerking voor de reservering"
@@ -390,7 +390,7 @@
                 </div>
                 <div class="d-flex flex-column">
                   <mat-checkbox
-                    [field]="reserveringForm.vriendVanTovedem"
+                    [formField]="reserveringForm.vriendVanTovedem"
                     color="primary"
                     matTooltip="Je bent sponsor of donateur van Tovedem."
                     matTooltipPosition="left"
@@ -402,7 +402,7 @@
                     </span>
                   </mat-checkbox>
                   <mat-checkbox
-                    [field]="reserveringForm.lidVanTovedemMejotos"
+                    [formField]="reserveringForm.lidVanTovedemMejotos"
                     color="primary"
                     matTooltip="Je bent lid van een van de groepen binnen Tovedem."
                     matTooltipPosition="left"

@@ -7,7 +7,7 @@ import {
   computed,
 } from '@angular/core';
 import {
-  Field,
+  FormField,
   form,
   required,
   min,
@@ -53,7 +53,7 @@ import { DateTimeService } from '../../../../shared/services/datetime.service';
     MatIcon,
     MatDialogModule,
     MatInputModule,
-    Field,
+    FormField,
     FormsModule,
     MatFormField,
     MatDatepicker,

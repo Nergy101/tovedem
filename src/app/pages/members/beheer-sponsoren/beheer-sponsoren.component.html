@@ -77,6 +77,7 @@
                   (click)="openEditDialog(sponsor)"
                   [disabled]="loading()"
                   [style.background-color]="getPrimaryTintColor()"
+                  aria-label="Bewerken"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -86,6 +87,7 @@
                   mat-icon-button
                   (click)="delete(sponsor.id)"
                   [disabled]="loading()"
+                  aria-label="Verwijderen"
                 >
                   <mat-icon color="warn">delete</mat-icon>
                 </button>

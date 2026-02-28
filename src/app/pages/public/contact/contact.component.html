@@ -28,6 +28,7 @@
         matTooltip="Lid worden"
         routerLinkActive="active"
         routerLink="/lid-worden"
+        aria-label="Lid worden"
       >
         <mat-icon>person_add</mat-icon>
       </button>
@@ -37,6 +38,7 @@
         mat-icon-button
         routerLinkActive="active"
         routerLink="/steunen"
+        aria-label="Steunen"
       >
         <mat-icon>volunteer_activism</mat-icon>
       </button>
@@ -46,6 +48,7 @@
         mat-icon-button
         routerLinkActive="active"
         routerLink="/sinterklaas"
+        aria-label="Sinterklaas"
       >
         <mat-icon>redeem</mat-icon>
       </button>
@@ -79,7 +82,7 @@
           placeholder="Pieter Post"
           matInput
           type="text"
-          [field]="contactForm.name"
+          [formField]="contactForm.name"
         />
         @if (contactForm.name().touched() && contactForm.name().invalid()) {
         <mat-error>Naam is verplicht</mat-error>
@@ -92,7 +95,7 @@
           matInput
           type="email"
           autocomplete="email"
-          [field]="contactForm.email"
+          [formField]="contactForm.email"
         />
         @if (contactForm.email().touched() && contactForm.email().invalid()) {
         <mat-error>
@@ -108,7 +111,7 @@
           placeholder="Het Onderwerp"
           matInput
           type="text"
-          [field]="contactForm.subject"
+          [formField]="contactForm.subject"
         />
         @if (contactForm.subject().touched() && contactForm.subject().invalid())
         {
@@ -118,7 +121,7 @@
       <mat-form-field class="col-12">
         <mat-label>Bericht</mat-label>
         <textarea
-          [field]="contactForm.message"
+          [formField]="contactForm.message"
           matInput
           rows="10"
           placeholder="Typ hier je bericht"

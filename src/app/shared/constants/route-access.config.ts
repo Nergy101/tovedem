@@ -45,3 +45,20 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
   { path: 'beheer-nieuws', label: 'Beheer nieuws', access: ['admin', 'bestuur'] },
   { path: 'algemene-informatie', label: 'Algemene informatie', access: ['admin', 'bestuur', 'lid'] },
 ];
+
+/**
+ * Returns the required roles for a route path. Used by app.routes to configure loggedInGuard.
+ * - For 'logged-in' only: returns [] (any logged-in user).
+ * - For role-protected: returns the roles array.
+ * - For public or unknown path: returns [] (caller should not use guard for public routes).
+ */
+export function getRequiredRoles(path: string): string[] {
+  const entry = ROUTE_ACCESS_CONFIG.find((e) => e.path === path);
+  if (!entry || entry.access === 'public') {
+    return [];
+  }
+  if (entry.access === 'logged-in') {
+    return [];
+  }
+  return entry.access as string[];
+}

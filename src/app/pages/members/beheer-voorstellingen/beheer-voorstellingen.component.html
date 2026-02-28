@@ -70,13 +70,14 @@
                   mat-icon-button
                   [matTooltip]="item.publicatie_datum || 'Geen publicatiedatum'"
                   [style.background-color]="getPrimaryTintColor()"
+                  aria-label="Delen"
                 >
                   <mat-icon>share</mat-icon>
                 </button>
                 }
               </td>
               <td>
-                <button mat-icon-button (click)="openEditDialog(item)">
+                <button mat-icon-button (click)="openEditDialog(item)" aria-label="Bewerken">
                   <mat-icon>edit</mat-icon>
                 </button>
               </td>
@@ -86,6 +87,7 @@
                   mat-icon-button
                   (click)="delete(item.id)"
                   [disabled]="loading()"
+                  aria-label="Verwijderen"
                 >
                   <mat-icon color="warn">delete</mat-icon>
                 </button>

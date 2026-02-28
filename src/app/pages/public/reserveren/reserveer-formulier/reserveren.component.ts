@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import {
-  Field,
+  FormField,
   form,
   required,
   email,
@@ -53,7 +53,7 @@ import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe'
     MatCardModule,
     MatInputModule,
     MatIconModule,
-    Field,
+    FormField,
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,

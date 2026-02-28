@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  Field,
+  FormField,
   debounce,
   email,
   form,
@@ -47,7 +47,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatIconModule,
     MatDialogModule,
     MatInputModule,
-    Field,
+    FormField,
     FormsModule,
     MatFormFieldModule,
     MatCheckboxModule,

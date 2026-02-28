@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Field, debounce, form } from '@angular/forms/signals';
+import { FormField, debounce, form } from '@angular/forms/signals';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -62,7 +62,7 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     PieChartComponent,
     MatCardModule,
     MatAutocompleteModule,
-    Field,
+    FormField,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatTooltipModule,

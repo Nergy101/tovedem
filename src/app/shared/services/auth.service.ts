@@ -71,6 +71,50 @@ export class AuthService {
       });
   }
 
+  /** True if user can see the Commissies section in the sidenav. */
+  canAccessCommissiesSection = computed(
+    () =>
+      this.userHasAnyRole([
+        'admin',
+        'bestuur',
+        'sint_commissie',
+        'lees_commissie',
+        'commissie',
+        'beheer',
+      ]) || this.isGlobalAdmin,
+  );
+
+  /** True if user can see Sinterklaas commissie link. */
+  canAccessSinterklaasCommissie = computed(
+    () =>
+      this.userHasAnyRole(['admin', 'bestuur', 'sint_commissie']) ||
+      this.isGlobalAdmin,
+  );
+
+  /** True if user can see Lees commissie link. */
+  canAccessLeesCommissie = computed(
+    () =>
+      this.userHasAnyRole(['admin', 'bestuur', 'lees_commissie']) ||
+      this.isGlobalAdmin,
+  );
+
+  /** True if user can see Nieuws commissie link. */
+  canAccessNieuwsCommissie = computed(
+    () => this.userHasAnyRole(['admin', 'bestuur']) || this.isGlobalAdmin,
+  );
+
+  /** True if user can see the Beheer section in the sidenav. */
+  canAccessBeheerSection = computed(
+    () => this.userHasAnyRole(['admin', 'bestuur']) || this.isGlobalAdmin,
+  );
+
+  /** True if user can see the Galerij section. */
+  canAccessGalerij = computed(
+    () =>
+      this.userHasAnyRole(['admin', 'bestuur', 'commissie', 'lid']) ||
+      this.isGlobalAdmin,
+  );
+
   /**
    * Check if the user has access to any sidenav content
    * This requires at least one recognized role (excluding bezoeker)
@@ -106,7 +150,7 @@ export class AuthService {
   userHasAllRoles(roles: string[]): boolean {
     if (this.userData()?.expand?.rollen) {
       const rollenVanGebruiker = this.userData()?.expand?.rollen?.map(
-        (r: Rol) => r.rol
+        (r: Rol) => r.rol,
       );
 
       return roles.every((role) => rollenVanGebruiker.includes(role));
@@ -117,7 +161,7 @@ export class AuthService {
   userHasAnyRole(roles: string[]): boolean {
     if (this.userData()?.expand?.rollen) {
       const rollenVanGebruiker = this.userData()?.expand?.rollen?.map(
-        (r: Rol) => r.rol
+        (r: Rol) => r.rol,
       );
 
       return roles.some((role) => rollenVanGebruiker.includes(role));

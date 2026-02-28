@@ -6,7 +6,7 @@
   }
   <button
     mat-icon-button
-    aria-label="close dialog"
+    aria-label="Sluiten"
     tabindex="-1"
     mat-dialog-close
   >
@@ -24,7 +24,7 @@
             matInput
             type="text"
             tabindex="0"
-            [field]="voorstellingForm.titel"
+            [formField]="voorstellingForm.titel"
           />
           @if (voorstellingForm.titel().touched() &&
           voorstellingForm.titel().invalid()) { @for (error of
@@ -48,7 +48,7 @@
           <input
             matInput
             [matDatepicker]="picker1"
-            [field]="voorstellingForm.datum1"
+            [formField]="voorstellingForm.datum1"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
@@ -67,7 +67,7 @@
           <input
             matInput
             type="time"
-            [field]="voorstellingForm.tijd1"
+            [formField]="voorstellingForm.tijd1"
             step="60"
           />
           @if (voorstellingForm.tijd1().touched() &&
@@ -81,7 +81,7 @@
           <input
             matInput
             [matDatepicker]="picker2"
-            [field]="voorstellingForm.datum2"
+            [formField]="voorstellingForm.datum2"
           />
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle
@@ -95,7 +95,7 @@
           <input
             matInput
             type="time"
-            [field]="voorstellingForm.tijd2"
+            [formField]="voorstellingForm.tijd2"
             step="60"
           />
         </mat-form-field>
@@ -103,7 +103,7 @@
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Groep</mat-label>
-          <mat-select [field]="voorstellingForm.selectedGroep">
+          <mat-select [formField]="voorstellingForm.selectedGroep">
             @for (groep of groepen(); track $index) {
             <mat-option [value]="groep">{{ groep.naam }}</mat-option>
             }
@@ -116,7 +116,7 @@
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
           <mat-label>Spelers</mat-label>
-          <mat-select multiple [field]="voorstellingForm.selectedSpelers">
+          <mat-select multiple [formField]="voorstellingForm.selectedSpelers">
             @for (speler of spelers(); track $index) {
             <mat-option [value]="speler">{{ speler.naam }} </mat-option>
             }
@@ -129,7 +129,7 @@
           <input
             matInput
             type="number"
-            [field]="voorstellingForm.beschikbare_stoelen_datum_tijd_1"
+            [formField]="voorstellingForm.beschikbare_stoelen_datum_tijd_1"
           />
         </mat-form-field>
         <mat-form-field class="col-md-6 col-12">
@@ -137,7 +137,7 @@
           <input
             matInput
             type="number"
-            [field]="voorstellingForm.beschikbare_stoelen_datum_tijd_2"
+            [formField]="voorstellingForm.beschikbare_stoelen_datum_tijd_2"
           />
         </mat-form-field>
       </div>
@@ -147,7 +147,7 @@
           <input
             matInput
             [matDatepicker]="picker3"
-            [field]="voorstellingForm.publicatie_datum"
+            [formField]="voorstellingForm.publicatie_datum"
           />
           <mat-hint
             >Datum vanaf wanneer de voorstelling zichtbaar wordt</mat-hint
@@ -164,7 +164,7 @@
           <input
             matInput
             type="number"
-            [field]="voorstellingForm.prijs_per_kaartje"
+            [formField]="voorstellingForm.prijs_per_kaartje"
           />
           @if (voorstellingForm.prijs_per_kaartje().touched() &&
           voorstellingForm.prijs_per_kaartje().invalid()) { @for (error of

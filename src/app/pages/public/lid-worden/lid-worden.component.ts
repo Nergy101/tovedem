@@ -7,7 +7,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Field, debounce, email, form, required } from '@angular/forms/signals';
+import { FormField, debounce, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -44,7 +44,7 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatCardModule,
     MatInputModule,
     MatIconModule,
-    Field,
+    FormField,
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,

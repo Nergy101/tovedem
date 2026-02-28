@@ -17,7 +17,7 @@
                 matInput
                 type="text"
                 autocomplete="username"
-                [field]="loginForm.usernameOrEmail"
+                [formField]="loginForm.usernameOrEmail"
               />
               @if (loginForm.usernameOrEmail().touched() &&
               loginForm.usernameOrEmail().invalid()) {
@@ -35,7 +35,7 @@
                 matInput
                 [type]="hidePassword() ? 'password' : 'text'"
                 autocomplete="current-password"
-                [field]="loginForm.password"
+                [formField]="loginForm.password"
               />
               <button
                 mat-icon-button

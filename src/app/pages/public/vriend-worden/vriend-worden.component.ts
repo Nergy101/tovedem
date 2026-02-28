@@ -6,7 +6,13 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Field, form, required, email, debounce } from '@angular/forms/signals';
+import {
+  FormField,
+  debounce,
+  email,
+  form,
+  required,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,11 +26,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { Environment } from '../../../../environment';
 import { VriendWordenFormModel } from '../../../models/form-models/vriend-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-vriend-worden',
@@ -34,7 +40,7 @@ import { Subscription } from 'rxjs';
     MatIconModule,
     RouterModule,
     MatInputModule,
-    Field,
+    FormField,
     MatDatepickerModule,
     MatButtonModule,
     RouterModule,
@@ -98,7 +104,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
               body: JSON.stringify({
                 token,
               }),
-            }
+            },
           );
 
           const resultObj = await response.json();
@@ -114,7 +120,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
               });
 
               this.toastr.success(
-                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
+                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.',
               );
 
               // Reset form
@@ -129,12 +135,12 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
             } catch (error) {
               console.error(error);
               this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
+                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
               );
             }
           }
         },
-      })
+      }),
     );
   }
 
@@ -148,7 +154,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
     const page = await this.pocketbaseService.getPage<any>(
       'vriend_worden',
       1,
-      1
+      1,
     );
     const { tekst_1 } = page.items[0];
     this.content.set(tekst_1);

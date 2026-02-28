@@ -55,7 +55,7 @@
         placeholder="Pieter Post"
         matInput
         type="text"
-        [field]="sinterklaasForm.name"
+        [formField]="sinterklaasForm.name"
       />
       @if (sinterklaasForm.name().touched() && sinterklaasForm.name().invalid())
       {
@@ -69,7 +69,7 @@
         matInput
         type="email"
         autocomplete="email"
-        [field]="sinterklaasForm.email"
+        [formField]="sinterklaasForm.email"
       />
       @if (sinterklaasForm.email().touched() &&
       sinterklaasForm.email().invalid()) {
@@ -86,7 +86,7 @@
         placeholder="Het Onderwerp"
         matInput
         type="text"
-        [field]="sinterklaasForm.subject"
+        [formField]="sinterklaasForm.subject"
       />
       @if (sinterklaasForm.subject().touched() &&
       sinterklaasForm.subject().invalid()) {
@@ -96,7 +96,7 @@
     <mat-form-field class="col-12">
       <mat-label>Bericht</mat-label>
       <textarea
-        [field]="sinterklaasForm.message"
+        [formField]="sinterklaasForm.message"
         matInput
         rows="10"
         placeholder="Typ hier je bericht"
