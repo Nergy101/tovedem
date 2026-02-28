@@ -109,7 +109,7 @@ export const routes: Routes = [
       import('./pages/members/profiel/profiel.component').then(
         (m) => m.ProfielComponent,
       ),
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard()],
   },
   {
     path: 'beheer-reserveringen',
@@ -141,7 +141,7 @@ export const routes: Routes = [
       import('./pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component').then(
         (m) => m.ReserveringAanpassenComponent,
       ),
-    canActivate: [loggedInGuard],
+    canActivate: [loggedInGuard()],
   },
   {
     path: 'beheer-voorstellingen',
@@ -261,7 +261,7 @@ export const routes: Routes = [
       import('./pages/developers/rol-overzicht/rol-overzicht.component').then(
         (m) => m.RolOverzichtComponent,
       ),
-    canActivate: [globalAdminGuard],
+    canActivate: [globalAdminGuard()],
   },
 ];
 
