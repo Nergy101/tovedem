@@ -139,7 +139,9 @@ export const routes: Routes = [
       import('./pages/public/reserveren/reservering-aanpassen/reservering-aanpassen.component').then(
         (m) => m.ReserveringAanpassenComponent,
       ),
-    canActivate: [loggedInGuard(getRequiredRoles('reservering-aanpassen/:id/:guid'))],
+    canActivate: [
+      loggedInGuard(getRequiredRoles('reservering-aanpassen/:id/:guid')),
+    ],
   },
   {
     path: 'beheer-voorstellingen',
@@ -252,6 +254,14 @@ export const routes: Routes = [
         (m) => m.AlgemeneInformatieComponent,
       ),
     canActivate: [loggedInGuard(getRequiredRoles('algemene-informatie'))],
+  },
+  {
+    path: 'developers/rol-overzicht',
+    loadComponent: () =>
+      import('./pages/developers/rol-overzicht/rol-overzicht.component').then(
+        (m) => m.RolOverzichtComponent,
+      ),
+    canActivate: [globalAdminGuard()],
   },
   {
     path: 'developers/rol-overzicht',
