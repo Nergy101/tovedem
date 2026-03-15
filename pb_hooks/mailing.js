@@ -4,6 +4,14 @@ const {
   toUtcString,
 } = require("./amsterdam-datetime.js");
 
+function getRecordValue(record, fieldName) {
+  if (!record) return null;
+  if (record[fieldName] != null && record[fieldName] !== "")
+    return record[fieldName];
+  if (typeof record.get === "function") return record.get(fieldName);
+  return null;
+}
+
 module.exports = {
   getMail: (mailName) => {
     const filter = `naam = '${mailName}'`;
@@ -33,12 +41,17 @@ module.exports = {
     const tijdOnly2 = formatTimeAmsterdam(datum2Str);
     const datumOnly2 = formatDateAmsterdam(datum2Str);
 
-    const voorstellingAfbeelding = voorstelling.get("afbeelding")
-      ? `https://pocketbase.nergy.space/api/files/${voorstelling.get("collectionId")}/${voorstelling.get("id")}/${voorstelling.get("afbeelding")}`
-      : "";
+    const afbeelding = getRecordValue(voorstelling, "afbeelding");
+    const voorstellingId = getRecordValue(voorstelling, "id");
+
+    const voorstellingAfbeelding =
+      afbeelding && voorstellingId
+        ? `https://pocketbase.nergy.space/api/files/voorstellingen/${voorstellingId}/${afbeelding}`
+        : "";
 
     const data = {
-      reserveerdersNaam: reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
+      reserveerdersNaam:
+        reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
       voorstellingsNaam: voorstelling.get("titel"),
       aantal1: reservatie.get("datum_tijd_1_aantal"),
       datum1: datumOnly1,
