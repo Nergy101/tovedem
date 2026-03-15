@@ -2,39 +2,72 @@
  * Timezone used for all date/time formatting in emails.
  * All dates in PocketBase are stored as UTC, so we need to
  * convert them to Europe/Amsterdam for display in emails.
+ *
+ * Uses PocketBase's DateTime and Timezone (Go time package) because
+ * the goja JSVM does not support Intl/toLocaleTimeString with timeZone.
  */
 const TIMEZONE = "Europe/Amsterdam";
 
+const DUTCH_WEEKDAYS = [
+  "zondag",
+  "maandag",
+  "dinsdag",
+  "woensdag",
+  "donderdag",
+  "vrijdag",
+  "zaterdag",
+];
+
+const DUTCH_MONTHS = [
+  "",
+  "januari",
+  "februari",
+  "maart",
+  "april",
+  "mei",
+  "juni",
+  "juli",
+  "augustus",
+  "september",
+  "oktober",
+  "november",
+  "december",
+];
+
 /**
  * Format a UTC datetime string to time only (HH:mm) in Amsterdam timezone.
- * @param {string} utcDateString - ISO datetime string from PocketBase
- * @returns {string} Formatted time string (e.g., "19:30")
+ * Correctly handles DST (CET/CEST) for the specific date.
+ *
+ * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ")
+ * @returns {string} Formatted time string (e.g., "20:00")
  */
 function formatTimeAmsterdam(utcDateString) {
   if (!utcDateString) return "";
-  const date = new Date(utcDateString);
-  return date.toLocaleTimeString("nl-NL", {
-    timeZone: TIMEZONE,
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const dt = new DateTime(utcDateString);
+  const t = dt.time().in(new Timezone(TIMEZONE));
+  const h = t.hour();
+  const m = t.minute();
+  return ("" + h).padStart(2, "0") + ":" + ("" + m).padStart(2, "0");
 }
 
 /**
  * Format a UTC datetime string to date only in Amsterdam timezone.
- * @param {string} utcDateString - ISO datetime string from PocketBase
+ * Correctly handles DST (CET/CEST) for the specific date.
+ *
+ * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ")
  * @returns {string} Formatted date string (e.g., "vrijdag 10 januari 2026")
  */
 function formatDateAmsterdam(utcDateString) {
   if (!utcDateString) return "";
-  const date = new Date(utcDateString);
-  return date.toLocaleDateString("nl-NL", {
-    timeZone: TIMEZONE,
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const dt = new DateTime(utcDateString);
+  const t = dt.time().in(new Timezone(TIMEZONE));
+  const wd = t.weekday(); // 0=Sun, 1=Mon, ...
+  const day = t.day();
+  const month = t.month(); // 1-12
+  const year = t.year();
+  return (
+    DUTCH_WEEKDAYS[wd] + " " + day + " " + DUTCH_MONTHS[month] + " " + year
+  );
 }
 
 module.exports = {
