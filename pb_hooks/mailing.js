@@ -1,95 +1,8 @@
-/**
- * Timezone used for all date/time formatting in emails.
- * All dates in PocketBase are stored as UTC, so we need to
- * convert them to Europe/Amsterdam for display in emails.
- *
- * Uses PocketBase's DateTime and Timezone (Go time package) because
- * the goja JSVM does not support Intl/toLocaleTimeString with timeZone.
- */
-const TIMEZONE = "Europe/Amsterdam";
-
-// Go time.Format returns English names; map to Dutch
-const EN_TO_NL_WEEKDAY = {
-  Sunday: "zondag",
-  Monday: "maandag",
-  Tuesday: "dinsdag",
-  Wednesday: "woensdag",
-  Thursday: "donderdag",
-  Friday: "vrijdag",
-  Saturday: "zaterdag",
-};
-
-const EN_TO_NL_MONTH = {
-  January: "januari",
-  February: "februari",
-  March: "maart",
-  April: "april",
-  May: "mei",
-  June: "juni",
-  July: "juli",
-  August: "augustus",
-  September: "september",
-  October: "oktober",
-  November: "november",
-  December: "december",
-};
-
-/**
- * Format a UTC datetime string to time only (HH:mm) in Amsterdam timezone.
- * Correctly handles DST (CET/CEST) for the specific date.
- *
- * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ")
- * @returns {string} Formatted time string (e.g., "20:00")
- */
-function formatTimeAmsterdam(utcDateString) {
-  if (!utcDateString) return "";
-  const normalized = normalizeUtcString(utcDateString);
-  const dt = new DateTime(normalized);
-  const t = dt.time().in(new Timezone(TIMEZONE));
-  const h = t.hour();
-  const m = t.minute();
-  return ("" + h).padStart(2, "0") + ":" + ("" + m).padStart(2, "0");
-}
-
-/**
- * Format a UTC datetime string to date only in Amsterdam timezone.
- * Correctly handles DST (CET/CEST) for the specific date.
- * Uses format() to avoid Go Month/Weekday type conversion issues in goja.
- *
- * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ" or "YYYY-MM-DD HH:mm:ss")
- * @returns {string} Formatted date string (e.g., "vrijdag 10 januari 2026")
- */
-function formatDateAmsterdam(utcDateString) {
-  if (!utcDateString) return "";
-  const normalized = normalizeUtcString(utcDateString);
-  const dt = new DateTime(normalized);
-  const t = dt.time().in(new Timezone(TIMEZONE));
-  const weekdayEn = t.format("Monday");
-  const monthEn = t.format("January");
-  const day = t.format("2");
-  const year = t.format("2006");
-  const weekdayNl = EN_TO_NL_WEEKDAY[weekdayEn] || weekdayEn;
-  const monthNl = EN_TO_NL_MONTH[monthEn] || monthEn;
-  return weekdayNl + " " + day + " " + monthNl + " " + year;
-}
-
-/**
- * Normalize PocketBase datetime string for correct UTC parsing.
- * PocketBase uses "YYYY-MM-DD HH:mm:ss" (space) but Go's RFC3339/ISO8601
- * expects "YYYY-MM-DDTHH:mm:ss" (T). Without T, the parser misinterprets the string.
- */
-function normalizeUtcString(s) {
-  if (!s || typeof s !== "string") return s;
-  let trimmed = s.trim();
-  // Replace space between date and time with T for valid ISO 8601
-  if (trimmed.length >= 11 && trimmed[10] === " ") {
-    trimmed = trimmed.slice(0, 10) + "T" + trimmed.slice(11);
-  }
-  if (!trimmed.endsWith("Z") && !/[+-]\d{2}:?\d{2}$/.test(trimmed)) {
-    trimmed = trimmed + "Z";
-  }
-  return trimmed;
-}
+const {
+  formatDateAmsterdam,
+  formatTimeAmsterdam,
+  toUtcString,
+} = require("./amsterdam-datetime.js");
 
 module.exports = {
   getMail: (mailName) => {
@@ -109,11 +22,16 @@ module.exports = {
   getReservatieMailHtml: (mailInfo, reservatie, voorstelling) => {
     const { fillReservatieTemplate } = require("./mailing-template.js");
 
+    // Ensure we have UTC strings - record.get() may return string or DateTime object.
+    // Passing DateTime to new DateTime() can cause "now" to be used; toUtcString fixes that.
+    const datum1Str = toUtcString(voorstelling.get("datum_tijd_1"));
+    const datum2Str = toUtcString(voorstelling.get("datum_tijd_2"));
+
     // Format times and dates from voorstelling (show times) using Amsterdam timezone
-    const tijdOnly1 = formatTimeAmsterdam(voorstelling.get("datum_tijd_1"));
-    const datumOnly1 = formatDateAmsterdam(voorstelling.get("datum_tijd_1"));
-    const tijdOnly2 = formatTimeAmsterdam(voorstelling.get("datum_tijd_2"));
-    const datumOnly2 = formatDateAmsterdam(voorstelling.get("datum_tijd_2"));
+    const tijdOnly1 = formatTimeAmsterdam(datum1Str);
+    const datumOnly1 = formatDateAmsterdam(datum1Str);
+    const tijdOnly2 = formatTimeAmsterdam(datum2Str);
+    const datumOnly2 = formatDateAmsterdam(datum2Str);
 
     const voorstellingAfbeelding = voorstelling.get("afbeelding")
       ? `https://pocketbase.nergy.space/api/files/${voorstelling.get("collectionId")}/${voorstelling.get("id")}/${voorstelling.get("afbeelding")}`
