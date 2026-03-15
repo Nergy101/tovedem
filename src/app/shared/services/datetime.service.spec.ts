@@ -5,6 +5,9 @@ import { DateTimeService } from './datetime.service';
  * Tests for UTC → Amsterdam timezone conversion.
  * These define the expected behavior that pb_hooks/mailing.js must match
  * when using PocketBase's DateTime + Timezone for email formatting.
+ *
+ * Covers: CET/CEST DST, PocketBase formats (space, with/without Z),
+ * and the exact "weekday day month year" format used in reservation emails.
  */
 describe('DateTimeService', () => {
   let service: DateTimeService;
@@ -36,9 +39,38 @@ describe('DateTimeService', () => {
     });
   });
 
-  describe('formatTime - PocketBase format (space instead of T)', () => {
-    it('should parse PocketBase datetime format and convert to Amsterdam time', () => {
+  describe('formatTime - PocketBase formats (space, with/without Z)', () => {
+    it('should parse "YYYY-MM-DD HH:mm:ss.000Z" and convert to Amsterdam time', () => {
       expect(service.formatTime('2026-06-15 18:00:00.000Z')).toBe('20:00');
+    });
+
+    it('should parse "YYYY-MM-DD HH:mm:ss" without Z (treat as UTC) and convert to Amsterdam time', () => {
+      expect(service.formatTime('2026-04-24 18:00:00')).toBe('20:00');
+    });
+
+    it('should parse "2026-04-24 18:00:00" as April 24 20:00 Amsterdam (CEST)', () => {
+      expect(service.formatTime('2026-04-24 18:00:00')).toBe('20:00');
+    });
+  });
+
+  describe('formatFullDateWithWeekday - mailing format (weekday day month year)', () => {
+    it('should format as "vrijdag 24 april 2026" for 2026-04-24 18:00 UTC', () => {
+      expect(service.formatFullDateWithWeekday('2026-04-24 18:00:00')).toBe(
+        'vrijdag 24 april 2026'
+      );
+    });
+
+    it('should format as "vrijdag 24 april 2026" for ISO format with Z', () => {
+      expect(service.formatFullDateWithWeekday('2026-04-24T18:00:00.000Z')).toBe(
+        'vrijdag 24 april 2026'
+      );
+    });
+
+    it('should format with Dutch month and weekday for June date', () => {
+      const result = service.formatFullDateWithWeekday('2026-06-15T18:00:00.000Z');
+      expect(result).toContain('juni');
+      expect(result).toContain('2026');
+      expect(result).toMatch(/^\w+ \d+ juni 2026$/);
     });
   });
 
@@ -75,6 +107,20 @@ describe('DateTimeService', () => {
 
     it('should return empty string for empty string', () => {
       expect(service.formatDate('', 'dd LLLL yyyy')).toBe('');
+    });
+  });
+
+  describe('formatFullDateWithWeekday - edge cases', () => {
+    it('should return empty string for null', () => {
+      expect(service.formatFullDateWithWeekday(null)).toBe('');
+    });
+
+    it('should return empty string for undefined', () => {
+      expect(service.formatFullDateWithWeekday(undefined)).toBe('');
+    });
+
+    it('should return empty string for empty string', () => {
+      expect(service.formatFullDateWithWeekday('')).toBe('');
     });
   });
 });

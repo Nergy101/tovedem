@@ -74,16 +74,21 @@ function formatDateAmsterdam(utcDateString) {
 }
 
 /**
- * Normalize PocketBase datetime string to ensure UTC parsing.
- * PocketBase may return "YYYY-MM-DD HH:mm:ss" without Z; treat as UTC.
+ * Normalize PocketBase datetime string for correct UTC parsing.
+ * PocketBase uses "YYYY-MM-DD HH:mm:ss" (space) but Go's RFC3339/ISO8601
+ * expects "YYYY-MM-DDTHH:mm:ss" (T). Without T, the parser misinterprets the string.
  */
 function normalizeUtcString(s) {
   if (!s || typeof s !== "string") return s;
-  const trimmed = s.trim();
-  if (trimmed.endsWith("Z") || /[+-]\d{2}:?\d{2}$/.test(trimmed)) {
-    return trimmed;
+  let trimmed = s.trim();
+  // Replace space between date and time with T for valid ISO 8601
+  if (trimmed.length >= 11 && trimmed[10] === " ") {
+    trimmed = trimmed.slice(0, 10) + "T" + trimmed.slice(11);
   }
-  return trimmed + "Z";
+  if (!trimmed.endsWith("Z") && !/[+-]\d{2}:?\d{2}$/.test(trimmed)) {
+    trimmed = trimmed + "Z";
+  }
+  return trimmed;
 }
 
 module.exports = {
@@ -113,45 +118,50 @@ module.exports = {
     // replace all placeholders with the actual values
     mailHtml = mailHtml.replace(
       /{reserveerdersNaam}/g,
-      reservatie.get("voornaam") + " " + reservatie.get("achternaam")
+      reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
     );
     mailHtml = mailHtml.replace(
       /{voorstellingsNaam}/g,
-      voorstelling.get("titel")
+      voorstelling.get("titel"),
     );
 
     mailHtml = mailHtml.replace(
       /{aantal1}/g,
-      reservatie.get("datum_tijd_1_aantal")
+      reservatie.get("datum_tijd_1_aantal"),
     );
     mailHtml = mailHtml.replace(/{datum1}/g, datumOnly1);
     mailHtml = mailHtml.replace(/{tijd1}/g, tijdOnly1);
     mailHtml = mailHtml.replace(
       /{islid1}/g,
-      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee"
+      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
     );
     mailHtml = mailHtml.replace(
       /{isvriend1}/g,
-      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee"
+      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
     );
 
     mailHtml = mailHtml.replace(
       /{aantal2}/g,
-      reservatie.get("datum_tijd_2_aantal")
+      reservatie.get("datum_tijd_2_aantal"),
     );
     mailHtml = mailHtml.replace(/{datum2}/g, datumOnly2);
     mailHtml = mailHtml.replace(/{tijd2}/g, tijdOnly2);
     mailHtml = mailHtml.replace(
       /{islid2}/g,
-      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee"
+      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
     );
     mailHtml = mailHtml.replace(
       /{isvriend2}/g,
-      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee"
+      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
     );
 
     mailHtml = mailHtml.replace(/{reserveringid}/g, reservatie.get("id"));
     mailHtml = mailHtml.replace(/{guid}/g, reservatie.get("guid"));
+
+    mailHtml = mailHtml.replace(
+      /{voorstellingAfbeelding}/g,
+      `https://pocketbase.nergy.space/api/files/${voorstelling.get("collectionId")}/${voorstelling.get("id")}/${voorstelling.get("afbeelding")}`,
+    );
 
     return mailHtml;
   },
