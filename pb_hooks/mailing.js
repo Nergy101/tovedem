@@ -8,31 +8,31 @@
  */
 const TIMEZONE = "Europe/Amsterdam";
 
-const DUTCH_WEEKDAYS = [
-  "zondag",
-  "maandag",
-  "dinsdag",
-  "woensdag",
-  "donderdag",
-  "vrijdag",
-  "zaterdag",
-];
+// Go time.Format returns English names; map to Dutch
+const EN_TO_NL_WEEKDAY = {
+  Sunday: "zondag",
+  Monday: "maandag",
+  Tuesday: "dinsdag",
+  Wednesday: "woensdag",
+  Thursday: "donderdag",
+  Friday: "vrijdag",
+  Saturday: "zaterdag",
+};
 
-const DUTCH_MONTHS = [
-  "",
-  "januari",
-  "februari",
-  "maart",
-  "april",
-  "mei",
-  "juni",
-  "juli",
-  "augustus",
-  "september",
-  "oktober",
-  "november",
-  "december",
-];
+const EN_TO_NL_MONTH = {
+  January: "januari",
+  February: "februari",
+  March: "maart",
+  April: "april",
+  May: "mei",
+  June: "juni",
+  July: "juli",
+  August: "augustus",
+  September: "september",
+  October: "oktober",
+  November: "november",
+  December: "december",
+};
 
 /**
  * Format a UTC datetime string to time only (HH:mm) in Amsterdam timezone.
@@ -43,7 +43,8 @@ const DUTCH_MONTHS = [
  */
 function formatTimeAmsterdam(utcDateString) {
   if (!utcDateString) return "";
-  const dt = new DateTime(utcDateString);
+  const normalized = normalizeUtcString(utcDateString);
+  const dt = new DateTime(normalized);
   const t = dt.time().in(new Timezone(TIMEZONE));
   const h = t.hour();
   const m = t.minute();
@@ -53,21 +54,36 @@ function formatTimeAmsterdam(utcDateString) {
 /**
  * Format a UTC datetime string to date only in Amsterdam timezone.
  * Correctly handles DST (CET/CEST) for the specific date.
+ * Uses format() to avoid Go Month/Weekday type conversion issues in goja.
  *
- * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ")
+ * @param {string} utcDateString - Datetime string from PocketBase (UTC, format "YYYY-MM-DD HH:mm:ss.fffZ" or "YYYY-MM-DD HH:mm:ss")
  * @returns {string} Formatted date string (e.g., "vrijdag 10 januari 2026")
  */
 function formatDateAmsterdam(utcDateString) {
   if (!utcDateString) return "";
-  const dt = new DateTime(utcDateString);
+  const normalized = normalizeUtcString(utcDateString);
+  const dt = new DateTime(normalized);
   const t = dt.time().in(new Timezone(TIMEZONE));
-  const wd = t.weekday(); // 0=Sun, 1=Mon, ...
-  const day = t.day();
-  const month = t.month(); // 1-12
-  const year = t.year();
-  return (
-    DUTCH_WEEKDAYS[wd] + " " + day + " " + DUTCH_MONTHS[month] + " " + year
-  );
+  const weekdayEn = t.format("Monday");
+  const monthEn = t.format("January");
+  const day = t.format("2");
+  const year = t.format("2006");
+  const weekdayNl = EN_TO_NL_WEEKDAY[weekdayEn] || weekdayEn;
+  const monthNl = EN_TO_NL_MONTH[monthEn] || monthEn;
+  return weekdayNl + " " + day + " " + monthNl + " " + year;
+}
+
+/**
+ * Normalize PocketBase datetime string to ensure UTC parsing.
+ * PocketBase may return "YYYY-MM-DD HH:mm:ss" without Z; treat as UTC.
+ */
+function normalizeUtcString(s) {
+  if (!s || typeof s !== "string") return s;
+  const trimmed = s.trim();
+  if (trimmed.endsWith("Z") || /[+-]\d{2}:?\d{2}$/.test(trimmed)) {
+    return trimmed;
+  }
+  return trimmed + "Z";
 }
 
 module.exports = {
