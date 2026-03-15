@@ -941,6 +941,33 @@ html.darkMode .cdk-overlay-container .mdc-tooltip {
   --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
 }
 
+// Force snackbar colors to match the active theme inside the overlay container
+html.lightMode .mat-mdc-snack-bar-container,
+html.lightMode .cdk-overlay-container .mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #f5f9fe !important;
+  --mdc-snackbar-supporting-text-color: #000000 !important;
+  --mat-snack-bar-button-color: #005e93 !important;
+
+  .mat-mdc-snackbar-surface {
+    border: 1px solid rgba(125, 179, 232, 0.4);
+    box-shadow: 0 8px 24px rgba(125, 179, 232, 0.18);
+  }
+
+  .mdc-button__label,
+  .mat-mdc-button,
+  .mat-mdc-snack-bar-label,
+  .mat-mdc-snack-bar-label * {
+    color: #000000 !important;
+  }
+}
+
+html.darkMode .mat-mdc-snack-bar-container,
+html.darkMode .cdk-overlay-container .mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #1a1d24 !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #7db3e8 !important;
+}
+
 // Button styling for theater aesthetic
 .mat-mdc-raised-button,
 .mat-mdc-flat-button {

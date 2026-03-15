@@ -1,4 +1,36 @@
 @defer (when loaded()) {
+  @if (toast(); as currentToast) {
+    <div
+      class="native-toast native-toast--{{ currentToast.kind }}"
+      aria-live="polite"
+      aria-atomic="true"
+      role="status"
+    >
+      <div class="native-toast__icon" aria-hidden="true">
+        {{ currentToast.icon }}
+      </div>
+      <div class="native-toast__content">
+        <strong class="native-toast__title">
+          @if (currentToast.kind === 'success') {
+            Gelukt
+          } @else if (currentToast.kind === 'warning') {
+            Let op
+          } @else {
+            Fout
+          }
+        </strong>
+        <span>{{ currentToast.message }}</span>
+      </div>
+      <button
+        class="native-toast__close"
+        type="button"
+        (click)="dismissToast()"
+        aria-label="Sluit melding"
+      >
+        ×
+      </button>
+    </div>
+  }
   <div class="container">
     <div class="row" style="padding-top: 2em">
       <mat-card>

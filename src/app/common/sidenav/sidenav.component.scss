@@ -1,6 +1,12 @@
 :host {
-  margin-top: 1em;
-  margin: 1rem;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+.links-container {
+  width: 100%;
 }
 
 ul {
@@ -63,6 +69,7 @@ a {
 
 .links {
   display: flex;
+  width: 100%;
   gap: 0.5em;
   justify-content: space-evenly;
 

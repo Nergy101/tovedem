@@ -30,7 +30,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -71,7 +70,6 @@ import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe'
 })
 export class ReserverenComponent implements OnInit {
   client = inject(PocketbaseService);
-  snackBar = inject(MatSnackBar);
   seoService = inject(SeoService);
   errorService = inject(ErrorService);
   dateTimeService = inject(DateTimeService);
@@ -135,6 +133,12 @@ export class ReserverenComponent implements OnInit {
   totalPeopleDate1 = signal(0);
   totalPeopleDate2 = signal(0);
   loadingTotals = signal(false);
+  toast = signal<{
+    message: string;
+    icon: string;
+    kind: 'success' | 'error' | 'warning';
+  } | null>(null);
+  private toastTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // Email match status: 'match', 'mismatch', or 'empty'
   emailMatchStatus = computed(() => {
@@ -359,24 +363,20 @@ export class ReserverenComponent implements OnInit {
 
     // Validate voorstellingId is present
     if (!this.voorstellingId) {
-      this.snackBar.open(
+      this.showToast(
         'Er is geen voorstelling geselecteerd. Probeer het opnieuw.',
-        '❌',
-        {
-          duration: 5000,
-        }
+        'error',
+        '❌'
       );
       return;
     }
 
     // Double-check limits before submitting (client-side validation)
     if (!this.canReserveDate1() || !this.canReserveDate2()) {
-      this.snackBar.open(
+      this.showToast(
         'Het maximum aantal reserveringen is bereikt. Probeer een kleiner aantal.',
-        '⚠️',
-        {
-          duration: 5000,
-        }
+        'warning',
+        '⚠️'
       );
       return;
     }
@@ -407,15 +407,19 @@ export class ReserverenComponent implements OnInit {
       //TO DO: pagina met reservering geslaagd. nog een maal alle gegevens op een rijtje ga terug naar hoofdscherm
       //Datum, aantal stoelen, welke naam, of ze gereserverde plekken gaan krijgen of niet, betalen aan de kassa melding (Pin en cash) kaart met route??
 
+      sessionStorage.setItem(
+        'reservation-success-toast',
+        JSON.stringify({
+          message: 'Reservering geslaagd!',
+          icon: '🥳',
+          kind: 'success',
+        })
+      );
       this.router.navigate(['/reservering-geslaagd'], {
         queryParams: {
           voorstellingId: this.voorstellingId,
           reserveringId: nieuweReservering.id,
         },
-      });
-
-      this.snackBar.open('Reservering geslaagd!', '🥳🎉🎈', {
-        duration: 5000,
       });
     } catch (error: unknown) {
       // Use ErrorService for consistent error handling
@@ -424,9 +428,7 @@ export class ReserverenComponent implements OnInit {
         'Reservering aanmaken'
       );
 
-      this.snackBar.open(errorMessage, '❌', {
-        duration: 7000,
-      });
+      this.showToast(errorMessage, 'error', '❌', 7000);
     } finally {
       this.saving.set(false);
     }
@@ -442,20 +444,20 @@ export class ReserverenComponent implements OnInit {
       if (model.amountOfPeopleDate1 > 20) {
         newModel.amountOfPeopleDate1 = 20;
         updated = true;
-        this.snackBar.open(
+        this.showToast(
           'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
-          '⚠️',
-          { duration: 5000 }
+          'warning',
+          '⚠️'
         );
       }
 
       if (model.amountOfPeopleDate2 > 20) {
         newModel.amountOfPeopleDate2 = 20;
         updated = true;
-        this.snackBar.open(
+        this.showToast(
           'Er kunnen niet meer dan 20 tickets gereserveerd worden voor 1 dag',
-          '⚠️',
-          { duration: 5000 }
+          'warning',
+          '⚠️'
         );
       }
 
@@ -491,5 +493,31 @@ export class ReserverenComponent implements OnInit {
       ...model,
       amountOfPeopleDate2: Math.max(0, model.amountOfPeopleDate2 - 1),
     }));
+  }
+
+  dismissToast(): void {
+    this.toast.set(null);
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = null;
+    }
+  }
+
+  private showToast(
+    message: string,
+    kind: 'success' | 'error' | 'warning',
+    icon: string,
+    duration = 5000
+  ): void {
+    this.toast.set({ message, icon, kind });
+
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+
+    this.toastTimeout = setTimeout(() => {
+      this.toast.set(null);
+      this.toastTimeout = null;
+    }, duration);
   }
 }

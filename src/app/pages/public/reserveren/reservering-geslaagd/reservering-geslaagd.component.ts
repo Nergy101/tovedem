@@ -35,6 +35,12 @@ export class ReserveringGeslaagdComponent implements OnInit {
   router = inject(Router);
 
   content: WritableSignal<string | null> = signal(null);
+  toast = signal<{
+    message: string;
+    icon: string;
+    kind: 'success' | 'error' | 'warning';
+  } | null>(null);
+  private toastTimeout: ReturnType<typeof setTimeout> | null = null;
 
   @Input({ required: true })
   voorstellingId!: string;
@@ -54,6 +60,7 @@ export class ReserveringGeslaagdComponent implements OnInit {
     const record = (await this.client.collection('sinterklaas').getList(1, 1))
       .items[0];
     this.content.set(record.tekst_1);
+    this.showStoredSuccessToast();
 
     this.scrollToTop();
   }
@@ -75,5 +82,38 @@ export class ReserveringGeslaagdComponent implements OnInit {
     // Clear confetti after a certain duration
     // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
     setTimeout(() => confetti.reset(), 3000);
+  }
+
+  dismissToast(): void {
+    this.toast.set(null);
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = null;
+    }
+  }
+
+  private showStoredSuccessToast(): void {
+    const storedToast = sessionStorage.getItem('reservation-success-toast');
+    if (!storedToast) {
+      return;
+    }
+
+    sessionStorage.removeItem('reservation-success-toast');
+
+    try {
+      const parsedToast = JSON.parse(storedToast) as {
+        message: string;
+        icon: string;
+        kind: 'success' | 'error' | 'warning';
+      };
+
+      this.toast.set(parsedToast);
+      this.toastTimeout = setTimeout(() => {
+        this.toast.set(null);
+        this.toastTimeout = null;
+      }, 5000);
+    } catch {
+      sessionStorage.removeItem('reservation-success-toast');
+    }
   }
 }

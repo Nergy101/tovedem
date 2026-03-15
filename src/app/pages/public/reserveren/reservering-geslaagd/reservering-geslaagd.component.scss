@@ -1,5 +1,94 @@
+@use "../../../../../variables.scss" as *;
+
 :host {
-  padding: 4em;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: $spacing-16;
+
+  @media (max-width: 768px) {
+    padding: $spacing-8 $spacing-4;
+  }
+}
+
+.native-toast {
+  position: fixed;
+  top: 7rem;
+  right: 1.5rem;
+  z-index: 1100;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: min(28rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(76, 175, 80, 0.35);
+  background: rgba(245, 249, 254, 0.96);
+  box-shadow: 0 18px 40px rgba(0, 29, 53, 0.18);
+  backdrop-filter: blur(14px);
+  color: #001d35 !important;
+}
+
+.native-toast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgba(76, 175, 80, 0.14);
+  font-size: 1.25rem;
+}
+
+.native-toast__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  * {
+    color: #001d35 !important;
+  }
+}
+
+.native-toast__title {
+  font-size: 0.95rem;
+}
+
+.native-toast__close {
+  border: 0;
+  background: transparent;
+  color: #001d35 !important;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.65;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .native-toast {
+    top: 6.5rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+  }
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: auto;
 }
 
 .custom-buttons {
