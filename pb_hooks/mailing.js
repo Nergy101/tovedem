@@ -107,63 +107,37 @@ module.exports = {
     return record;
   },
   getReservatieMailHtml: (mailInfo, reservatie, voorstelling) => {
-    // Format times and dates using Amsterdam timezone
+    const { fillReservatieTemplate } = require("./mailing-template.js");
+
+    // Format times and dates from voorstelling (show times) using Amsterdam timezone
     const tijdOnly1 = formatTimeAmsterdam(voorstelling.get("datum_tijd_1"));
     const datumOnly1 = formatDateAmsterdam(voorstelling.get("datum_tijd_1"));
     const tijdOnly2 = formatTimeAmsterdam(voorstelling.get("datum_tijd_2"));
     const datumOnly2 = formatDateAmsterdam(voorstelling.get("datum_tijd_2"));
 
-    let mailHtml = mailInfo.get("inhoud");
+    const voorstellingAfbeelding = voorstelling.get("afbeelding")
+      ? `https://pocketbase.nergy.space/api/files/${voorstelling.get("collectionId")}/${voorstelling.get("id")}/${voorstelling.get("afbeelding")}`
+      : "";
 
-    // replace all placeholders with the actual values
-    mailHtml = mailHtml.replace(
-      /{reserveerdersNaam}/g,
-      reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
-    );
-    mailHtml = mailHtml.replace(
-      /{voorstellingsNaam}/g,
-      voorstelling.get("titel"),
-    );
+    const data = {
+      reserveerdersNaam: reservatie.get("voornaam") + " " + reservatie.get("achternaam"),
+      voorstellingsNaam: voorstelling.get("titel"),
+      aantal1: reservatie.get("datum_tijd_1_aantal"),
+      datum1: datumOnly1,
+      tijd1: tijdOnly1,
+      islid1: reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
+      isvriend1: reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
+      aantal2: reservatie.get("datum_tijd_2_aantal"),
+      datum2: datumOnly2,
+      tijd2: tijdOnly2,
+      islid2: reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
+      isvriend2: reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
+      reserveringid: reservatie.get("id"),
+      guid: reservatie.get("guid"),
+      voorstellingAfbeelding,
+    };
 
-    mailHtml = mailHtml.replace(
-      /{aantal1}/g,
-      reservatie.get("datum_tijd_1_aantal"),
-    );
-    mailHtml = mailHtml.replace(/{datum1}/g, datumOnly1);
-    mailHtml = mailHtml.replace(/{tijd1}/g, tijdOnly1);
-    mailHtml = mailHtml.replace(
-      /{islid1}/g,
-      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
-    );
-    mailHtml = mailHtml.replace(
-      /{isvriend1}/g,
-      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
-    );
-
-    mailHtml = mailHtml.replace(
-      /{aantal2}/g,
-      reservatie.get("datum_tijd_2_aantal"),
-    );
-    mailHtml = mailHtml.replace(/{datum2}/g, datumOnly2);
-    mailHtml = mailHtml.replace(/{tijd2}/g, tijdOnly2);
-    mailHtml = mailHtml.replace(
-      /{islid2}/g,
-      reservatie.get("is_lid_van_vereniging") ? "Ja" : "Nee",
-    );
-    mailHtml = mailHtml.replace(
-      /{isvriend2}/g,
-      reservatie.get("is_vriend_van_tovedem") ? "Ja" : "Nee",
-    );
-
-    mailHtml = mailHtml.replace(/{reserveringid}/g, reservatie.get("id"));
-    mailHtml = mailHtml.replace(/{guid}/g, reservatie.get("guid"));
-
-    mailHtml = mailHtml.replace(
-      /{voorstellingAfbeelding}/g,
-      `https://pocketbase.nergy.space/api/files/${voorstelling.get("collectionId")}/${voorstelling.get("id")}/${voorstelling.get("afbeelding")}`,
-    );
-
-    return mailHtml;
+    return fillReservatieTemplate(mailInfo.get("inhoud"), data);
   },
 
   getSintcommissieMailHtml: (mailInfo, verzoek) => {

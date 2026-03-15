@@ -3,8 +3,16 @@ onRecordAfterCreateSuccess((e) => {
   const mailing = require(`${__hooks}/mailing.js`);
 
   const reservatie = e.record;
-  $app.expandRecord(reservatie, ["voorstelling"], null);
-  const voorstelling = reservatie.expandedOne("voorstelling");
+  // Fetch voorstelling by ID to ensure we have datum_tijd_1/datum_tijd_2 (show times),
+  // not the reservation's created timestamp
+  const voorstellingId = reservatie.get("voorstelling");
+  if (!voorstellingId) {
+    throw new Error("Reservatie has no voorstelling");
+  }
+  const voorstelling = $app.findRecordById("voorstellingen", voorstellingId);
+  if (!voorstelling) {
+    throw new Error("Voorstelling not found: " + voorstellingId);
+  }
 
   const mailInfo = mailing.getMail("reservatie_confirmatie");
 

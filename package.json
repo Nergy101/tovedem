@@ -10,6 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch --no-progress --browsers ChromeHeadless",
     "test:ui": "ng test --browsers Chrome",
+    "test:pb": "node --test pb_hooks/__tests__/*.test.js",
     "lint": "ng lint"
   },
   "private": true,
