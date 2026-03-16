@@ -46,7 +46,21 @@
 .photo-card {
   overflow: hidden;
 
-  img {
+  .photo-card-image-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+  }
+
+  .photo-card-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  .photo-card-image-wrap img {
     width: 200px;
     height: 200px;
     object-fit: cover;

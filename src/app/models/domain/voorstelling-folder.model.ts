@@ -12,7 +12,11 @@ export interface VoorstellingFolder extends BaseModel {
   naam: string;
   jaar: number;
   voorstelling?: string; // relation to voorstellingen
-  fotos: string[]; // array of file names
+  fotos: string[]; // primary array of file names
+  fotos_2?: string[];
+  fotos_3?: string[];
+  fotos_4?: string[];
+  fotos_5?: string[];
   expand?: {
     voorstelling?: VoorstellingFolderVoorstelling;
   };

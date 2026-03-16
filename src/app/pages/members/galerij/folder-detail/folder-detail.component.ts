@@ -39,8 +39,23 @@ export class FolderDetailComponent implements OnInit {
   folder = signal<VoorstellingFolder | null>(null);
   loading = signal(true);
   fileToken = signal<string | null>(null);
+  /** Filenames van foto's die al geladen zijn (voor spinner in kaart). */
+  loadedPhotos = signal<Set<string>>(new Set());
 
-  fotos = computed(() => this.folder()?.fotos ?? []);
+  fotos = computed(() => {
+    const folder = this.folder();
+    if (!folder) {
+      return [];
+    }
+
+    return [
+      ...(folder.fotos ?? []),
+      ...(folder.fotos_2 ?? []),
+      ...(folder.fotos_3 ?? []),
+      ...(folder.fotos_4 ?? []),
+      ...(folder.fotos_5 ?? []),
+    ];
+  });
 
   canUpload = computed(() => {
     return (
@@ -72,6 +87,7 @@ export class FolderDetailComponent implements OnInit {
           expand: 'voorstelling',
         })) as unknown as VoorstellingFolder;
       this.folder.set(folder);
+      this.loadedPhotos.set(new Set());
     } catch (error) {
       console.error('Error loading folder:', error);
       this.toastr.error('Fout bij het laden van de folder');
@@ -79,6 +95,10 @@ export class FolderDetailComponent implements OnInit {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  markPhotoLoaded(filename: string): void {
+    this.loadedPhotos.update((set) => new Set([...set, filename]));
   }
 
   getPhotoUrl(filename: string, thumb?: string): string {
@@ -140,6 +160,7 @@ export class FolderDetailComponent implements OnInit {
           .collection('voorstellingen_folders')
           .getOne(folder.id)) as unknown as VoorstellingFolder;
         this.folder.set(updatedFolder);
+        this.loadedPhotos.set(new Set());
         this.toastr.success("Foto's succesvol toegevoegd", 'Gelukt!');
       } catch (error) {
         const errorMessage = this.errorService.getErrorMessage(
@@ -169,13 +190,14 @@ export class FolderDetailComponent implements OnInit {
 
     this.loading.set(true);
     try {
-      // Remove the photo from the fotos array
-      const updatedFotos = folder.fotos.filter((f) => f !== filename);
-
-      // Update the folder with the new fotos array
-      // We need to use FormData to properly handle the file removal
       const formData = new FormData();
-      formData.append('fotos-', filename); // The minus sign tells PocketBase to remove this file
+
+      // Remove from the correct column; PocketBase will ignore if not present
+      formData.append('fotos-', filename);
+      formData.append('fotos_2-', filename);
+      formData.append('fotos_3-', filename);
+      formData.append('fotos_4-', filename);
+      formData.append('fotos_5-', filename);
 
       await this.client.directClient
         .collection('voorstellingen_folders')
@@ -186,6 +208,7 @@ export class FolderDetailComponent implements OnInit {
         .collection('voorstellingen_folders')
         .getOne(folder.id)) as unknown as VoorstellingFolder;
       this.folder.set(updatedFolder);
+      this.loadedPhotos.set(new Set());
 
       this.toastr.success('Foto succesvol verwijderd', 'Gelukt!');
     } catch (error) {

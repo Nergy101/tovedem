@@ -20,11 +20,18 @@
     </div>
 
     @if (canUpload()) {
-    <div class="row my-4">
-      <button mat-fab extended color="primary" (click)="openUploadDialog()">
-        <mat-icon>add_circle</mat-icon>
-        Foto's toevoegen
-      </button>
+    <div class="row my-4 align-items-center">
+      <div class="col-auto">
+        <button mat-fab extended color="primary" (click)="openUploadDialog()">
+          <mat-icon>add_circle</mat-icon>
+          Foto's toevoegen
+        </button>
+      </div>
+      <div class="col-auto">
+        <span class="text-muted">
+          Totaal: {{ fotos().length }} foto{{ fotos().length === 1 ? '' : '\'s' }}
+        </span>
+      </div>
     </div>
     }
 
@@ -48,12 +55,20 @@
       <div class="grid">
         @for (photo of fotos(); track photo; let i = $index) {
         <mat-card appearance="outlined" class="photo-card">
-          <img
-            mat-card-image
-            [src]="getPhotoUrl(photo, '200x200')"
-            [alt]="'Foto ' + (i + 1)"
-            loading="lazy"
-          />
+          <div class="photo-card-image-wrap">
+            @if (!loadedPhotos().has(photo)) {
+            <div class="photo-card-spinner" aria-hidden="true">
+              <mat-spinner diameter="32"></mat-spinner>
+            </div>
+            }
+            <img
+              mat-card-image
+              [src]="getPhotoUrl(photo, '0x300')"
+              [alt]="'Foto ' + (i + 1)"
+              loading="lazy"
+              (load)="markPhotoLoaded(photo)"
+            />
+          </div>
           <mat-card-actions>
             <button
               mat-icon-button
