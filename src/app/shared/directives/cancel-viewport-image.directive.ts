@@ -44,7 +44,7 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
         }
       },
       {
-        rootMargin: '100px',
+        rootMargin: '400px',
         threshold: 0.01,
       }
     );

@@ -12,34 +12,37 @@
   </mat-dialog-content>
 
   @if (!loading) {
-  <mat-dialog-actions class="d-flex justify-content-between actions">
-    <button mat-button (click)="onLeftArrowDown()" aria-label="Vorige foto">
-      <mat-icon aria-hidden="true">arrow_back</mat-icon> Vorige - pijltjes toets
-      naar links
+  <mat-dialog-actions class="actions actions-bar">
+    <button mat-button (click)="onLeftArrowDown()" aria-label="Vorige foto" class="action-btn">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      <span class="action-label">Vorige</span>
+      <span class="action-label-long">Vorige - pijltjes toets naar links</span>
     </button>
-
-    <div>
-      <button
-        mat-button
-        mat-dialog-close
-        (click)="onEscapeDown()"
-        aria-label="Sluit foto weergave"
-      >
-        <mat-icon aria-hidden="true">close</mat-icon> Sluiten - escape toets
-      </button>
-      <button
-        mat-button
-        (click)="onEnterDown()"
-        aria-label="Open foto in nieuw tabblad"
-      >
-        <mat-icon aria-hidden="true">aspect_ratio</mat-icon> Openen - enter
-        toets
-      </button>
-    </div>
-
-    <button mat-button (click)="onRightArrowDown()" aria-label="Volgende foto">
-      Volgende - pijltjes toets naar rechts
-      <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
+    <button
+      mat-button
+      mat-dialog-close
+      (click)="onEscapeDown()"
+      aria-label="Sluit foto weergave"
+      class="action-btn"
+    >
+      <mat-icon aria-hidden="true">close</mat-icon>
+      <span class="action-label">Sluiten</span>
+      <span class="action-label-long">Sluiten - escape toets</span>
+    </button>
+    <button
+      mat-button
+      (click)="onEnterDown()"
+      aria-label="Open foto in nieuw tabblad"
+      class="action-btn"
+    >
+      <mat-icon aria-hidden="true">open_in_new</mat-icon>
+      <span class="action-label">Openen</span>
+      <span class="action-label-long">Openen - enter toets</span>
+    </button>
+    <button mat-button (click)="onRightArrowDown()" aria-label="Volgende foto" class="action-btn">
+      <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+      <span class="action-label">Volgende</span>
+      <span class="action-label-long">Volgende - pijltjes toets naar rechts</span>
     </button>
   </mat-dialog-actions>
   }

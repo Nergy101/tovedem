@@ -24,6 +24,88 @@ img {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    mat-icon {
+      flex-shrink: 0;
+    }
+  }
+
+  .action-label-long {
+    display: inline;
+  }
+
+  .action-label {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .actions.actions-bar {
+    padding: 0.75rem 0.5rem;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    border-radius: 16px 16px 0 0;
+    gap: 0.25rem;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    min-height: 64px;
+
+    .action-btn {
+      flex: 1;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
+      min-height: 52px;
+      min-width: 0;
+      padding: 8px 4px;
+      border-radius: 12px;
+
+      ::ng-deep .mdc-button__label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        width: 100%;
+      }
+
+      mat-icon {
+        font-size: 26px;
+        width: 26px;
+        height: 26px;
+        margin: 0 auto;
+      }
+
+      .action-label,
+      .action-label-long {
+        text-align: center;
+      }
+    }
+
+    .action-label {
+      display: block;
+      font-size: 0.7rem;
+      line-height: 1.1;
+    }
+
+    .action-label-long {
+      display: none;
+    }
+  }
+}
+
 // Dark theme actions bar
 :host-context(html.darkMode) {
   .actions,
