@@ -25,7 +25,16 @@ export class FolderCardComponent {
 
   hasPhotos = computed(() => this.stackPhotos().length > 0);
 
-  photoCount = computed(() => this.folder().fotos?.length ?? 0);
+  photoCount = computed(() => {
+    const f = this.folder();
+    return (
+      (f.fotos?.length ?? 0) +
+      (f.fotos_2?.length ?? 0) +
+      (f.fotos_3?.length ?? 0) +
+      (f.fotos_4?.length ?? 0) +
+      (f.fotos_5?.length ?? 0)
+    );
+  });
 
   getPhotoUrl(filename: string, index: number): string {
     const token = this.fileToken();
