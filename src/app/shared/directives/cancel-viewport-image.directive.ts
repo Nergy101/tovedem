@@ -28,6 +28,9 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
   /** True zodra de afbeelding geladen en getoond is; dan niet meer clearen bij uit beeld. */
   private hasLoadedAndDisplayed = false;
+  private isInViewport = false;
+  private retryTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private static readonly RETRY_DELAY_MS = 3000;
 
   constructor(private el: ElementRef<HTMLImageElement>) {}
 
@@ -36,7 +39,9 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
       (entries) => {
         for (const entry of entries) {
           if (entry.target !== this.el.nativeElement) continue;
+          this.isInViewport = entry.isIntersecting;
           if (entry.isIntersecting) {
+            this.clearRetryTimeout();
             this.load();
           } else {
             this.cancel();
@@ -55,10 +60,30 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
     this.observer?.disconnect();
     this.observer = null;
     this.hasLoadedAndDisplayed = false;
+    this.isInViewport = false;
+    this.clearRetryTimeout();
     this.cancel();
   }
 
+  private clearRetryTimeout(): void {
+    if (this.retryTimeoutId != null) {
+      clearTimeout(this.retryTimeoutId);
+      this.retryTimeoutId = null;
+    }
+  }
+
+  private scheduleRetry(): void {
+    this.clearRetryTimeout();
+    this.retryTimeoutId = setTimeout(() => {
+      this.retryTimeoutId = null;
+      if (this.isInViewport && !this.hasLoadedAndDisplayed) {
+        this.load();
+      }
+    }, CancelViewportImageDirective.RETRY_DELAY_MS);
+  }
+
   private cancel(): void {
+    this.clearRetryTimeout();
     if (this.abortController) {
       this.abortController.abort();
       this.abortController = null;
@@ -82,6 +107,7 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
     if (!url) return;
     if (this.hasLoadedAndDisplayed && this.el.nativeElement.src) return;
 
+    this.clearRetryTimeout();
     this.abortController = new AbortController();
     const signal = this.abortController.signal;
 
@@ -98,8 +124,10 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
         this.hasLoadedAndDisplayed = true;
       })
       .catch((err) => {
-        if (err?.name === 'AbortError') return;
         this.el.nativeElement.src = '';
+        if (this.isInViewport && !this.hasLoadedAndDisplayed) {
+          this.scheduleRetry();
+        }
       });
   }
 }

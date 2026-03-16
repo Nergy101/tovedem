@@ -1,3 +1,9 @@
+:host ::ng-deep .folder-detail-view {
+  @media (max-width: 767px) {
+    padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
+  }
+}
+
 .year-badge {
   font-size: 1rem;
   opacity: 0.7;
