@@ -63,10 +63,12 @@
             }
             <img
               mat-card-image
-              [src]="getPhotoUrl(photo, '0x300')"
+              appCancelViewportImage
+              [imageUrl]="getPhotoUrl(photo, '0x300')"
+              [imageId]="photo"
               [alt]="'Foto ' + (i + 1)"
-              loading="lazy"
               (load)="markPhotoLoaded(photo)"
+              (unloaded)="markPhotoUnloaded($event)"
             />
           </div>
           <mat-card-actions>

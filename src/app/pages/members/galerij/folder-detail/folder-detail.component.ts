@@ -12,6 +12,7 @@ import { ConfirmatieDialogComponent } from '../../../../shared/components/confir
 import { AuthService } from '../../../../shared/services/auth.service';
 import { ErrorService } from '../../../../shared/services/error.service';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { CancelViewportImageDirective } from '../../../../shared/directives/cancel-viewport-image.directive';
 import { FolderPhotoPreviewDialogComponent } from './folder-photo-preview-dialog/folder-photo-preview-dialog.component';
 import { FolderPhotoUploadDialogComponent } from './folder-photo-upload-dialog/folder-photo-upload-dialog.component';
 
@@ -23,6 +24,7 @@ import { FolderPhotoUploadDialogComponent } from './folder-photo-upload-dialog/f
     MatIconModule,
     MatProgressSpinnerModule,
     RouterModule,
+    CancelViewportImageDirective,
   ],
   templateUrl: './folder-detail.component.html',
   styleUrl: './folder-detail.component.scss',
@@ -99,6 +101,14 @@ export class FolderDetailComponent implements OnInit {
 
   markPhotoLoaded(filename: string): void {
     this.loadedPhotos.update((set) => new Set([...set, filename]));
+  }
+
+  markPhotoUnloaded(filename: string): void {
+    this.loadedPhotos.update((set) => {
+      const next = new Set(set);
+      next.delete(filename);
+      return next;
+    });
   }
 
   getPhotoUrl(filename: string, thumb?: string): string {
