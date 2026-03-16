@@ -52,6 +52,22 @@
     height: 200px;
   }
 
+  .photo-number {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 2;
+    min-width: 1.5rem;
+    padding: 2px 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+  }
+
   .photo-card-spinner {
     position: absolute;
     top: 50%;

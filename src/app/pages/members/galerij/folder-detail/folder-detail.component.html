@@ -12,87 +12,99 @@
       </div>
       <div class="col">
         @if (folder()) {
-        <p class="display-1 mb-0">{{ folder()!.naam }}</p>
-        @if (folder()!.jaar) {
-        <span class="year-badge">{{ folder()!.jaar }}</span>
-        } }
+          <p class="display-1 mb-0">{{ folder()!.naam }}</p>
+          @if (folder()!.jaar) {
+            <span class="year-badge">{{ folder()!.jaar }}</span>
+          }
+        }
       </div>
     </div>
 
     @if (canUpload()) {
-    <div class="row my-4 align-items-center">
-      <div class="col-auto">
-        <button mat-fab extended color="primary" (click)="openUploadDialog()">
-          <mat-icon>add_circle</mat-icon>
-          Foto's toevoegen
-        </button>
+      <div class="row my-4 align-items-center">
+        <div class="col-auto">
+          <button mat-fab extended color="primary" (click)="openUploadDialog()">
+            <mat-icon>add_circle</mat-icon>
+            Foto's toevoegen
+          </button>
+        </div>
+        <div class="col-auto">
+          <span class="text-muted">
+            Totaal: {{ fotos().length }} foto{{
+              fotos().length === 1 ? "" : "'s"
+            }}
+          </span>
+        </div>
       </div>
-      <div class="col-auto">
-        <span class="text-muted">
-          Totaal: {{ fotos().length }} foto{{ fotos().length === 1 ? '' : '\'s' }}
-        </span>
-      </div>
-    </div>
     }
 
     <mat-card class="gallery" appearance="outlined">
       @if (loading()) {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
-      } @else { @if (fotos().length === 0) {
-      <div class="center empty-state">
-        <mat-icon class="empty-icon">photo_library</mat-icon>
-        <p>Nog geen foto's in deze folder</p>
-        @if (canUpload()) {
-        <button mat-stroked-button color="primary" (click)="openUploadDialog()">
-          <mat-icon>add_photo_alternate</mat-icon>
-          Eerste foto's toevoegen
-        </button>
-        }
-      </div>
+        <div class="center">
+          <mat-spinner></mat-spinner>
+        </div>
       } @else {
-      <div class="grid">
-        @for (photo of fotos(); track photo; let i = $index) {
-        <mat-card appearance="outlined" class="photo-card">
-          <div class="photo-card-image-wrap">
-            @if (!loadedPhotos().has(photo)) {
-            <div class="photo-card-spinner" aria-hidden="true">
-              <mat-spinner diameter="32"></mat-spinner>
-            </div>
+        @if (fotos().length === 0) {
+          <div class="center empty-state">
+            <mat-icon class="empty-icon">photo_library</mat-icon>
+            <p>Nog geen foto's in deze folder</p>
+            @if (canUpload()) {
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="openUploadDialog()"
+              >
+                <mat-icon>add_photo_alternate</mat-icon>
+                Eerste foto's toevoegen
+              </button>
             }
-            <img
-              mat-card-image
-              appCancelViewportImage
-              [imageUrl]="getPhotoUrl(photo, '0x300')"
-              [imageId]="photo"
-              [alt]="'Foto ' + (i + 1)"
-              (load)="markPhotoLoaded(photo)"
-              (unloaded)="markPhotoUnloaded($event)"
-            />
           </div>
-          <mat-card-actions>
-            <button
-              mat-icon-button
-              (click)="openPhoto(photo)"
-              aria-label="Bekijk foto in volledig scherm"
-            >
-              <mat-icon aria-hidden="true">visibility</mat-icon>
-            </button>
-            @if (canDelete()) {
-            <button
-              mat-icon-button
-              (click)="deletePhoto(photo)"
-              aria-label="Verwijder foto"
-            >
-              <mat-icon aria-hidden="true">delete</mat-icon>
-            </button>
+        } @else {
+          <div class="grid">
+            @for (photo of fotos(); track photo; let i = $index) {
+              <mat-card appearance="outlined" class="photo-card">
+                <div class="photo-card-image-wrap">
+                  <span class="photo-number" aria-hidden="true">{{
+                    i + 1
+                  }}</span>
+                  @if (!loadedPhotos().has(photo)) {
+                    <div class="photo-card-spinner" aria-hidden="true">
+                      <mat-spinner diameter="32"></mat-spinner>
+                    </div>
+                  }
+                  <img
+                    mat-card-image
+                    appCancelViewportImage
+                    [imageUrl]="getPhotoUrl(photo, '0x300')"
+                    [imageId]="photo"
+                    [alt]="'Foto ' + (i + 1)"
+                    (load)="markPhotoLoaded(photo)"
+                    (unloaded)="markPhotoUnloaded($event)"
+                  />
+                </div>
+                <mat-card-actions>
+                  <button
+                    mat-icon-button
+                    (click)="openPhoto(photo)"
+                    aria-label="Bekijk foto in volledig scherm"
+                  >
+                    <mat-icon aria-hidden="true">zoom_out_map</mat-icon>
+                  </button>
+                  @if (canDelete()) {
+                    <button
+                      mat-icon-button
+                      (click)="deletePhoto(photo)"
+                      aria-label="Verwijder foto"
+                    >
+                      <mat-icon aria-hidden="true">delete</mat-icon>
+                    </button>
+                  }
+                </mat-card-actions>
+              </mat-card>
             }
-          </mat-card-actions>
-        </mat-card>
+          </div>
         }
-      </div>
-      } }
+      }
     </mat-card>
   </div>
 </div>
