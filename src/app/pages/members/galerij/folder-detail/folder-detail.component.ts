@@ -124,6 +124,21 @@ export class FolderDetailComponent implements OnInit {
     return this.client.directClient.files.getURL(folder, filename, options);
   }
 
+  downloadPhoto(filename: string): void {
+    let url = this.getPhotoUrl(filename);
+    if (url === 'assets/Place-Holder-Image.jpg') return;
+
+    // Force download via PocketBase parameter
+    url += url.includes('?') ? '&download=1' : '?download=1';
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.click();
+  }
+
   async openPhoto(filename: string): Promise<void> {
     const folder = this.folder();
     if (!folder) return;
