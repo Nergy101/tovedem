@@ -264,11 +264,10 @@ export const routes: Routes = [
     canActivate: [globalAdminGuard()],
   },
   {
-    path: 'developers/rol-overzicht',
+    path: '**',
     loadComponent: () =>
-      import('./pages/developers/rol-overzicht/rol-overzicht.component').then(
-        (m) => m.RolOverzichtComponent,
+      import('./pages/public/niet-gevonden/niet-gevonden.component').then(
+        (m) => m.NietGevondenComponent,
       ),
-    canActivate: [globalAdminGuard()],
   },
 ];

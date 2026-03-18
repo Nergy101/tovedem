@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
@@ -10,15 +10,15 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './cookie-banner.component.scss',
 })
 export class CookieBannerComponent {
+  cookieBannerAccepted = signal<string | null>(localStorage.getItem('cookieBannerAccepted'));
+
   acceptCookies(): void {
     localStorage.setItem('cookieBannerAccepted', 'true');
+    this.cookieBannerAccepted.set('true');
   }
 
   rejectCookies(): void {
     localStorage.setItem('cookieBannerAccepted', 'false');
-  }
-
-  get cookieBannerAccepted(): string | null {
-    return localStorage.getItem('cookieBannerAccepted');
+    this.cookieBannerAccepted.set('false');
   }
 }
