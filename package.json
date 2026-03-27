@@ -32,6 +32,7 @@
     "jquery": "^3.7.1",
     "jspdf": "^4.2.0",
     "jspdf-autotable": "^5.0.2",
+    "jszip": "^3.10.1",
     "luxon": "^3.4.4",
     "mdb-angular-ui-kit": "^9.0.0",
     "ng-apexcharts": "^2.0.3",

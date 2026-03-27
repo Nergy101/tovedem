@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
+import JSZip from 'jszip';
 import { VoorstellingFolder } from '../../../../models/domain/voorstelling-folder.model';
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { AuthService } from '../../../../shared/services/auth.service';
@@ -40,6 +41,7 @@ export class FolderDetailComponent implements OnInit {
 
   folder = signal<VoorstellingFolder | null>(null);
   loading = signal(true);
+  downloadingAll = signal(false);
   fileToken = signal<string | null>(null);
   /** Filenames van foto's die al geladen zijn (voor spinner in kaart). */
   loadedPhotos = signal<Set<string>>(new Set());
@@ -244,6 +246,37 @@ export class FolderDetailComponent implements OnInit {
       this.toastr.error(errorMessage, 'Fout bij verwijderen');
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  async downloadAllPhotos(): Promise<void> {
+    const folder = this.folder();
+    const fotos = this.fotos();
+    if (!folder || fotos.length === 0) return;
+
+    this.downloadingAll.set(true);
+    try {
+      const zip = new JSZip();
+      await Promise.all(
+        fotos.map(async (filename) => {
+          const url =
+            this.getPhotoUrl(filename) + (this.getPhotoUrl(filename).includes('?') ? '&download=1' : '?download=1');
+          const response = await fetch(url);
+          if (response.ok) {
+            zip.file(filename, await response.blob());
+          }
+        })
+      );
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${folder.naam}.zip`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    } catch {
+      this.toastr.error("Fout bij het downloaden van de foto's", 'Fout');
+    } finally {
+      this.downloadingAll.set(false);
     }
   }
 
