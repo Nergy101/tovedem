@@ -4,6 +4,25 @@
   }
 }
 
+.download-progress-label {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+:host ::ng-deep .button-spinner {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0;
+}
+
+// Zorg dat het terug-icoontje gecentreerd staat in de knop
+:host ::ng-deep .mat-mdc-icon-button .mat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .year-badge {
   font-size: 1rem;
   opacity: 0.7;
@@ -12,9 +31,9 @@
 .grid {
   padding: 1em;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  align-items: end;
   gap: 1rem;
-  justify-content: center;
 
   @media (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
@@ -60,14 +79,8 @@
 
   .photo-card-image-wrap {
     position: relative;
-    width: 200px;
-    height: 200px;
-
-    @media (max-width: 767px) {
-      width: 100%;
-      aspect-ratio: 1;
-      height: auto;
-    }
+    width: 100%;
+    min-height: 80px; // ruimte voor de spinner vóór het laden
   }
 
   .photo-number {
@@ -95,16 +108,9 @@
   }
 
   .photo-card-image-wrap img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-
-    @media (max-width: 767px) {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      inset: 0;
-    }
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   mat-card-actions {

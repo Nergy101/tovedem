@@ -1,4 +1,4 @@
-<div class="container mt-4 folder-detail-view">
+<div class="container mt-5 folder-detail-view">
   <div class="container">
     <div class="row align-items-center mb-4">
       <div class="col-auto">
@@ -12,22 +12,49 @@
       </div>
       <div class="col">
         @if (folder()) {
-          <p class="display-1 mb-0">{{ folder()!.naam }}</p>
+          <p class="display-4 mb-0">{{ folder()!.naam }}</p>
           @if (folder()!.jaar) {
             <span class="year-badge">{{ folder()!.jaar }}</span>
           }
         }
       </div>
-    </div>
-
-    @if (canUpload()) {
-      <div class="row my-4 align-items-center">
-        <div class="col-auto">
-          <button mat-fab extended color="primary" (click)="openUploadDialog()">
-            <mat-icon>add_circle</mat-icon>
-            Foto's toevoegen
+      @if (canDeleteAlbum()) {
+        <div class="col-auto ms-auto">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="deleteAlbum()"
+            aria-label="Album verwijderen"
+          >
+            <mat-icon>delete_forever</mat-icon>
+            Album verwijderen
           </button>
         </div>
+      }
+    </div>
+
+    @if (canUpload() || fotos().length > 0) {
+      <div class="row my-4 align-items-center">
+        @if (canUpload()) {
+          <div class="col-auto">
+            <button mat-fab extended color="primary" (click)="openUploadDialog()">
+              <mat-icon>add_circle</mat-icon>
+              Foto's toevoegen
+            </button>
+          </div>
+        }
+        @if (fotos().length > 0) {
+          <div class="col-auto">
+            <button mat-flat-button color="accent" (click)="downloadAllAsZip()" [disabled]="downloadingZip()">
+              @if (downloadingZip()) {
+                <mat-spinner diameter="18" class="button-spinner"></mat-spinner>
+              } @else {
+                <mat-icon>download</mat-icon>
+              }
+              Download alles
+            </button>
+          </div>
+        }
         <div class="col-auto">
           <span class="text-muted">
             Totaal: {{ fotos().length }} foto{{
@@ -36,6 +63,25 @@
           </span>
         </div>
       </div>
+      @if (downloadProgress(); as progress) {
+        <div class="row mb-2">
+          <div class="col">
+            <p class="download-progress-label">
+              @if (progress.phase === 'zipping') {
+                Zip wordt gemaakt…
+              } @else {
+                {{ progress.current }} / {{ progress.total }} foto{{
+                  progress.total === 1 ? "" : "'s"
+                }} gedownload
+              }
+            </p>
+            <mat-progress-bar
+              [mode]="progress.phase === 'zipping' ? 'indeterminate' : 'determinate'"
+              [value]="(progress.current / progress.total) * 100"
+            ></mat-progress-bar>
+          </div>
+        </div>
+      }
     }
 
     <mat-card class="gallery" appearance="outlined">

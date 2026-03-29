@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Nieuw album</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Naam</mat-label>
+      <input matInput formControlName="naam" placeholder="bijv. Romeo en Julia" />
+      @if (form.controls.naam.hasError('required') && form.controls.naam.touched) {
+        <mat-error>Naam is verplicht</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Jaar</mat-label>
+      <input matInput type="number" formControlName="jaar" placeholder="bijv. 2024" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Koppel aan voorstelling (optioneel)</mat-label>
+      <mat-select formControlName="voorstelling" [disabled]="loadingVoorstellingen()">
+        <mat-option value="">— Geen —</mat-option>
+        @for (v of voorstellingen(); track v.id) {
+          <mat-option [value]="v.id">{{ getVoorstellingLabel(v) }}</mat-option>
+        }
+      </mat-select>
+      @if (loadingVoorstellingen()) {
+        <mat-hint>Voorstellingen laden…</mat-hint>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuleren</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="form.invalid || loading()"
+    (click)="submit()"
+  >
+    @if (loading()) {
+      <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+    } @else {
+      <mat-icon>create_new_folder</mat-icon>
+    }
+    Album aanmaken
+  </button>
+</mat-dialog-actions>

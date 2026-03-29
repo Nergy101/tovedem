@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  min-width: 360px;
+
+  @media (max-width: 480px) {
+    min-width: unset;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-spinner {
+  width: 20px !important;
+  height: 20px !important;
+  margin-inline-end: 8px;
+}

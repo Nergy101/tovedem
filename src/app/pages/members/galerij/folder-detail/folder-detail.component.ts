@@ -1,8 +1,10 @@
+import JSZip from 'jszip';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +24,7 @@ import { FolderPhotoUploadDialogComponent } from './folder-photo-upload-dialog/f
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     RouterModule,
     CancelViewportImageDirective,
@@ -41,6 +44,12 @@ export class FolderDetailComponent implements OnInit {
   folder = signal<VoorstellingFolder | null>(null);
   loading = signal(true);
   fileToken = signal<string | null>(null);
+  downloadingZip = signal(false);
+  downloadProgress = signal<{
+    current: number;
+    total: number;
+    phase: 'downloading' | 'zipping';
+  } | null>(null);
   /** Filenames van foto's die al geladen zijn (voor spinner in kaart). */
   loadedPhotos = signal<Set<string>>(new Set());
 
@@ -70,6 +79,13 @@ export class FolderDetailComponent implements OnInit {
     return (
       this.authService.isGlobalAdmin ||
       this.authService.userHasAnyRole(['admin', 'commissie'])
+    );
+  });
+
+  canDeleteAlbum = computed(() => {
+    return (
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAnyRole(['admin'])
     );
   });
 
@@ -244,6 +260,80 @@ export class FolderDetailComponent implements OnInit {
       this.toastr.error(errorMessage, 'Fout bij verwijderen');
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  async downloadAllAsZip(): Promise<void> {
+    const folder = this.folder();
+    const fotos = this.fotos();
+    if (!folder || fotos.length === 0) return;
+
+    const total = fotos.length;
+    this.downloadingZip.set(true);
+    this.downloadProgress.set({ current: 0, total, phase: 'downloading' });
+    try {
+      const zip = new JSZip();
+      let completed = 0;
+      await Promise.all(
+        fotos.map(async (filename) => {
+          const url = this.getPhotoUrl(filename);
+          const response = await fetch(url);
+          const blob = await response.blob();
+          zip.file(filename, blob);
+          this.downloadProgress.set({ current: ++completed, total, phase: 'downloading' });
+        })
+      );
+
+      this.downloadProgress.set({ current: total, total, phase: 'zipping' });
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const zipName = folder.jaar
+        ? `${folder.naam} ${folder.jaar}.zip`
+        : `${folder.naam}.zip`;
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = zipName;
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      this.toastr.success('Zip gedownload', 'Gelukt!');
+    } catch {
+      this.toastr.error('Fout bij het maken van de zip', 'Fout');
+    } finally {
+      this.downloadingZip.set(false);
+      this.downloadProgress.set(null);
+    }
+  }
+
+  async deleteAlbum(): Promise<void> {
+    const folder = this.folder();
+    if (!folder) return;
+
+    const fotoCount = this.fotos().length;
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Album verwijderen',
+        message: `Weet je zeker dat je het album "${folder.naam}" wilt verwijderen? Dit verwijdert ook alle ${fotoCount} foto${fotoCount === 1 ? '' : "'s"}.`,
+        confirmLabel: 'Verwijderen',
+        confirmColor: 'warn',
+      },
+    });
+
+    const result = await lastValueFrom(dialogRef.afterClosed());
+    if (!result) return;
+
+    try {
+      await this.client.directClient
+        .collection('voorstellingen_folders')
+        .delete(folder.id);
+      this.toastr.success('Album succesvol verwijderd', 'Gelukt!');
+      this.router.navigate(['/galerij']);
+    } catch (error) {
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        'Album verwijderen'
+      );
+      this.toastr.error(errorMessage, 'Fout');
     }
   }
 

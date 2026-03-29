@@ -1,7 +1,17 @@
 <div class="container mt-4">
   <div class="container">
-    <div class="row">
-      <p class="display-1">Galerij</p>
+    <div class="row align-items-center mb-2">
+      <div class="col">
+        <p class="display-1 mb-0">Galerij</p>
+      </div>
+      @if (canCreateAlbum()) {
+        <div class="col-auto">
+          <button mat-fab extended color="primary" (click)="openCreateDialog()">
+            <mat-icon>create_new_folder</mat-icon>
+            Nieuw album
+          </button>
+        </div>
+      }
     </div>
 
     <mat-tab-group

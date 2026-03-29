@@ -7,5 +7,5 @@
   @if (showArchiveButton) {
     <button mat-flat-button (click)="archive()" style="background-color: #ff9800; color: white;">Archiveren</button>
   }
-  <button mat-flat-button color="primary" [mat-dialog-close]="true">Bevestigen</button>
+  <button mat-flat-button [color]="confirmColor" [mat-dialog-close]="true">{{ confirmLabel }}</button>
 </mat-dialog-actions>

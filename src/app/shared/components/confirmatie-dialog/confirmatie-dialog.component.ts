@@ -15,16 +15,26 @@ import {
 })
 export class ConfirmatieDialogComponent {
   dialogRef = inject(MatDialogRef<ConfirmatieDialogComponent>);
-  data: { title: string; message: string; showArchiveButton?: boolean } = inject(MAT_DIALOG_DATA);
+  data: {
+    title: string;
+    message: string;
+    showArchiveButton?: boolean;
+    confirmLabel?: string;
+    confirmColor?: 'primary' | 'warn' | 'accent';
+  } = inject(MAT_DIALOG_DATA);
 
   title: string;
   message: string;
   showArchiveButton: boolean;
+  confirmLabel: string;
+  confirmColor: 'primary' | 'warn' | 'accent';
 
   constructor() {
     this.title = this.data.title || 'Bevestiging';
     this.message = this.data.message || 'Weet je zeker dat je door wilt gaan?';
     this.showArchiveButton = this.data.showArchiveButton || false;
+    this.confirmLabel = this.data.confirmLabel || 'Bevestigen';
+    this.confirmColor = this.data.confirmColor || 'primary';
   }
 
   archive(): void {
