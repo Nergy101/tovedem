@@ -36,10 +36,16 @@
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            <h2>Reserveren voor voorstelling: {{ voorstellingsNaam() }}</h2>
+            <div class="title-row">
+              <button mat-stroked-button (click)="location.back()">
+                <mat-icon>arrow_back</mat-icon>
+                Terug
+              </button>
+              <h2>Reserveren voor voorstelling:<br class="mobile-break"> {{ voorstellingsNaam() }}</h2>
+            </div>
           </mat-card-title>
-          <mat-card-subtitle>
-            <h4>
+          <mat-card-subtitle style="text-align: center">
+            <h4 class="opgevoerd-door">
               opgevoerd door: {{ groepsNaam() }}, locatie:
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Orangjelaan+10,+3454+BT+De+Meern,+Nederland"
@@ -52,6 +58,32 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="p-4">
+          @if (voorstellingAfbeelding() || voorstellingOndertitel() || voorstellingRegie() || voorstellingOmschrijving()) {
+            <div class="voorstelling-info">
+              @if (voorstellingAfbeelding()) {
+                <img
+                  class="voorstelling-afbeelding"
+                  [src]="'https://pocketbase.nergy.space/api/files/' + voorstellingCollectionId() + '/' + voorstellingRecordId() + '/' + voorstellingAfbeelding()"
+                  [alt]="voorstellingsNaam()"
+                />
+              }
+              <div class="voorstelling-details">
+                @if (voorstellingOndertitel()) {
+                  <p class="ondertitel">{{ voorstellingOndertitel() }}</p>
+                }
+                @if (voorstellingRegie()) {
+                  <div class="regie"><strong>Regie:</strong> <span [innerHTML]="voorstellingRegie()"></span></div>
+                }
+                @if (voorstellingPrijs()) {
+                  <p class="prijs"><strong>Prijs:</strong> € {{ voorstellingPrijs()!.toFixed(2) }} per kaartje</p>
+                }
+                @if (voorstellingOmschrijving()) {
+                  <div class="omschrijving" [innerHTML]="voorstellingOmschrijving()"></div>
+                }
+              </div>
+            </div>
+          }
+
           <!-- Aria-live region for reservation totals -->
           <div aria-live="polite" aria-atomic="true" class="sr-only">
             @if (loadingTotals()) {
@@ -481,6 +513,7 @@
                     </mat-checkbox>
                     <button
                       color="primary"
+                      class="reserveer-button"
                       style="flex: 1; min-height: 48px"
                       mat-flat-button
                       [disabled]="saving() || !formIsValid()"

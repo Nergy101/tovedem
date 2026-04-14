@@ -85,6 +85,7 @@
 
 .container {
   padding-top: 2em;
+  overflow-x: hidden;
 }
 
 .center {
@@ -205,6 +206,125 @@ input[type="number"] {
   html.darkMode .mat-mdc-card * .reservering-gesloten,
   html.darkMode .reservering-gesloten {
     color: #d32f2f !important;
+  }
+}
+
+::ng-deep mat-card-header {
+  display: block !important;
+  width: 100%;
+
+  .mat-mdc-card-header-text {
+    width: 100%;
+  }
+}
+
+.title-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  button {
+    position: absolute;
+    left: 0;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    padding: 0 7rem;
+    word-break: break-word;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    button {
+      position: static;
+    }
+
+    h2 {
+      padding: 0;
+      text-align: left;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.voorstelling-info {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(125, 179, 232, 0.2);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.voorstelling-afbeelding {
+  width: 220px;
+  max-width: 100%;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: cover;
+  align-self: flex-start;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-height: 200px;
+  }
+}
+
+.voorstelling-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  .ondertitel {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .regie,
+  .prijs {
+    margin: 0;
+  }
+
+  .omschrijving {
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+}
+
+.mobile-break {
+  display: none;
+
+  @media (max-width: 600px) {
+    display: block;
+  }
+}
+
+.opgevoerd-door {
+  @media (max-width: 600px) {
+    font-size: 0.85rem;
+    font-weight: normal;
+  }
+}
+
+.reserveer-button {
+  @media (max-width: 768px) {
+    margin-top: 1rem;
   }
 }
 

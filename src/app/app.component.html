@@ -35,7 +35,12 @@
   </nav>
 </header>
 
-<mat-drawer-container class="custom-bg" autosize [hasBackdrop]="false">
+<mat-drawer-container
+  class="custom-bg"
+  autosize
+  [hasBackdrop]="!breakpointService.isDesktopScreen()"
+  (backdropClick)="sideDrawerService.close()"
+>
   <mat-drawer
     #drawer
     class="sidenav custom-bg sidenav-mobile-home"

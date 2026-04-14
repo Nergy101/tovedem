@@ -2,7 +2,7 @@
   <div class="row">
     <div class="d-flex justify-content-center gap-4">
       <img ngSrc="assets/TovedemLogo.svg" alt="logo" height="100" width="100" />
-      <div class="display-3 mt-4">Welkom</div>
+      <div class="display-3 mt-4 welkom-titel">Welkom</div>
       <img ngSrc="assets/TovedemLogo.svg" alt="logo" height="100" width="100" />
     </div>
   </div>
@@ -40,6 +40,7 @@
           <button
             class="flex-grow-1 open-leden-paneel-btn"
             mat-raised-button
+            color="primary"
             (click)="openSideDrawer()"
           >
             <mat-icon>chevron_right</mat-icon>
@@ -52,18 +53,12 @@
 
   <div class="row justify-content-center mt-4">
     <div class="col-xl-6 col-12">
-      @if (!breakpointService.isMobileScreen()) {
-        <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
-      } @else {
-        <div style="max-width: 400px">
-          <ng-container *ngTemplateOutlet="expansionPanel"> </ng-container>
-        </div>
-      }
+      <ng-container *ngTemplateOutlet="expansionPanel"></ng-container>
     </div>
   </div>
 
   @if (canAccessProductieInfo()) {
-    <div class="row justify-content-around mt-4">
+    <div class="row justify-content-around mt-4 g-1">
       <mat-card
         class="col-3 action-card"
         (click)="navigateTo('/productie-info/Tovedem')"
@@ -98,9 +93,9 @@
     </div>
   }
   @if (canAccessKassa() || canAccessAlgemeneInformatie()) {
-    <div class="row justify-content-around mt-4">
+    <div class="row justify-content-around mt-4 g-2">
       @if (canAccessKassa()) {
-        <mat-card class="col-5 action-card" (click)="navigateTo('/kassa')">
+        <mat-card class="col-sm-5 col-12 action-card" (click)="navigateTo('/kassa')">
           <mat-card-title class="text-center">Kassa</mat-card-title>
           <mat-card-actions class="actions">
             <mat-icon>shopping_cart</mat-icon>
@@ -109,7 +104,7 @@
       }
       @if (canAccessAlgemeneInformatie()) {
         <mat-card
-          class="col-5 action-card"
+          class="col-sm-5 col-12 action-card"
           (click)="navigateTo('/algemene-informatie')"
         >
           <mat-card-title class="text-center"
@@ -124,7 +119,7 @@
   }
   @if (authService.isLoggedIn()) {
     <div class="row justify-content-center mt-4">
-      <div class="col-xl-10 col-12">
+      <div class="col-12">
         <mat-card>
           <mat-card-header
             style="margin-right: auto; margin-left: auto; margin-bottom: 1rem"
@@ -225,7 +220,7 @@
   <div class="row d-flex flex-grow-1 mt-4">
     <div class="d-flex justify-content-center">
       <button
-        mat-flat-button
+        mat-stroked-button
         color="warn"
         (click)="logout()"
         class="col-xl-6 col-12"

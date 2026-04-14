@@ -8,6 +8,9 @@
 }
 
 .links {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
   padding-top: $spacing-8;
   transition: background-color $transition-base $ease-out,
     color $transition-base $ease-out, border-color $transition-base $ease-out;
@@ -31,6 +34,30 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 767px) {
+    text-align: center;
+    padding: $spacing-6 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(125, 179, 232, 0.2);
+    }
+
+    ul {
+      align-items: center;
+      margin-left: 0;
+    }
+
+    .adres {
+      text-align: center;
+    }
+  }
+}
+
+.service-status {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
 }
 
 .privacy {
@@ -39,6 +66,17 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-3;
+    text-align: center;
+
+    .service-status {
+      margin-left: 0;
+    }
+  }
   transition: background-color $transition-base $ease-out,
     color $transition-base $ease-out, border-color $transition-base $ease-out;
 }
@@ -51,11 +89,15 @@
 
   .service-status {
     margin-left: auto;
-    color: #d4d6da;
+    color: #ffffff;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
     padding-bottom: 2px;
     transition: color $transition-base $ease-out,
       transform $transition-base $ease-out;
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
       color: var(--mat-sys-primary) !important;
@@ -102,11 +144,15 @@
 
   .service-status {
     margin-left: auto;
-    color: #1a1d24;
+    color: #ffffff;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
     padding-bottom: 2px;
     transition: color $transition-base $ease-out,
       transform $transition-base $ease-out;
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
       color: var(--mat-sys-primary) !important;
@@ -207,6 +253,14 @@ ul {
   padding: 0;
   margin: 0;
   margin-left: $spacing-4;
+
+  @media (max-width: 767px) {
+    margin-left: 0;
+
+    li a {
+      justify-content: center;
+    }
+  }
 
   li {
     transition: color $transition-base $ease-out;
@@ -317,6 +371,10 @@ h2 {
   font-weight: $font-weight-semibold;
   margin-bottom: $spacing-4;
   transition: color $transition-base $ease-out;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+  }
 }
 
 // Dark theme h2

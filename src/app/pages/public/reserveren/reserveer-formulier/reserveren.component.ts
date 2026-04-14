@@ -30,6 +30,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -75,6 +76,7 @@ export class ReserverenComponent implements OnInit {
   dateTimeService = inject(DateTimeService);
 
   router = inject(Router);
+  location = inject(Location);
 
   // Signal Forms: Create form model and form instance
   // NOTE: Signal Forms are experimental in Angular 21
@@ -217,8 +219,14 @@ export class ReserverenComponent implements OnInit {
 
   loaded = signal(false);
 
-  voorstellingOmschrijving = '';
   voorstellingsNaam = signal('');
+  voorstellingOndertitel = signal('');
+  voorstellingRegie = signal('');
+  voorstellingOmschrijving = signal('');
+  voorstellingAfbeelding = signal('');
+  voorstellingCollectionId = signal('');
+  voorstellingRecordId = signal('');
+  voorstellingPrijs = signal<number | null>(null);
   groepsNaam = signal('');
 
   // Store UTC strings for proper timezone handling
@@ -266,6 +274,13 @@ export class ReserverenComponent implements OnInit {
       );
 
       this.voorstellingsNaam.set(voorstelling.titel);
+      this.voorstellingOndertitel.set(voorstelling.ondertitel ?? '');
+      this.voorstellingRegie.set(voorstelling.regie ?? '');
+      this.voorstellingOmschrijving.set(voorstelling.omschrijving ?? '');
+      this.voorstellingAfbeelding.set(voorstelling.afbeelding ?? '');
+      this.voorstellingCollectionId.set(voorstelling.collectionId);
+      this.voorstellingRecordId.set(voorstelling.id);
+      this.voorstellingPrijs.set(voorstelling.prijs_per_kaartje ?? null);
       // Store UTC strings directly
       this.datum1Str = voorstelling.datum_tijd_1 ?? null;
       this.datum2Str = voorstelling.datum_tijd_2 ?? null;

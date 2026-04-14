@@ -1,32 +1,19 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light p-0">
   <div class="container-fluid p-2">
-    <a
-      class="navbar-brand"
-      routerLink="/"
-      matTooltip="Naar homepage"
-      aria-label="Tovedem homepage"
-      ><img
-        class="logo"
-        src="/assets/TovedemLogo.svg"
-        alt="Tovedem logo"
-        style="height: 50px; width: auto"
-    /></a>
-    <div class="d-flex align-items-center gap-2">
-      <button
-        mat-icon-button
-        type="button"
-        aria-label="Thema wisselen"
-        (click)="toggleTheme()"
-        [matTooltip]="
-          themeService.isDarkTheme()
-            ? 'Schakel naar licht thema'
-            : 'Schakel naar donker thema'
-        "
-      >
-        <mat-icon>{{
-          themeService.isDarkTheme() ? "light_mode" : "dark_mode"
-        }}</mat-icon>
-      </button>
+
+    <!-- Left: logo + sidenav toggle -->
+    <div class="navbar-left">
+      <a
+        class="navbar-brand"
+        routerLink="/"
+        matTooltip="Naar homepage"
+        aria-label="Tovedem homepage"
+        ><img
+          class="logo"
+          src="/assets/TovedemLogo.svg"
+          alt="Tovedem logo"
+          style="height: 50px; width: auto"
+      /></a>
       @if (hasAccessToSidenavPages) {
       <button
         mat-icon-button
@@ -34,48 +21,31 @@
         type="button"
         aria-label="Ledenmenu openen of sluiten"
         (click)="toggleSideDrawer()"
-        [matTooltip]="
-          sideDrawerService.isOpen() ? 'Sluit zijmenu' : 'Open zijmenu'
-        "
+        [matTooltip]="sideDrawerService.isOpen() ? 'Sluit zijmenu' : 'Open zijmenu'"
       >
-        <mat-icon>{{
-          sideDrawerService.isOpen() ? "menu_open" : "menu"
-        }}</mat-icon>
+        @if (sideDrawerService.isOpen()) {
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" aria-hidden="true"><path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" aria-hidden="true"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+        }
       </button>
-      } @if (authService.isLoggedIn()){
+      }
+      @if (authService.isLoggedIn()) {
       <button
-        class="navbar-toggler mobile-sidenav-toggle justify-self-end"
+        class="navbar-toggler mobile-sidenav-toggle"
         type="button"
         aria-label="Ledenmenu openen of sluiten"
         (click)="toggleSideDrawer()"
       >
-        <div class="d-flex flex-column">
-          <span><mat-icon class="navbar-icon">menu</mat-icon></span>
-          <span>
-            @if(sideDrawerService.isOpen()){
-            <mat-icon class="navbar-icon">chevron_right</mat-icon>
-            } @else {
-            <mat-icon class="navbar-icon">chevron_left </mat-icon>
-            }
-          </span>
-        </div>
+        @if (sideDrawerService.isOpen()) {
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" aria-hidden="true"><path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" aria-hidden="true"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+        }
       </button>
       }
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        [attr.aria-expanded]="false"
-        aria-label="Open of sluit navigatiemenu"
-      >
-        <div class="d-flex flex-column">
-          <span><mat-icon class="navbar-icon">menu</mat-icon></span>
-          <span><mat-icon class="navbar-icon">expand_more</mat-icon></span>
-        </div>
-      </button>
     </div>
+
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
       <div class="links-container">
         <ul class="links navbar-nav nav-pills nav-fill">
@@ -271,6 +241,30 @@
           }
         </ul>
       </div>
+    </div>
+
+    <!-- Right: theme toggle + hamburger (always visible) -->
+    <div class="navbar-right">
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Thema wisselen"
+        (click)="toggleTheme()"
+        [matTooltip]="themeService.isDarkTheme() ? 'Schakel naar licht thema' : 'Schakel naar donker thema'"
+      >
+        <mat-icon>{{ themeService.isDarkTheme() ? "light_mode" : "dark_mode" }}</mat-icon>
+      </button>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        [attr.aria-expanded]="false"
+        aria-label="Open of sluit navigatiemenu"
+      >
+        <mat-icon class="navbar-icon">menu</mat-icon>
+      </button>
     </div>
   </div>
 </nav>

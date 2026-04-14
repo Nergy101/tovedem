@@ -1,9 +1,49 @@
 :host {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden;
   padding: 4em;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
+}
+
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.welkom-titel {
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 mat-expansion-panel {
   width: auto;
+  max-width: 100%;
+}
+
+.action-card {
+  @media (max-width: 768px) {
+    mat-card-title {
+      font-size: 0.8rem;
+    }
+  }
 }
 
 .action-card {

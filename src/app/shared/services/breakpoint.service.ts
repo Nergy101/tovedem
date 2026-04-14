@@ -21,7 +21,7 @@ export class BreakpointService {
 
     this.isDesktopScreen = toSignal(
       this.breakpointObserver
-        .observe('(min-width: 1440px)')
+        .observe('(min-width: 1290px)')
         .pipe(map((x) => x.matches))
     );
   }

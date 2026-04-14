@@ -7,6 +7,9 @@
     <mat-expansion-panel
       style="width: 100%"
       [class.section-active]="isSectionActive(['/productie-info'])"
+      [expanded]="panelState['productie-info']"
+      (opened)="setPanelState('productie-info', true)"
+      (closed)="setPanelState('productie-info', false)"
     >
       <mat-expansion-panel-header>
         <mat-panel-title> Productie informatie </mat-panel-title>
@@ -64,6 +67,9 @@
       [class.section-active]="
         isSectionActive(['/commissie-sinterklaas', '/beheer-nieuws'])
       "
+      [expanded]="panelState['commissies']"
+      (opened)="setPanelState('commissies', true)"
+      (closed)="setPanelState('commissies', false)"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>Commissies</mat-panel-title>
@@ -138,6 +144,9 @@
           '/beheer-mails'
         ])
       "
+      [expanded]="panelState['beheer']"
+      (opened)="setPanelState('beheer', true)"
+      (closed)="setPanelState('beheer', false)"
     >
       <mat-expansion-panel-header>
         <mat-panel-title> Beheer </mat-panel-title>
@@ -273,6 +282,9 @@
     <mat-expansion-panel
       style="width: 100%"
       [class.section-active]="isSectionActive(['/galerij'])"
+      [expanded]="panelState['galerij']"
+      (opened)="setPanelState('galerij', true)"
+      (closed)="setPanelState('galerij', false)"
     >
       <mat-expansion-panel-header>
         <mat-panel-title> Galerij </mat-panel-title>
@@ -299,7 +311,12 @@
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.isGlobalAdmin) {
-    <mat-expansion-panel style="width: 100%">
+    <mat-expansion-panel
+      style="width: 100%"
+      [expanded]="panelState['developers']"
+      (opened)="setPanelState('developers', true)"
+      (closed)="setPanelState('developers', false)"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Developers </mat-panel-title>
         <mat-panel-description> </mat-panel-description>

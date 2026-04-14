@@ -129,17 +129,19 @@ footer {
   background-color: transparent !important;
 }
 
-// Light theme - ensure Material drawer components are transparent
+// Light theme - ensure Material drawer is transparent
 :host-context(html.lightMode) {
   ::ng-deep {
     mat-drawer {
       background-color: transparent !important;
     }
-
-    .mat-drawer-backdrop {
-      background-color: transparent !important;
-    }
   }
+}
+
+// Backdrop styling for mobile
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px);
 }
 
 .sidenav {

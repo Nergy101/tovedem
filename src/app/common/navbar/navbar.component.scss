@@ -37,6 +37,11 @@ nav {
 .links-container {
   display: flex;
   justify-content: center;
+
+  @media (max-width: 1289px) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 ul {
@@ -45,14 +50,39 @@ ul {
   padding: 0;
   display: flex;
   align-items: flex-start;
+
+  @media (max-width: 1289px) {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: $spacing-2 0;
+  }
 }
 
 li {
   list-style: none;
   margin-right: $spacing-2;
 
-  @media (max-width: 1024px) {
-    min-width: 20em;
+  @media (max-width: 1289px) {
+    margin-right: 0;
+    width: 100%;
+    max-width: 20em;
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: 100%;
+      height: auto;
+      padding: $spacing-3 $spacing-4;
+
+      ::ng-deep .mat-mdc-button-persistent-ripple,
+      ::ng-deep .mdc-button__label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-1;
+      }
+    }
   }
 
   .active {
@@ -131,6 +161,22 @@ a {
 
 mat-icon {
   transform: scale(1.5);
+  transform-origin: center;
+}
+
+.navbar-left,
+.navbar-right {
+  button[mat-icon-button] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      transform: scale(1.5);
+      transform-origin: center;
+      line-height: 1;
+    }
+  }
 }
 
 .groepsnaam {
@@ -162,20 +208,99 @@ mat-icon {
   color: var(--mat-sys-on-background);
 }
 
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  flex-shrink: 0;
+  order: 1;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  flex-shrink: 0;
+  margin-left: auto;
+  order: 2;
+
+  // Hide hamburger on desktop
+  .navbar-toggler:not(.mobile-sidenav-toggle) {
+    @media (min-width: 1290px) {
+      display: none;
+    }
+  }
+}
+
+.navbar-collapse {
+  order: 3;
+}
+
 // Desktop sidenav toggle - show on desktop, hide on mobile
 .desktop-sidenav-toggle {
   display: none;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1290px) {
     display: inline-flex;
+    width: 48px;
+    height: 48px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 
 // Mobile sidenav toggle - show on mobile, hide on desktop
 .mobile-sidenav-toggle {
   color: var(--mat-sys-on-background);
-  @media (min-width: 1200px) {
+
+  @media (min-width: 1290px) {
     display: none !important;
+  }
+}
+
+// Normalize icon button sizes in mobile navbar
+@media (max-width: 1289px) {
+  .navbar-left,
+  .navbar-right {
+    button:not(.desktop-sidenav-toggle), .navbar-toggler {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+
+      mat-icon {
+        transform: none;
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+      }
+
+      svg {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// Force mobile navbar between Bootstrap xl (1200px) and our custom 1290px breakpoint
+@media (min-width: 1200px) and (max-width: 1289px) {
+  .navbar-collapse:not(.show) {
+    display: none !important;
+  }
+
+  .navbar-toggler:not(.mobile-sidenav-toggle) {
+    display: block !important;
   }
 }
 
