@@ -7,5 +7,5 @@ export const environment: Environment = {
         baseUrl: 'https://pocketbase.nergy.space',
     },
     captchaSiteKey: '6LcM_24qAAAAAAg_LFBuE8rfzLqq6jmliSB08Mxe',
-    version: '1.0.3'
+    version: '1.0.4'
 };

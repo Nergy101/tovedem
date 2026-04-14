@@ -1,6 +1,6 @@
 {
   "name": "tovedem",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "ng": "ng",
     "start": "node scripts/set-version.mjs && ng serve",

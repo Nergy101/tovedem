@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 ### STAGE 2: Run ###
-FROM nginx:1.27-alpine
+FROM nginx:1.29-alpine
 
 # Copy custom nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
