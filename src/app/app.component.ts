@@ -117,9 +117,16 @@ export class AppComponent {
     this.focusManagementService.skipToFooter();
   }
 
+  demoAlertHidden = localStorage.getItem('demoAlertHidden') === 'true';
   demoAlertExpanded = false;
 
   toggleDemoAlert(): void {
     this.demoAlertExpanded = !this.demoAlertExpanded;
+  }
+
+  dismissDemoAlert(event: Event): void {
+    event.stopPropagation();
+    localStorage.setItem('demoAlertHidden', 'true');
+    this.demoAlertHidden = true;
   }
 }

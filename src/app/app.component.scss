@@ -260,6 +260,28 @@ a {
     overflow: visible;
     text-overflow: unset;
   }
+
+  @media (min-width: 1290px) {
+    justify-content: center;
+
+    &.demo-alert--expanded .demo-alert__text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .demo-alert__dismiss {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    cursor: pointer;
+
+    @media (max-width: 1289px) {
+      align-self: flex-start;
+      margin-left: auto;
+    }
+  }
 }
 
 // Dark theme demo alert

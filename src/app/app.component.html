@@ -8,6 +8,7 @@
   >Spring naar footer</a
 >
 <header>
+  @if (!demoAlertHidden) {
   <div
     class="demo-alert"
     [class.demo-alert--expanded]="demoAlertExpanded"
@@ -29,7 +30,16 @@
       >
       om terug te gaan naar de originele website.
     </span>
+    @if (demoAlertExpanded || breakpointService.isDesktopScreen()) {
+      <button
+        mat-button
+        class="demo-alert__dismiss"
+        (click)="dismissDemoAlert($event)"
+        aria-label="Banner niet meer tonen"
+      >Niet meer tonen</button>
+    }
   </div>
+  }
   <nav id="navbar">
     <app-navbar></app-navbar>
   </nav>
