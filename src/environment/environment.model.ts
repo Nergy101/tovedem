@@ -5,4 +5,5 @@ export class Environment {
         baseUrl: string;
     }
     captchaSiteKey!: string;
+    version!: string;
 }

@@ -225,7 +225,7 @@ mat-icon {
   order: 2;
 
   // Hide hamburger on desktop
-  .navbar-toggler:not(.mobile-sidenav-toggle) {
+  .navbar-toggler {
     @media (min-width: 1290px) {
       display: none;
     }
@@ -236,28 +236,15 @@ mat-icon {
   order: 3;
 }
 
-// Desktop sidenav toggle - show on desktop, hide on mobile
+// Sidenav toggle - visible on all breakpoints
 .desktop-sidenav-toggle {
-  display: none;
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
 
-  @media (min-width: 1290px) {
-    display: inline-flex;
-    width: 48px;
-    height: 48px;
-
-    svg {
-      width: 32px;
-      height: 32px;
-    }
-  }
-}
-
-// Mobile sidenav toggle - show on mobile, hide on desktop
-.mobile-sidenav-toggle {
-  color: var(--mat-sys-on-background);
-
-  @media (min-width: 1290px) {
-    display: none !important;
+  svg {
+    width: 32px;
+    height: 32px;
   }
 }
 
@@ -265,7 +252,7 @@ mat-icon {
 @media (max-width: 1289px) {
   .navbar-left,
   .navbar-right {
-    button:not(.desktop-sidenav-toggle), .navbar-toggler {
+    button, .navbar-toggler {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -293,13 +280,30 @@ mat-icon {
   }
 }
 
+// Theme toggle smaller on mobile
+@media (max-width: 1289px) {
+  .navbar-right {
+    button[mat-icon-button] {
+      width: 36px;
+      height: 36px;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        line-height: 22px;
+      }
+    }
+  }
+}
+
 // Force mobile navbar between Bootstrap xl (1200px) and our custom 1290px breakpoint
 @media (min-width: 1200px) and (max-width: 1289px) {
   .navbar-collapse:not(.show) {
     display: none !important;
   }
 
-  .navbar-toggler:not(.mobile-sidenav-toggle) {
+  .navbar-toggler {
     display: block !important;
   }
 }

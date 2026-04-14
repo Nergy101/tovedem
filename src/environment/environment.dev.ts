@@ -6,5 +6,6 @@ export const environment: Environment = {
     pocketbase: {
         baseUrl: 'https://pocketbase.nergy.space',
     },
-    captchaSiteKey: '6LcM_24qAAAAAAg_LFBuE8rfzLqq6jmliSB08Mxe'
+    captchaSiteKey: '6LcM_24qAAAAAAg_LFBuE8rfzLqq6jmliSB08Mxe',
+    version: '1.0.0'
 };

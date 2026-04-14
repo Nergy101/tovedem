@@ -1,12 +1,12 @@
 {
   "name": "tovedem",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start:devcontainer": "ng serve --host 0.0.0.0",
+    "start": "node scripts/set-version.mjs && ng serve",
+    "start:devcontainer": "node scripts/set-version.mjs && ng serve --host 0.0.0.0",
     "build": "ng build",
-    "build:prod": "ng build --configuration production",
+    "build:prod": "node scripts/set-version.mjs && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch --no-progress --browsers ChromeHeadless",
     "test:ui": "ng test --browsers Chrome",
