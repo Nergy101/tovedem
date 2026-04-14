@@ -1,6 +1,7 @@
 # This dockerfile is used within the GitHub Actions workflow to build the Docker image,
 # and uses the build-artifacts directory to copy the build files to the nginx image.
 FROM nginx:1.29-alpine
+RUN apk upgrade --no-cache
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY tovedem/browser /usr/share/nginx/html
 EXPOSE 80

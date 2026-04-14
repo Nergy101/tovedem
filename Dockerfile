@@ -14,6 +14,7 @@ RUN npm run build
 
 ### STAGE 2: Run ###
 FROM nginx:1.29-alpine
+RUN apk upgrade --no-cache
 
 # Copy custom nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
