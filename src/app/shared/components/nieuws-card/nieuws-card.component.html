@@ -1,10 +1,16 @@
-<mat-card class="nieuws-card mat-elevation-z2">
+<mat-card
+  class="nieuws-card mat-elevation-z2"
+  style="
+    border-bottom-right-radius: 1em !important;
+    border-bottom-left-radius: 1em !important;
+  "
+>
   <mat-card-content class="card-content">
     <div class="text-section">
       <mat-card-header class="card-header">
         <mat-card-title class="card-title">{{ nieuws().titel }}</mat-card-title>
         <mat-card-subtitle class="card-date">
-          {{ nieuws().publishDate | amsterdamDate:'dd-MM-yyyy' }}
+          {{ nieuws().publishDate | amsterdamDate: "dd-MM-yyyy" }}
         </mat-card-subtitle>
       </mat-card-header>
       <div class="content-text">
@@ -12,19 +18,24 @@
       </div>
     </div>
     <div class="image-section">
-      @if(!!nieuws().afbeelding){
-      <img
-        [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
-        class="card-image"
-        [src]="
-          getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)
-        "
-      />} @else {
-      <img
-        [alt]="'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')"
-        class="card-image"
-        src="/assets/Place-Holder-Image.jpg"
-      />
+      @if (!!nieuws().afbeelding) {
+        <img
+          [alt]="
+            'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')
+          "
+          class="card-image"
+          [src]="
+            getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)
+          "
+        />
+      } @else {
+        <img
+          [alt]="
+            'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')
+          "
+          class="card-image"
+          src="/assets/Place-Holder-Image.jpg"
+        />
       }
     </div>
   </mat-card-content>

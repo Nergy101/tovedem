@@ -18,13 +18,14 @@
 .nieuws-card {
   display: flex;
   flex-direction: column;
-  border-radius: $border-radius-xl;
+  border-radius: $border-radius-xl !important;
   transition: box-shadow $transition-base $ease-out;
   overflow: hidden;
   max-height: 250px;
   max-width: 100%;
   box-sizing: border-box;
   width: 100%;
+  padding: 0;
 
   @media (max-width: 768px) {
     max-height: none;
@@ -43,6 +44,7 @@
   gap: $spacing-4;
   height: 100%;
   overflow: hidden;
+  border-radius: $border-radius-xl !important;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -90,6 +92,14 @@
   margin-top: 0;
 }
 
+:host-context(html.darkMode) {
+  margin: 0;
+
+  .card-date {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
 .content-text {
   flex: 1;
   overflow: hidden;
@@ -99,13 +109,14 @@
     flex-direction: column;
     line-height: 1.4;
     font-size: 0.875rem;
-    overflow-wrap: anywhere;
-    word-break: keep-all;
+    overflow-wrap: break-word;
+    word-break: normal;
 
     ::ng-deep p {
       margin: 0;
       padding: 0;
-      word-break: keep-all;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
   }
 }

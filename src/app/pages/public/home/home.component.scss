@@ -45,7 +45,7 @@ h2 {
   box-sizing: border-box;
 
   @media (max-width: 1024px) {
-    margin-top: 4em;
+    margin-top: 0;
   }
 }
 
@@ -97,9 +97,13 @@ h2 {
             flex: 0 0 auto !important;
           }
         }
+      }
 
-        .mat-mdc-tab-header-pagination {
-          display: flex !important;
+      &:not(.single-item) {
+        ::ng-deep {
+          .mat-mdc-tab-header-pagination {
+            display: flex !important;
+          }
         }
       }
     }
@@ -108,8 +112,9 @@ h2 {
 
 .mainText {
   overflow: hidden;
+
   @media screen and (max-width: 768px) {
-    padding-top: 2em;
+    padding-top: 0;
   }
 }
 
@@ -176,6 +181,7 @@ h2 {
   @media (max-width: 768px) {
     padding-right: $spacing-6;
     padding-left: $spacing-6;
+    margin-top: 2em;
   }
 
   @media (max-width: 480px) {
@@ -206,6 +212,34 @@ h2 {
 
   @media (max-width: 768px) {
     height: 20em;
+  }
+}
+
+:host-context(html.darkMode) {
+  .nieuws-section {
+    ::ng-deep {
+
+      .mat-mdc-tab-group,
+      .mat-mdc-tab-header,
+      .mat-mdc-tab-body-wrapper,
+      .mat-mdc-tab-body,
+      .mat-mdc-tab-body-content {
+        background-color: var(--mat-sys-surface-container);
+      }
+
+      .mdc-tab__text-label {
+        color: var(--mat-sys-on-surface-variant);
+      }
+
+      // Flatten the card so it doesn't create a second layer
+      .mat-mdc-card {
+        background-color: transparent;
+        box-shadow: none;
+        border: none !important;
+        border-radius: 0 !important;
+        color: var(--mat-sys-on-surface);
+      }
+    }
   }
 }
 
