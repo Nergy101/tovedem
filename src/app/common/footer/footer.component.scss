@@ -95,11 +95,11 @@
   border-top: 1px solid rgba(125, 179, 232, 0.1);
 
   .service-status {
-    color: #ffffff;
+    color: #d4d6da;
     padding-bottom: 2px;
     transition: color $transition-base $ease-out,
       transform $transition-base $ease-out;
-    text-decoration: none;
+    text-decoration: underline;
 
     &:hover {
       color: var(--mat-sys-primary) !important;
@@ -145,11 +145,11 @@
   border-top: 1px solid rgba(125, 179, 232, 0.3);
 
   .service-status {
-    color: #ffffff;
+    color: #1a1d24;
     padding-bottom: 2px;
     transition: color $transition-base $ease-out,
       transform $transition-base $ease-out;
-    text-decoration: none;
+    text-decoration: underline;
 
     &:hover {
       color: var(--mat-sys-primary) !important;
