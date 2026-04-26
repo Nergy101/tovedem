@@ -27,7 +27,7 @@
         <mat-card-header>
           <div class="w-100 d-flex flex-column">
             <h2 class="mb-3">Er zijn vandaag geen voorstellingen.</h2>
-            @if (isAdmin()) {
+            @if (hasKassaAccess()) {
             <div class="pt-3 border-top">
               <button
                 mat-stroked-button
@@ -110,7 +110,7 @@
               </div>
               }
             </div>
-            @if (isAdmin() && shouldShowEerstvolgendeButton()) {
+            @if (hasKassaAccess() && shouldShowEerstvolgendeButton()) {
             <div class="pt-3 border-top">
               <button
                 mat-stroked-button
