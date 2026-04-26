@@ -203,6 +203,18 @@ export class KassaComponent implements OnInit {
     );
   });
 
+  hasKassaAccess = computed(() => {
+    // True for admins AND users with the kassa role
+    if (!this.authService.isLoggedIn()) {
+      return false;
+    }
+    return (
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAllRoles(['admin']) ||
+      this.authService.userHasAnyRole(['kassa'])
+    );
+  });
+
   constructor() {
     this.titleService.setTitle('Tovedem - De Kassa');
 

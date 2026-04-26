@@ -173,7 +173,7 @@
               >
               <mat-button-toggle value="aanwezig">Aanwezig</mat-button-toggle>
             </mat-button-toggle-group>
-            @if (selectedVoorstelling() && isAdmin()) {
+            @if (selectedVoorstelling() && hasKassaAccess()) {
             <button
               mat-fab
               extended
@@ -232,7 +232,7 @@
         Geen reserveringen gevonden die overeenkomen met de zoekterm.
       </mat-card>
     </div>
-    } @if (selectedVoorstelling() && isAdmin()) {
+    } @if (selectedVoorstelling() && hasKassaAccess()) {
     <div class="col-12 pt-2">
       <mat-card appearance="outlined">
         <mat-card-header>
