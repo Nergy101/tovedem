@@ -45,7 +45,7 @@
         }
         @if (fotos().length > 0) {
           <div class="col-auto">
-            <button mat-flat-button color="accent" (click)="downloadAllAsZip()" [disabled]="downloadingZip()">
+            <button mat-fab extended color="primary" (click)="downloadAllAsZip()" [disabled]="downloadingZip()">
               @if (downloadingZip()) {
                 <mat-spinner diameter="18" class="button-spinner"></mat-spinner>
               } @else {
