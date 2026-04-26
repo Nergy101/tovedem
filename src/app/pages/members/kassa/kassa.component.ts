@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, tap } from 'rxjs';
 import { LosseVerkoop } from '../../../models/domain/losse-verkoop.model';
@@ -51,6 +52,7 @@ import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
     ReserveringenTableComponent,
     PieChartComponent,
     AmsterdamDatePipe,
+    RouterLink,
   ],
   templateUrl: './kassa.component.html',
   styleUrl: './kassa.component.scss',
@@ -64,6 +66,7 @@ export class KassaComponent implements OnInit {
   authService = inject(AuthService);
   titleService = inject(Title);
   verificationService = inject(VerificationService);
+  route = inject(ActivatedRoute);
 
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
@@ -247,21 +250,33 @@ export class KassaComponent implements OnInit {
       // Find voorstellingen for today
       const voorstellingenVandaag =
         findVoorstellingenForToday(alleVoorstellingen);
-      this.voorstellingenVoorVandaag.set(voorstellingenVandaag);
 
-      if (voorstellingenVandaag.length === 0) {
-        this.loading.set(false);
-        return;
-      }
+      // If a specific voorstelling is requested via query param, use it directly
+      const queryVoorstellingId = this.route.snapshot.queryParams['voorstellingId'];
+      const queryVoorstelling = queryVoorstellingId
+        ? (alleVoorstellingen.find((v) => v.id === queryVoorstellingId) ?? null)
+        : null;
 
-      // Use the first voorstelling for today (or could show all)
-      const eersteVoorstelling = voorstellingenVandaag[0];
-      this.selectedVoorstelling.set(eersteVoorstelling);
-
-      // Determine which dag (datum1 or datum2) is today
-      const dag = getVoorstellingDagForDate(eersteVoorstelling, new Date());
-      if (dag) {
+      if (queryVoorstelling) {
+        this.voorstellingenVoorVandaag.set([queryVoorstelling]);
+        this.selectedVoorstelling.set(queryVoorstelling);
+        const dag = getVoorstellingDagForDate(queryVoorstelling, new Date()) ?? 'datum1';
         this.selectedDag.set(dag);
+      } else {
+        this.voorstellingenVoorVandaag.set(voorstellingenVandaag);
+
+        if (voorstellingenVandaag.length === 0) {
+          this.loading.set(false);
+          return;
+        }
+
+        const eersteVoorstelling = voorstellingenVandaag[0];
+        this.selectedVoorstelling.set(eersteVoorstelling);
+
+        const dag = getVoorstellingDagForDate(eersteVoorstelling, new Date());
+        if (dag) {
+          this.selectedDag.set(dag);
+        }
       }
 
       // Load sponsors for verification using typed collection
@@ -304,19 +319,11 @@ export class KassaComponent implements OnInit {
         expand: 'voorstelling',
       })) as Reservering[];
 
-      // Filter reserveringen where datum_tijd_1 or datum_tijd_2 matches today
+      // Filter reserveringen for the relevant dag (today's dag, or selectedDag as fallback)
+      const dag = getVoorstellingDagForDate(voorstelling, vandaag) ?? this.selectedDag();
       const reserveringenVoorVandaag = reserveringen.filter((reservering) => {
-        // Check if this reservering has a reservation for today
-        const dag = getVoorstellingDagForDate(voorstelling, vandaag);
-        if (!dag) return false;
-
-        // Check if the reservering has tickets for this dag
-        if (dag === 'datum1' && reservering.datum_tijd_1_aantal > 0) {
-          return true;
-        }
-        if (dag === 'datum2' && reservering.datum_tijd_2_aantal > 0) {
-          return true;
-        }
+        if (dag === 'datum1' && reservering.datum_tijd_1_aantal > 0) return true;
+        if (dag === 'datum2' && reservering.datum_tijd_2_aantal > 0) return true;
         return false;
       });
 

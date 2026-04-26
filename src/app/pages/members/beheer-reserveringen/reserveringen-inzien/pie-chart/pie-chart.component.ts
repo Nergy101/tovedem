@@ -1,5 +1,4 @@
 import {
-  AfterContentChecked,
   Component,
   ViewChild,
   computed,
@@ -30,7 +29,7 @@ export interface ChartOptions {
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.scss',
 })
-export class PieChartComponent implements AfterContentChecked {
+export class PieChartComponent {
   @ViewChild(ChartComponent) chart: ChartComponent | undefined;
 
   series = model.required<number[]>();
@@ -55,14 +54,10 @@ export class PieChartComponent implements AfterContentChecked {
     });
   }
 
-  ngAfterContentChecked(): void {
-    this.chart?.updateSeries(this.series());
-  }
-
   chartOptions = computed(() => {
     return {
       autoUpdateSeries: false,
-      series: [],
+      series: this.series(),
       chart: {
         width: 380,
         type: 'pie',

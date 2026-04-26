@@ -16,6 +16,19 @@
       </mat-select>
     </mat-form-field>
 
+    @if (selectedVoorstelling()) {
+    <div class="mb-1">
+      <a
+        mat-button
+        routerLink="/kassa"
+        [queryParams]="{ voorstellingId: selectedVoorstelling()!.id }"
+      >
+        <mat-icon>point_of_sale</mat-icon>
+        Bekijk in de kassa
+      </a>
+    </div>
+    }
+
     @if (reserveringenOfSelectedVoorstelling().length > 0) {
     <div class="col-12 pt-2">
       <mat-form-field style="display: flex">

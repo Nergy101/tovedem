@@ -12,6 +12,18 @@
         <span class="ms-2">Klik hier voor info</span>
       </button>
     </div>
+    @if (selectedVoorstelling()) {
+    <div class="mt-1">
+      <a
+        mat-button
+        [routerLink]="['/beheer-reserveringen']"
+        [queryParams]="{ voorstellingId: selectedVoorstelling()!.id }"
+      >
+        <mat-icon>table_view</mat-icon>
+        Bekijk reserveringen voor {{ selectedVoorstelling()!.titel }}
+      </a>
+    </div>
+    }
   </div>
 </div>
 

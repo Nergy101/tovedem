@@ -26,7 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, lastValueFrom, map, startWith } from 'rxjs';
 import { LosseVerkoop } from '../../../../models/domain/losse-verkoop.model';
@@ -67,6 +67,7 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     MatProgressSpinnerModule,
     MatTooltipModule,
     ReserveringenTableComponent,
+    RouterLink,
   ],
   templateUrl: './reserveringen-inzien.component.html',
   styleUrl: './reserveringen-inzien.component.scss',
