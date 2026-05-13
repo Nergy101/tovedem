@@ -64,7 +64,7 @@ jobs:
           tags: |
             nergy101/tovedem:latest
             nergy101/tovedem:${{ env.APP_VERSION }}
-          platforms: linux/arm64
+          platforms: linux/arm64,linux/amd64
 
   # Stage: deploy
   deploy-docker-image:
