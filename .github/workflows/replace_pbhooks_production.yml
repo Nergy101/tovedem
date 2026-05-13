@@ -1,7 +1,12 @@
-name: 🚀 Deploy pb_hooks
+name: 🚀 Deploy pb_hooks (Tovedem Production)
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["🚀 Deploy Angular App"]
+    branches: ["main"]
+    types:
+      - completed
   push:
     branches: ["main"]
     paths:
@@ -9,17 +14,19 @@ on:
 
 jobs:
   ReplaceHooksFolderWithLatest:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    environment: Tovedem Production
     steps:
       - uses: actions/checkout@v4
 
       - name: Get Known Hosts value
-        run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST }})" >> $GITHUB_ENV
+        run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST_2 }})" >> $GITHUB_ENV
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY_2 }}
           name: github-actions
           known_hosts: ${{ env.KNOWN_HOSTS }}
           if_key_exists: replace
@@ -27,9 +34,9 @@ jobs:
       - name: Replace pb_hooks folder
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.SSH_HOST_2 }}
+          username: ${{ secrets.SSH_USERNAME_2 }}
+          key: ${{ secrets.SSH_KEY_2 }}
           script: |
             echo "Re-clone tovedem repository from /tovedem folder"
             cd /tovedem
@@ -46,9 +53,9 @@ jobs:
       - name: Restart pocketbase
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.SSH_HOST_2 }}
+          username: ${{ secrets.SSH_USERNAME_2 }}
+          key: ${{ secrets.SSH_KEY_2 }}
           script: |
             echo "Restart Pocketbase"
             docker stop tovedem-pocketbase && docker start tovedem-pocketbase

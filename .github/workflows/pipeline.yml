@@ -67,10 +67,11 @@ jobs:
           platforms: linux/arm64,linux/amd64
 
   # Stage: deploy
-  deploy-docker-image:
+  nergy-acceptance-deploy:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
     needs: build-and-push-docker-image
     runs-on: ubuntu-latest
+    environment: Nergy Acceptance
     steps:
       - name: Get Known Hosts value
         run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST }})" >> $GITHUB_ENV
@@ -87,6 +88,33 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /root/code/tovedem
+            docker compose pull
+            docker compose up -d
+
+  # Stage: deploy (VM 2)
+  tovedem-production-deploy:
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}
+    needs: build-and-push-docker-image
+    runs-on: ubuntu-latest
+    environment: Tovedem Production
+    steps:
+      - name: Get Known Hosts value
+        run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST_2 }})" >> $GITHUB_ENV
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY_2 }}
+          name: github-actions
+          known_hosts: ${{ env.KNOWN_HOSTS }}
+          if_key_exists: replace
+      - name: Deploy Docker Image to VM 2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SSH_HOST_2 }}
+          username: ${{ secrets.SSH_USERNAME_2 }}
+          key: ${{ secrets.SSH_KEY_2 }}
           script: |
             cd /root/code/tovedem
             docker compose pull
