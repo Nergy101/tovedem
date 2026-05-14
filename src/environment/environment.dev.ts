@@ -8,7 +8,7 @@ export const environment: Environment = {
         adminUrl: 'https://pocketbase.nergy.space/_/',
     },
     captchaSiteKey: '6LcM_24qAAAAAAg_LFBuE8rfzLqq6jmliSB08Mxe',
-    version: '1.0.6',
+    version: '1.0.7',
     kumaStatusUrl: null,
     umami: null,
 };
