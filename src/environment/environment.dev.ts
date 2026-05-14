@@ -9,6 +9,6 @@ export const environment: Environment = {
     },
     captchaSiteKey: '6LcM_24qAAAAAAg_LFBuE8rfzLqq6jmliSB08Mxe',
     version: '1.0.6',
-    kumaStatusUrl: 'https://kuma.nergy.space/status/tovedem',
+    kumaStatusUrl: null,
     umami: null,
 };
