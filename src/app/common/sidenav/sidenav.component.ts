@@ -14,6 +14,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { BreakpointService } from '../../shared/services/breakpoint.service';
 import { PocketbaseService } from '../../shared/services/pocketbase.service';
 import { SideDrawerService } from '../../shared/services/side-drawer.service';
+import { Environment } from '../../../environment';
 @Component({
   selector: 'app-sidenav',
   imports: [
@@ -37,6 +38,7 @@ export class SidenavComponent implements OnInit {
   authService = inject(AuthService);
   breakpointService = inject(BreakpointService);
   client = inject(PocketbaseService);
+  environment = inject(Environment);
   private router = inject(Router);
 
   private readonly STORAGE_KEY = 'sidenav-panel-state';

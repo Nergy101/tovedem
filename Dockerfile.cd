@@ -4,4 +4,7 @@ FROM nginx:1.29-alpine
 RUN apk upgrade --no-cache
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY tovedem/browser /usr/share/nginx/html
+COPY config/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80
+ENTRYPOINT ["/docker-entrypoint.sh"]

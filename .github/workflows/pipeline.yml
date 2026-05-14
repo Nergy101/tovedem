@@ -25,9 +25,6 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Run tests
         run: npm run test
-      - name: Replace Umami Analytics Placeholder with script tag
-        run: |
-          sed -i 's|<!--\* Umami Analytics Placeholder -->|<script defer src="https://umami.nergy.space/script.js" data-website-id="bab4204b-062f-4b87-9433-00ff1a6c091f"></script>|' src/index.html
       - name: Build Angular App
         run: npm run build:prod
       - name: Upload build artifact

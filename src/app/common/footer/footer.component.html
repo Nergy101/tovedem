@@ -176,7 +176,7 @@
   <span class="version-label">v{{ environment.version }}</span>
   <a
     class="service-status"
-    href="https://kuma.nergy.space/status/tovedem"
+    [href]="environment.kumaStatusUrl"
     target="_blank"
     aria-label="Bekijk service status (opent in nieuw tabblad)"
     ><svg

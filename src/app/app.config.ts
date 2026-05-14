@@ -1,8 +1,10 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   ErrorHandler,
   importProvidersFrom,
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -47,7 +49,36 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: Environment,
-      useValue: environment,
+      useFactory: () => {
+        const w = (window as any).APP_ENV ?? {};
+        return Object.assign(new Environment(), {
+          production: w.PRODUCTION === 'true',
+          pocketbase: {
+            baseUrl:  w.POCKETBASE_BASE_URL  || environment.pocketbase.baseUrl,
+            adminUrl: w.POCKETBASE_ADMIN_URL || environment.pocketbase.adminUrl,
+          },
+          captchaSiteKey: w.CAPTCHA_SITE_KEY  || environment.captchaSiteKey,
+          kumaStatusUrl:  w.KUMA_STATUS_URL   || environment.kumaStatusUrl,
+          umami: w.UMAMI_SCRIPT_URL
+            ? { scriptUrl: w.UMAMI_SCRIPT_URL, websiteId: w.UMAMI_WEBSITE_ID }
+            : environment.umami,
+          version: environment.version,
+        });
+      },
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (env: Environment, doc: Document) => () => {
+        if (env.umami) {
+          const script = doc.createElement('script');
+          script.defer = true;
+          script.src = env.umami.scriptUrl;
+          script.dataset['websiteId'] = env.umami.websiteId;
+          doc.head.appendChild(script);
+        }
+      },
+      deps: [Environment, DOCUMENT],
+      multi: true,
     },
     importProvidersFrom(RecaptchaV3Module),
     {
