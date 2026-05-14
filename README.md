@@ -67,6 +67,8 @@ Docker Compose reads `.env` automatically and passes these into the container. T
 
 ### 3. Create a `docker-compose.yml`
 
+**Minimal** — assumes PocketBase is hosted elsewhere:
+
 ```yaml
 services:
   tovedem:
@@ -78,6 +80,39 @@ services:
     env_file:
       - .env
 ```
+
+**With PocketBase** — run everything on one machine:
+
+```yaml
+services:
+  tovedem:
+    image: nergy101/tovedem:latest
+    container_name: tovedem
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    env_file:
+      - .env
+    depends_on:
+      - pocketbase
+
+  pocketbase:
+    image: ghcr.io/muchobien/pocketbase:latest
+    container_name: pocketbase
+    restart: unless-stopped
+    ports:
+      - "8090:8090"
+    volumes:
+      - pocketbase_data:/pb/pb_data
+      - ./pb_hooks:/pb/pb_hooks   # mount your hooks from this repo
+
+volumes:
+  pocketbase_data:
+```
+
+Point `POCKETBASE_BASE_URL` and `POCKETBASE_ADMIN_URL` in your `.env` at the PocketBase container (e.g. `http://pocketbase:8090` for internal traffic, or your public domain if behind a reverse proxy).
+
+> You can extend this further by adding [Uptime Kuma](https://github.com/louislam/uptime-kuma) and [Umami](https://github.com/umami-software/umami) services to the same compose file and wiring up `KUMA_STATUS_URL` / `UMAMI_*` accordingly. If you don't need those integrations, simply leave those `.env` values empty — the app will silently skip the status widget and analytics script.
 
 ### 4. Start
 
