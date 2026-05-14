@@ -51,16 +51,21 @@ export const appConfig: ApplicationConfig = {
       provide: Environment,
       useFactory: () => {
         const w = (window as any).APP_ENV ?? {};
+        // When APP_ENV is injected by the Docker entrypoint, treat empty strings
+        // as "not configured" rather than falling back to dev defaults.
+        const hasAppEnv = (window as any).APP_ENV != null;
         return Object.assign(new Environment(), {
           production: w.PRODUCTION === 'true',
           pocketbase: {
             baseUrl:  w.POCKETBASE_BASE_URL  || environment.pocketbase.baseUrl,
             adminUrl: w.POCKETBASE_ADMIN_URL || environment.pocketbase.adminUrl,
           },
-          captchaSiteKey: w.CAPTCHA_SITE_KEY  || environment.captchaSiteKey,
-          kumaStatusUrl:  w.KUMA_STATUS_URL   || environment.kumaStatusUrl,
-          umami: w.UMAMI_SCRIPT_URL
-            ? { scriptUrl: w.UMAMI_SCRIPT_URL, websiteId: w.UMAMI_WEBSITE_ID }
+          captchaSiteKey: w.CAPTCHA_SITE_KEY || environment.captchaSiteKey,
+          kumaStatusUrl: hasAppEnv
+            ? (w.KUMA_STATUS_URL || null)
+            : environment.kumaStatusUrl,
+          umami: hasAppEnv
+            ? (w.UMAMI_SCRIPT_URL ? { scriptUrl: w.UMAMI_SCRIPT_URL, websiteId: w.UMAMI_WEBSITE_ID } : null)
             : environment.umami,
           version: environment.version,
         });

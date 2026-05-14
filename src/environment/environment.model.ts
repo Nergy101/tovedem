@@ -7,6 +7,6 @@ export class Environment {
     }
     captchaSiteKey!: string;
     version!: string;
-    kumaStatusUrl!: string;
+    kumaStatusUrl!: string | null;
     umami!: { scriptUrl: string; websiteId: string } | null;
 }
