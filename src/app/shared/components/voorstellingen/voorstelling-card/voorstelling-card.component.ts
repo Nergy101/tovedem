@@ -10,6 +10,7 @@ import { Voorstelling } from '../../../../models/domain/voorstelling.model';
 import { MatIconModule } from '@angular/material/icon';
 import { AmsterdamDatePipe } from '../../../pipes/amsterdam-date.pipe';
 import { isFutureDate } from '../../../utils/date.utils';
+import { PocketbaseService } from '../../../services/pocketbase.service';
 
 @Component({
   selector: 'app-voorstelling-card',
@@ -30,6 +31,7 @@ export class VoorstellingCardComponent {
   voorstelling = input.required<Voorstelling>();
 
   router = inject(Router);
+  private pocketbaseService = inject(PocketbaseService);
 
   getImageUrl(
     collectionId: string,
@@ -39,7 +41,11 @@ export class VoorstellingCardComponent {
     if (!imageId) {
       return '/assets/Place-Holder-Image.jpg';
     }
-    return `https://pocketbase.nergy.space/api/files/${collectionId}/${recordId}/${imageId}?thumb=0x800`;
+    return this.pocketbaseService.directClient.files.getURL(
+      this.voorstelling(),
+      imageId,
+      { thumb: '0x800' }
+    );
   }
 
   inToekomst(): boolean {
