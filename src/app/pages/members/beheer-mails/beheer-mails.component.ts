@@ -134,7 +134,7 @@ export class BeheerMailsComponent implements OnInit {
         .collection('voorstellingen')
         .getFullList({ sort: '-datum_tijd_1' }),
     ]);
-    this.mailTemplates.set(templates);
+    this.mailTemplates.set(templates as unknown as Mail[]);
     this.voorstellingen.set(voorstellingen as unknown as Voorstelling[]);
   }
 
