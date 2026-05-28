@@ -39,6 +39,7 @@ interface MailFoutInfo {
   email: string;
 }
 
+
 @Component({
   selector: 'app-beheer-mails',
   imports: [
