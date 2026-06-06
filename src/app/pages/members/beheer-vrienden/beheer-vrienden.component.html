@@ -1,0 +1,94 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Vrienden van Tovedem Aanmeldingen</p>
+    </div>
+
+    <div class="row pt-4">
+      @defer (when verzoeken()) {
+      <div class="row" style="margin-top: 1em">
+        <mat-form-field class="col-12" appearance="outline">
+          <mat-label>Zoek op naam, email of onderwerp</mat-label>
+          <input
+            matInput
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchTermChanged($event)"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        @if (searching()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      </div>
+
+      <mat-card class="table-responsive table-width">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Naam</th>
+              <th scope="col">Email</th>
+              <th scope="col">Onderwerp</th>
+              <th scope="col">Bericht</th>
+              <th scope="col">Aangemaakt</th>
+              @if (authService.isGlobalAdmin) {
+              <th></th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (verzoek of verzoeken(); track verzoek.id) {
+            <tr>
+              <td>{{ verzoek.name }}</td>
+              <td>{{ verzoek.email }}</td>
+              <td>{{ verzoek.subject }}</td>
+              <td>
+                @if (verzoek.message && verzoek.message.length > 0) {
+                <button
+                  mat-button
+                  class="bericht-button"
+                  (click)="openBerichtDialog(verzoek)"
+                  [matTooltip]="'Klik om volledig bericht te bekijken'"
+                >
+                  <mat-icon [style.color]="'#000'">chat_bubble_outline</mat-icon>
+                  <span>Bekijken</span>
+                </button>
+                } @else {
+                <span>-</span>
+                }
+              </td>
+              <td>{{ formatDate(verzoek.created) }}</td>
+              @if (authService.isGlobalAdmin) {
+              <td>
+                <button
+                  mat-icon-button
+                  (click)="delete(verzoek.id)"
+                  [disabled]="loading()"
+                  aria-label="Verwijderen"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </td>
+              }
+            </tr>
+            } @empty {
+            <tr>
+              <td
+                [attr.colspan]="authService.isGlobalAdmin ? 6 : 5"
+                style="text-align: center; padding: 2em"
+              >
+                Geen aanmeldingen gevonden
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+      } @placeholder {
+      <div class="center">
+        <mat-spinner></mat-spinner>
+      </div>
+      }
+    </div>
+  </div>
+</div>
