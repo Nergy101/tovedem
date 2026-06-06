@@ -175,3 +175,42 @@ button[mat-icon-button][style*="background-color"] {
     justify-content: center !important;
   }
 }
+
+// Reserveringen resend section
+.select-all-row {
+  padding: 0.25rem 0;
+}
+
+.col-checkbox {
+  width: 48px;
+  padding-left: 1rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.selectable-row {
+  cursor: pointer;
+}
+
+html.darkMode .selectable-row.row-selected {
+  background-color: rgba(125, 179, 232, 0.12) !important;
+}
+
+html.lightMode .selectable-row.row-selected {
+  background-color: rgba(125, 179, 232, 0.15) !important;
+}
+
+.mail-footer {
+  padding: 0.5rem 0;
+
+  .geselecteerd-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+}
+
+.btn-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
