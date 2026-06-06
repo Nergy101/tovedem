@@ -51,5 +51,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             echo "Restart Pocketbase"
-            docker stop tovedem-pocketbase && docker start tovedem-pocketbase
+            docker restart tovedem-pocketbase
             echo "Restarted Pocketbase"
