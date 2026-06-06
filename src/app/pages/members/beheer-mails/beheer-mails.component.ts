@@ -185,8 +185,6 @@ export class BeheerMailsComponent implements OnInit {
     const mislukt: MailFoutInfo[] = [];
     let geslaagd = 0;
 
-    const token = this.client.directClient.authStore.token;
-    const baseUrl = this.client.environment.pocketbase.baseUrl;
     const chunkSize = 5;
 
     for (let i = 0; i < geselecteerd.length; i += chunkSize) {
@@ -194,26 +192,13 @@ export class BeheerMailsComponent implements OnInit {
       await Promise.all(
         chunk.map(async (reservering) => {
           try {
-            const response = await fetch(
-              `${baseUrl}/reserveringen/resend-mail`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ reserveringId: reservering.id }),
-              },
-            );
-            if (response.ok) {
-              geslaagd++;
-            } else {
-              mislukt.push({
-                naam: `${reservering.voornaam} ${reservering.achternaam}`,
-                email: reservering.email,
-              });
-            }
-          } catch {
+            await this.client.directClient.send('/api/reserveringen/resend-mail', {
+              method: 'POST',
+              body: { reserveringId: reservering.id },
+            });
+            geslaagd++;
+          } catch (err) {
+            console.error('Resend mail mislukt voor', reservering.email, err);
             mislukt.push({
               naam: `${reservering.voornaam} ${reservering.achternaam}`,
               email: reservering.email,

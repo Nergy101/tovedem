@@ -1,5 +1,5 @@
 /* Custom API endpoint to resend a reservation confirmation email */
-routerAdd("POST", "/reserveringen/resend-mail", (e) => {
+routerAdd("POST", "/api/reserveringen/resend-mail", (e) => {
     try {
         // Require authentication - only logged-in members/admins may resend
         const requestInfo = e.requestInfo();
