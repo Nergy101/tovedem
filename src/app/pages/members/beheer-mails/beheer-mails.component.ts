@@ -192,7 +192,7 @@ export class BeheerMailsComponent implements OnInit {
       await Promise.all(
         chunk.map(async (reservering) => {
           try {
-            await this.client.directClient.send('/api/reserveringen/resend-mail', {
+            await this.client.directClient.send('/reserveringen/resend-mail', {
               method: 'POST',
               body: { reserveringId: reservering.id },
             });

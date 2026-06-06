@@ -140,6 +140,7 @@
           '/printen',
           '/beheer-leden',
           '/beheer-nieuwe-leden',
+          '/beheer-vrienden',
           '/beheer-sponsoren',
           '/beheer-mails'
         ])
@@ -228,7 +229,8 @@
             <span>Leden</span> <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
-        } @if (authService.isLoggedIn() || authService.isGlobalAdmin) {
+        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
+        authService.isGlobalAdmin) {
         <li>
           <button
             mat-raised-button
@@ -240,6 +242,19 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <span>Leden Aanmeldingen</span> <mat-icon>person_add</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-vrienden"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span>Vrienden Aanmeldingen</span> <mat-icon>favorite</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
