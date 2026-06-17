@@ -79,6 +79,7 @@ describe('ReserverenComponent', () => {
       opmerking: '',
       amountOfPeopleDate1: 1,
       amountOfPeopleDate2: 0,
+      aanmeldenNieuwsbrief: false,
     });
     (component as any).voorstellingId = null;
     await component.saveReservering();
@@ -101,6 +102,7 @@ describe('ReserverenComponent', () => {
       opmerking: 'Test opmerking',
       amountOfPeopleDate1: 1,
       amountOfPeopleDate2: 0,
+      aanmeldenNieuwsbrief: false,
     });
 
     await component.saveReservering();
@@ -132,6 +134,7 @@ describe('ReserverenComponent', () => {
       opmerking: '',
       amountOfPeopleDate1: 1,
       amountOfPeopleDate2: 0,
+      aanmeldenNieuwsbrief: false,
     });
     clientCreateSpy.and.returnValue(
       Promise.resolve({ id: 'new-res-id' } as Reservering)
