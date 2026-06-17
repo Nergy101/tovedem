@@ -4,6 +4,17 @@
       <p class="display-1">Emails</p>
     </div>
 
+    <mat-tab-group dynamicHeight animationDuration="200ms" class="mails-tabs">
+
+      <!-- ── Tab 1: Opnieuw versturen ── -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">refresh</mat-icon>
+          Opnieuw versturen
+        </ng-template>
+
+        <div class="tab-content">
+
     <!-- Mails opnieuw versturen -->
     <div class="row mb-4">
       <mat-card>
@@ -178,6 +189,165 @@
         </mat-expansion-panel>
       </mat-accordion>
     </div>
+
+        </div>
+      </mat-tab>
+
+      <!-- ── Tab 2: Nieuwsbrief ── -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">newspaper</mat-icon>
+          Nieuwsbrief
+        </ng-template>
+
+        <div class="tab-content">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Nieuwsbrieven</h3>
+            <button mat-flat-button color="primary" (click)="nieuwsbriefOpstellen()">
+              <mat-icon>add</mat-icon>
+              Nieuwe nieuwsbrief opstellen
+            </button>
+          </div>
+
+          <mat-card class="table-responsive table-width">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Titel</th>
+                  <th>Status</th>
+                  <th>Doelgroep</th>
+                  <th>Aangemaakt</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (nw of nieuwsbrieven(); track nw.id) {
+                  <tr>
+                    <td>{{ nw.titel || '(Zonder titel)' }}</td>
+                    <td>
+                      <span class="status-badge" [style.background-color]="nieuwsbriefStatusKleur(nw.status)">
+                        {{ nieuwsbriefStatusLabel(nw.status) }}
+                      </span>
+                    </td>
+                    <td>{{ nw.doelgroep }}</td>
+                    <td>{{ nw.created | amsterdamDate:'dd-MM-yyyy' }}</td>
+                    <td class="actions-nowrap">
+                      @if (nw.status !== 'verzonden') {
+                        <button mat-icon-button matTooltip="Bewerken" (click)="nieuwsbriefBewerken(nw)">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                      }
+                      <button mat-icon-button matTooltip="Verwijderen" (click)="nieuwsbriefVerwijderen(nw)">
+                        <mat-icon color="warn">delete</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="5" style="text-align:center;padding:2em;opacity:0.6">
+                      Nog geen nieuwsbrieven. Klik op "Nieuwe nieuwsbrief opstellen" om te beginnen.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <!-- ── Tab 3: Mail statistieken ── -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">bar_chart</mat-icon>
+          Mail statistieken
+        </ng-template>
+
+        <div class="tab-content">
+
+          <h3 class="mb-3">Mail template status</h3>
+          <div class="stats-grid mb-4">
+
+            <mat-card class="stat-card">
+              <mat-card-content class="stat-content">
+                <mat-icon class="stat-icon" style="color: var(--mat-sys-primary)">mail</mat-icon>
+                <span class="stat-number">{{ templateStats.totaal }}</span>
+                <span class="stat-label">Totaal templates</span>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card">
+              <mat-card-content class="stat-content">
+                <mat-icon class="stat-icon" [style.color]="statusColor['concept']">edit_note</mat-icon>
+                <span class="stat-number">{{ templateStats.concept }}</span>
+                <span class="stat-label">Concept</span>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card">
+              <mat-card-content class="stat-content">
+                <mat-icon class="stat-icon" [style.color]="statusColor['inprogress']">pending</mat-icon>
+                <span class="stat-number">{{ templateStats.inprogress }}</span>
+                <span class="stat-label">In progress</span>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card">
+              <mat-card-content class="stat-content">
+                <mat-icon class="stat-icon" [style.color]="statusColor['done']">task_alt</mat-icon>
+                <span class="stat-number">{{ templateStats.done }}</span>
+                <span class="stat-label">Done</span>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card">
+              <mat-card-content class="stat-content">
+                <mat-icon class="stat-icon" [style.color]="statusColor['verified']">verified</mat-icon>
+                <span class="stat-number">{{ templateStats.verified }}</span>
+                <span class="stat-label">Verified</span>
+              </mat-card-content>
+            </mat-card>
+
+          </div>
+
+          <mat-divider class="mb-4"></mat-divider>
+
+          <h3 class="mb-3">Templates overzicht</h3>
+          @defer (when mailTemplates()) {
+            <mat-card class="table-responsive table-width">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (t of mailTemplates(); track t.id) {
+                    <tr>
+                      <td>{{ t.naam }}</td>
+                      <td>
+                        <span
+                          class="status-badge"
+                          [style.background-color]="getLabelBackgroundColor(t.status)"
+                        >
+                          {{ getMailStatus(t.status) }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </mat-card>
+          } @placeholder {
+            <div class="center">
+              <mat-spinner></mat-spinner>
+            </div>
+          }
+
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
 
   </div>
 </div>

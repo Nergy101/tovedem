@@ -90,6 +90,7 @@ export class ReserverenComponent implements OnInit {
     opmerking: '',
     amountOfPeopleDate1: 0,
     amountOfPeopleDate2: 0,
+    aanmeldenNieuwsbrief: true,
   });
 
   reserveringForm = form(this.reserveringModel, (schemaPath) => {
@@ -418,6 +419,21 @@ export class ReserverenComponent implements OnInit {
 
       // Refresh totals after successful reservation
       await this.loadReservationTotals();
+
+      // Aanmelden voor nieuwsbrief
+      if (formData.aanmeldenNieuwsbrief) {
+        try {
+          await this.client.directClient.collection('mail_lijst').create({
+            email: formData.email,
+            voornaam: formData.name,
+            achternaam: formData.surname,
+            groep: 'bezoeker',
+            actief: true,
+          });
+        } catch {
+          // Duplicate of already subscribed — silently ignore
+        }
+      }
 
       //TO DO: pagina met reservering geslaagd. nog een maal alle gegevens op een rijtje ga terug naar hoofdscherm
       //Datum, aantal stoelen, welke naam, of ze gereserverde plekken gaan krijgen of niet, betalen aan de kassa melding (Pin en cash) kaart met route??

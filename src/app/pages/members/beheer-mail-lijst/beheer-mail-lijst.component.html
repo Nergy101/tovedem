@@ -1,0 +1,125 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1">Mail lijst</p>
+    </div>
+
+    <div class="row pt-2 pb-3">
+      @defer (when contacten()) {
+        <!-- Statistieken chips -->
+        <div class="d-flex gap-2 flex-wrap mb-3">
+          <span class="groep-chip chip-bezoeker">
+            <mat-icon>person</mat-icon>
+            {{ aantalPerGroep('bezoeker') }} bezoekers
+          </span>
+          <span class="groep-chip chip-tovedemlid">
+            <mat-icon>groups</mat-icon>
+            {{ aantalPerGroep('tovedemlid') }} Tovedem leden
+          </span>
+          <span class="groep-chip chip-sponsor">
+            <mat-icon>favorite</mat-icon>
+            {{ aantalPerGroep('sponsor') }} sponsors
+          </span>
+        </div>
+
+        <!-- Filters -->
+        <div class="row mb-2">
+          <div class="col-12 col-md-6">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Zoek op naam of email</mat-label>
+              <input
+                matInput
+                type="text"
+                [ngModel]="searchTerm()"
+                (ngModelChange)="searchTerm.set($event)"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-3">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Groep</mat-label>
+              <mat-select
+                [value]="groepFilter()"
+                (selectionChange)="groepFilter.set($event.value)"
+              >
+                              @for (o of groepFilterOpties; track o.value) {
+                  <mat-option [value]="o.value">{{ o.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        @if (searching()) {
+          <mat-progress-bar mode="indeterminate" class="mb-2"></mat-progress-bar>
+        }
+
+        <mat-card class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Naam</th>
+                <th>Email</th>
+                <th>Groep</th>
+                <th>Aangemeld op</th>
+                @if (authService.isGlobalAdmin) {
+                  <th></th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (c of contacten(); track c.id) {
+                <tr [class.row-inactief]="!c.actief">
+                  <td>{{ c.voornaam }} {{ c.achternaam }}</td>
+                  <td>{{ c.email }}</td>
+                  <td>
+                    <span
+                      class="groep-badge"
+                      [style.background-color]="groepKleuren[c.groep]"
+                    >
+                      {{ groepLabels[c.groep] }}
+                    </span>
+                  </td>
+                  <td>{{ formatDate(c.created) }}</td>
+                  @if (authService.isGlobalAdmin) {
+                    <td class="actions-col">
+                      <button
+                        mat-icon-button
+                        [matTooltip]="c.actief ? 'Uitschrijven' : 'Inschrijven'"
+                        (click)="toggleActief(c)"
+                      >
+                        <mat-icon [color]="c.actief ? 'primary' : ''">
+                          {{ c.actief ? 'notifications_active' : 'notifications_off' }}
+                        </mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        matTooltip="Verwijderen"
+                        (click)="verwijder(c.id)"
+                        [disabled]="loading()"
+                      >
+                        <mat-icon color="warn">delete</mat-icon>
+                      </button>
+                    </td>
+                  }
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" style="text-align:center;padding:2em">
+                    Geen contacten gevonden
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </mat-card>
+
+      } @placeholder {
+        <div class="center">
+          <mat-spinner></mat-spinner>
+        </div>
+      }
+    </div>
+  </div>
+</div>

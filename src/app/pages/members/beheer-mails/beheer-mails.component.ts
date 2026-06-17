@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,10 +21,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { Mail } from '../../../models/domain/mail.model';
+import {
+  Nieuwsbrief,
+  NieuwsbriefStatus,
+} from '../../../models/domain/nieuwsbrief.model';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
@@ -33,6 +39,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
+import { Router } from '@angular/router';
 
 interface MailFoutInfo {
   naam: string;
@@ -54,6 +61,8 @@ interface MailFoutInfo {
     MatCheckboxModule,
     MatExpansionModule,
     MatSelectModule,
+    MatTabsModule,
+    MatDividerModule,
     AmsterdamDatePipe,
   ],
   templateUrl: './beheer-mails.component.html',
@@ -82,12 +91,17 @@ export class BeheerMailsComponent implements OnInit {
     return size > 0 && size < total;
   });
 
+  // Nieuwsbrief lijst
+  nieuwsbrieven = signal<Nieuwsbrief[]>([]);
+  loadingNieuwsbrieven = signal(false);
+
   client = inject(PocketbaseService);
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
   titleService = inject(Title);
   themeService = inject(ThemeService);
+  router = inject(Router);
   statussen = ['concept', 'inprogress', 'done', 'verified'];
   statusColor: Record<string, string> = {
     concept: '#B80301',
@@ -129,14 +143,21 @@ export class BeheerMailsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const [templates, voorstellingen] = await Promise.all([
+    const [templates, voorstellingen, nieuwsbrieven] = await Promise.all([
       this.client.directClient.collection('mails').getFullList(),
       this.client.directClient
         .collection('voorstellingen')
-        .getFullList({ sort: '-datum_tijd_1' }),
+        .getFullList({
+          sort: '-datum_tijd_1',
+          filter: 'datum_tijd_1 >= @now || datum_tijd_2 >= @now',
+        }),
+      this.client.directClient
+        .collection('nieuwsbrieven')
+        .getFullList({ sort: '-created' }),
     ]);
     this.mailTemplates.set(templates as unknown as Mail[]);
     this.voorstellingen.set(voorstellingen as unknown as Voorstelling[]);
+    this.nieuwsbrieven.set(nieuwsbrieven as unknown as Nieuwsbrief[]);
   }
 
   isSelected(id: string): boolean {
@@ -268,7 +289,52 @@ export class BeheerMailsComponent implements OnInit {
   }
 
   getPrimaryTintColor(): string {
-    // Primary blue (#7db3e8) with 0.3 opacity for consistency
     return 'rgba(125, 179, 232, 0.3)';
+  }
+
+  nieuwsbriefOpstellen(): void {
+    this.router.navigate(['/beheer-nieuwsbrief', 'nieuw']);
+  }
+
+  nieuwsbriefBewerken(nw: Nieuwsbrief): void {
+    this.router.navigate(['/beheer-nieuwsbrief', nw.id]);
+  }
+
+  async nieuwsbriefVerwijderen(nw: Nieuwsbrief): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Nieuwsbrief verwijderen',
+        message: `Weet je zeker dat je <strong>${nw.titel}</strong> wilt verwijderen?`,
+      },
+    });
+    const confirmed = await lastValueFrom(dialogRef.afterClosed());
+    if (!confirmed) return;
+    try {
+      await this.client.directClient.collection('nieuwsbrieven').delete(nw.id);
+      this.nieuwsbrieven.update((list) => list.filter((x) => x.id !== nw.id));
+      this.toastr.success('Nieuwsbrief verwijderd.');
+    } catch {
+      this.toastr.error('Fout bij het verwijderen.');
+    }
+  }
+
+  nieuwsbriefStatusLabel(status: NieuwsbriefStatus): string {
+    return { concept: 'Concept', klaar: 'Klaar om te sturen', verzonden: 'Verzonden' }[status] ?? status;
+  }
+
+  nieuwsbriefStatusKleur(status: NieuwsbriefStatus): string {
+    return { concept: '#B80301', klaar: '#DFA801', verzonden: '#338450' }[status] ?? '#888';
+  }
+
+  // Statistieken
+  get templateStats() {
+    const templates = this.mailTemplates() ?? [];
+    return {
+      totaal: templates.length,
+      concept: templates.filter((t) => t.status === 'concept').length,
+      inprogress: templates.filter((t) => t.status === 'inprogress').length,
+      done: templates.filter((t) => t.status === 'done').length,
+      verified: templates.filter((t) => t.status === 'verified').length,
+    };
   }
 }

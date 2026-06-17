@@ -114,7 +114,7 @@ module.exports = {
 
     mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
     mailHtml = mailHtml.replace(/{email}/g, verzoek.get("email"));
-    mailHtml = mailHtml.replace(/{message}/g, verzoek.get("message"));
+    mailHtml = mailHtml.replace(/{bericht}/g, verzoek.get("message"));
 
     return mailHtml;
   },
@@ -138,7 +138,7 @@ module.exports = {
 
     mailHtml = mailHtml.replace(/{naam}/g, verzoek.get("name"));
     mailHtml = mailHtml.replace(/{email}/g, verzoek.get("email"));
-    mailHtml = mailHtml.replace(/{message}/g, verzoek.get("message"));
+    mailHtml = mailHtml.replace(/{bericht}/g, verzoek.get("message"));
 
     return mailHtml;
   },
@@ -149,10 +149,10 @@ module.exports = {
 
     let mailHtml = mailInfo.get("inhoud");
 
-    // mailHtml = mailHtml.replace(
-    //   /{naam}/g,
-    //   lid.get("voornaam") + " " + lid.get("achternaam")
-    // );
+    mailHtml = mailHtml.replace(
+      /{naam}/g,
+      lid.get("voornaam") + " " + lid.get("achternaam")
+    );
 
     return mailHtml;
   },
@@ -163,7 +163,12 @@ module.exports = {
 
     let mailHtml = mailInfoBeheer.get("inhoud");
 
-    // text replacements
+    mailHtml = mailHtml.replace(
+      /{naam}/g,
+      lid.get("voornaam") + " " + lid.get("achternaam")
+    );
+    mailHtml = mailHtml.replace(/{email}/g, lid.get("email"));
+    mailHtml = mailHtml.replace(/{bericht}/g, lid.get("bericht"));
 
     return mailHtml;
   },

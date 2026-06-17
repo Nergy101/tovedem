@@ -1,0 +1,59 @@
+@use "../../../../variables.scss" as *;
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+
+  thead th {
+    border-bottom: 2px solid rgba(125, 179, 232, 0.3) !important;
+    padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+    font-weight: $font-weight-semibold;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(125, 179, 232, 0.1) !important;
+    transition: background-color $transition-base $ease-out;
+
+    td {
+      padding: 1em $spacing-4 $spacing-3 $spacing-4 !important;
+      vertical-align: middle;
+    }
+
+    &.row-inactief {
+      opacity: 0.45;
+    }
+  }
+}
+
+html.darkMode .table {
+  thead { background-color: var(--mat-sys-surface-container) !important; }
+  tbody tr:hover { background-color: var(--mat-sys-surface-container) !important; }
+}
+
+.groep-badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.groep-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: white;
+
+  mat-icon { font-size: 1rem; height: 1rem; width: 1rem; }
+}
+
+.chip-bezoeker   { background-color: #28668F; }
+.chip-tovedemlid { background-color: #338450; }
+.chip-sponsor    { background-color: #DFA801; }
+
+.actions-col { white-space: nowrap; }

@@ -46,6 +46,16 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
     access: ['admin', 'bestuur'],
   },
   {
+    path: 'beheer-mail-lijst',
+    label: 'Beheer mail lijst',
+    access: ['admin', 'bestuur'],
+  },
+  {
+    path: 'beheer-nieuwsbrief/:id',
+    label: 'Nieuwsbrief opstellen',
+    access: ['admin', 'bestuur'],
+  },
+  {
     path: 'beheer-reserveringen',
     label: 'Beheer reserveringen',
     access: ['admin', 'bestuur', 'kassa'],

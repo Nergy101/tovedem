@@ -200,6 +200,22 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(getRequiredRoles('beheer-vrienden'))],
   },
   {
+    path: 'beheer-mail-lijst',
+    loadComponent: () =>
+      import('./pages/members/beheer-mail-lijst/beheer-mail-lijst.component').then(
+        (m) => m.BeheerMailLijstComponent,
+      ),
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-mail-lijst'))],
+  },
+  {
+    path: 'beheer-nieuwsbrief/:id',
+    loadComponent: () =>
+      import('./pages/members/beheer-nieuwsbrief/beheer-nieuwsbrief.component').then(
+        (m) => m.BeheerNieuwsbriefComponent,
+      ),
+    canActivate: [loggedInGuard(getRequiredRoles('beheer-nieuwsbrief/:id'))],
+  },
+  {
     path: 'productie-info/Tovedem',
     loadComponent: () =>
       import('./pages/members/productie-info/productie-info.component').then(

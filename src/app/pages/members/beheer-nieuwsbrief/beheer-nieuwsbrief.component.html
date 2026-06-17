@@ -1,0 +1,217 @@
+@if (loading()) {
+  <div class="center mt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+} @else {
+
+<div class="builder-page">
+
+  <!-- Toolbar -->
+  <div class="builder-toolbar">
+    <button mat-icon-button matTooltip="Terug naar mails" (click)="terug()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <mat-form-field class="toolbar-titel" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Titel nieuwsbrief</mat-label>
+      <input matInput [ngModel]="titel()" (ngModelChange)="titel.set($event)" placeholder="Geef een titel..." />
+    </mat-form-field>
+
+    <mat-form-field class="toolbar-doelgroep" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Doelgroep</mat-label>
+      <mat-select [value]="doelgroep()" (selectionChange)="doelgroep.set($event.value)">
+        @for (o of doelgroepOpties; track o.value) {
+          <mat-option [value]="o.value">{{ o.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="toolbar-spacer"></div>
+
+    <button mat-stroked-button (click)="view.set(view() === 'editor' ? 'preview' : 'editor')">
+      <mat-icon>{{ view() === 'editor' ? 'visibility' : 'edit' }}</mat-icon>
+      {{ view() === 'editor' ? 'Voorbeeld' : 'Bewerken' }}
+    </button>
+
+    <button mat-stroked-button [disabled]="saving()" (click)="opslaan()">
+      @if (saving()) { <mat-spinner diameter="18" class="btn-spinner"></mat-spinner> }
+      @else { <mat-icon>save</mat-icon> }
+      Opslaan
+    </button>
+
+    <button mat-flat-button color="primary" [disabled]="verzendend() || saving()" (click)="versturen()">
+      @if (verzendend()) { <mat-spinner diameter="18" class="btn-spinner"></mat-spinner> }
+      @else { <mat-icon>send</mat-icon> }
+      Versturen
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="builder-body">
+
+    @if (view() === 'editor') {
+    <!-- ── Editor ── -->
+    <div class="editor-pane">
+
+      <!-- Block list -->
+      @if (blokken().length === 0) {
+        <div class="empty-state">
+          <mat-icon>mail_outline</mat-icon>
+          <p>Nog geen blokken. Voeg een blok toe om te beginnen.</p>
+        </div>
+      }
+
+      @for (blok of blokken(); track blok.id; let i = $index) {
+        <div class="blok-wrapper" [class.blok-actief]="actieveBlokIndex() === i">
+
+          <!-- Blok header -->
+          <div class="blok-header" (click)="toggleBlok(i)">
+            <mat-icon class="blok-type-icon">{{ blokIcons[blok.type] }}</mat-icon>
+            <span class="blok-type-label">{{ blokLabels[blok.type] }}</span>
+            <span class="blok-preview-text">{{ blok.titel || blok.tekst || blok.event_titel || blok.knop_label || '' | slice:0:50 }}</span>
+            <div class="blok-actions">
+              <button mat-icon-button matTooltip="Omhoog" [disabled]="i === 0" (click)="$event.stopPropagation(); verplaatsOmhoog(i)">
+                <mat-icon>keyboard_arrow_up</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Omlaag" [disabled]="i === blokken().length - 1" (click)="$event.stopPropagation(); verplaatsOmlaag(i)">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Verwijderen" (click)="$event.stopPropagation(); verwijderBlok(i)">
+                <mat-icon color="warn">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Blok velden (ingeklapt/uitgeklapt) -->
+          @if (actieveBlokIndex() === i) {
+            <div class="blok-fields">
+
+              @switch (blok.type) {
+
+                @case ('koptekst') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Titel</mat-label>
+                    <input matInput [ngModel]="blok.titel" (ngModelChange)="updateBlok(i, 'titel', $event)" />
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <mat-label>Ondertitel (optioneel)</mat-label>
+                    <input matInput [ngModel]="blok.ondertitel" (ngModelChange)="updateBlok(i, 'ondertitel', $event)" />
+                  </mat-form-field>
+                }
+
+                @case ('alinea') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Tekst</mat-label>
+                    <textarea matInput rows="5" [ngModel]="blok.tekst" (ngModelChange)="updateBlok(i, 'tekst', $event)"></textarea>
+                  </mat-form-field>
+                }
+
+                @case ('afbeelding') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Afbeelding URL</mat-label>
+                    <input matInput [ngModel]="blok.afbeelding_url" (ngModelChange)="updateBlok(i, 'afbeelding_url', $event)" placeholder="https://..." />
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <mat-label>Alt tekst</mat-label>
+                    <input matInput [ngModel]="blok.afbeelding_alt" (ngModelChange)="updateBlok(i, 'afbeelding_alt', $event)" />
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <mat-label>Onderschrift (optioneel)</mat-label>
+                    <input matInput [ngModel]="blok.onderschrift" (ngModelChange)="updateBlok(i, 'onderschrift', $event)" />
+                  </mat-form-field>
+                }
+
+                @case ('evenement') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Titel evenement</mat-label>
+                    <input matInput [ngModel]="blok.event_titel" (ngModelChange)="updateBlok(i, 'event_titel', $event)" />
+                  </mat-form-field>
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Datum</mat-label>
+                        <input matInput [ngModel]="blok.event_datum" (ngModelChange)="updateBlok(i, 'event_datum', $event)" placeholder="bijv. 12 april 2026" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Locatie</mat-label>
+                        <input matInput [ngModel]="blok.event_locatie" (ngModelChange)="updateBlok(i, 'event_locatie', $event)" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Prijs</mat-label>
+                        <input matInput [ngModel]="blok.event_prijs" (ngModelChange)="updateBlok(i, 'event_prijs', $event)" placeholder="bijv. € 8,00" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Link (optioneel)</mat-label>
+                        <input matInput [ngModel]="blok.event_link" (ngModelChange)="updateBlok(i, 'event_link', $event)" placeholder="https://..." />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                }
+
+                @case ('scheidingslijn') {
+                  <p class="text-muted fst-italic" style="padding:0.5rem 0;">Scheidingslijn — geen instellingen</p>
+                }
+
+                @case ('knop') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Knop tekst</mat-label>
+                    <input matInput [ngModel]="blok.knop_label" (ngModelChange)="updateBlok(i, 'knop_label', $event)" />
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <mat-label>URL</mat-label>
+                    <input matInput [ngModel]="blok.knop_url" (ngModelChange)="updateBlok(i, 'knop_url', $event)" placeholder="https://..." />
+                  </mat-form-field>
+                }
+
+              }
+
+            </div>
+          }
+
+        </div>
+      }
+
+      <!-- Blok toevoegen -->
+      <div class="add-blok-bar">
+        <button mat-stroked-button [matMenuTriggerFor]="blokMenu" class="add-blok-btn">
+          <mat-icon>add</mat-icon>
+          Blok toevoegen
+        </button>
+        <mat-menu #blokMenu="matMenu">
+          @for (type of blokTypes; track type) {
+            <button mat-menu-item (click)="voegBlokToe(type)">
+              <mat-icon>{{ blokIcons[type] }}</mat-icon>
+              <span>{{ blokLabels[type] }}</span>
+            </button>
+          }
+        </mat-menu>
+      </div>
+
+    </div>
+    }
+
+    @if (view() === 'preview') {
+    <!-- ── Voorbeeld ── -->
+    <div class="preview-pane">
+      <div class="preview-wrapper">
+        <iframe
+          class="preview-iframe"
+          [srcdoc]="previewHtml()"
+          title="Nieuwsbrief voorbeeld"
+        ></iframe>
+      </div>
+    </div>
+    }
+
+  </div>
+</div>
+
+}

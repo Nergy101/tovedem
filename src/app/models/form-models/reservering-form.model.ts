@@ -12,5 +12,6 @@ export interface ReserveringFormModel {
   opmerking: string;
   amountOfPeopleDate1: number;
   amountOfPeopleDate2: number;
+  aanmeldenNieuwsbrief: boolean;
 }
 

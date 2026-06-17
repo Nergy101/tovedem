@@ -142,7 +142,9 @@
           '/beheer-nieuwe-leden',
           '/beheer-vrienden',
           '/beheer-sponsoren',
-          '/beheer-mails'
+          '/beheer-mails',
+          '/beheer-mail-lijst',
+          '/beheer-nieuwsbrief'
         ])
       "
       [expanded]="panelState['beheer']"
@@ -285,6 +287,19 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <span>Emails</span> <mat-icon>mail</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-mail-lijst"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span>Mail lijst</span> <mat-icon>contact_mail</mat-icon>
           </button>
         </li>
         }
