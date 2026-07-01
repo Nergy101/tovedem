@@ -1,5 +1,5 @@
 ### STAGE 1: Build ###
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /usr/src/app
 
 # Only copy package files first to leverage Docker cache
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 ### STAGE 2: Run ###
-FROM nginx:1.29-alpine
+FROM nginx:1.31-alpine
 RUN apk upgrade --no-cache
 
 # Copy custom nginx config
