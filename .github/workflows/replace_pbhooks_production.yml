@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Tovedem Production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Get Known Hosts value
         run: echo "KNOWN_HOSTS=$(ssh-keyscan -H ${{ secrets.SSH_HOST_2 }})" >> $GITHUB_ENV
@@ -32,7 +32,7 @@ jobs:
           if_key_exists: replace
 
       - name: Replace pb_hooks folder
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST_2 }}
           username: ${{ secrets.SSH_USERNAME_2 }}
@@ -51,7 +51,7 @@ jobs:
             echo "Removed tovedem repository"
 
       - name: Restart pocketbase
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST_2 }}
           username: ${{ secrets.SSH_USERNAME_2 }}
