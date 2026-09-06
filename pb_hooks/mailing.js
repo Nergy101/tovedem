@@ -18,7 +18,7 @@ module.exports = {
     const record = $app.findFirstRecordByFilter("mails", filter);
 
     if (!record) {
-      throw new Error($`Mail template '${mailName}' not found`);
+      throw new Error(`Mail template '${mailName}' not found`);
     }
 
     if (record.length > 1) {

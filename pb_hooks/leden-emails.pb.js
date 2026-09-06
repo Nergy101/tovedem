@@ -38,10 +38,9 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
-  e.next();
 
   // send a mail to the beheerders, so they can check the new member registration
-  const mailInfoBeheer = mailing.getMail("lid_worden_beheer");
+  const mailInfoBeheer = mailing.getMail("lid_worden-beheer");
   const filledMailTemplateBeheer = mailing.getNieuweLidAanmeldingBeheerMailHtml(
     mailInfoBeheer,
     lid
