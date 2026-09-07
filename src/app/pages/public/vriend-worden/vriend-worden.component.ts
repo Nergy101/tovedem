@@ -27,9 +27,9 @@ import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Environment } from '../../../../environment';
 import { VriendWordenFormModel } from '../../../models/form-models/vriend-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
@@ -82,7 +82,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
   client = this.pocketbaseService.client; // Keep for create operations
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
-  environment = inject(Environment);
+  recaptchaVerification = inject(RecaptchaVerificationService);
 
   subscriptions: Subscription[] = [];
 
@@ -94,51 +94,42 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.recaptchaV3Service.execute('vriend_worden').subscribe({
         next: async (token) => {
-          const response = await fetch(
-            `${this.environment.pocketbase.baseUrl}/recaptcha`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                token,
-              }),
-            },
-          );
-
-          const resultObj = await response.json();
-
-          if (resultObj.result.success) {
-            try {
-              const formData = this.vriendWordenModel();
-              await this.client.collection('vriend_worden_verzoeken').create({
-                name: formData.name,
-                email: formData.email,
-                subject: formData.subject,
-                message: formData.message,
-              });
-
-              this.toastr.success(
-                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.',
-              );
-
-              // Reset form
-              this.vriendWordenModel.set({
-                name: '',
-                email: '',
-                subject: '',
-                message: '',
-              });
-
-              this.submitted.set(true);
-            } catch (error) {
-              console.error(error);
-              this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
-              );
-            }
+          if (!(await this.recaptchaVerification.verifyToken(token))) {
+            // De service heeft de bezoeker al via een toast geïnformeerd.
+            return;
           }
+
+          try {
+            const formData = this.vriendWordenModel();
+            await this.client.collection('vriend_worden_verzoeken').create({
+              name: formData.name,
+              email: formData.email,
+              subject: formData.subject,
+              message: formData.message,
+            });
+
+            this.toastr.success(
+              'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.',
+            );
+
+            // Reset form
+            this.vriendWordenModel.set({
+              name: '',
+              email: '',
+              subject: '',
+              message: '',
+            });
+
+            this.submitted.set(true);
+          } catch (error) {
+            console.error(error);
+            this.toastr.error(
+              'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
+            );
+          }
+        },
+        error: (error) => {
+          this.recaptchaVerification.meldUitvoerenMislukt(error);
         },
       }),
     );

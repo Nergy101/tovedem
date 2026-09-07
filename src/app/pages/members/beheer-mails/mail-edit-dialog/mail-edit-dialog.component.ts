@@ -63,6 +63,7 @@ export class MailEditDialogComponent implements OnInit {
 
   formIsValid(): boolean {
     return !!this.mail.naam && this.mail.naam.trim() !== '' &&
+           !!this.mail.onderwerp && this.mail.onderwerp.trim() !== '' &&
            !!this.mail.inhoud && this.mail.inhoud.trim() !== '';
   }
 

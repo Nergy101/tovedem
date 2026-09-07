@@ -138,6 +138,7 @@
                   <thead>
                     <tr>
                       <th scope="col">Naam</th>
+                      <th scope="col">Onderwerp</th>
                       <th scope="col">Status</th>
                       <th></th>
                     </tr>
@@ -146,6 +147,13 @@
                     @for (mailTemplate of mailTemplates(); track $index) {
                       <tr>
                         <td>{{ mailTemplate.naam }}</td>
+                        <td>
+                          @if (mailTemplate.onderwerp) {
+                            {{ mailTemplate.onderwerp }}
+                          } @else {
+                            <span class="onderwerp-ontbreekt">Geen onderwerp</span>
+                          }
+                        </td>
                         <td>
                           <button
                             class="d-flex justify-content-center align-items-center"

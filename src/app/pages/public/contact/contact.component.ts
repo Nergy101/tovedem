@@ -1,5 +1,11 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
-import { FormField, form, required, email, debounce } from '@angular/forms/signals';
+import {
+  FormField,
+  form,
+  required,
+  email,
+  debounce,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,9 +20,9 @@ import { Router, RouterModule } from '@angular/router';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Environment } from '../../../../environment';
 import { ContactFormModel } from '../../../models/form-models/contact-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
@@ -63,7 +69,7 @@ export class ContactComponent implements OnDestroy {
 
   router = inject(Router);
   recaptchaV3Service = inject(ReCaptchaV3Service);
-  environment = inject(Environment);
+  recaptchaVerification = inject(RecaptchaVerificationService);
   pocketService = inject(PocketbaseService);
   toastr = inject(ToastrService);
 
@@ -73,7 +79,7 @@ export class ContactComponent implements OnDestroy {
   constructor() {
     this.seoService.update(
       'Tovedem - Contact',
-      'Neem contact op met Tovedem. Wij zijn gevestigd in De Schalm, Orangjelaan 10, 3454 BT De Meern.'
+      'Neem contact op met Tovedem. Wij zijn gevestigd in De Schalm, Orangjelaan 10, 3454 BT De Meern.',
     );
 
     this.seoService.updateStructuredDataForLocalBusiness({
@@ -102,58 +108,44 @@ export class ContactComponent implements OnDestroy {
     this.subscriptions.push(
       this.recaptchaV3Service.execute('contact').subscribe({
         next: async (token) => {
-          const response = await fetch(
-            `${this.environment.pocketbase.baseUrl}/recaptcha`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                token,
-              }),
-            }
-          );
+          if (!(await this.recaptchaVerification.verifyToken(token))) {
+            // De service heeft de bezoeker al via een toast geïnformeerd.
+            return;
+          }
 
-          const resultObj = await response.json();
+          try {
+            const formData = this.contactModel();
+            await this.pocketService.create('contact_verzoeken', {
+              name: formData.name,
+              email: formData.email,
+              subject: formData.subject,
+              message: formData.message,
+            });
 
-          if (resultObj.result.success) {
-            try {
-              const formData = this.contactModel();
-              await this.pocketService.create('contact_verzoeken', {
-                name: formData.name,
-                email: formData.email,
-                subject: formData.subject,
-                message: formData.message,
-              });
+            this.toastr.success(
+              'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.',
+            );
 
-              this.toastr.success(
-                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
-              );
+            // Reset form
+            this.contactModel.set({
+              name: '',
+              email: '',
+              subject: '',
+              message: '',
+            });
 
-              // Reset form
-              this.contactModel.set({
-                name: '',
-                email: '',
-                subject: '',
-                message: '',
-              });
-
-              this.submitted.set(true);
-            } catch (error) {
-              console.error('Error sending contact form', error);
-              this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
-              );
-            }
-          } else {
-            console.error('Captcha failed');
+            this.submitted.set(true);
+          } catch (error) {
+            console.error('Error sending contact form', error);
+            this.toastr.error(
+              'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
+            );
           }
         },
         error: (error) => {
-          console.error('Error executing captcha', error);
+          this.recaptchaVerification.meldUitvoerenMislukt(error);
         },
-      })
+      }),
     );
   }
 

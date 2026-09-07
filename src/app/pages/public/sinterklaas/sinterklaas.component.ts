@@ -6,7 +6,13 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormField, form, required, email, debounce } from '@angular/forms/signals';
+import {
+  FormField,
+  form,
+  required,
+  email,
+  debounce,
+} from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,9 +27,9 @@ import { Router, RouterModule } from '@angular/router';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
-import { Environment } from '../../../../environment';
 import { SinterklaasFormModel } from '../../../models/form-models/sinterklaas-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Subscription } from 'rxjs';
 
@@ -84,8 +90,8 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   router = inject(Router);
   pocketbaseService = inject(PocketbaseService);
   client = this.pocketbaseService.client; // Keep for create operations
-  environment = inject(Environment);
   recaptchaV3Service = inject(ReCaptchaV3Service);
+  recaptchaVerification = inject(RecaptchaVerificationService);
   subscriptions: Subscription[] = [];
 
   verstuurSinterklaasMail(): void {
@@ -96,54 +102,45 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.recaptchaV3Service.execute('sinterklaas').subscribe({
         next: async (token) => {
-          const response = await fetch(
-            `${this.environment.pocketbase.baseUrl}/recaptcha`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                token,
-              }),
-            }
-          );
+          if (!(await this.recaptchaVerification.verifyToken(token))) {
+            // De service heeft de bezoeker al via een toast geïnformeerd.
+            return;
+          }
 
-          const resultObj = await response.json();
+          try {
+            const formData = this.sinterklaasModel();
+            await this.client.collection('sinterklaas_verzoeken').create({
+              name: formData.name,
+              email: formData.email,
+              subject: formData.subject,
+              message: formData.message,
+              status: 'nieuw',
+            });
 
-          if (resultObj.result.success) {
-            try {
-              const formData = this.sinterklaasModel();
-              await this.client.collection('sinterklaas_verzoeken').create({
-                name: formData.name,
-                email: formData.email,
-                subject: formData.subject,
-                message: formData.message,
-                status: 'nieuw',
-              });
+            this.toastr.success(
+              'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.',
+            );
 
-              this.toastr.success(
-                'Uw bericht is verstuurd. Wij nemen zo snel mogelijk contact met u op.'
-              );
+            // Reset form
+            this.sinterklaasModel.set({
+              name: '',
+              email: '',
+              subject: '',
+              message: '',
+            });
 
-              // Reset form
-              this.sinterklaasModel.set({
-                name: '',
-                email: '',
-                subject: '',
-                message: '',
-              });
-
-              this.submitted.set(true);
-            } catch (error) {
-              console.error(error);
-              this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.'
-              );
-            }
+            this.submitted.set(true);
+          } catch (error) {
+            console.error(error);
+            this.toastr.error(
+              'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
+            );
           }
         },
-      })
+        error: (error) => {
+          this.recaptchaVerification.meldUitvoerenMislukt(error);
+        },
+      }),
     );
   }
 
@@ -167,7 +164,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
       record.afbeeldingen.map((img: string) => ({
         id: img,
         src: this.getImageUrl(record.collectionId, record.id, img),
-      }))
+      })),
     );
   }
 

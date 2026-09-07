@@ -275,3 +275,8 @@ html.lightMode .selectable-row.row-selected {
   font-weight: 500;
 }
 
+
+.onderwerp-ontbreekt {
+  color: var(--mat-sys-error, #b3261e);
+  font-style: italic;
+}

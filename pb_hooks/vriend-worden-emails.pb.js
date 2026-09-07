@@ -24,7 +24,6 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
-  e.next();
 
   // send a mail to the beheerders, so they can check the request
   const mailInfoBeheer = mailing.getMail("vriend_worden-beheer");

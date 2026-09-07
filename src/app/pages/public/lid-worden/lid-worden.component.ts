@@ -38,6 +38,7 @@ import { Environment } from '../../../../environment';
 import { Groep } from '../../../models/domain/groep.model';
 import { LidWordenFormModel } from '../../../models/form-models/lid-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
 @Component({
@@ -114,6 +115,7 @@ export class LidWordenComponent implements OnInit, OnDestroy {
   toastr = inject(ToastrService);
   environment = inject(Environment);
   recaptchaV3Service = inject(ReCaptchaV3Service);
+  recaptchaVerification = inject(RecaptchaVerificationService);
   subscriptions: Subscription[] = [];
 
   constructor() {
@@ -164,77 +166,62 @@ export class LidWordenComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.recaptchaV3Service.execute('lid_worden').subscribe({
         next: async (token) => {
-          const response = await fetch(
-            `${this.environment.pocketbase.baseUrl}/recaptcha`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                token,
-              }),
-            },
-          );
+          if (!(await this.recaptchaVerification.verifyToken(token))) {
+            // De service heeft de bezoeker al via een toast geïnformeerd.
+            this.loading.set(false);
+            return;
+          }
 
-          const resultObj = await response.json();
+          try {
+            const formData = this.lidWordenModel();
+            await this.clientB.collection('leden').create({
+              voornaam: formData.voornaam,
+              achternaam: formData.achternaam,
+              groep: formData.selectedGroep?.id,
+              bericht: formData.message,
+              geboorte_datum: formData.geboorteDatum,
+              email: formData.email,
+            });
 
-          if (resultObj.result.success) {
-            try {
-              const formData = this.lidWordenModel();
-              await this.clientB.collection('leden').create({
-                voornaam: formData.voornaam,
-                achternaam: formData.achternaam,
-                groep: formData.selectedGroep?.id,
-                bericht: formData.message,
-                geboorte_datum: formData.geboorteDatum,
-                email: formData.email,
-              });
+            this.toastr.success(
+              `Bedankt voor de aanmelding, ${formData.voornaam}.`,
+              'Aanvraag verzonden!',
+            );
 
-              this.toastr.success(
-                `Bedankt voor de aanmelding, ${formData.voornaam}.`,
-                'Aanvraag verzonden!',
-              );
+            // Fire confetti!
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+            });
 
-              // Fire confetti!
-              confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-              });
+            // Clear confetti after a certain duration
+            // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
+            setTimeout(() => confetti.reset(), 3000);
 
-              // Clear confetti after a certain duration
-              // Using setTimeout is fine here as confetti.reset() doesn't need Angular change detection
-              setTimeout(() => confetti.reset(), 3000);
+            // Reset form
+            this.lidWordenModel.set({
+              voornaam: '',
+              achternaam: '',
+              email: '',
+              geboorteDatum: null,
+              selectedGroep: null,
+              message: '',
+            });
 
-              // Reset form
-              this.lidWordenModel.set({
-                voornaam: '',
-                achternaam: '',
-                email: '',
-                geboorteDatum: null,
-                selectedGroep: null,
-                message: '',
-              });
-
-              this.submitted.set(true);
-              this.loading.set(false);
-            } catch (error) {
-              console.error(error);
-              this.toastr.error(
-                'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
-              );
-              this.loading.set(false);
-            }
-          } else {
+            this.submitted.set(true);
+            this.loading.set(false);
+          } catch (error) {
+            console.error(error);
+            this.toastr.error(
+              'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
+            );
             this.loading.set(false);
           }
         },
-        error: () => {
+        error: (error) => {
           this.loading.set(false);
-          this.toastr.error(
-            'Er is iets misgegaan bij het versturen van het bericht. Probeer het later opnieuw.',
-          );
+          this.recaptchaVerification.meldUitvoerenMislukt(error);
         },
       }),
     );

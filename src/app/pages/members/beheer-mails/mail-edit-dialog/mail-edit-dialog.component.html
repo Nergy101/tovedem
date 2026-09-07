@@ -40,6 +40,25 @@
       </mat-form-field>
 
       <mat-form-field class="col-12">
+        <mat-label>Mail Onderwerp</mat-label>
+        <input
+          placeholder="Dit is een voorbeeld onderwerp"
+          matInput
+          type="text"
+          name="mailOnderwerp"
+          required
+          [(ngModel)]="mail.onderwerp"
+          #onderwerpField="ngModel"
+        />
+        <mat-hint>Wordt gebruikt als onderwerpregel van de verstuurde mail.</mat-hint>
+        @if (onderwerpField.touched && onderwerpField.invalid) {
+          @for (error of getFieldErrors(onderwerpField); track error) {
+            <mat-error>{{ error }}</mat-error>
+          }
+        }
+      </mat-form-field>
+
+      <mat-form-field class="col-12">
         <mat-label>Mail Inhoud</mat-label>
         <textarea
           placeholder="Dit is voorbeeld inhoud"

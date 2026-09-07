@@ -114,7 +114,7 @@ export class BeheerMailLijstComponent implements OnInit {
 
   private async loadContacten(): Promise<void> {
     try {
-      const filters: string[] = ['actief = true'];
+      const filters: string[] = [];
       const search = this.searchTerm();
       const groep = this.groepFilter();
 
@@ -141,8 +141,21 @@ export class BeheerMailLijstComponent implements OnInit {
       this.contacten.set(result as unknown as MailLijstContact[]);
     } catch (error) {
       console.error('Error loading mail lijst:', error);
-      this.toastr.error('Fout bij het laden van de mail lijst');
+      this.toastr.error(this.laadFoutmelding(error));
     }
+  }
+
+  /**
+   * De mail_lijst collectie bestaat nog niet in elke PocketBase omgeving; een
+   * 404 is dan geen laadfout maar ontbrekende configuratie. Dat onderscheid
+   * scheelt zoekwerk voor de beheerder.
+   */
+  private laadFoutmelding(error: unknown): string {
+    if ((error as { status?: number })?.status === 404) {
+      return "De collectie 'mail_lijst' bestaat niet in PocketBase. Vraag een beheerder om deze aan te maken.";
+    }
+
+    return 'Fout bij het laden van de mail lijst';
   }
 
   async verwijder(id: string): Promise<void> {

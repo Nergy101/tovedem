@@ -27,7 +27,6 @@ onRecordAfterCreateSuccess((e) => {
   });
 
   $app.newMailClient().send(message);
-  e.next();
 
   // send a mail to the sint-commissie themselves, so they can check the request
   const mailInfoBeheer = mailing.getMail("sintcommissie-beheer");

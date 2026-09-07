@@ -43,12 +43,12 @@ routerAdd("GET", "/reserveringen/totals", (e) => {
 });
 
 /* Server-side validation: Prevent creating reservations that exceed 100 people limit */
-onRecordBeforeCreateRequest((e) => {
+onRecordCreateRequest((e) => {
     const newRecord = e.record;
     const voorstellingId = newRecord.get("voorstelling");
     
     if (!voorstellingId) {
-        return; // Let PocketBase handle missing required field
+        return e.next(); // Let PocketBase handle missing required field
     }
     
     const datum_tijd_1_aantal = newRecord.getInt("datum_tijd_1_aantal") || 0;
@@ -56,7 +56,7 @@ onRecordBeforeCreateRequest((e) => {
     
     // Skip validation if both amounts are 0
     if (datum_tijd_1_aantal === 0 && datum_tijd_2_aantal === 0) {
-        return;
+        return e.next();
     }
     
     // Fetch existing reservations using Record operations API
@@ -98,5 +98,7 @@ onRecordBeforeCreateRequest((e) => {
             `U probeert ${datum_tijd_2_aantal} extra plaatsen te reserveren.`
         );
     }
+
+    e.next();
 }, "reserveringen");
 
