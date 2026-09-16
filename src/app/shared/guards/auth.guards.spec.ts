@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { globalAdminGuard, loggedInGuard } from './auth.guards';
@@ -44,7 +44,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = globalAdminGuard();
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(true);
@@ -60,7 +63,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = globalAdminGuard();
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(fakeUrlTree);
@@ -85,7 +91,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = loggedInGuard(['admin']);
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(true);
@@ -101,7 +110,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = loggedInGuard([]);
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(true);
@@ -118,7 +130,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = loggedInGuard(['admin', 'bestuur']);
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(true);
@@ -138,7 +153,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = loggedInGuard(['admin']);
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(fakeUrlTree);
@@ -156,7 +174,10 @@ describe('auth.guards', () => {
 
       const result = TestBed.runInInjectionContext(() => {
         const fn = loggedInGuard(['admin']);
-        return fn(null as any, null as any);
+        return fn(
+          {} as ActivatedRouteSnapshot,
+          {} as RouterStateSnapshot,
+        );
       });
 
       expect(result).toBe(fakeUrlTree);

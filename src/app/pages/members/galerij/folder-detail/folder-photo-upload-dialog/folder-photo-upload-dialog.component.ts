@@ -82,8 +82,7 @@ export class FolderPhotoUploadDialogComponent implements OnDestroy {
     if (input.files && input.files.length > 0) {
       const newFiles: SelectedFile[] = [];
 
-      for (let i = 0; i < input.files.length; i++) {
-        const file = input.files[i];
+      for (const file of Array.from(input.files)) {
         const previewUrl = URL.createObjectURL(file);
         newFiles.push({ file, previewUrl });
       }

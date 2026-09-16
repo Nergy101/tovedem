@@ -34,10 +34,11 @@ export class BeheerSpelersUpdateDialogComponent implements OnInit {
     return !!this.speler.naam && this.speler.naam.trim() !== '';
   }
 
-  getFieldErrors(field: any): string[] {
+  getFieldErrors(field: unknown): string[] {
     const errors: string[] = [];
-    if (field.errors) {
-      if (field.errors['required']) {
+    const fieldWithErrors = field as { errors?: Record<string, boolean> };
+    if (fieldWithErrors.errors) {
+      if (fieldWithErrors.errors['required']) {
         errors.push('Speler naam is verplicht');
       }
     }

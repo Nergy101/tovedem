@@ -74,6 +74,12 @@ export class VerificationService {
         matchingSponsors: sponsor ? [sponsor] : [],
       };
     }
+    if (reservering.verificatie_status === 'partial') {
+      return {
+        status: 'partial',
+        matchingSponsors: [],
+      };
+    }
     if (reservering.verificatie_status === 'unverified') {
       return {
         status: 'unverified',
@@ -89,7 +95,6 @@ export class VerificationService {
 
     const resVoornaam = this.normalize(reservering.voornaam);
     const resAchternaam = this.normalize(reservering.achternaam);
-    const resEmail = this.normalize(reservering.email);
 
     const exactMatches: Sponsor[] = [];
     const partialMatches: Sponsor[] = [];
@@ -97,7 +102,6 @@ export class VerificationService {
     for (const sponsor of sponsors) {
       const spVoornaam = this.normalize(sponsor.voornaam);
       const spAchternaam = this.normalize(sponsor.achternaam);
-      const spEmail = this.normalize(sponsor.email);
 
       const voornaamMatch = resVoornaam === spVoornaam;
       const achternaamMatch = resAchternaam === spAchternaam;

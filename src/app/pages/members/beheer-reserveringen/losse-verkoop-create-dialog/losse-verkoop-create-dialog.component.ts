@@ -63,16 +63,17 @@ export class LosseVerkoopCreateDialogComponent {
     return this.aantal !== null && this.aantal > 0 && this.aantal <= 20;
   }
 
-  getFieldErrors(field: any): string[] {
+  getFieldErrors(field: unknown): string[] {
     const errors: string[] = [];
-    if (field.errors) {
-      if (field.errors['required']) {
+    const fieldWithErrors = field as { errors?: Record<string, boolean> };
+    if (fieldWithErrors.errors) {
+      if (fieldWithErrors.errors['required']) {
         errors.push('Aantal is verplicht');
       }
-      if (field.errors['min']) {
+      if (fieldWithErrors.errors['min']) {
         errors.push('Aantal moet minimaal 1 zijn');
       }
-      if (field.errors['max']) {
+      if (fieldWithErrors.errors['max']) {
         errors.push('Aantal mag maximaal 20 zijn');
       }
     }
@@ -83,12 +84,6 @@ export class LosseVerkoopCreateDialogComponent {
     const voorstelling = this.voorstelling();
     const selectedDag = this.selectedDag();
     const nieuweAantal = this.aantal ?? 0;
-
-    // Get beschikbare stoelen for selected day
-    const beschikbareStoelen =
-      selectedDag === 'datum1'
-        ? voorstelling.beschikbare_stoelen_datum_tijd_1
-        : voorstelling.beschikbare_stoelen_datum_tijd_2;
 
     // Get all reservations for this voorstelling
     const reserveringen = await this.client.getAll<Reservering>(

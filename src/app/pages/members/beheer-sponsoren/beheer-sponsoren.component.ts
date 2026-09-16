@@ -264,9 +264,7 @@ export class BeheerSponsorenComponent implements OnInit {
     let current = '';
     let inQuotes = false;
 
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-
+    for (const char of line) {
       if (char === '"') {
         inQuotes = !inQuotes;
       } else if (char === '\t' && !inQuotes) {

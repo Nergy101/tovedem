@@ -33,6 +33,14 @@ import { RecaptchaVerificationService } from '../../../shared/services/recaptcha
 import { SeoService } from '../../../shared/services/seo.service';
 import { Subscription } from 'rxjs';
 
+import { BaseModel } from 'pocketbase';
+
+/** Single-record page content of the `sinterklaas` collection */
+interface SinterklaasPagina extends BaseModel {
+  tekst_1: string;
+  afbeeldingen?: string[];
+}
+
 @Component({
   selector: 'app-sinterklaas',
   imports: [
@@ -81,7 +89,7 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
   });
 
   images = signal<
-    { id: number; title: string; description: string; src: string }[]
+    { id: string; title?: string; description?: string; src: string }[]
   >([]);
   status: string | null = null;
   submitted = signal(false);
@@ -155,13 +163,17 @@ export class SinterklaasComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     // Use cached service method instead of direct client access
-    const page = await this.pocketbaseService.getPage<any>('sinterklaas', 1, 1);
+    const page = await this.pocketbaseService.getPage<SinterklaasPagina>(
+      'sinterklaas',
+      1,
+      1,
+    );
     const record = page.items[0];
 
     this.content.set(record.tekst_1);
 
     this.images.set(
-      record.afbeeldingen.map((img: string) => ({
+      (record.afbeeldingen ?? []).map((img: string) => ({
         id: img,
         src: this.getImageUrl(record.collectionId, record.id, img),
       })),

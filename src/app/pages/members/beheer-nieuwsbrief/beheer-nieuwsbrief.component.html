@@ -65,7 +65,14 @@
         <div class="blok-wrapper" [class.blok-actief]="actieveBlokIndex() === i">
 
           <!-- Blok header -->
-          <div class="blok-header" (click)="toggleBlok(i)">
+          <div
+            class="blok-header"
+            role="button"
+            tabindex="0"
+            (click)="toggleBlok(i)"
+            (keydown.enter)="toggleBlok(i)"
+            (keydown.space)="toggleBlok(i)"
+          >
             <mat-icon class="blok-type-icon">{{ blokIcons[blok.type] }}</mat-icon>
             <span class="blok-type-label">{{ blokLabels[blok.type] }}</span>
             <span class="blok-preview-text">{{ blok.titel || blok.tekst || blok.event_titel || blok.knop_label || '' | slice:0:50 }}</span>

@@ -2,7 +2,6 @@ import {
   Component,
   HostListener,
   inject,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -66,8 +65,6 @@ export class NavbarComponent {
    */
   @HostListener('keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent): void {
-    const target = event.target as HTMLElement;
-
     // Handle Escape key to close menus
     if (event.key === 'Escape') {
       const activeMenu = document.querySelector(

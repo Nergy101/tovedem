@@ -5,6 +5,7 @@ import {
   Output,
   signal,
   ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -27,7 +28,7 @@ export class ImagePickerWithPreviewComponent implements OnDestroy {
   selectedFile: FilePreviewModel | null = null;
   imageKey = signal<number>(0); // Key to force image re-render
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  private readonly cdr = inject(ChangeDetectorRef);
 
   hasFile(): boolean {
     return this.selectedFile !== null && this.selectedFile?.file !== undefined;

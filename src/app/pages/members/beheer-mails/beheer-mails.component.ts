@@ -327,7 +327,13 @@ export class BeheerMailsComponent implements OnInit {
   }
 
   // Statistieken
-  get templateStats() {
+  get templateStats(): {
+    totaal: number;
+    concept: number;
+    inprogress: number;
+    done: number;
+    verified: number;
+  } {
     const templates = this.mailTemplates() ?? [];
     return {
       totaal: templates.length,

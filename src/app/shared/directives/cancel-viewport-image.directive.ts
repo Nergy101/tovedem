@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  inject,
 } from '@angular/core';
 
 /**
@@ -32,7 +33,7 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
   private retryTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private static readonly RETRY_DELAY_MS = 3000;
 
-  constructor(private el: ElementRef<HTMLImageElement>) {}
+  private readonly el = inject<ElementRef<HTMLImageElement>>(ElementRef);
 
   ngOnInit(): void {
     this.observer = new IntersectionObserver(
@@ -123,7 +124,7 @@ export class CancelViewportImageDirective implements OnInit, OnDestroy {
         this.el.nativeElement.src = this.blobUrl;
         this.hasLoadedAndDisplayed = true;
       })
-      .catch((err) => {
+      .catch(() => {
         this.el.nativeElement.src = '';
         if (this.isInViewport && !this.hasLoadedAndDisplayed) {
           this.scheduleRetry();

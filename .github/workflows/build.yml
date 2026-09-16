@@ -24,5 +24,11 @@ jobs:
       - name: Build Angular App
         run: npm run build
 
+      - name: Lint
+        run: npm run lint
+
       - name: Run tests
         run: npm run test
+
+      - name: Run PocketBase hook tests
+        run: npm run test:pb

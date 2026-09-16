@@ -144,10 +144,9 @@ export class PrintenComponent implements OnInit {
     this.titleService.setTitle('Tovedem - Printen');
     this.seoService.update('Tovedem - Printen');
 
-    // Effect to load reserveringen when voorstelling or day changes
+    // Effect to load reserveringen when the selected voorstelling changes
     effect(() => {
       const selectedVoorstelling = this.selectedVoorstelling();
-      const selectedDay = this.selectedDay();
 
       if (!selectedVoorstelling) {
         this.reserveringenFromVoorstelling.set([]);
@@ -459,6 +458,9 @@ export class PrintenComponent implements OnInit {
     if (reservering.verificatie_status === 'verified') {
       return 'verified';
     }
+    if (reservering.verificatie_status === 'partial') {
+      return 'partial';
+    }
     if (reservering.verificatie_status === 'verified_no_membership') {
       return 'verified_no_membership';
     }
@@ -480,7 +482,6 @@ export class PrintenComponent implements OnInit {
 
     const resVoornaam = this.normalize(reservering.voornaam);
     const resAchternaam = this.normalize(reservering.achternaam);
-    const resEmail = this.normalize(reservering.email);
 
     const exactMatches: Sponsor[] = [];
     const partialMatches: Sponsor[] = [];
@@ -488,7 +489,6 @@ export class PrintenComponent implements OnInit {
     for (const sponsor of this.sponsors()) {
       const spVoornaam = this.normalize(sponsor.voornaam);
       const spAchternaam = this.normalize(sponsor.achternaam);
-      const spEmail = this.normalize(sponsor.email);
 
       const voornaamMatch = resVoornaam === spVoornaam;
       const achternaamMatch = resAchternaam === spAchternaam;
@@ -590,18 +590,9 @@ export class PrintenComponent implements OnInit {
       // Load the logo image with error handling
       const logoPath = '/assets/tovedem_logo_klein.png';
       let logoDataUrl: string | null = null;
-      let logoAspectRatio = 1; // Default to square
       try {
+        // Resolves once the image has finished loading
         logoDataUrl = await this.loadImageAsDataUrl(logoPath);
-        // Get actual image dimensions to maintain aspect ratio
-        const img = new Image();
-        img.src = logoDataUrl;
-        await new Promise((resolve) => {
-          img.onload = () => {
-            logoAspectRatio = img.width / img.height;
-            resolve(null);
-          };
-        });
       } catch (error) {
         console.error('Error loading logo image:', error);
         this.toastr.warning(
@@ -654,7 +645,7 @@ export class PrintenComponent implements OnInit {
       }
 
       // Helper function to add a ticket
-      const addTicket = (name: string) => {
+      const addTicket = (name: string): void => {
         // Check if we need a new page (every 4 tickets)
         if (ticketIndex > 0 && ticketIndex % 4 === 0) {
           doc.addPage();
@@ -810,7 +801,7 @@ export class PrintenComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.onload = () => {
+      img.onload = (): void => {
         try {
           const canvas = document.createElement('canvas');
           canvas.width = img.width;
@@ -827,7 +818,7 @@ export class PrintenComponent implements OnInit {
           reject(error);
         }
       };
-      img.onerror = () => {
+      img.onerror = (): void => {
         reject(new Error(`Failed to load image: ${url}`));
       };
       img.src = url;

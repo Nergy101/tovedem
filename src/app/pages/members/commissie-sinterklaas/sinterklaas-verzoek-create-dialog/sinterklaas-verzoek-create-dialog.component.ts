@@ -194,7 +194,7 @@ export class SinterklaasVerzoekCreateDialogComponent implements OnInit {
     this.loading.set(true);
 
     try {
-      const verzoekData: any = {
+      const verzoekData: Record<string, unknown> = {
         name: this.name()!,
         email: this.email()!,
         subject: this.subject()!,

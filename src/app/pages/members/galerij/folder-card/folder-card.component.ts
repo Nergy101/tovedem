@@ -36,7 +36,7 @@ export class FolderCardComponent {
     );
   });
 
-  getPhotoUrl(filename: string, index: number): string {
+  getPhotoUrl(filename: string, _index: number): string {
     const token = this.fileToken();
     if (!token) return 'assets/Place-Holder-Image.jpg';
 

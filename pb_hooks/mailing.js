@@ -12,6 +12,33 @@ function getRecordValue(record, fieldName) {
   return null;
 }
 
+// Base URL used for file links inside mails. PocketBase's own app URL is not
+// exposed to hooks, so it must come from the environment; the fallback keeps
+// existing (development) behaviour when the variable is not set.
+const DEFAULT_POCKETBASE_BASE_URL = "https://pocketbase.nergy.space";
+
+function getPocketbaseBaseUrl() {
+  try {
+    if (typeof $os !== "undefined" && $os.getenv) {
+      const url = $os.getenv("POCKETBASE_BASE_URL");
+      if (url) return url.replace(/\/+$/, "");
+    }
+  } catch {
+    // $os unavailable (e.g. in unit tests) - fall through to the default
+  }
+  return DEFAULT_POCKETBASE_BASE_URL;
+}
+
+// File URLs accept either the collection id or its name. Prefer the id from the
+// record metadata (stable across renames); fall back to the collection name.
+function getCollectionIdentifier(record) {
+  return (
+    getRecordValue(record, "collectionId") ||
+    getRecordValue(record, "collectionName") ||
+    "voorstellingen"
+  );
+}
+
 module.exports = {
   getMail: (mailName) => {
     const filter = `naam = '${mailName}'`;
@@ -46,7 +73,7 @@ module.exports = {
 
     const voorstellingAfbeelding =
       afbeelding && voorstellingId
-        ? `https://pocketbase.nergy.space/api/files/voorstellingen/${voorstellingId}/${afbeelding}`
+        ? `${getPocketbaseBaseUrl()}/api/files/${getCollectionIdentifier(voorstelling)}/${voorstellingId}/${afbeelding}`
         : "";
 
     const data = {

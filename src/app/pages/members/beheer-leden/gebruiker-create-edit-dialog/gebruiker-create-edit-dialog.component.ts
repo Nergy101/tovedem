@@ -190,12 +190,14 @@ export class GebruikerCreateEditDialogComponent implements OnInit {
         groep: formData.groep || undefined,
         speler: formData.speler || undefined,
       };
-      // Only update password if provided
+      // Only send the password fields when a new password was entered
+      const payload: Gebruiker & { password?: string; passwordConfirm?: string } =
+        { ...gebruiker };
       if (formData.password) {
-        (gebruiker as any).password = formData.password;
-        (gebruiker as any).passwordConfirm = formData.passwordConfirm;
+        payload.password = formData.password;
+        payload.passwordConfirm = formData.passwordConfirm;
       }
-      const updated = await this.client.update<Gebruiker>('users', gebruiker);
+      const updated = await this.client.update<Gebruiker>('users', payload);
       this.dialogRef.close(updated);
     } else {
       const gebruiker = {

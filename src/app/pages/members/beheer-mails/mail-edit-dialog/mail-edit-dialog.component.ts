@@ -67,10 +67,11 @@ export class MailEditDialogComponent implements OnInit {
            !!this.mail.inhoud && this.mail.inhoud.trim() !== '';
   }
 
-  getFieldErrors(field: any): string[] {
+  getFieldErrors(field: unknown): string[] {
     const errors: string[] = [];
-    if (field.errors) {
-      if (field.errors['required']) {
+    const fieldWithErrors = field as { errors?: Record<string, boolean> };
+    if (fieldWithErrors.errors) {
+      if (fieldWithErrors.errors['required']) {
         errors.push('Dit veld is verplicht');
       }
     }

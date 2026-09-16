@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DateTime } from 'luxon';
 import { Reservering } from '../../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
 import { ErrorService } from '../../../../shared/services/error.service';
@@ -37,7 +38,9 @@ describe('ReserverenComponent', () => {
 
     const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['isPastHoursBefore', 'toAmsterdamTime']);
     dateTimeServiceMock.isPastHoursBefore.and.returnValue(false);
-    dateTimeServiceMock.toAmsterdamTime.and.returnValue({ toJSDate: () => new Date('2026-12-01T20:00:00') } as any);
+    dateTimeServiceMock.toAmsterdamTime.and.returnValue(
+      DateTime.fromISO('2026-12-01T20:00:00', { zone: 'Europe/Amsterdam' })
+    );
 
     originalFetch = globalThis.fetch;
     globalThis.fetch = jasmine.createSpy('fetch').and.returnValue(
@@ -81,13 +84,13 @@ describe('ReserverenComponent', () => {
       amountOfPeopleDate2: 0,
       aanmeldenNieuwsbrief: false,
     });
-    (component as any).voorstellingId = null;
+    component.voorstellingId = null;
     await component.saveReservering();
     expect(clientCreateSpy).not.toHaveBeenCalled();
   });
 
   it('should call create with reserveringen and payload on valid submit (no real reservation)', async () => {
-    (component as any).voorstellingId = 'voorstelling-123';
+    component.voorstellingId = 'voorstelling-123';
     component.datum1Str = '2026-12-01T19:00:00.000Z';
     component.datum2Str = null;
     component.totalPeopleDate1.set(0);
@@ -119,7 +122,7 @@ describe('ReserverenComponent', () => {
   });
 
   it('should navigate to reservering-geslaagd after successful create', async () => {
-    (component as any).voorstellingId = 'voorstelling-123';
+    component.voorstellingId = 'voorstelling-123';
     component.datum1Str = '2026-12-01T19:00:00.000Z';
     component.datum2Str = null;
     component.totalPeopleDate1.set(0);

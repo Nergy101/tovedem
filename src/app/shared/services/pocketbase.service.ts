@@ -179,19 +179,19 @@ export class PocketbaseService {
   getCacheStats(): {
     size: number;
     maxSize: number;
-    entries: Array<{
+    entries: {
       key: string;
       age: number;
       ttl: number;
       remaining: number;
-    }>;
+    }[];
   } {
-    const entries: Array<{
+    const entries: {
       key: string;
       age: number;
       ttl: number;
       remaining: number;
-    }> = [];
+    }[] = [];
     const now = Date.now();
 
     this.cache.forEach((entry, key) => {
@@ -217,7 +217,7 @@ export class PocketbaseService {
    */
   logCacheStats(): void {
     const stats = this.getCacheStats();
-    // Cache statistics logging removed
+    console.debug('[PocketbaseService] cache stats', stats);
   }
 
   /**

@@ -27,6 +27,17 @@ import { CustomErrorHandlerService } from './shared/services/custom-error-handle
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorInterceptor } from './shared/interceptors/error.interceptor';
 
+/** Runtime configuration injected by the Docker entrypoint via /assets/env.js */
+interface AppEnv {
+  PRODUCTION?: string;
+  POCKETBASE_BASE_URL?: string;
+  POCKETBASE_ADMIN_URL?: string;
+  CAPTCHA_SITE_KEY?: string;
+  KUMA_STATUS_URL?: string;
+  UMAMI_SCRIPT_URL?: string;
+  UMAMI_WEBSITE_ID?: string;
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
@@ -49,11 +60,12 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: Environment,
-      useFactory: () => {
-        const w = (window as any).APP_ENV ?? {};
+      useFactory: (): Environment => {
+        const appEnv = (window as { APP_ENV?: AppEnv }).APP_ENV;
+        const w: AppEnv = appEnv ?? {};
         // When APP_ENV is injected by the Docker entrypoint, treat empty strings
         // as "not configured" rather than falling back to dev defaults.
-        const hasAppEnv = (window as any).APP_ENV != null;
+        const hasAppEnv = appEnv != null;
         return Object.assign(new Environment(), {
           production: w.PRODUCTION === 'true',
           pocketbase: {

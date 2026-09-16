@@ -32,6 +32,13 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
+import { BaseModel } from 'pocketbase';
+
+/** Single-record page content of the `vriend_worden` collection */
+interface VriendWordenPagina extends BaseModel {
+  tekst_1: string;
+}
+
 @Component({
   selector: 'app-vriend-worden',
   imports: [
@@ -142,7 +149,7 @@ export class VriendWordenComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     // Use cached service method instead of direct client access
-    const page = await this.pocketbaseService.getPage<any>(
+    const page = await this.pocketbaseService.getPage<VriendWordenPagina>(
       'vriend_worden',
       1,
       1,

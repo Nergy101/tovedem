@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
+import { ErrorHandler, Injectable, Injector, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorService } from './error.service';
 
@@ -15,7 +15,7 @@ export class CustomErrorHandlerService implements ErrorHandler {
   private toastrService?: ToastrService;
   private errorService?: ErrorService;
 
-  constructor(private injector: Injector) {}
+  private readonly injector = inject(Injector);
 
   handleError(error: any): void {
     // Lazy inject services to avoid circular dependencies

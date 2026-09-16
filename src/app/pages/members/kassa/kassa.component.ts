@@ -554,11 +554,10 @@ export class KassaComponent implements OnInit {
   }
 
   async openVerificatieDialog(reservering: Reservering): Promise<void> {
-    const { status, matchingSponsors } =
-      this.verificationService.checkVerificationStatus(
-        reservering,
-        this.sponsors()
-      );
+    const { status } = this.verificationService.checkVerificationStatus(
+      reservering,
+      this.sponsors()
+    );
 
     // Get all potential matches (both exact and partial) for display in dialog
     const allMatchingSponsors = this.verificationService.getAllMatchingSponsors(

@@ -4,7 +4,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -48,7 +48,7 @@ export class SponsorCreateEditDialogComponent implements OnInit {
   };
 
   loading = signal(false);
-  sponsorTypes: Array<'sponsor' | 'vriend' | 'ere-lid' | 'ere-mejoto'> = [
+  sponsorTypes: ('sponsor' | 'vriend' | 'ere-lid' | 'ere-mejoto')[] = [
     'sponsor',
     'vriend',
     'ere-lid',
@@ -108,13 +108,14 @@ export class SponsorCreateEditDialogComponent implements OnInit {
     );
   }
 
-  getFieldErrors(field: any): string[] {
+  getFieldErrors(field: unknown): string[] {
     const errors: string[] = [];
-    if (field.errors) {
-      if (field.errors['required']) {
+    const fieldWithErrors = field as { errors?: Record<string, boolean> };
+    if (fieldWithErrors.errors) {
+      if (fieldWithErrors.errors['required']) {
         errors.push('Dit veld is verplicht');
       }
-      if (field.errors['email']) {
+      if (fieldWithErrors.errors['email']) {
         errors.push('Ongeldig e-mailadres');
       }
     }

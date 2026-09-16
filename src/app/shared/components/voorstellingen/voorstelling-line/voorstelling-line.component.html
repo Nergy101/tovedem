@@ -1,7 +1,11 @@
 <div
   class="container mat-elevation-z2"
   [class.clickable]="inToekomst()"
+  [attr.role]="inToekomst() ? 'button' : null"
+  [attr.tabindex]="inToekomst() ? 0 : null"
   (click)="inToekomst() && goToReserveren()"
+  (keydown.enter)="inToekomst() && goToReserveren()"
+  (keydown.space)="inToekomst() && goToReserveren()"
 >
   <div class="row align-items-center justify-content-evenly g-3">
     <div class="col-lg-4 col-md-12 col-12 image-column">

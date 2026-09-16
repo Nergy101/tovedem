@@ -191,7 +191,7 @@ export class ReserveringAanpassenComponent {
               // Expand partially failed, try strategy 2
               throw new Error('Expand failed');
             }
-          } catch (_) {
+          } catch {
             // Strategy 2: Try with only voorstelling expand
             try {
               reservering = await this.client.getOne<Reservering>(
@@ -217,7 +217,7 @@ export class ReserveringAanpassenComponent {
               } else {
                 throw new Error('Voorstelling expand failed');
               }
-            } catch (_) {
+            } catch {
               // Strategy 3: Fetch everything separately
               try {
                 reservering = await this.client.getOne<Reservering>(
@@ -247,12 +247,14 @@ export class ReserveringAanpassenComponent {
                       'Could not fetch voorstelling:',
                       voorstellingError,
                     );
-                    throw new Error('Voorstelling not found');
+                    throw new Error('Voorstelling not found', {
+                      cause: voorstellingError,
+                    });
                   }
                 } else {
                   throw new Error('Reservering has no voorstelling reference');
                 }
-              } catch (_) {
+              } catch {
                 // All strategies failed
                 this.toastr.error(
                   'De reservering kon niet worden geladen. De reservering of gerelateerde gegevens zijn mogelijk verwijderd.',
@@ -356,14 +358,20 @@ export class ReserveringAanpassenComponent {
           }
 
           this.loaded.set(true);
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Error loading reservering:', error);
+
+          const err = error as {
+            status?: number;
+            response?: { code?: number };
+            message?: string;
+          };
 
           // Check if it's an unauthorized error (email mismatch or not authorized)
           if (
-            error?.status === 403 ||
-            error?.response?.code === 403 ||
-            error?.message?.includes('unauthorized')
+            err?.status === 403 ||
+            err?.response?.code === 403 ||
+            err?.message?.includes('unauthorized')
           ) {
             this.toastr.error(
               'U bent niet geautoriseerd om deze reservering aan te passen. Zorg dat u ingelogd bent met het email adres dat overeenkomt met de reservering.',
@@ -427,7 +435,8 @@ export class ReserveringAanpassenComponent {
       // Use voorstelling ID from the reservering object (not from expand)
       const voorstellingId =
         currentReservering.voorstelling ||
-        (currentReservering.expand?.voorstelling as any)?.id;
+        (currentReservering.expand?.voorstelling as { id?: string } | undefined)
+          ?.id;
 
       if (!voorstellingId) {
         this.toastr.error('De voorstelling kon niet worden gevonden.', 'Fout', {

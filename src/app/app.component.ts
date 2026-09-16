@@ -4,7 +4,6 @@ import {
   Component,
   Injector,
   LOCALE_ID,
-  OnInit,
   ViewChild,
   afterNextRender,
   effect,

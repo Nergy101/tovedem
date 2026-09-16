@@ -56,7 +56,9 @@ export class SidenavComponent implements OnInit {
     if (saved) {
       try {
         this.panelState = { ...this.panelState, ...JSON.parse(saved) };
-      } catch {}
+      } catch {
+        // Corrupt or unparsable state: keep the defaults instead of failing
+      }
     }
   }
 

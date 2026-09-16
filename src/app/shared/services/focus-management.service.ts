@@ -17,7 +17,7 @@ export class FocusManagementService {
   private router = inject(Router);
   private injector = inject(Injector);
   private previousFocusElement: HTMLElement | null = null;
-  private focusableElements: string =
+  private focusableElements =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
   constructor() {
@@ -90,7 +90,9 @@ export class FocusManagementService {
    */
   trapFocus(container: HTMLElement): () => void {
     const focusableElements = this.getFocusableElements(container);
-    if (focusableElements.length === 0) return () => {};
+    if (focusableElements.length === 0) return () => {
+      // Nothing to trap when the container has no focusable elements
+    };
 
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
@@ -98,7 +100,7 @@ export class FocusManagementService {
     // Focus first element
     firstElement.focus();
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key !== 'Tab') return;
 
       if (event.shiftKey) {
