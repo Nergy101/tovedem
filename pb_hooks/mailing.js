@@ -12,18 +12,22 @@ function getRecordValue(record, fieldName) {
   return null;
 }
 
-// PocketBase's public file URL must come from the environment when self-hosted;
-// use the production file-serving host when that setting is unavailable.
-const DEFAULT_POCKETBASE_BASE_URL = "https://pocketbase.nergy.space";
+// File URLs must use the PocketBase host serving that environment's records.
+const DEFAULT_POCKETBASE_BASE_URL = "https://tovedem.nergy.space";
+const PRODUCTION_POCKETBASE_BASE_URL = "https://pocketbase.tovedem.nl";
 
 function getPocketbaseBaseUrl() {
   try {
     if (typeof $os !== "undefined" && $os.getenv) {
+      if ($os.getenv("PRODUCTION") === "true") {
+        return PRODUCTION_POCKETBASE_BASE_URL;
+      }
+
       const url = $os.getenv("POCKETBASE_BASE_URL");
       if (url) return url.replace(/\/+$/, "");
     }
   } catch {
-    // $os unavailable (e.g. in unit tests) - fall through to the default
+    // $os unavailable (e.g. in unit tests) - fall through to development default
   }
   return DEFAULT_POCKETBASE_BASE_URL;
 }

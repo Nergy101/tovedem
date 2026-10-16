@@ -24,7 +24,7 @@ function createRecord(fields, props = {}) {
 }
 
 describe("getReservatieMailHtml", () => {
-  it("uses record metadata for collectionId when building voorstellingAfbeelding", () => {
+  it("uses the PocketBase host configured for each environment", () => {
     const mailInfo = createRecord({
       inhoud: "Afbeelding: {voorstellingAfbeelding}",
     });
@@ -54,13 +54,36 @@ describe("getReservatieMailHtml", () => {
       }
     );
 
-    const html = mailing.getReservatieMailHtml(mailInfo, reservatie, voorstelling);
 
+    global.$os = {
+      getenv(name) {
+        return name === "POCKETBASE_BASE_URL" ? "https://tovedem.nergy.space/" : undefined;
+      },
+    };
+    const developmentHtml = mailing.getReservatieMailHtml(mailInfo, reservatie, voorstelling);
     assert.ok(
-      html.includes(
-        "https://pocketbase.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+      developmentHtml.includes(
+        "https://tovedem.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
       )
     );
-    assert.ok(!html.includes("/null/"));
+    global.$os = {
+      getenv(name) {
+        return name === "PRODUCTION" ? "true" : undefined;
+      },
+    };
+
+    const productionHtml = mailing.getReservatieMailHtml(
+      mailInfo,
+      reservatie,
+      voorstelling
+    );
+
+    assert.ok(
+      productionHtml.includes(
+        "https://pocketbase.tovedem.nl/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+      )
+    );
+    global.$os = undefined;
+    assert.ok(!productionHtml.includes("/null/"));
   });
 });
