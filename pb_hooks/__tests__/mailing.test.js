@@ -54,36 +54,46 @@ describe("getReservatieMailHtml", () => {
       }
     );
 
+    const originalOs = global.$os;
+    try {
+      global.$os = {
+        getenv(name) {
+          return name === "MAIL_IMAGE_BASE_URL"
+            ? "https://tovedem.nergy.space/"
+            : undefined;
+        },
+      };
+      const developmentHtml = mailing.getReservatieMailHtml(
+        mailInfo,
+        reservatie,
+        voorstelling
+      );
+      assert.ok(
+        developmentHtml.includes(
+          "https://tovedem.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+        )
+      );
 
-    global.$os = {
-      getenv(name) {
-        return name === "POCKETBASE_BASE_URL" ? "https://tovedem.nergy.space/" : undefined;
-      },
-    };
-    const developmentHtml = mailing.getReservatieMailHtml(mailInfo, reservatie, voorstelling);
-    assert.ok(
-      developmentHtml.includes(
-        "https://tovedem.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
-      )
-    );
-    global.$os = {
-      getenv(name) {
-        return name === "PRODUCTION" ? "true" : undefined;
-      },
-    };
-
-    const productionHtml = mailing.getReservatieMailHtml(
-      mailInfo,
-      reservatie,
-      voorstelling
-    );
-
-    assert.ok(
-      productionHtml.includes(
-        "https://pocketbase.tovedem.nl/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
-      )
-    );
-    global.$os = undefined;
-    assert.ok(!productionHtml.includes("/null/"));
+      global.$os = {
+        getenv(name) {
+          return name === "MAIL_IMAGE_BASE_URL"
+            ? "https://pocketbase.tovedem.nl"
+            : undefined;
+        },
+      };
+      const productionHtml = mailing.getReservatieMailHtml(
+        mailInfo,
+        reservatie,
+        voorstelling
+      );
+      assert.ok(
+        productionHtml.includes(
+          "https://pocketbase.tovedem.nl/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+        )
+      );
+      assert.ok(!productionHtml.includes("/null/"));
+    } finally {
+      global.$os = originalOs;
+    }
   });
 });
