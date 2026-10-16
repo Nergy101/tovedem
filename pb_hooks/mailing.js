@@ -12,21 +12,19 @@ function getRecordValue(record, fieldName) {
   return null;
 }
 
-// Base URL used for file links inside mails. PocketBase's own app URL is not
-// exposed to hooks, so it must come from the environment; the fallback keeps
-// existing (development) behaviour when the variable is not set.
-const DEFAULT_POCKETBASE_BASE_URL = "https://pocketbase.nergy.space";
+// Public host serving PocketBase files in the current environment.
+const DEFAULT_MAIL_IMAGE_BASE_URL = "https://tovedem.nergy.space";
 
-function getPocketbaseBaseUrl() {
+function getMailImageBaseUrl() {
   try {
     if (typeof $os !== "undefined" && $os.getenv) {
-      const url = $os.getenv("POCKETBASE_BASE_URL");
+      const url = $os.getenv("MAIL_IMAGE_BASE_URL");
       if (url) return url.replace(/\/+$/, "");
     }
   } catch {
-    // $os unavailable (e.g. in unit tests) - fall through to the default
+    // $os unavailable (e.g. in unit tests) - fall through to development default
   }
-  return DEFAULT_POCKETBASE_BASE_URL;
+  return DEFAULT_MAIL_IMAGE_BASE_URL;
 }
 
 // File URLs accept either the collection id or its name. Prefer the id from the
@@ -73,7 +71,7 @@ module.exports = {
 
     const voorstellingAfbeelding =
       afbeelding && voorstellingId
-        ? `${getPocketbaseBaseUrl()}/api/files/${getCollectionIdentifier(voorstelling)}/${voorstellingId}/${afbeelding}`
+        ? `${getMailImageBaseUrl()}/api/files/${getCollectionIdentifier(voorstelling)}/${voorstellingId}/${afbeelding}`
         : "";
 
     const data = {
