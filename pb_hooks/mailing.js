@@ -71,7 +71,7 @@ module.exports = {
 
     const voorstellingAfbeelding =
       afbeelding && voorstellingId
-        ? `${getMailImageBaseUrl()}/api/files/${getCollectionIdentifier(voorstelling)}/${voorstellingId}/${afbeelding}`
+        ? `${getMailImageBaseUrl()}/api/files/${getCollectionIdentifier(voorstelling)}/${voorstellingId}/${afbeelding}?thumb=480x270`
         : "";
 
     const data = {
