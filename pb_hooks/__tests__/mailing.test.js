@@ -70,7 +70,7 @@ describe("getReservatieMailHtml", () => {
       );
       assert.ok(
         developmentHtml.includes(
-          "https://tovedem.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+          "https://tovedem.nergy.space/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg?thumb=480x270"
         )
       );
 
@@ -88,7 +88,7 @@ describe("getReservatieMailHtml", () => {
       );
       assert.ok(
         productionHtml.includes(
-          "https://pocketbase.tovedem.nl/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg"
+          "https://pocketbase.tovedem.nl/api/files/raeh9to382z383p/yxgn9xt3g7ya7ll/img_20260214_wa0001_x3a9o2xqbr.jpg?thumb=480x270"
         )
       );
       assert.ok(!productionHtml.includes("/null/"));
