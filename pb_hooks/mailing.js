@@ -12,9 +12,8 @@ function getRecordValue(record, fieldName) {
   return null;
 }
 
-// Base URL used for file links inside mails. PocketBase's own app URL is not
-// exposed to hooks, so it must come from the environment; the fallback keeps
-// existing (development) behaviour when the variable is not set.
+// PocketBase's public file URL must come from the environment when self-hosted;
+// use the production file-serving host when that setting is unavailable.
 const DEFAULT_POCKETBASE_BASE_URL = "https://pocketbase.nergy.space";
 
 function getPocketbaseBaseUrl() {
