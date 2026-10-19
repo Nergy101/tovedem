@@ -216,6 +216,7 @@ export class PocketbaseService {
    * Log cache statistics to console (useful for debugging)
    */
   logCacheStats(): void {
+    if (!this.debugMode) return;
     const stats = this.getCacheStats();
     console.debug('[PocketbaseService] cache stats', stats);
   }
