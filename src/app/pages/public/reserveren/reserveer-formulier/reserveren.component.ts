@@ -34,6 +34,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Groep } from '../../../../models/domain/groep.model';
 import { Reservering } from '../../../../models/domain/reservering.model';
@@ -59,6 +60,7 @@ import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe'
     MatDatepickerModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
     MatTooltipModule,
     AmsterdamDatePipe,
   ],
@@ -219,6 +221,90 @@ export class ReserverenComponent implements OnInit {
   });
 
   loaded = signal(false);
+
+  currentStep = signal(0);
+
+  readonly stepLabels = ['Jouw gegevens', 'Aantal tickets', 'Overzicht'];
+
+  step1Valid = computed(() => {
+    const formData = this.reserveringModel();
+    const f = this.reserveringForm;
+    return (
+      f.name().valid() &&
+      f.surname().valid() &&
+      formData.email.trim().length > 0 &&
+      formData.email2.trim().length > 0 &&
+      f().valid() &&
+      this.emailMatchStatus() === 'match'
+    );
+  });
+
+  step2Valid = computed(() => {
+    const formData = this.reserveringModel();
+    const hasReservations =
+      formData.amountOfPeopleDate1 > 0 || formData.amountOfPeopleDate2 > 0;
+    return (
+      hasReservations &&
+      this.canReserveDate1() &&
+      this.canReserveDate2() &&
+      !this.exceeds20LimitDate1() &&
+      !this.exceeds20LimitDate2() &&
+      !this.isDatum1Past() &&
+      (!this.datum2Str || !this.isDatum2Past())
+    );
+  });
+
+  step2ValidWithDates = computed(() => {
+    if (this.isDatum1Past() && (!this.datum2Str || this.isDatum2Past())) {
+      return false;
+    }
+    if (
+      this.datum2Str &&
+      this.isDatum2Past() &&
+      (!this.datum1Str || this.isDatum1Past())
+    ) {
+      return false;
+    }
+    const formData = this.reserveringModel();
+    const hasReservations =
+      formData.amountOfPeopleDate1 > 0 || formData.amountOfPeopleDate2 > 0;
+    return (
+      hasReservations &&
+      this.canReserveDate1() &&
+      this.canReserveDate2() &&
+      !this.exceeds20LimitDate1() &&
+      !this.exceeds20LimitDate2()
+    );
+  });
+
+  totalTickets = computed(() => {
+    const formData = this.reserveringModel();
+    return formData.amountOfPeopleDate1 + formData.amountOfPeopleDate2;
+  });
+
+  totalPrice = computed(() => {
+    const price = this.voorstellingPrijs();
+    if (price === null) return null;
+    return price * this.totalTickets();
+  });
+
+  nextStep(): void {
+    if (this.currentStep() < this.stepLabels.length - 1) {
+      this.currentStep.update((s) => s + 1);
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep() > 0) {
+      this.currentStep.update((s) => s - 1);
+    }
+  }
+
+  goToStep(step: number): void {
+    if (step < this.currentStep()) {
+      this.currentStep.set(step);
+    }
+  }
 
   voorstellingsNaam = signal('');
   voorstellingOndertitel = signal('');
