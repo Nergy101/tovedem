@@ -30,6 +30,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-mail-lijst',
@@ -46,6 +47,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatCardModule,
     MatTooltipModule,
     MatChipsModule,
+    SkeletonGroupComponent,
   ],
   templateUrl: './beheer-mail-lijst.component.html',
   styleUrl: './beheer-mail-lijst.component.scss',

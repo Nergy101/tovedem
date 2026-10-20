@@ -22,6 +22,7 @@ import { Reservering } from '../../../models/domain/reservering.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ReserveringenInzienComponent } from './reserveringen-inzien/reserveringen-inzien.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-reserveringen',
@@ -37,6 +38,7 @@ import { ReserveringenInzienComponent } from './reserveringen-inzien/reservering
     MatPaginatorModule,
     MatMenuModule,
     ReserveringenInzienComponent,
+    SkeletonGroupComponent,
   ],
   templateUrl: './beheer-reserveringen.component.html',
   styleUrl: './beheer-reserveringen.component.scss',

@@ -32,6 +32,7 @@ import { PastDateDialogComponent } from './past-date-dialog/past-date-dialog.com
 import { ConfirmatieDialogComponent } from '../../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { AmsterdamDatePipe } from '../../../../shared/pipes/amsterdam-date.pipe';
 import { DateTimeService } from '../../../../shared/services/datetime.service';
+import { SkeletonGroupComponent } from '../../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-reservering-aanpassen',
@@ -51,6 +52,7 @@ import { DateTimeService } from '../../../../shared/services/datetime.service';
     MatProgressSpinnerModule,
     MatTooltipModule,
     AmsterdamDatePipe,
+    SkeletonGroupComponent,
   ],
   providers: [
     provideNativeDateAdapter(),

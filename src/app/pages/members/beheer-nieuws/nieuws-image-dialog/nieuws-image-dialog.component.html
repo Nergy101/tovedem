@@ -3,6 +3,7 @@
     <img
       [src]="getFileUrl()"
       [alt]="'Afbeelding bij nieuwsbericht: ' + (data.nieuws.titel || 'Nieuws')"
+      decoding="async"
       (load)="loading.set(false)"
     />
 

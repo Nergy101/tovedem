@@ -24,6 +24,8 @@
             'Afbeelding bij nieuwsbericht: ' + (nieuws().titel || 'Nieuws')
           "
           class="card-image"
+          loading="lazy"
+          decoding="async"
           [src]="
             getImageUrl(nieuws().collectionId, nieuws().id, nieuws().afbeelding)
           "
@@ -35,6 +37,8 @@
           "
           class="card-image"
           src="/assets/Place-Holder-Image.jpg"
+          loading="lazy"
+          decoding="async"
         />
       }
     </div>

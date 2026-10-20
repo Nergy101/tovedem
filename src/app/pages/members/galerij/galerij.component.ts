@@ -12,6 +12,8 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { FolderCardComponent } from './folder-card/folder-card.component';
 import { FolderCreateDialogComponent } from './folder-create-dialog/folder-create-dialog.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
 type TabType = 'alle' | 'tovedem' | 'cloos' | 'mejotos';
 
@@ -24,6 +26,8 @@ type TabType = 'alle' | 'tovedem' | 'cloos' | 'mejotos';
     MatProgressSpinnerModule,
     MatTabsModule,
     FolderCardComponent,
+    SkeletonGroupComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './galerij.component.html',
   styleUrl: './galerij.component.scss',

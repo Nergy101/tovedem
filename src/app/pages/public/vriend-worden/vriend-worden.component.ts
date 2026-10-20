@@ -29,6 +29,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { VriendWordenFormModel } from '../../../models/form-models/vriend-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
 import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
@@ -55,6 +56,7 @@ interface VriendWordenPagina extends BaseModel {
     MatCheckboxModule,
     MatDividerModule,
     MatTooltipModule,
+    SkeletonComponent,
   ],
   templateUrl: './vriend-worden.component.html',
   styleUrl: './vriend-worden.component.scss',

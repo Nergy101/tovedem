@@ -17,6 +17,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 import { CancelViewportImageDirective } from '../../../../shared/directives/cancel-viewport-image.directive';
 import { FolderPhotoPreviewDialogComponent } from './folder-photo-preview-dialog/folder-photo-preview-dialog.component';
 import { FolderPhotoUploadDialogComponent } from './folder-photo-upload-dialog/folder-photo-upload-dialog.component';
+import { SkeletonGroupComponent } from '../../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-folder-detail',
@@ -28,6 +29,7 @@ import { FolderPhotoUploadDialogComponent } from './folder-photo-upload-dialog/f
     MatProgressSpinnerModule,
     RouterModule,
     CancelViewportImageDirective,
+    SkeletonGroupComponent,
   ],
   templateUrl: './folder-detail.component.html',
   styleUrl: './folder-detail.component.scss',

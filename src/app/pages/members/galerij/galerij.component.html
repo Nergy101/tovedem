@@ -22,13 +22,13 @@
       <mat-tab label="Alle">
         <div class="tab-content">
           @if (loading()) {
-          <div class="center">
-            <mat-spinner></mat-spinner>
-          </div>
+          <app-skeleton-group type="card-grid" [count]="6" />
           } @else if (filteredFolders().length === 0) {
-          <div class="center empty-state">
-            <p>Geen foto folders gevonden</p>
-          </div>
+          <app-empty-state
+            icon="photo_library"
+            title="Geen fotoalbums"
+            description="Er zijn nog geen fotoalbums aangemaakt. Maak een album aan om foto's van voorstellingen te delen."
+          />
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
@@ -41,13 +41,13 @@
       <mat-tab label="Tovedem">
         <div class="tab-content">
           @if (loading()) {
-          <div class="center">
-            <mat-spinner></mat-spinner>
-          </div>
+          <app-skeleton-group type="card-grid" [count]="4" />
           } @else if (filteredFolders().length === 0) {
-          <div class="center empty-state">
-            <p>Geen foto folders gevonden voor Tovedem</p>
-          </div>
+          <app-empty-state
+            icon="photo_library"
+            title="Geen fotoalbums voor Tovedem"
+            description="Er zijn nog geen fotoalbums voor Tovedem. Wacht tot er een album wordt aangemaakt."
+          />
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
@@ -60,13 +60,13 @@
       <mat-tab label="Cloos">
         <div class="tab-content">
           @if (loading()) {
-          <div class="center">
-            <mat-spinner></mat-spinner>
-          </div>
+          <app-skeleton-group type="card-grid" [count]="4" />
           } @else if (filteredFolders().length === 0) {
-          <div class="center empty-state">
-            <p>Geen foto folders gevonden voor Cloos</p>
-          </div>
+          <app-empty-state
+            icon="photo_library"
+            title="Geen fotoalbums voor Cloos"
+            description="Er zijn nog geen fotoalbums voor Cloos. Wacht tot er een album wordt aangemaakt."
+          />
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
@@ -79,13 +79,13 @@
       <mat-tab label="Mejoto's">
         <div class="tab-content">
           @if (loading()) {
-          <div class="center">
-            <mat-spinner></mat-spinner>
-          </div>
+          <app-skeleton-group type="card-grid" [count]="4" />
           } @else if (filteredFolders().length === 0) {
-          <div class="center empty-state">
-            <p>Geen foto folders gevonden voor Mejoto's</p>
-          </div>
+          <app-empty-state
+            icon="photo_library"
+            title="Geen fotoalbums voor Mejoto's"
+            description="Er zijn nog geen fotoalbums voor Mejoto's. Wacht tot er een album wordt aangemaakt."
+          />
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import confetti from 'canvas-confetti';
 import { NavButtonComponent } from '../../../../shared/components/nav-button/nav-button.component';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { SkeletonComponent } from '../../../../shared/components/skeleton/skeleton.component';
 
 @Component({
   selector: 'app-reservering-geslaagd',
@@ -27,6 +28,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatButtonModule,
     MatDividerModule,
     NavButtonComponent,
+    SkeletonComponent,
   ],
 })
 export class ReserveringGeslaagdComponent implements OnInit {

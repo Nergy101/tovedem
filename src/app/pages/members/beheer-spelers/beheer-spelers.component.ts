@@ -22,6 +22,8 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { BeheerSpelersUpdateDialogComponent } from './beheer-spelers-update-dialog/beheer-spelers-update-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-beheer-spelers',
@@ -32,6 +34,8 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    SkeletonGroupComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './beheer-spelers.component.html',
   styleUrl: './beheer-spelers.component.scss',

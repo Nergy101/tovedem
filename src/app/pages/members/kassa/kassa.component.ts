@@ -35,6 +35,7 @@ import {
 } from '../../../shared/utils/date.utils';
 import { lastValueFrom } from 'rxjs';
 import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-kassa',
@@ -53,6 +54,7 @@ import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
     PieChartComponent,
     AmsterdamDatePipe,
     RouterLink,
+    SkeletonGroupComponent,
   ],
   templateUrl: './kassa.component.html',
   styleUrl: './kassa.component.scss',

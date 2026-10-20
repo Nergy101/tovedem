@@ -38,6 +38,7 @@ import { Environment } from '../../../../environment';
 import { Groep } from '../../../models/domain/groep.model';
 import { LidWordenFormModel } from '../../../models/form-models/lid-worden-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
 import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 
@@ -59,6 +60,7 @@ import { SeoService } from '../../../shared/services/seo.service';
     MatDividerModule,
     MatTooltipModule,
     NgOptimizedImage,
+    SkeletonComponent,
   ],
   providers: [
     provideNativeDateAdapter(),

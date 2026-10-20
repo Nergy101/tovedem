@@ -26,6 +26,7 @@ import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dial
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { MatCardModule } from '@angular/material/card';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-leden',
@@ -38,7 +39,8 @@ import { MatCardModule } from '@angular/material/card';
     MatMenuModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatCardModule
+    MatCardModule,
+    SkeletonGroupComponent,
 ],
   templateUrl: './beheer-leden.component.html',
   styleUrl: './beheer-leden.component.scss',

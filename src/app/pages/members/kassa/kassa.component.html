@@ -29,9 +29,7 @@
 
 <div class="container">
   @if (loading()) {
-  <div class="center">
-    <mat-spinner></mat-spinner>
-  </div>
+  <app-skeleton-group type="card-grid" [count]="2" />
   } @else if (voorstellingenVoorVandaag().length === 0) {
   <div class="row">
     <div class="col-12">
@@ -206,9 +204,7 @@
     <div class="col-12">
       <mat-card appearance="outlined">
         @if (searching()) {
-        <div class="center">
-          <mat-spinner></mat-spinner>
-        </div>
+        <app-skeleton-group type="table" [count]="5" />
         } @else {
 
         <mat-card-header>

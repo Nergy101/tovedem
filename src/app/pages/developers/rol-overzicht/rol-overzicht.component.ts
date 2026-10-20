@@ -8,6 +8,7 @@ import { ROUTE_ACCESS_CONFIG, type RouteAccessEntry } from '../../../shared/cons
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { Rol } from '../../../models/domain/rol.model';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 interface GebruikerWithExpand extends Gebruiker {
   expand?: {
@@ -31,6 +32,7 @@ interface SuperuserRecord {
     MatTableModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    SkeletonGroupComponent,
   ],
   templateUrl: './rol-overzicht.component.html',
   styleUrl: './rol-overzicht.component.scss',

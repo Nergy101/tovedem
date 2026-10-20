@@ -5,6 +5,8 @@
       <img
         [alt]="'Afbeelding van voorstelling ' + voorstelling().titel"
         class="card-image"
+        loading="lazy"
+        decoding="async"
         [src]="
           getImageUrl(
             voorstelling().collectionId,
@@ -18,6 +20,8 @@
         [alt]="'Afbeelding van voorstelling ' + voorstelling().titel"
         class="card-image"
         src="/assets/Place-Holder-Image.jpg"
+        loading="lazy"
+        decoding="async"
       />
       }
       <div class="image-overlay">

@@ -33,6 +33,7 @@ import { DateTimeService } from '../../../shared/services/datetime.service';
 import { VoorstellingCreateEditDialogComponent } from './voorstelling-create-edit-dialog/voorstelling-create-edit-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-voorstellingen',
@@ -47,6 +48,7 @@ import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
     NgxMaterialTimepickerModule,
     MatTooltipModule,
     MatCardModule,
+    SkeletonGroupComponent,
   ],
   providers: [
     provideNativeDateAdapter(),

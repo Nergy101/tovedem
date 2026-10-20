@@ -63,6 +63,7 @@
               @if (voorstellingAfbeelding()) {
                 <img
                   class="voorstelling-afbeelding"
+                  decoding="async"
                   [src]="'https://pocketbase.nergy.space/api/files/' + voorstellingCollectionId() + '/' + voorstellingRecordId() + '/' + voorstellingAfbeelding()"
                   [alt]="voorstellingsNaam()"
                 />

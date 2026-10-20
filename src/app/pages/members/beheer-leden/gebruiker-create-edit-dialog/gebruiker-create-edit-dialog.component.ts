@@ -39,6 +39,7 @@ import { Rol } from '../../../../models/domain/rol.model';
 import { Speler } from '../../../../models/domain/speler.model';
 import { GebruikerFormModel } from '../../../../models/form-models/gebruiker-form.model';
 import { PocketbaseService } from '../../../../shared/services/pocketbase.service';
+import { SkeletonGroupComponent } from '../../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-gebruiker-create-edit-dialog',
@@ -56,6 +57,7 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
     MatSelectModule,
     QuillModule,
     NgxMaterialTimepickerModule,
+    SkeletonGroupComponent,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'nl-NL' }],
   templateUrl: './gebruiker-create-edit-dialog.component.html',

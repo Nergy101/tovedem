@@ -188,9 +188,7 @@
                 </table>
               </mat-card>
             } @placeholder {
-              <div class="center">
-                <mat-spinner></mat-spinner>
-              </div>
+              <app-skeleton-group type="table" [count]="4" />
             }
           </div>
 
@@ -347,9 +345,7 @@
               </table>
             </mat-card>
           } @placeholder {
-            <div class="center">
-              <mat-spinner></mat-spinner>
-            </div>
+            <app-skeleton-group type="table" [count]="4" />
           }
 
         </div>

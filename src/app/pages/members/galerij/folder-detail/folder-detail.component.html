@@ -86,9 +86,7 @@
 
     <mat-card class="gallery" appearance="outlined">
       @if (loading()) {
-        <div class="center">
-          <mat-spinner></mat-spinner>
-        </div>
+        <app-skeleton-group type="card-grid" [count]="6" />
       } @else {
         @if (fotos().length === 0) {
           <div class="center empty-state">
@@ -121,6 +119,8 @@
             <img
               mat-card-image
               appCancelViewportImage
+              loading="lazy"
+              decoding="async"
               [imageUrl]="getPhotoUrl(photo, '0x300')"
               [imageId]="photo"
               alt=""

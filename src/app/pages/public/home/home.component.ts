@@ -8,12 +8,13 @@ import {
 } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDivider } from '@angular/material/divider';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Nieuws } from '../../../models/domain/nieuws.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieuws-card.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -28,11 +29,12 @@ import { getTodayStartAsUTC } from '../../../shared/utils/date.utils';
     VoorstellingCardComponent,
     MatTabsModule,
     MatBadgeModule,
-    MatProgressSpinnerModule,
     MatDivider,
     NieuwsCardComponent,
     MdbCarouselModule,
     NgOptimizedImage,
+    SkeletonGroupComponent,
+    EmptyStateComponent,
   ],
 })
 export class HomePaginaComponent implements OnInit {
