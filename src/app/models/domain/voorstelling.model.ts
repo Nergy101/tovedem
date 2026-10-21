@@ -15,6 +15,7 @@ export interface Voorstelling extends BaseModel {
   publicatie_datum: string;
   prijs_per_kaartje: number;
   gearchiveerd?: boolean;
+  niet_auto_archiveren?: boolean; // handmatig teruggezet: niet automatisch archiveren (zie pb_hooks/voorstellingen-archief.js)
 };
 
 export function voorstellingIsInToekomst(date: Date): boolean {

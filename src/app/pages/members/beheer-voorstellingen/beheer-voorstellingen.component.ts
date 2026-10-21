@@ -2,9 +2,11 @@ import {
   Component,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DATE_LOCALE,
@@ -16,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Title } from '@angular/platform-browser';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -47,6 +50,8 @@ import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
     NgxMaterialTimepickerModule,
     MatTooltipModule,
     MatCardModule,
+    MatTabsModule,
+    NgTemplateOutlet,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -59,6 +64,17 @@ export class BeheerVoorstellingenComponent implements OnInit {
   loading = signal(false);
 
   items: WritableSignal<Voorstelling[] | null> = signal(null);
+
+  actueel = computed(() =>
+    (this.items() ?? []).filter((v) => !v.gearchiveerd)
+  );
+
+  // Gearchiveerd: nieuwste speeldatum eerst
+  gearchiveerd = computed(() =>
+    (this.items() ?? [])
+      .filter((v) => v.gearchiveerd)
+      .sort((a, b) => (b.datum_tijd_1 ?? '').localeCompare(a.datum_tijd_1 ?? ''))
+  );
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
@@ -83,7 +99,6 @@ export class BeheerVoorstellingenComponent implements OnInit {
           .getFullList({
             expand: 'groep,spelers',
             sort: '-created',
-            filter: 'gearchiveerd != true',
           })
       );
     } finally {
@@ -167,32 +182,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
 
       // Handle archive action
       if (dialogResult === 'archive') {
-        this.loading.set(true);
-        try {
-          const voorstelling = await this.client.getOne<Voorstelling>(
-            'voorstellingen',
-            id
-          );
-          await this.client.update<Voorstelling>('voorstellingen', {
-            ...voorstelling,
-            gearchiveerd: true,
-          });
-          this.items.update((x) =>
-            x!.filter((y: { id: string }) => y.id != id)
-          );
-          this.toastr.success('Voorstelling succesvol gearchiveerd', 'Gelukt!');
-        } catch (error: unknown) {
-          const errorMessage = this.errorService.getErrorMessage(
-            error,
-            'Voorstelling archiveren'
-          );
-          this.toastr.error(errorMessage, 'Fout bij archiveren', {
-            positionClass: 'toast-bottom-right',
-            timeOut: 7000,
-          });
-        } finally {
-          this.loading.set(false);
-        }
+        await this.zetArchief(id, true);
       }
       return;
     }
@@ -212,30 +202,7 @@ export class BeheerVoorstellingenComponent implements OnInit {
 
     // Handle archive action
     if (dialogResult === 'archive') {
-      this.loading.set(true);
-      try {
-        const voorstelling = await this.client.getOne<Voorstelling>(
-          'voorstellingen',
-          id
-        );
-        await this.client.update<Voorstelling>('voorstellingen', {
-          ...voorstelling,
-          gearchiveerd: true,
-        });
-        this.items.update((x) => x!.filter((y: { id: string }) => y.id != id));
-        this.toastr.success('Voorstelling succesvol gearchiveerd', 'Gelukt!');
-      } catch (error: unknown) {
-        const errorMessage = this.errorService.getErrorMessage(
-          error,
-          'Voorstelling archiveren'
-        );
-        this.toastr.error(errorMessage, 'Fout bij archiveren', {
-          positionClass: 'toast-bottom-right',
-          timeOut: 7000,
-        });
-      } finally {
-        this.loading.set(false);
-      }
+      await this.zetArchief(id, true);
       return;
     }
 
@@ -252,6 +219,74 @@ export class BeheerVoorstellingenComponent implements OnInit {
         'Voorstelling verwijderen'
       );
       this.toastr.error(errorMessage, 'Fout bij verwijderen', {
+        positionClass: 'toast-bottom-right',
+        timeOut: 7000,
+      });
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async archiveer(item: Voorstelling): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Voorstelling archiveren',
+        message: `Weet je zeker dat je "${item.titel}" wilt archiveren? De voorstelling is dan niet meer zichtbaar op de openbare pagina's. De foto's blijven in de galerij.`,
+      },
+    });
+    if (!(await lastValueFrom(dialogRef.afterClosed()))) return;
+
+    await this.zetArchief(item.id, true);
+  }
+
+  async terugzetten(item: Voorstelling): Promise<void> {
+    const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
+      data: {
+        title: 'Voorstelling terugzetten',
+        message: `"${item.titel}" wordt weer zichtbaar op de openbare pagina's en wordt daarna niet meer automatisch gearchiveerd.`,
+      },
+    });
+    if (!(await lastValueFrom(dialogRef.afterClosed()))) return;
+
+    await this.zetArchief(item.id, false);
+  }
+
+  /**
+   * Archiveren of terugzetten. Handmatig terugzetten zet niet_auto_archiveren,
+   * zodat de nachtelijke automatische archivering de voorstelling laat staan.
+   */
+  private async zetArchief(id: string, gearchiveerd: boolean): Promise<void> {
+    const actie = gearchiveerd ? 'archiveren' : 'terugzetten';
+    this.loading.set(true);
+    try {
+      const voorstelling = await this.client.getOne<Voorstelling>(
+        'voorstellingen',
+        id
+      );
+      await this.client.update<Voorstelling>('voorstellingen', {
+        ...voorstelling,
+        gearchiveerd,
+        niet_auto_archiveren: !gearchiveerd,
+      });
+      this.items.update((x) =>
+        x!.map((y) =>
+          y.id === id
+            ? { ...y, gearchiveerd, niet_auto_archiveren: !gearchiveerd }
+            : y
+        )
+      );
+      this.toastr.success(
+        gearchiveerd
+          ? 'Voorstelling succesvol gearchiveerd'
+          : 'Voorstelling teruggezet naar actueel',
+        'Gelukt!'
+      );
+    } catch (error: unknown) {
+      const errorMessage = this.errorService.getErrorMessage(
+        error,
+        `Voorstelling ${actie}`
+      );
+      this.toastr.error(errorMessage, `Fout bij ${actie}`, {
         positionClass: 'toast-bottom-right',
         timeOut: 7000,
       });

@@ -1,0 +1,89 @@
+<div class="header">
+  <h2 mat-dialog-title>Mail instellingen</h2>
+  <button mat-icon-button aria-label="Sluiten" tabindex="-1" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <p>
+    Naar deze adressen worden nieuwe berichten van het
+    <strong>{{ data.titel }}</strong> doorgestuurd.
+  </p>
+
+  @if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else {
+  @if (!bestaand()) {
+  <p class="waarschuwing">
+    <mat-icon>info</mat-icon>
+    Nog niet ingesteld: mails gaan nu naar de standaard adressen.
+  </p>
+  }
+
+  @for (control of emails.controls; track control; let i = $index) {
+  <div class="email-rij">
+    <mat-form-field appearance="outline" class="email-veld">
+      <mat-label>E-mailadres {{ i + 1 }}</mat-label>
+      <input
+        matInput
+        type="email"
+        autocomplete="off"
+        [formControl]="control"
+      />
+      @if (control.hasError('email')) {
+      <mat-error>Ongeldig e-mailadres</mat-error>
+      }
+    </mat-form-field>
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Adres verwijderen"
+      matTooltip="Adres verwijderen"
+      [disabled]="emails.length <= 1"
+      (click)="verwijder(i)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  }
+
+  <button mat-stroked-button type="button" (click)="voegToe()">
+    <mat-icon>add</mat-icon>
+    Adres toevoegen
+  </button>
+
+  <div class="test-blok">
+    <p>
+      Controleer na het opslaan altijd met een testmail of de berichten
+      aankomen. De testmail gaat naar de <strong>opgeslagen</strong> adressen.
+    </p>
+    <button
+      mat-stroked-button
+      type="button"
+      [disabled]="testing() || emails.dirty"
+      [matTooltip]="emails.dirty ? 'Sla eerst de wijzigingen op' : ''"
+      (click)="verstuurTestmail()"
+    >
+      <mat-icon>send</mat-icon>
+      Testmail versturen
+    </button>
+    @if (testing()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+  </div>
+  }
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="sluiten()">Sluiten</button>
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    [disabled]="!kanOpslaan()"
+    (click)="opslaan()"
+  >
+    Opslaan
+  </button>
+</div>

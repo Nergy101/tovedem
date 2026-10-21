@@ -1,0 +1,305 @@
+<div class="header">
+  <h2 mat-dialog-title>Draaiboek bewerken</h2>
+  <button mat-icon-button aria-label="Sluiten" (click)="annuleren()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <p class="waarschuwing">
+    <mat-icon>privacy_tip</mat-icon>
+    Gebruik alleen rollen, geen namen of telefoonnummers. Leden kunnen dit
+    draaiboek bekijken.
+  </p>
+
+  <mat-tab-group animationDuration="150ms" mat-stretch-tabs="false">
+    <!-- Algemeen -->
+    <mat-tab label="Algemeen">
+      <div class="tab-inhoud">
+        <mat-form-field appearance="outline" class="volle-breedte">
+          <mat-label>Titel</mat-label>
+          <input matInput [(ngModel)]="inhoud.titel" name="titel" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="volle-breedte">
+          <mat-label>Introductie</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            [(ngModel)]="inhoud.intro"
+            name="intro"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <!-- Dagen -->
+    <mat-tab label="Dagen & tijden">
+      <div class="tab-inhoud">
+        <p class="hint">
+          Laat de tijd leeg als een regel bij dezelfde tijd hoort als de regel
+          erboven. Regels met "Belangrijk" worden extra benadrukt.
+        </p>
+        <mat-accordion multi>
+          @for (dag of inhoud.dagen; track dag; let d = $index; let eersteDag
+          = $first; let laatsteDag = $last) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ dag.naam || 'Naamloze dag' }}</mat-panel-title>
+              <mat-panel-description>
+                {{ dag.omschrijving }} · {{ dag.items.length }} regels
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="rij">
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Naam van de dag</mat-label>
+                <input matInput [(ngModel)]="dag.naam" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="flex-1">
+                <mat-label>Omschrijving (bijv. dag van de week)</mat-label>
+                <input matInput [(ngModel)]="dag.omschrijving" />
+              </mat-form-field>
+              <div class="knoppen">
+                <button
+                  mat-icon-button
+                  matTooltip="Dag omhoog"
+                  [disabled]="eersteDag"
+                  (click)="verplaats(inhoud.dagen, d, -1)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  matTooltip="Dag omlaag"
+                  [disabled]="laatsteDag"
+                  (click)="verplaats(inhoud.dagen, d, 1)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  matTooltip="Dag verwijderen"
+                  (click)="verwijder(inhoud.dagen, d)"
+                >
+                  <mat-icon color="warn">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <div class="items">
+              @for (item of dag.items; track item; let i = $index; let eerste =
+              $first; let laatste = $last) {
+              <div class="item-rij" [class.belangrijk]="item.belangrijk">
+                <mat-form-field appearance="outline" class="tijd-veld">
+                  <mat-label>Tijd</mat-label>
+                  <input
+                    matInput
+                    placeholder="19:15"
+                    [(ngModel)]="item.tijd"
+                  />
+                  @if (ongeldigeTijd(item.tijd)) {
+                  <mat-hint class="fout">Bijv. 19:15</mat-hint>
+                  }
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="actie-veld">
+                  <mat-label>Actie</mat-label>
+                  <input matInput [(ngModel)]="item.actie" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="door-veld">
+                  <mat-label>Door (rollen)</mat-label>
+                  <mat-select multiple [(ngModel)]="item.door">
+                    @for (rol of beschikbareRollen(); track rol) {
+                    <mat-option [value]="rol">{{ rol }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="notitie-veld">
+                  <mat-label>Notitie (optioneel)</mat-label>
+                  <input matInput [(ngModel)]="item.notitie" />
+                </mat-form-field>
+                <mat-checkbox [(ngModel)]="item.belangrijk">Belangrijk</mat-checkbox>
+                <div class="knoppen">
+                  <button
+                    mat-icon-button
+                    matTooltip="Omhoog"
+                    [disabled]="eerste"
+                    (click)="verplaats(dag.items, i, -1)"
+                  >
+                    <mat-icon>arrow_upward</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Omlaag"
+                    [disabled]="laatste"
+                    (click)="verplaats(dag.items, i, 1)"
+                  >
+                    <mat-icon>arrow_downward</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Regel eronder invoegen"
+                    (click)="itemToevoegen(dag, i)"
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Regel verwijderen"
+                    (click)="verwijder(dag.items, i)"
+                  >
+                    <mat-icon color="warn">delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+              }
+            </div>
+
+            <div class="acties">
+              <button mat-stroked-button (click)="itemToevoegen(dag)">
+                <mat-icon>add</mat-icon>
+                Regel toevoegen
+              </button>
+              <button mat-button (click)="sorteerOpTijd(dag)">
+                <mat-icon>sort</mat-icon>
+                Sorteer op tijd
+              </button>
+            </div>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+        <button mat-stroked-button class="mt-3" (click)="dagToevoegen()">
+          <mat-icon>add</mat-icon>
+          Dag toevoegen
+        </button>
+      </div>
+    </mat-tab>
+
+    <!-- Rollen -->
+    <mat-tab label="Rollen">
+      <div class="tab-inhoud">
+        <p class="hint">
+          Hernoem je een rol, dan wordt die ook in alle tijdregels aangepast.
+        </p>
+        @for (rol of inhoud.rollen; track rol; let r = $index; let eerste =
+        $first; let laatste = $last) {
+        <div class="rij">
+          <mat-form-field appearance="outline" class="rol-veld">
+            <mat-label>Rol</mat-label>
+            <input
+              matInput
+              [ngModel]="rol.rol"
+              (change)="hernoemRol(r, $any($event.target).value)"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="flex-1">
+            <mat-label>Omschrijving</mat-label>
+            <input matInput [(ngModel)]="rol.omschrijving" />
+          </mat-form-field>
+          <div class="knoppen">
+            <button
+              mat-icon-button
+              matTooltip="Omhoog"
+              [disabled]="eerste"
+              (click)="verplaats(inhoud.rollen, r, -1)"
+            >
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              matTooltip="Omlaag"
+              [disabled]="laatste"
+              (click)="verplaats(inhoud.rollen, r, 1)"
+            >
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              matTooltip="Rol verwijderen"
+              (click)="verwijder(inhoud.rollen, r)"
+            >
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        }
+        <button mat-stroked-button (click)="rolToevoegen()">
+          <mat-icon>add</mat-icon>
+          Rol toevoegen
+        </button>
+      </div>
+    </mat-tab>
+
+    <!-- Afspraken -->
+    <mat-tab label="Afspraken & regels">
+      <div class="tab-inhoud">
+        <p class="hint">Eén punt per regel.</p>
+        @for (sectie of inhoud.secties; track sectie; let s = $index; let
+        eerste = $first; let laatste = $last) {
+        <div class="sectie-blok">
+          <div class="rij">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>Titel</mat-label>
+              <input matInput [(ngModel)]="sectie.titel" />
+            </mat-form-field>
+            <div class="knoppen">
+              <button
+                mat-icon-button
+                matTooltip="Omhoog"
+                [disabled]="eerste"
+                (click)="verplaats(inhoud.secties, s, -1)"
+              >
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Omlaag"
+                [disabled]="laatste"
+                (click)="verplaats(inhoud.secties, s, 1)"
+              >
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Onderdeel verwijderen"
+                (click)="verwijder(inhoud.secties, s)"
+              >
+                <mat-icon color="warn">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-form-field appearance="outline" class="volle-breedte">
+            <mat-label>Punten</mat-label>
+            <textarea
+              matInput
+              rows="6"
+              [value]="puntenTekst(sectie)"
+              (change)="zetPunten(sectie, $any($event.target).value)"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        }
+        <button mat-stroked-button (click)="sectieToevoegen()">
+          <mat-icon>add</mat-icon>
+          Onderdeel toevoegen
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="standaardHerstellen()" [disabled]="saving()">
+    <mat-icon>restore</mat-icon>
+    Standaard herstellen
+  </button>
+  <span class="spacer"></span>
+  <button mat-button (click)="annuleren()" [disabled]="saving()">Annuleren</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="opslaan()"
+    [disabled]="saving()"
+  >
+    Opslaan
+  </button>
+</div>

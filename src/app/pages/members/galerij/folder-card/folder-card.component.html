@@ -11,6 +11,9 @@
       [src]="getPhotoUrl(photo, i)"
       [alt]="'Foto ' + (i + 1) + ' van ' + folder().naam"
       [style.z-index]="3 - i"
+      [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
+      (load)="i === 0 && coverLoaded.emit()"
+      (error)="i === 0 && coverLoaded.emit()"
     />
     } } @else {
     <div class="no-photos">

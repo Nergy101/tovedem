@@ -37,6 +37,25 @@ npm run test:pb        # PocketBase hook tests (Node.js test runner)
 
 The dev environment is configured in `src/environment/environment.dev.ts`. Edit that file directly to point at a different PocketBase instance while developing.
 
+### Importing past performances into the gallery
+
+`scripts/import-galerij.mjs` turns a folder tree of photos into past performances (`voorstellingen`) with a linked gallery album (`voorstellingen_folders`):
+
+```
+<root>/<Groep>/<Jaar>/<Maand>/(<Titel>)/*.jpg
+e.g. fotos/Tovedem/2019/03/(De Vrek)/IMG_0001.jpg
+```
+
+The flat layout of the Google Drive photo folder is recognised as well: `<root>/Tovedem 2017 november (Tante van Charlie)/Portretten/*.jpg`. Instead of a folder you can pass one or more `.zip` files (e.g. a split Google Drive download); they are extracted together into a temp folder that is removed afterwards.
+
+Each performance is dated on the 1st of the month, with `-` as regie and omschrijving and the first photo as poster. Re-running is safe: existing performances, albums and photos are reused or skipped.
+
+```bash
+npm run import:galerij -- ./fotos --dry-run   # only show what would be imported
+PB_URL=https://pocketbase.example.com PB_EMAIL=admin@example.com PB_PASSWORD=... npm run import:galerij -- ./fotos
+npm run import:galerij -- ~/Downloads/Tovedem-*.zip --dry-run
+```
+
 ---
 
 ## Self-hosting with Docker

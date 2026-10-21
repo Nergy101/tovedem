@@ -23,6 +23,7 @@ import { Gebruiker } from '../../../models/domain/gebruiker.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { GebruikerCreateEditDialogComponent } from './gebruiker-create-edit-dialog/gebruiker-create-edit-dialog.component';
+import { GalerijToegangDialogComponent } from './galerij-toegang-dialog/galerij-toegang-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { MatCardModule } from '@angular/material/card';
@@ -137,6 +138,29 @@ export class BeheerLedenComponent implements OnInit {
     if (edited) {
       this.toastr.success(`Gebruiker ${edited.username} aangepast.`);
       await this.ngOnInit();
+    }
+  }
+
+  async openGalerijToegangDialog(gebruiker: Gebruiker): Promise<void> {
+    const dialogRef = this.dialog.open(GalerijToegangDialogComponent, {
+      data: gebruiker,
+      hasBackdrop: true,
+      minWidth: '50vw',
+    });
+
+    const updated: Gebruiker = await lastValueFrom(dialogRef.afterClosed());
+
+    if (updated) {
+      this.toastr.success(
+        `Galerij toegang voor ${gebruiker.username} opgeslagen.`
+      );
+      this.gebruikers.update((lijst) =>
+        lijst!.map((g) =>
+          g.id === gebruiker.id
+            ? { ...g, galerij_voorstellingen: updated.galerij_voorstellingen }
+            : g
+        )
+      );
     }
   }
 

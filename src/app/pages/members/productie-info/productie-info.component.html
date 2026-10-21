@@ -31,6 +31,12 @@
     </div>
 
   </div>
+
+  @if (draaiboekGroep) {
+  <div class="row mat-elevation-z2 mt-4">
+    <app-draaiboek [groep]="draaiboekGroep" />
+  </div>
+  }
 <!--
   <div class="row p-4 mat-elevation-z2">
     <mdb-carousel [controls]="false" [indicators]="true" [animation]="'slide'"

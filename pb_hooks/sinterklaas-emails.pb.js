@@ -1,6 +1,6 @@
 /* Send an email after somebody did a sinterklaas verzoek */
 onRecordAfterCreateSuccess((e) => {
-  const constants = require(`${__hooks}/constants.js`);
+  const mailOntvangers = require(`${__hooks}/mail-ontvangers.js`);
   const mailing = require(`${__hooks}/mailing.js`);
 
   const verzoek = e.record;
@@ -29,6 +29,7 @@ onRecordAfterCreateSuccess((e) => {
   $app.newMailClient().send(message);
 
   // send a mail to the sint-commissie themselves, so they can check the request
+  const beheerOntvangers = mailOntvangers.getBeheerOntvangers("sinterklaas");
   const mailInfoBeheer = mailing.getMail("sintcommissie-beheer");
   const filledMailTemplateBeheer = mailing.getSintcommissieBeheerMailHtml(
     mailInfoBeheer,
@@ -40,7 +41,7 @@ onRecordAfterCreateSuccess((e) => {
       address: $app.settings().meta.senderAddress,
       name: $app.settings().meta.senderName,
     },
-    to: constants.beheerderEmails.map((email) => ({ address: email })),
+    to: beheerOntvangers.map((email) => ({ address: email })),
     subject: mailInfoBeheer.get("onderwerp"),
     html: filledMailTemplateBeheer,
   });

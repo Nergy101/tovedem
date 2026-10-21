@@ -1,0 +1,146 @@
+@if (loading()) {
+<div class="center p-4">
+  <mat-spinner></mat-spinner>
+</div>
+} @else if (inhoud(); as draaiboek) {
+<section class="draaiboek">
+  <header class="draaiboek-header">
+    <div>
+      <p class="overline">Draaiboek</p>
+      <h2>{{ draaiboek.titel }}</h2>
+    </div>
+    @if (kanBewerken()) {
+    <button mat-flat-button color="primary" (click)="bewerken()">
+      <mat-icon>edit</mat-icon>
+      Bewerken
+    </button>
+    }
+  </header>
+
+  <div class="disclaimer" role="note">
+    <mat-icon>info</mat-icon>
+    <div>
+      <strong>Concept draaiboek.</strong>
+      Dit is een voorbeeld van het normale verloop van een voorstelling, gebaseerd
+      op eerdere producties. Tijden zijn richttijden en kunnen per productie
+      verschillen. Het definitieve draaiboek krijg je van de coördinatie van de
+      productie.
+    </div>
+  </div>
+
+  @if (draaiboek.intro) {
+  <p class="intro">{{ draaiboek.intro }}</p>
+  }
+
+  <!-- Rollen -->
+  <h3 class="sectie-titel"><mat-icon>groups</mat-icon> Wie doet wat?</h3>
+  <p class="hint">
+    Klik op een rol om in het dagverloop alleen de taken van die rol te zien.
+  </p>
+  <div class="rollen-grid">
+    @for (rol of draaiboek.rollen; track rol.rol) {
+    <button
+      type="button"
+      class="rol-kaart"
+      [class]="rolKleur(rol.rol)"
+      [class.geselecteerd]="geselecteerdeRol() === rol.rol"
+      [attr.aria-pressed]="geselecteerdeRol() === rol.rol"
+      (click)="selecteerRol(rol.rol)"
+    >
+      <span class="rol-naam">{{ rol.rol }}</span>
+      <span class="rol-omschrijving">{{ rol.omschrijving }}</span>
+    </button>
+    }
+  </div>
+
+  <!-- Dagverloop -->
+  <h3 class="sectie-titel"><mat-icon>schedule</mat-icon> Verloop per dag</h3>
+  @if (geselecteerdeRol()) {
+  <div class="filter-melding">
+    <span>
+      Alleen taken voor <strong>{{ geselecteerdeRol() }}</strong>
+    </span>
+    <button mat-button (click)="geselecteerdeRol.set(null)">
+      <mat-icon>close</mat-icon>
+      Alles tonen
+    </button>
+  </div>
+  }
+
+  <mat-tab-group
+    class="dagen"
+    animationDuration="200ms"
+    mat-stretch-tabs="false"
+    mat-align-tabs="start"
+  >
+    @for (dag of draaiboek.dagen; track $index) {
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="dag-label">
+          <span>{{ dag.naam }}</span>
+          @if (dag.omschrijving) {
+          <small>{{ dag.omschrijving }}</small>
+          }
+        </span>
+        @if (geselecteerdeRol()) {
+        <span class="taak-teller">{{ aantalTaken(dag) }}</span>
+        }
+      </ng-template>
+
+      @let regels = tijdlijn(dag);
+      <ol class="tijdlijn">
+        @for (regel of regels; track $index; let i = $index) {
+        <li
+          class="tijdlijn-item"
+          [class.belangrijk]="regel.belangrijk"
+          [class.nieuw-blok]="toonTijd(regels, i)"
+        >
+          <span class="tijd">
+            @if (toonTijd(regels, i)) {
+            {{ regel.effectieveTijd || '—' }}
+            }
+          </span>
+          <span class="punt" aria-hidden="true"></span>
+          <div class="inhoud">
+            <span class="actie">{{ regel.actie }}</span>
+            @if (regel.door.length) {
+            <span class="door">
+              @for (rol of regel.door; track rol) {
+              <span class="rol-chip" [class]="rolKleur(rol)">{{ rol }}</span>
+              }
+            </span>
+            }
+            @if (regel.notitie) {
+            <span class="notitie">{{ regel.notitie }}</span>
+            }
+          </div>
+        </li>
+        } @empty {
+        <li class="leeg">Geen taken voor deze rol op deze dag.</li>
+        }
+      </ol>
+    </mat-tab>
+    }
+  </mat-tab-group>
+
+  <!-- Afspraken / regels -->
+  @if (draaiboek.secties.length) {
+  <div class="secties">
+    @for (sectie of draaiboek.secties; track $index) {
+    <mat-card appearance="outlined" class="sectie-kaart">
+      <mat-card-header>
+        <mat-card-title>{{ sectie.titel }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          @for (punt of sectie.punten; track $index) {
+          <li>{{ punt }}</li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  }
+</section>
+}

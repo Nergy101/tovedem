@@ -27,10 +27,12 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { BerichtViewDialogComponent } from './bericht-view-dialog/bericht-view-dialog.component';
+import { MailOntvangersKnopComponent } from '../../../shared/components/mail-ontvangers-knop/mail-ontvangers-knop.component';
 
 @Component({
   selector: 'app-beheer-nieuwe-leden',
   imports: [
+    MailOntvangersKnopComponent,
     CommonModule,
     MatIconModule,
     MatButtonModule,

@@ -1,6 +1,6 @@
 /* Send an email after somebody did a vriend worden verzoek */
 onRecordAfterCreateSuccess((e) => {
-  const constants = require(`${__hooks}/constants.js`);
+  const mailOntvangers = require(`${__hooks}/mail-ontvangers.js`);
   const mailing = require(`${__hooks}/mailing.js`);
 
   const verzoek = e.record;
@@ -26,20 +26,21 @@ onRecordAfterCreateSuccess((e) => {
   $app.newMailClient().send(message);
 
   // send a mail to the beheerders, so they can check the request
+  const beheerOntvangers = mailOntvangers.getBeheerOntvangers("vriend_worden");
   const mailInfoBeheer = mailing.getMail("vriend_worden-beheer");
   const filledMailTemplateBeheer = mailing.getVriendWordenBeheerMailHtml(
     mailInfoBeheer,
     verzoek
   );
 
-  $app.logger().info("recipient", JSON.stringify(constants.beheerderEmails));
+  $app.logger().info("recipient", JSON.stringify(beheerOntvangers));
 
   const messageBeheer = new MailerMessage({
     from: {
       address: $app.settings().meta.senderAddress,
       name: $app.settings().meta.senderName,
     },
-    to: constants.beheerderEmails.map((email) => ({ address: email })),
+    to: beheerOntvangers.map((email) => ({ address: email })),
     subject: mailInfoBeheer.get("onderwerp"),
     html: filledMailTemplateBeheer,
   });

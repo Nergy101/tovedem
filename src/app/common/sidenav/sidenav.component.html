@@ -141,6 +141,7 @@
           '/beheer-leden',
           '/beheer-nieuwe-leden',
           '/beheer-vrienden',
+          '/beheer-contact',
           '/beheer-sponsoren',
           '/beheer-mails',
           '/beheer-mail-lijst',
@@ -257,6 +258,19 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <span>Vrienden Aanmeldingen</span> <mat-icon>favorite</mat-icon>
+          </button>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            class="nav-link flex-grow-1"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse.show"
+            routerLinkActive="active"
+            routerLink="/beheer-contact"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span>Contact Berichten</span> <mat-icon>mail</mat-icon>
           </button>
         </li>
         } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||

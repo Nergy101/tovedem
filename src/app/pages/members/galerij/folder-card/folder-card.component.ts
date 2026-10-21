@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { VoorstellingFolder } from '../../../../models/domain/voorstelling-folder.model';
@@ -13,14 +13,17 @@ import { PocketbaseService } from '../../../../shared/services/pocketbase.servic
 export class FolderCardComponent {
   folder = input.required<VoorstellingFolder>();
   fileToken = input<string | null>(null);
+  // Only show the photos behind the cover once all album covers have loaded
+  showStack = input(false);
+  coverLoaded = output<void>();
 
   private client = inject(PocketbaseService);
   private router = inject(Router);
 
-  // Get first 3 photos for the stack effect
+  // Get first 3 photos for the stack effect (only the cover until showStack)
   stackPhotos = computed(() => {
     const fotos = this.folder().fotos || [];
-    return fotos.slice(0, 3);
+    return fotos.slice(0, this.showStack() ? 3 : 1);
   });
 
   hasPhotos = computed(() => this.stackPhotos().length > 0);

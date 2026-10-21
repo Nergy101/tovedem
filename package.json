@@ -11,6 +11,7 @@
     "test": "ng test --no-watch --no-progress --browsers ChromeHeadless",
     "test:ui": "ng test --browsers Chrome",
     "test:pb": "node --test pb_hooks/__tests__/*.test.js",
+    "import:galerij": "node scripts/import-galerij.mjs",
     "lint": "ng lint"
   },
   "private": true,
@@ -51,6 +52,7 @@
     "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.2.2",
     "@eslint/js": "^10.0.1",
+    "@funboxteam/optimizt": "^5.0.2",
     "@types/canvas-confetti": "^1.9.0",
     "@types/jasmine": "~7.0.0",
     "@types/jszip": "^3.4.1",
@@ -64,6 +66,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.3.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "yauzl": "^3.4.0"
   }
 }

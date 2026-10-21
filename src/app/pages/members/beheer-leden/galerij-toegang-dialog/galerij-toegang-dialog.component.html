@@ -1,0 +1,75 @@
+<div class="container header">
+  <h2 mat-dialog-title class="display-4">Galerij toegang</h2>
+  <button mat-icon-button aria-label="Sluiten" tabindex="-1" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content class="container">
+  <p>
+    Vink de voorstellingen aan waarvan
+    <strong>{{ gebruiker.name || gebruiker.username }}</strong> de foto's mag
+    bekijken.
+  </p>
+
+  @if (loading()) {
+  <div class="center p-4">
+    <mat-spinner></mat-spinner>
+  </div>
+  } @else {
+  <div class="toolbar">
+    <mat-button-toggle-group
+      [value]="groepFilter()"
+      (change)="groepFilter.set($event.value)"
+      aria-label="Filter op groep"
+    >
+      <mat-button-toggle value="alle">Alle</mat-button-toggle>
+      @for (groep of groepen(); track groep) {
+      <mat-button-toggle [value]="groep">{{ groep }}</mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+
+    <mat-button-toggle-group
+      [value]="sortering()"
+      (change)="sortering.set($event.value)"
+      aria-label="Sortering"
+    >
+      <mat-button-toggle value="datum">
+        <mat-icon>schedule</mat-icon> Nieuw → oud
+      </mat-button-toggle>
+      <mat-button-toggle value="groep">
+        <mat-icon>groups</mat-icon> Op groep
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="voorstelling-lijst">
+    @for (voorstelling of zichtbareVoorstellingen(); track voorstelling.id) {
+    <mat-checkbox
+      class="voorstelling-item"
+      [checked]="isGeselecteerd(voorstelling.id)"
+      (change)="toggle(voorstelling.id, $event.checked)"
+    >
+      <span class="titel">{{ voorstelling.titel }}</span>
+      <span class="meta">
+        {{ voorstelling.expand?.groep?.naam }} ·
+        {{ voorstelling.datum_tijd_1 | date: 'd MMM yyyy' }}
+      </span>
+    </mat-checkbox>
+    } @empty {
+    <p class="p-3">Geen voorstellingen gevonden</p>
+    }
+  </div>
+  }
+</div>
+<div mat-dialog-actions align="end">
+  <span class="aantal">{{ aantalGeselecteerd() }} geselecteerd</span>
+  <button mat-button mat-dialog-close [disabled]="saving()">Annuleren</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="loading() || saving()"
+    (click)="opslaan()"
+  >
+    Opslaan
+  </button>
+</div>

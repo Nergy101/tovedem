@@ -91,6 +91,7 @@
               <th scope="col">Avatar</th>
               <th scope="col">Rollen</th>
               <th scope="col">Groep</th>
+              <th scope="col">Galerij</th>
               <!-- <th scope="col">Speler</th> -->
               @if (!!authService.isGlobalAdmin) {
               <th></th>
@@ -100,7 +101,12 @@
           </thead>
           <tbody>
             @for (gebruiker of gebruikers(); track $index) {
-            <tr [className]="isHuidigeGebruiker(gebruiker.id) ? 'active' : ''">
+            <tr
+              class="klikbaar"
+              [class.active]="isHuidigeGebruiker(gebruiker.id)"
+              (click)="openGalerijToegangDialog(gebruiker)"
+              title="Klik om galerij toegang te beheren"
+            >
               <td>{{ gebruiker.username }}</td>
               <td>{{ gebruiker.email }}</td>
               <td>{{ gebruiker.name }}</td>
@@ -121,7 +127,11 @@
                   {{ gebruiker.expand.rollen[0].rol }}
                 </p>
                 } @else if ((gebruiker.expand?.rollen?.length || 0) > 0) {
-                <button mat-button [matMenuTriggerFor]="menu">
+                <button
+                  mat-button
+                  [matMenuTriggerFor]="menu"
+                  (click)="$event.stopPropagation()"
+                >
                   <span> {{ gebruiker.expand?.rollen?.length }} Rollen </span>
                 </button>
                 <mat-menu #menu="matMenu">
@@ -137,6 +147,12 @@
               </td>
               <td>
                 {{ gebruiker.expand?.groep?.naam }}
+              </td>
+              <td>
+                <span class="galerij-toegang">
+                  <mat-icon>photo_library</mat-icon>
+                  {{ gebruiker.galerij_voorstellingen?.length ?? 0 }}
+                </span>
               </td>
               <!-- <td>
                             {{gebruiker.expand?.speler?.naam}}
@@ -154,7 +170,7 @@
               <td>
                 <button
                   mat-icon-button
-                  (click)="openEditDialog(gebruiker)"
+                  (click)="$event.stopPropagation(); openEditDialog(gebruiker)"
                   [disabled]="loading()"
                   [style.background-color]="getPrimaryTintColor()"
                   aria-label="Bewerken"
@@ -165,7 +181,7 @@
               <td>
                 <button
                   mat-icon-button
-                  (click)="delete(gebruiker.id)"
+                  (click)="$event.stopPropagation(); delete(gebruiker.id)"
                   [disabled]="loading()"
                   aria-label="Verwijderen"
                 >

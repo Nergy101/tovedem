@@ -8,4 +8,5 @@ export interface Gebruiker extends BaseModel {
   avatar?: string;
   groep?: string;
   speler?: string;
+  galerij_voorstellingen?: string[]; // voorstellingen waarvan de gebruiker de foto's mag zien
 }

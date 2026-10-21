@@ -27,12 +27,24 @@
           </div>
           } @else if (filteredFolders().length === 0) {
           <div class="center empty-state">
+            @if (kanAllesZien()) {
             <p>Geen foto folders gevonden</p>
+            } @else {
+            <p>
+              Je hebt nog geen toegang tot foto albums. Neem contact op met het
+              bestuur om gekoppeld te worden aan een voorstelling.
+            </p>
+            }
           </div>
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -51,7 +63,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -70,7 +87,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -89,7 +111,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
