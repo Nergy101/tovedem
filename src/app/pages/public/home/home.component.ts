@@ -8,12 +8,13 @@ import {
 } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDivider } from '@angular/material/divider';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Nieuws } from '../../../models/domain/nieuws.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { NieuwsCardComponent } from '../../../shared/components/nieuws-card/nieuws-card.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 import { VoorstellingCardComponent } from '../../../shared/components/voorstellingen/voorstelling-card/voorstelling-card.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -28,11 +29,12 @@ import { getTodayStartAsUTC } from '../../../shared/utils/date.utils';
     VoorstellingCardComponent,
     MatTabsModule,
     MatBadgeModule,
-    MatProgressSpinnerModule,
     MatDivider,
     NieuwsCardComponent,
     MdbCarouselModule,
     NgOptimizedImage,
+    SkeletonGroupComponent,
+    EmptyStateComponent,
   ],
 })
 export class HomePaginaComponent implements OnInit {
@@ -43,6 +45,7 @@ export class HomePaginaComponent implements OnInit {
   nieuws: WritableSignal<Nieuws[]> = signal([]);
   seoService = inject(SeoService);
   nieuwsToPublish: WritableSignal<Nieuws[]> = signal([]);
+  loading = signal(true);
 
   constructor() {
     this.seoService.update(
@@ -54,22 +57,21 @@ export class HomePaginaComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // Use timezone-aware "today" filter (Amsterdam timezone)
     const today = getTodayStartAsUTC();
-    const voorstellingen = await this.client.getAll<Voorstelling>(
-      'voorstellingen',
-      {
+    let voorstellingen: Voorstelling[];
+    try {
+      voorstellingen = await this.client.getAll<Voorstelling>('voorstellingen', {
         sort: 'datum_tijd_1',
         expand: 'groep',
         filter: `gearchiveerd != true && (datum_tijd_1 >= "${today}" || datum_tijd_2 >= "${today}") && (publicatie_datum <= "${today}" || publicatie_datum = "" || publicatie_datum = null)`,
-      }
-    );
-    const nieuws = await this.client.getAll<Nieuws>('nieuws');
+      });
+      const nieuws = await this.client.getAll<Nieuws>('nieuws');
 
-    nieuws.forEach((item) => {
-      if (this.publiceren(item)) this.nieuwsToPublish().push(item);
-    });
-
-    this.voorstellingen.set(voorstellingen);
-    this.nieuws.set(nieuws);
+      this.nieuwsToPublish.set(nieuws.filter((item) => this.publiceren(item)));
+      this.voorstellingen.set(voorstellingen);
+      this.nieuws.set(nieuws);
+    } finally {
+      this.loading.set(false);
+    }
 
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({

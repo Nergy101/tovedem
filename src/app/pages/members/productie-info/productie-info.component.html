@@ -42,6 +42,8 @@
           [src]="slide.src"
           [alt]="slide.title"
           class="d-block w-100"
+          loading="lazy"
+          decoding="async"
           style="max-height: 100%; object-fit: cover;" />
         <div class="carousel-caption d-none d-md-block">
           <h5>{{slide.title}}</h5>

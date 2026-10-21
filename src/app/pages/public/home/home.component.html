@@ -15,35 +15,52 @@
         </div>
       </div>
 
-      @defer (when nieuwsToPublish().length > 0) {
+      @if (loading()) {
         <div class="nieuws-section">
           <mat-divider class="divider mb-4"></mat-divider>
           <h2 class="text-center" style="font-size: x-large">Het Nieuws</h2>
-          <mat-tab-group mat-stretch-tabs class="mat-elevation-z3" [class.single-item]="nieuwsToPublish().length <= 1" [disablePagination]="nieuwsToPublish().length <= 1">
-            @for (nieuws of nieuwsToPublish(); track $index) {
-              <mat-tab [label]="getNieuwsLabel(nieuws)">
-                <app-nieuws-card [nieuws]="nieuws"></app-nieuws-card>
-              </mat-tab>
-            }
-          </mat-tab-group>
+          <app-skeleton-group type="news-card" [count]="1" />
         </div>
-      }
-      @defer (when voorstellingen().length > 0) {
         <div class="voorstellingen section pt-4">
           <h2 class="text-center" style="font-size: x-large">
             Aankomende voorstellingen
           </h2>
           <mat-divider class="divider mb-4"></mat-divider>
-          <div class="row voorstellingen-cards">
-            @for (item of voorstellingen(); track $index) {
-              <app-voorstelling-card [voorstelling]="item">
-              </app-voorstelling-card>
-            }
-          </div>
+          <app-skeleton-group type="card-grid" [count]="3" />
         </div>
-      } @placeholder {
-        <div class="center">
-          <mat-spinner></mat-spinner>
+      } @else {
+        @if (nieuwsToPublish().length > 0) {
+          <div class="nieuws-section">
+            <mat-divider class="divider mb-4"></mat-divider>
+            <h2 class="text-center" style="font-size: x-large">Het Nieuws</h2>
+            <mat-tab-group mat-stretch-tabs class="mat-elevation-z3" [class.single-item]="nieuwsToPublish().length <= 1" [disablePagination]="nieuwsToPublish().length <= 1">
+              @for (nieuws of nieuwsToPublish(); track $index) {
+                <mat-tab [label]="getNieuwsLabel(nieuws)">
+                  <app-nieuws-card [nieuws]="nieuws"></app-nieuws-card>
+                </mat-tab>
+              }
+            </mat-tab-group>
+          </div>
+        }
+        <div class="voorstellingen section pt-4">
+          <h2 class="text-center" style="font-size: x-large">
+            Aankomende voorstellingen
+          </h2>
+          <mat-divider class="divider mb-4"></mat-divider>
+          @if (voorstellingen().length > 0) {
+            <div class="row voorstellingen-cards">
+              @for (item of voorstellingen(); track $index) {
+                <app-voorstelling-card [voorstelling]="item">
+                </app-voorstelling-card>
+              }
+            </div>
+          } @else {
+            <app-empty-state
+              icon="theater_comedy"
+              title="Geen aankomende voorstellingen"
+              description="Er zijn momenteel geen voorstellingen gepland. Houd de agenda in de gaten voor nieuwe aankondigingen!"
+            />
+          }
         </div>
       }
     </div>

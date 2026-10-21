@@ -13,9 +13,7 @@
 
     <div class="row pt-4">
       @if (loading()) {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
+      <app-skeleton-group type="table" [count]="5" />
       } @else { @defer(when items()){
 
       <mat-card class="table-responsive table-width">
@@ -99,9 +97,7 @@
         </table>
       </mat-card>
       } @placeholder {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
+      <app-skeleton-group type="table" [count]="5" />
       } }
     </div>
   </div>

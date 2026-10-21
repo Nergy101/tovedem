@@ -28,6 +28,7 @@ import { BreakpointService } from '../../../shared/services/breakpoint.service';
 import { Rol } from '../../../models/domain/rol.model';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-profiel',
@@ -45,6 +46,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
     MatPaginatorModule,
     NgOptimizedImage,
     AmsterdamDatePipe,
+    SkeletonGroupComponent,
   ],
   templateUrl: './profiel.component.html',
   styleUrl: './profiel.component.scss',

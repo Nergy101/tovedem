@@ -76,14 +76,22 @@
               </td>
               }
             </tr>
+            } @empty {
+            <tr>
+              <td [attr.colspan]="authService.isGlobalAdmin ? 2 : 1">
+                <app-empty-state
+                  icon="group"
+                  title="Geen spelers"
+                  description="Er zijn nog geen spelers toegevoegd. Voeg de eerste speler toe om te beginnen."
+                />
+              </td>
+            </tr>
             }
           </tbody>
         </table>
       </div>
       } @placeholder {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
+      <app-skeleton-group type="table" [count]="5" />
       }
     </div>
   </div>

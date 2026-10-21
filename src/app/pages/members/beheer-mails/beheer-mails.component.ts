@@ -40,6 +40,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { MailEditDialogComponent } from './mail-edit-dialog/mail-edit-dialog.component';
 import { Router } from '@angular/router';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 interface MailFoutInfo {
   naam: string;
@@ -64,6 +65,7 @@ interface MailFoutInfo {
     MatTabsModule,
     MatDividerModule,
     AmsterdamDatePipe,
+    SkeletonGroupComponent,
   ],
   templateUrl: './beheer-mails.component.html',
   styleUrl: './beheer-mails.component.scss',

@@ -24,6 +24,8 @@
             alt="Informatie over lid worden bij Tovedem"
             class="card-image"
             src="/assets/Place-Holder-Image.jpg"
+            loading="lazy"
+            decoding="async"
           />
         }
       </div>
@@ -59,6 +61,8 @@
             alt="Informatie over lid worden bij Tovedem"
             class="card-image"
             src="/assets/Place-Holder-Image.jpg"
+            loading="lazy"
+            decoding="async"
           />
         }
       </div>
@@ -81,6 +85,8 @@
             alt="Informatie over lid worden bij Tovedem"
             class="card-image"
             src="/assets/Place-Holder-Image.jpg"
+            loading="lazy"
+            decoding="async"
             style="
               object-fit: contain;
               max-width: 100%;
@@ -93,8 +99,17 @@
       <div class="col-lg-9 col-12 pt-2" [innerHTML]="content3()"></div>
     </div>
   } @placeholder {
-    <div class="center">
-      <mat-spinner></mat-spinner>
+    <div class="row g-4 p-4">
+      <div class="col-lg-3 col-12">
+        <app-skeleton variant="image" height="200px" />
+      </div>
+      <div class="col-lg-9 col-12">
+        <app-skeleton variant="text" width="40%" height="2rem" />
+        <app-skeleton variant="text" width="100%" />
+        <app-skeleton variant="text" width="95%" />
+        <app-skeleton variant="text" width="90%" />
+        <app-skeleton variant="text" width="60%" />
+      </div>
     </div>
   }
 </div>

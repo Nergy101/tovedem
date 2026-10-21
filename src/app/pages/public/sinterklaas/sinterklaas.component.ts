@@ -29,6 +29,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { SinterklaasFormModel } from '../../../models/form-models/sinterklaas-form.model';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
+import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
 import { RecaptchaVerificationService } from '../../../shared/services/recaptcha-verification.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Subscription } from 'rxjs';
@@ -58,6 +59,7 @@ interface SinterklaasPagina extends BaseModel {
     MatDividerModule,
     MdbCarouselModule,
     MatTooltipModule,
+    SkeletonComponent,
   ],
   templateUrl: './sinterklaas.component.html',
   styleUrl: './sinterklaas.component.scss',

@@ -28,6 +28,8 @@
           [alt]="slide.title || 'Sinterklaas afbeelding'"
           [src]="slide.src"
           class="carousel-image"
+          loading="lazy"
+          decoding="async"
         />
         <div class="carousel-caption d-none d-md-block">
           <h5>{{ slide.title }}</h5>
@@ -44,8 +46,13 @@
     <div [innerHTML]="content()"></div>
   </div>
   } @placeholder {
-  <div class="center">
-    <mat-spinner></mat-spinner>
+  <div class="row p-4">
+    <div class="col-12">
+      <app-skeleton variant="text" width="30%" height="2rem" />
+      <app-skeleton variant="text" width="100%" />
+      <app-skeleton variant="text" width="95%" />
+      <app-skeleton variant="text" width="80%" />
+    </div>
   </div>
   } @if (!submitted()) {
   <form class="sinterklaas-form">

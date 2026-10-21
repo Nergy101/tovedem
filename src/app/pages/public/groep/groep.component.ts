@@ -18,6 +18,7 @@ import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { SeoService } from '../../../shared/services/seo.service';
 import { Speler } from '../../../models/domain/speler.model';
 import { NgOptimizedImage } from '@angular/common';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-groep',
@@ -28,6 +29,7 @@ import { NgOptimizedImage } from '@angular/common';
     MdbCarouselModule,
     MatListModule,
     NgOptimizedImage,
+    SkeletonGroupComponent,
   ],
   templateUrl: './groep.component.html',
   styleUrl: './groep.component.scss',

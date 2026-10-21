@@ -26,6 +26,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { BerichtViewDialogComponent } from '../beheer-nieuwe-leden/bericht-view-dialog/bericht-view-dialog.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-vrienden',
@@ -40,6 +41,7 @@ import { BerichtViewDialogComponent } from '../beheer-nieuwe-leden/bericht-view-
     MatProgressBarModule,
     MatCardModule,
     MatTooltipModule,
+    SkeletonGroupComponent,
   ],
   templateUrl: './beheer-vrienden.component.html',
   styleUrl: './beheer-vrienden.component.scss',

@@ -36,6 +36,7 @@ import {
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatDialog } from '@angular/material/dialog';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-nieuwsbrief',
@@ -52,6 +53,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatProgressSpinnerModule,
     MatDividerModule,
     MatTooltipModule,
+    SkeletonGroupComponent,
   ],
   templateUrl: './beheer-nieuwsbrief.component.html',
   styleUrl: './beheer-nieuwsbrief.component.scss',

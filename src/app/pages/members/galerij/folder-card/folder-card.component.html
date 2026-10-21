@@ -11,6 +11,8 @@
       [src]="getPhotoUrl(photo, i)"
       [alt]="'Foto ' + (i + 1) + ' van ' + folder().naam"
       [style.z-index]="3 - i"
+      loading="lazy"
+      decoding="async"
     />
     } } @else {
     <div class="no-photos">

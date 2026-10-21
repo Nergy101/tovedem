@@ -25,6 +25,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SponsorCreateEditDialogComponent } from './sponsor-create-edit-dialog/sponsor-create-edit-dialog.component';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-sponsoren',
@@ -36,7 +37,8 @@ import { ThemeService } from '../../../shared/services/theme.service';
     MatInputModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatCardModule
+    MatCardModule,
+    SkeletonGroupComponent,
 ],
   templateUrl: './beheer-sponsoren.component.html',
   styleUrl: './beheer-sponsoren.component.scss',

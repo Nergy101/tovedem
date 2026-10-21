@@ -107,6 +107,8 @@
               <td>
                 <img
                   style="max-height: 10em; border-radius: 1em"
+                  loading="lazy"
+                  decoding="async"
                   [src]="
                     'https://api.dicebear.com/7.x/thumbs/svg?seed=' +
                     gebruiker.name +
@@ -179,9 +181,7 @@
         </table>
       </mat-card>
       } @placeholder {
-      <div class="center">
-        <mat-spinner></mat-spinner>
-      </div>
+      <app-skeleton-group type="table" [count]="5" />
       }
     </div>
   </div>

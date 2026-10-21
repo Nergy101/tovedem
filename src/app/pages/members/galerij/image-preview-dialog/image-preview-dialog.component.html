@@ -1,6 +1,6 @@
 <div class="container">
   <mat-dialog-content class="d-flex justify-content-center align-items-center">
-    <img [src]="getFileUrl()" alt="Galerij afbeelding in volledig scherm" (load)="loading.set(false)" />
+    <img [src]="getFileUrl()" alt="Galerij afbeelding in volledig scherm" decoding="async" (load)="loading.set(false)" />
 
     @if(loading()){
     <mat-spinner aria-label="Afbeelding wordt geladen"></mat-spinner>

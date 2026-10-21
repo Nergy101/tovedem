@@ -27,6 +27,7 @@ import { ErrorService } from '../../../shared/services/error.service';
 import { NieuwsCreateEditDialogComponent } from './nieuws-create-edit-dialog/nieuws-create-edit-dialog.component';
 import { NieuwsImageDialogComponent } from './nieuws-image-dialog/nieuws-image-dialog.component';
 import { MatCardModule } from '@angular/material/card';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-beheer-nieuws',
@@ -37,6 +38,7 @@ import { MatCardModule } from '@angular/material/card';
     AmsterdamDatePipe,
     MatDatepickerModule,
     MatCardModule,
+    SkeletonGroupComponent,
   ],
   providers: [
     provideNativeDateAdapter(),

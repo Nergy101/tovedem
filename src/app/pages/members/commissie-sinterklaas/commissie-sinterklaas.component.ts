@@ -27,6 +27,7 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { SinterklaasVerzoekCreateDialogComponent } from './sinterklaas-verzoek-create-dialog/sinterklaas-verzoek-create-dialog.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 
 @Component({
   selector: 'app-commissie-sinterklaas',
@@ -41,6 +42,7 @@ import { SinterklaasVerzoekCreateDialogComponent } from './sinterklaas-verzoek-c
     NgxMaterialTimepickerModule,
     MatTooltipModule,
     AmsterdamDatePipe,
+    SkeletonGroupComponent,
   ],
   providers: [
     provideNativeDateAdapter(),
