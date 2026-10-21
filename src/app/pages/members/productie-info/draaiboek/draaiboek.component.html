@@ -95,7 +95,7 @@
           [class.belangrijk]="regel.belangrijk"
           [class.nieuw-blok]="toonTijd(regels, i)"
         >
-          <span class="tijd">
+          <span class="tijd" [class.zichtbaar]="toonTijd(regels, i)">
             @if (toonTijd(regels, i)) {
             {{ regel.effectieveTijd || '—' }}
             }

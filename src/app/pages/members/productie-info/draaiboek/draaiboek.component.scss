@@ -60,6 +60,11 @@
   margin-bottom: 0.75rem;
 }
 
+// Witte vlakken met donkere tekst voor rollen en tijdregels
+$kaart-bg: #ffffff;
+$kaart-tekst: #1f2937;
+$kaart-tekst-zacht: #4b5563;
+
 // Rol kleuren (achtergrond / tekst) - werken in licht en donker thema
 $rol-kleuren: (
   0: (#dbeafe, #1e3a8a),
@@ -94,8 +99,10 @@ $rol-kleuren: (
   border-radius: 0.75rem;
   border: 2px solid transparent;
   border-left: 6px solid var(--rol-fg);
-  background-color: var(--mat-sys-surface-container-low);
-  color: var(--mat-sys-on-surface);
+  // Wit vlak met vaste donkere tekst: goed leesbaar in licht en donker thema
+  background-color: $kaart-bg;
+  color: $kaart-tekst;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition:
     transform 0.15s,
@@ -124,8 +131,12 @@ $rol-kleuren: (
 
   .rol-omschrijving {
     font-size: 0.875rem;
-    opacity: 0.85;
+    color: $kaart-tekst-zacht;
     line-height: 1.4;
+  }
+
+  &.geselecteerd .rol-omschrijving {
+    color: inherit;
   }
 }
 
@@ -194,10 +205,18 @@ $rol-kleuren: (
   }
 
   .tijd {
-    font-weight: 600;
+    justify-self: start;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: var(--mat-sys-primary);
-    padding-top: 0.1rem;
+    color: $kaart-tekst;
+    margin-top: 0.35rem;
+
+    &.zichtbaar {
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.4rem;
+      background-color: $kaart-bg;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
   }
 
   .punt {
@@ -218,11 +237,17 @@ $rol-kleuren: (
     background-color: var(--mat-sys-primary);
   }
 
+  // Elke regel als witte balk
   .inhoud {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    padding: 0.1rem 0 0.1rem 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid transparent;
+    background-color: $kaart-bg;
+    color: $kaart-tekst;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   }
 
   &.belangrijk .actie {
@@ -230,8 +255,7 @@ $rol-kleuren: (
   }
 
   &.belangrijk .inhoud {
-    border-left: 3px solid var(--mat-sys-error);
-    padding-left: 0.6rem;
+    border-left-color: #dc2626;
   }
 
   .door {
@@ -243,7 +267,7 @@ $rol-kleuren: (
   .notitie {
     font-size: 0.875rem;
     font-style: italic;
-    color: var(--mat-sys-on-surface-variant);
+    color: $kaart-tekst-zacht;
   }
 }
 
