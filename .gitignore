@@ -41,3 +41,10 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode/settings.json
+
+# Inloggegevens voor scripts/import-galerij.mjs
+.env.import
+
+PB_URL=https://pocketbase.tovedem.nl
+PB_EMAIL=ptrvlaar@gmail.com
+PB_PASSWORD=yikk7ZXMyZ!Rq.Xzf9XC

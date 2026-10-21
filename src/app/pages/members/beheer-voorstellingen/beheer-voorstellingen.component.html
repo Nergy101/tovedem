@@ -12,93 +12,155 @@
     </div>
 
     <div class="row pt-4">
-      @if (loading()) {
+      @if (loading() && !items()) {
       <app-skeleton-group type="table" [count]="5" />
       } @else { @defer(when items()){
-
-      <mat-card class="table-responsive table-width">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Aangemaakt</th>
-              <th scope="col">Titel</th>
-              <th scope="col">Groep</th>
-              <th scope="col">Datum Tijd 1</th>
-              <th scope="col">Datum Tijd 2</th>
-              <th scope="col">Spelers</th>
-              <th scope="col">Publiceren</th>
-              <th scope="col"></th>
-              @if (!!authService.isGlobalAdmin) {
-              <th scope="col"></th>
-              }
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of items(); track item.id) {
-            <tr>
-              <td>{{ item.created | amsterdamDate:'dd LLLL yyyy' }}</td>
-              <td>{{ item.titel }}</td>
-              <td>{{ item.expand?.groep?.naam }}</td>
-              <td>{{ item.datum_tijd_1 | amsterdamDate:'table' }}</td>
-              <td>{{ item.datum_tijd_2 | amsterdamDate:'table' }}</td>
-              <td>
-                @if ((item.expand?.spelers?.length || 0) > 0) {
-                <button mat-button [matMenuTriggerFor]="menu">
-                  <span> {{ item.expand?.spelers?.length }} Spelers </span>
-                </button>
-                <mat-menu #menu="matMenu">
-                  @for (speler of item.expand.spelers; track speler.id) {
-                  <p style="margin: 1em">
-                    {{ speler.naam }}
-                  </p>
-                  }
-                </mat-menu>
-                } @else {
-                <span> Geen Spelers </span>
-                }
-              </td>
-              <td>
-                @if(item.publicatie_datum &&
-                publicatieActief(item.publicatie_datum)){
-                <button mat-mini-fab disabled>
-                  <mat-icon>share</mat-icon>
-                </button>
-                } @else {
-                <button
-                  mat-icon-button
-                  [matTooltip]="item.publicatie_datum || 'Geen publicatiedatum'"
-                  [style.background-color]="getPrimaryTintColor()"
-                  aria-label="Delen"
-                >
-                  <mat-icon>share</mat-icon>
-                </button>
-                }
-              </td>
-              <td>
-                <button mat-icon-button (click)="openEditDialog(item)" aria-label="Bewerken">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </td>
-              @if (!!authService.isGlobalAdmin) {
-              <td>
-                <button
-                  mat-icon-button
-                  (click)="delete(item.id)"
-                  [disabled]="loading()"
-                  aria-label="Verwijderen"
-                >
-                  <mat-icon color="warn">delete</mat-icon>
-                </button>
-              </td>
-              }
-            </tr>
-            }
-          </tbody>
-        </table>
-      </mat-card>
+      <mat-tab-group dynamicHeight animationDuration="200ms">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">theater_comedy</mat-icon>
+            Actueel ({{ actueel().length }})
+          </ng-template>
+          <div class="tab-content">
+            <ng-container
+              *ngTemplateOutlet="tabel; context: { $implicit: actueel(), archief: false }"
+            ></ng-container>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">inventory_2</mat-icon>
+            Gearchiveerd ({{ gearchiveerd().length }})
+          </ng-template>
+          <div class="tab-content">
+            <p class="archief-uitleg">
+              Gearchiveerde voorstellingen zijn niet zichtbaar op de openbare
+              pagina's; de foto's blijven in de galerij. Een voorstelling wordt
+              automatisch gearchiveerd als er binnen dezelfde groep 3
+              voorstellingen na zijn geweest.
+            </p>
+            <ng-container
+              *ngTemplateOutlet="tabel; context: { $implicit: gearchiveerd(), archief: true }"
+            ></ng-container>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
       } @placeholder {
       <app-skeleton-group type="table" [count]="5" />
       } }
     </div>
   </div>
 </div>
+
+<ng-template #tabel let-lijst let-archief="archief">
+  <mat-card class="table-responsive table-width">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Aangemaakt</th>
+          <th scope="col">Titel</th>
+          <th scope="col">Groep</th>
+          <th scope="col">Datum Tijd 1</th>
+          <th scope="col">Datum Tijd 2</th>
+          <th scope="col">Spelers</th>
+          <th scope="col">Publiceren</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          @if (!!authService.isGlobalAdmin) {
+          <th scope="col"></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of lijst; track item.id) {
+        <tr>
+          <td>{{ item.created | amsterdamDate:'dd LLLL yyyy' }}</td>
+          <td>{{ item.titel }}</td>
+          <td>{{ item.expand?.groep?.naam }}</td>
+          <td>{{ item.datum_tijd_1 | amsterdamDate:'table' }}</td>
+          <td>{{ item.datum_tijd_2 | amsterdamDate:'table' }}</td>
+          <td>
+            @if ((item.expand?.spelers?.length || 0) > 0) {
+            <button mat-button [matMenuTriggerFor]="menu">
+              <span> {{ item.expand?.spelers?.length }} Spelers </span>
+            </button>
+            <mat-menu #menu="matMenu">
+              @for (speler of item.expand.spelers; track speler.id) {
+              <p style="margin: 1em">
+                {{ speler.naam }}
+              </p>
+              }
+            </mat-menu>
+            } @else {
+            <span> Geen Spelers </span>
+            }
+          </td>
+          <td>
+            @if(item.publicatie_datum &&
+            publicatieActief(item.publicatie_datum)){
+            <button mat-mini-fab disabled>
+              <mat-icon>share</mat-icon>
+            </button>
+            } @else {
+            <button
+              mat-icon-button
+              [matTooltip]="item.publicatie_datum || 'Geen publicatiedatum'"
+              [style.background-color]="getPrimaryTintColor()"
+              aria-label="Delen"
+            >
+              <mat-icon>share</mat-icon>
+            </button>
+            }
+          </td>
+          <td>
+            <button mat-icon-button (click)="openEditDialog(item)" aria-label="Bewerken">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+          <td>
+            @if (archief) {
+            <button
+              mat-icon-button
+              (click)="terugzetten(item)"
+              [disabled]="loading()"
+              matTooltip="Terugzetten naar actueel"
+              aria-label="Terugzetten"
+            >
+              <mat-icon>unarchive</mat-icon>
+            </button>
+            } @else {
+            <button
+              mat-icon-button
+              (click)="archiveer(item)"
+              [disabled]="loading()"
+              matTooltip="Archiveren"
+              aria-label="Archiveren"
+            >
+              <mat-icon>archive</mat-icon>
+            </button>
+            }
+          </td>
+          @if (!!authService.isGlobalAdmin) {
+          <td>
+            <button
+              mat-icon-button
+              (click)="delete(item.id)"
+              [disabled]="loading()"
+              aria-label="Verwijderen"
+            >
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </td>
+          }
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="10" style="text-align: center; padding: 2em">
+            {{ archief ? 'Geen gearchiveerde voorstellingen' : 'Geen actuele voorstellingen' }}
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </mat-card>
+</ng-template>

@@ -24,15 +24,28 @@
           @if (loading()) {
           <app-skeleton-group type="card-grid" [count]="6" />
           } @else if (filteredFolders().length === 0) {
+          @if (kanAllesZien()) {
           <app-empty-state
             icon="photo_library"
             title="Geen fotoalbums"
             description="Er zijn nog geen fotoalbums aangemaakt. Maak een album aan om foto's van voorstellingen te delen."
           />
           } @else {
+          <app-empty-state
+            icon="lock"
+            title="Nog geen toegang tot fotoalbums"
+            description="Neem contact op met het bestuur om gekoppeld te worden aan een voorstelling."
+          />
+          }
+          } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -51,7 +64,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -70,7 +88,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }
@@ -89,7 +112,12 @@
           } @else {
           <div class="folders-grid">
             @for (folder of filteredFolders(); track folder.id) {
-            <app-folder-card [folder]="folder" [fileToken]="fileToken()" />
+            <app-folder-card
+              [folder]="folder"
+              [fileToken]="fileToken()"
+              [showStack]="coversReady()"
+              (coverLoaded)="onCoverLoaded(folder.id)"
+            />
             }
           </div>
           }

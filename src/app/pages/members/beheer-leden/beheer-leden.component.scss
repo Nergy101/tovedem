@@ -1,5 +1,15 @@
 @use "../../../../variables.scss" as *;
 
+.klikbaar {
+  cursor: pointer;
+}
+
+.galerij-toegang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .active {
   background-color: rgba(125, 179, 232, 0.2) !important;
 }

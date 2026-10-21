@@ -41,6 +41,11 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
     access: ['admin', 'bestuur'],
   },
   {
+    path: 'beheer-contact',
+    label: 'Beheer contact berichten',
+    access: ['admin', 'bestuur'],
+  },
+  {
     path: 'beheer-vrienden',
     label: 'Beheer vrienden van Tovedem',
     access: ['admin', 'bestuur'],

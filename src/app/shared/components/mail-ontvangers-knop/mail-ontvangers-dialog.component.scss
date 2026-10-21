@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0.5rem;
+}
+
+.email-rij {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .email-veld {
+    flex: 1;
+  }
+}
+
+.waarschuwing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.test-blok {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+
+  mat-progress-bar {
+    margin-top: 0.75rem;
+  }
+}

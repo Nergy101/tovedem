@@ -12,7 +12,7 @@ onRecordCreateRequest((e) => {
 
 /* Send an email after somebody did a nieuwe lid aanmelding */
 onRecordAfterCreateSuccess((e) => {
-  const constants = require(`${__hooks}/constants.js`);
+  const mailOntvangers = require(`${__hooks}/mail-ontvangers.js`);
   const mailing = require(`${__hooks}/mailing.js`);
 
   const lid = e.record;
@@ -42,6 +42,7 @@ onRecordAfterCreateSuccess((e) => {
   $app.newMailClient().send(message);
 
   // send a mail to the beheerders, so they can check the new member registration
+  const beheerOntvangers = mailOntvangers.getBeheerOntvangers("lid_worden");
   const mailInfoBeheer = mailing.getMail("lid_worden-beheer");
   const filledMailTemplateBeheer = mailing.getNieuweLidAanmeldingBeheerMailHtml(
     mailInfoBeheer,
@@ -50,14 +51,14 @@ onRecordAfterCreateSuccess((e) => {
 
   $app
     .logger()
-    .info("beheerderEmails", JSON.stringify(constants.beheerderEmails));
+    .info("beheerderEmails", JSON.stringify(beheerOntvangers));
 
   const messageBeheer = new MailerMessage({
     from: {
       address: $app.settings().meta.senderAddress,
       name: $app.settings().meta.senderName,
     },
-    to: constants.beheerderEmails.map((email) => ({ address: email })),
+    to: beheerOntvangers.map((email) => ({ address: email })),
     subject: mailInfoBeheer.get("onderwerp"),
     html: filledMailTemplateBeheer,
   });

@@ -28,10 +28,12 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
 import { ThemeService } from '../../../shared/services/theme.service';
 import { BerichtViewDialogComponent } from './bericht-view-dialog/bericht-view-dialog.component';
 import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+import { MailOntvangersKnopComponent } from '../../../shared/components/mail-ontvangers-knop/mail-ontvangers-knop.component';
 
 @Component({
   selector: 'app-beheer-nieuwe-leden',
   imports: [
+    MailOntvangersKnopComponent,
     CommonModule,
     MatIconModule,
     MatButtonModule,

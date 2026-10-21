@@ -1,0 +1,111 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0.5rem;
+}
+
+.waarschuwing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.tab-inhoud {
+  padding: 1rem 0.25rem;
+}
+
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.volle-breedte {
+  width: 100%;
+}
+
+.flex-1 {
+  flex: 1 1 200px;
+}
+
+.rij {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.rol-veld {
+  flex: 0 1 220px;
+}
+
+.knoppen {
+  display: flex;
+  align-items: center;
+  padding-top: 0.25rem;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.item-rij {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0;
+  border-radius: 0.5rem;
+  border-left: 3px solid transparent;
+  background-color: var(--mat-sys-surface-container-low);
+
+  &.belangrijk {
+    border-left-color: var(--mat-sys-error);
+  }
+
+  mat-checkbox {
+    padding-top: 0.6rem;
+  }
+
+  .tijd-veld {
+    flex: 0 0 95px;
+  }
+
+  .actie-veld {
+    flex: 2 1 240px;
+  }
+
+  .door-veld {
+    flex: 1 1 200px;
+  }
+
+  .notitie-veld {
+    flex: 1 1 200px;
+  }
+
+  .fout {
+    color: var(--mat-sys-error);
+  }
+}
+
+.acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.sectie-blok {
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.spacer {
+  flex: 1;
+}

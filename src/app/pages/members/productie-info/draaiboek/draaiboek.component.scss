@@ -1,0 +1,290 @@
+:host {
+  display: block;
+}
+
+.draaiboek {
+  padding: 1.5rem 0;
+}
+
+.draaiboek-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+  }
+
+  .overline {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.disclaimer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--mat-sys-tertiary);
+  background-color: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+
+  mat-icon {
+    flex-shrink: 0;
+  }
+}
+
+.intro {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.sectie-titel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.hint {
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 0.75rem;
+}
+
+// Rol kleuren (achtergrond / tekst) - werken in licht en donker thema
+$rol-kleuren: (
+  0: (#dbeafe, #1e3a8a),
+  1: (#dcfce7, #14532d),
+  2: (#fef3c7, #78350f),
+  3: (#fce7f3, #831843),
+  4: (#ede9fe, #4c1d95),
+  5: (#cffafe, #164e63),
+  6: (#ffedd5, #7c2d12),
+  7: (#e0e7ff, #312e81),
+);
+
+@each $index, $kleuren in $rol-kleuren {
+  .rol-kleur-#{$index} {
+    --rol-bg: #{nth($kleuren, 1)};
+    --rol-fg: #{nth($kleuren, 2)};
+  }
+}
+
+.rollen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.rol-kaart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  border-left: 6px solid var(--rol-fg);
+  background-color: var(--mat-sys-surface-container-low);
+  color: var(--mat-sys-on-surface);
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+
+  &.geselecteerd {
+    border-color: var(--rol-fg);
+    background-color: var(--rol-bg);
+    color: var(--rol-fg);
+  }
+
+  .rol-naam {
+    font-weight: 600;
+  }
+
+  .rol-omschrijving {
+    font-size: 0.875rem;
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+}
+
+.filter-melding {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.dag-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+
+  small {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
+
+.taak-teller {
+  margin-left: 0.5rem;
+  min-width: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  text-align: center;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.tijdlijn {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.tijdlijn-item {
+  display: grid;
+  grid-template-columns: 4rem 1.5rem 1fr;
+  align-items: start;
+  position: relative;
+  padding: 0.35rem 0;
+
+  &.nieuw-blok {
+    margin-top: 0.75rem;
+  }
+
+  // Verticale lijn
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(4rem + 0.75rem - 1px);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--mat-sys-outline-variant);
+  }
+
+  .tijd {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--mat-sys-primary);
+    padding-top: 0.1rem;
+  }
+
+  .punt {
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    margin-top: 0.4rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: var(--mat-sys-outline);
+  }
+
+  &.nieuw-blok .punt {
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-top: 0.3rem;
+    background-color: var(--mat-sys-primary);
+  }
+
+  .inhoud {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.1rem 0 0.1rem 0.5rem;
+  }
+
+  &.belangrijk .actie {
+    font-weight: 600;
+  }
+
+  &.belangrijk .inhoud {
+    border-left: 3px solid var(--mat-sys-error);
+    padding-left: 0.6rem;
+  }
+
+  .door {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .notitie {
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.rol-chip {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background-color: var(--rol-bg, var(--mat-sys-surface-container-high));
+  color: var(--rol-fg, var(--mat-sys-on-surface));
+}
+
+.leeg {
+  padding: 1.5rem 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.secties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+
+  ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.2rem;
+
+    li {
+      margin-bottom: 0.35rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .tijdlijn-item {
+    grid-template-columns: 3.25rem 1.25rem 1fr;
+
+    &::before {
+      left: calc(3.25rem + 0.625rem - 1px);
+    }
+  }
+}

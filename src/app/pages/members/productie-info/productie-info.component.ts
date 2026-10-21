@@ -17,6 +17,8 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import { Speler } from '../../../models/domain/speler.model';
+import { DraaiboekGroep } from '../../../models/domain/draaiboek.model';
+import { DraaiboekComponent } from './draaiboek/draaiboek.component';
 
 @Component({
   selector: 'app-productie-info',
@@ -26,12 +28,14 @@ import { Speler } from '../../../models/domain/speler.model';
     MdbCarouselModule,
     MatListModule,
     MatTreeModule,
+    DraaiboekComponent,
   ],
   templateUrl: './productie-info.component.html',
   styleUrl: './productie-info.component.scss',
 })
 export class ProductieInfoComponent implements OnInit {
   groepsNaam: string;
+  draaiboekGroep: DraaiboekGroep | null;
   url = 'https://pocketbase.nergy.space/';
 
   client = inject(PocketbaseService);
@@ -52,6 +56,9 @@ export class ProductieInfoComponent implements OnInit {
 
   constructor() {
     this.groepsNaam = this.router.url.substring(16);
+    this.draaiboekGroep = (['Tovedem', 'Cloos', 'Mejotos'] as const).find(
+      (groep) => groep === this.groepsNaam,
+    ) ?? null;
 
     effect(() => {
       if (this.groep()?.naam) {

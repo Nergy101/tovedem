@@ -44,10 +44,26 @@ export class GalerijComponent implements OnInit {
       this.authService.userHasAnyRole(['admin'])
   );
 
+  // Beheerders zien alle albums; leden alleen die van gekoppelde voorstellingen
+  kanAllesZien = computed(
+    () =>
+      this.authService.isGlobalAdmin ||
+      this.authService.userHasAnyRole(['admin', 'bestuur', 'beheer'])
+  );
+
   loading = signal(false);
   fileToken = signal<string | null>(null);
   allFolders = signal<VoorstellingFolder[]>([]);
   activeTab = signal<TabType>('alle');
+  loadedCovers = signal<Set<string>>(new Set());
+
+  // True once every visible album with photos has its cover loaded
+  coversReady = computed(() => {
+    const loaded = this.loadedCovers();
+    return this.filteredFolders()
+      .filter((folder) => folder.fotos?.length)
+      .every((folder) => loaded.has(folder.id));
+  });
 
   // Filter folders based on active tab
   filteredFolders = computed(() => {
@@ -95,6 +111,12 @@ export class GalerijComponent implements OnInit {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  onCoverLoaded(folderId: string): void {
+    this.loadedCovers.update((loaded) =>
+      loaded.has(folderId) ? loaded : new Set(loaded).add(folderId)
+    );
   }
 
   onTabChange(index: number): void {

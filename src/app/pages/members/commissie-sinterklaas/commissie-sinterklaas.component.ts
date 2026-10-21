@@ -28,10 +28,12 @@ import { lastValueFrom } from 'rxjs';
 import { ConfirmatieDialogComponent } from '../../../shared/components/confirmatie-dialog/confirmatie-dialog.component';
 import { SinterklaasVerzoekCreateDialogComponent } from './sinterklaas-verzoek-create-dialog/sinterklaas-verzoek-create-dialog.component';
 import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+import { MailOntvangersKnopComponent } from '../../../shared/components/mail-ontvangers-knop/mail-ontvangers-knop.component';
 
 @Component({
   selector: 'app-commissie-sinterklaas',
   imports: [
+    MailOntvangersKnopComponent,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
