@@ -45,6 +45,7 @@ export class HomePaginaComponent implements OnInit {
   nieuws: WritableSignal<Nieuws[]> = signal([]);
   seoService = inject(SeoService);
   nieuwsToPublish: WritableSignal<Nieuws[]> = signal([]);
+  loading = signal(true);
 
   constructor() {
     this.seoService.update(
@@ -56,22 +57,21 @@ export class HomePaginaComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // Use timezone-aware "today" filter (Amsterdam timezone)
     const today = getTodayStartAsUTC();
-    const voorstellingen = await this.client.getAll<Voorstelling>(
-      'voorstellingen',
-      {
+    let voorstellingen: Voorstelling[];
+    try {
+      voorstellingen = await this.client.getAll<Voorstelling>('voorstellingen', {
         sort: 'datum_tijd_1',
         expand: 'groep',
         filter: `gearchiveerd != true && (datum_tijd_1 >= "${today}" || datum_tijd_2 >= "${today}") && (publicatie_datum <= "${today}" || publicatie_datum = "" || publicatie_datum = null)`,
-      }
-    );
-    const nieuws = await this.client.getAll<Nieuws>('nieuws');
+      });
+      const nieuws = await this.client.getAll<Nieuws>('nieuws');
 
-    nieuws.forEach((item) => {
-      if (this.publiceren(item)) this.nieuwsToPublish().push(item);
-    });
-
-    this.voorstellingen.set(voorstellingen);
-    this.nieuws.set(nieuws);
+      this.nieuwsToPublish.set(nieuws.filter((item) => this.publiceren(item)));
+      this.voorstellingen.set(voorstellingen);
+      this.nieuws.set(nieuws);
+    } finally {
+      this.loading.set(false);
+    }
 
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({

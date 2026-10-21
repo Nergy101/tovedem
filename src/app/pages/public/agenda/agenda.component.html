@@ -5,48 +5,69 @@
     </div>
   </div>
 
-  <div class="row mb-4">
-    <div class="col-12">
-      <mat-form-field class="w-100">
-        <mat-label>Zoek op voorstelling of groep</mat-label>
-        <input
-          matInput
-          [value]="searchTerm()"
-          (input)="searchTerm.set($any($event.target).value)"
-          placeholder="Typ om te zoeken..."
-        />
-        @if (searchTerm()) {
-          <button
-            matPrefix
-            mat-icon-button
-            aria-label="Zoekopdracht wissen"
-            (click)="searchTerm.set('')"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        } @else {
-          <mat-icon matPrefix>search</mat-icon>
-        }
-      </mat-form-field>
-    </div>
-  </div>
-
-  @for (key of filteredVoorstellingenPerJaar(); track key) {
-    <div class="m-2">
-      <mat-divider class="divider"></mat-divider>
-      <span class="align-self-center display-4">{{ key.year }}</span>
-      <mat-divider class="divider"></mat-divider>
-    </div>
-
-    <div class="row">
-      @for (item of key.items; track $index) {
-        <div class="col-12 mb-2 justify-content-center">
-          <app-voorstelling-line
-            [voorstelling]="item"
-            class="line col-12"
-          ></app-voorstelling-line>
+  <div class="section">
+    @if (loading()) {
+      <app-skeleton-group type="list" [count]="5" />
+    } @else if (voorstellingenPerJaar().length === 0) {
+      <app-empty-state
+        icon="event_busy"
+        title="Geen aankomende voorstellingen"
+        description="Er staan momenteel geen voorstellingen op de agenda. Kom later nog eens terug voor nieuwe aankondigingen!"
+      />
+    } @else {
+      <div class="row mb-4">
+        <div class="col-12">
+          <mat-form-field class="w-100">
+            <mat-label>Zoek op voorstelling of groep</mat-label>
+            <input
+              matInput
+              [value]="searchTerm()"
+              (input)="searchTerm.set($any($event.target).value)"
+              placeholder="Typ om te zoeken..."
+            />
+            @if (searchTerm()) {
+              <button
+                matPrefix
+                mat-icon-button
+                aria-label="Zoekopdracht wissen"
+                (click)="searchTerm.set('')"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            } @else {
+              <mat-icon matPrefix>search</mat-icon>
+            }
+          </mat-form-field>
         </div>
+      </div>
+
+      @for (key of filteredVoorstellingenPerJaar(); track key) {
+        <div class="m-2">
+          <mat-divider class="divider"></mat-divider>
+          <span class="align-self-center display-4">{{ key.year }}</span>
+          <mat-divider class="divider"></mat-divider>
+        </div>
+
+        <div class="row">
+          @for (item of key.items; track $index) {
+            <div class="col-12 mb-2 justify-content-center">
+              <app-voorstelling-line
+                [voorstelling]="item"
+                class="line col-12"
+              ></app-voorstelling-line>
+            </div>
+          }
+        </div>
+      } @empty {
+        <app-empty-state
+          icon="search_off"
+          title="Geen resultaten gevonden"
+          [description]="'Er zijn geen voorstellingen gevonden voor &quot;' + searchTerm() + '&quot;. Probeer een andere zoekterm.'"
+          actionLabel="Zoekopdracht wissen"
+          actionIcon="close"
+          (actionClick)="searchTerm.set('')"
+        />
       }
-    </div>
-  }
+    }
+  </div>
 </div>

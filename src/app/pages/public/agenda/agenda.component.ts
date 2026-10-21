@@ -17,6 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { Groep } from '../../../models/domain/groep.model';
 import { Voorstelling } from '../../../models/domain/voorstelling.model';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 import { VoorstellingLineComponent } from '../../../shared/components/voorstellingen/voorstelling-line/voorstelling-line.component';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
@@ -41,6 +43,8 @@ import {
     MatInputModule,
     MatIconModule,
     FormsModule,
+    EmptyStateComponent,
+    SkeletonGroupComponent,
   ],
 })
 export class AgendaComponent implements OnInit {
@@ -60,6 +64,7 @@ export class AgendaComponent implements OnInit {
     { year: number; items: Voorstelling[] }[]
   > = signal([]);
   searchTerm = signal('');
+  loading = signal(true);
   allVoorstellingenPerJaar: WritableSignal<
     { year: number; items: Voorstelling[] }[]
   > = signal([]);
@@ -94,33 +99,41 @@ export class AgendaComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const voorstellingenInDeToekomst = await this.client.getAll<Voorstelling>(
-      'voorstellingen',
-      {
-        sort: 'datum_tijd_1',
-        filter: `(datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}") && gearchiveerd != true && (publicatie_datum <= "${this.today}" || publicatie_datum = "" || publicatie_datum = null)`,
-        expand: 'groep',
-      }
-    );
+    try {
+      const voorstellingenInDeToekomst = await this.client.getAll<Voorstelling>(
+        'voorstellingen',
+        {
+          sort: 'datum_tijd_1',
+          filter: `(datum_tijd_1 >= "${this.today}" || datum_tijd_2 >= "${this.today}") && gearchiveerd != true && (publicatie_datum <= "${this.today}" || publicatie_datum = "" || publicatie_datum = null)`,
+          expand: 'groep',
+        }
+      );
 
-    const groepen = await this.client.getAll<Groep>('groepen', {
-      sort: '-created',
-    });
-    this.groepen.set(groepen);
+      const groepen = await this.client.getAll<Groep>('groepen', {
+        sort: '-created',
+      });
+      this.groepen.set(groepen);
 
-    const voorstellingenPerJaar = this.groupByYear(
-      voorstellingenInDeToekomst
-    ).sort((x, y) => (x.year > y.year ? 1 : -1));
+      const voorstellingenPerJaar = this.groupByYear(
+        voorstellingenInDeToekomst
+      ).sort((x, y) => (x.year > y.year ? 1 : -1));
 
-    this.voorstellingenPerJaar.set(voorstellingenPerJaar);
-    this.allVoorstellingenPerJaar.set(voorstellingenPerJaar);
+      this.voorstellingenPerJaar.set(voorstellingenPerJaar);
+      this.allVoorstellingenPerJaar.set(voorstellingenPerJaar);
 
-    const voorstellingenInDeToekomstEnMaxVan6 =
-      voorstellingenInDeToekomst.slice(0, 6);
+      const voorstellingenInDeToekomstEnMaxVan6 =
+        voorstellingenInDeToekomst.slice(0, 6);
 
-    this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6);
-    this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6);
+      this.voorstellingenShort.set(voorstellingenInDeToekomstEnMaxVan6);
+      this.voorstellingenLong.set(voorstellingenInDeToekomstEnMaxVan6);
 
+      this.updateSeo(voorstellingenInDeToekomst);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  private updateSeo(voorstellingenInDeToekomst: Voorstelling[]): void {
     // Update Open Graph tags
     this.seoService.updateOpenGraphTags({
       title: 'Tovedem - Agenda',
