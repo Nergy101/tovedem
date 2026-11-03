@@ -106,7 +106,12 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
   {
     path: 'commissie-sinterklaas',
     label: 'Commissie Sinterklaas',
-    access: ['admin', 'bestuur', 'commissie'],
+    access: ['admin', 'bestuur', 'commissie', 'sint_commissie'],
+  },
+  {
+    path: 'lees-commissie',
+    label: 'Lees Commissie',
+    access: ['admin', 'bestuur', 'lees_commissie'],
   },
   {
     path: 'galerij',

@@ -30,6 +30,7 @@
     "apexcharts": "^8.5.0",
     "bootstrap": "^5.3.8",
     "canvas-confetti": "^1.9.4",
+    "driver.js": "^1.10.2",
     "jquery": "^4.0.0",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.9",

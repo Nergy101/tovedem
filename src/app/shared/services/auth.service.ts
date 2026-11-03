@@ -11,6 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Gebruiker } from '../../models/domain/gebruiker.model';
 import { Rol } from '../../models/domain/rol.model';
+import { ROUTE_ACCESS_CONFIG } from '../constants/route-access.config';
 import { PocketbaseService } from './pocketbase.service';
 import { SideDrawerService } from './side-drawer.service';
 
@@ -85,18 +86,16 @@ export class AuthService {
   );
 
   /** True if user can see Sinterklaas commissie link. */
-  canAccessSinterklaasCommissie = computed(
-    () =>
-      this.userHasAnyRole(['admin', 'bestuur', 'sint_commissie']) ||
-      this.isGlobalAdmin,
-  );
+  canAccessSinterklaasCommissie = computed(() => {
+    this.userData();
+    return this.canAccessRoute('commissie-sinterklaas');
+  });
 
   /** True if user can see Lees commissie link. */
-  canAccessLeesCommissie = computed(
-    () =>
-      this.userHasAnyRole(['admin', 'bestuur', 'lees_commissie']) ||
-      this.isGlobalAdmin,
-  );
+  canAccessLeesCommissie = computed(() => {
+    this.userData();
+    return this.canAccessRoute('lees-commissie');
+  });
 
   /** True if user can see Nieuws commissie link. */
   canAccessNieuwsCommissie = computed(
@@ -114,6 +113,18 @@ export class AuthService {
       this.userHasAnyRole(['admin', 'bestuur', 'commissie', 'lid']) ||
       this.isGlobalAdmin,
   );
+
+  /**
+   * True if the user may open the given route, using the same rules as loggedInGuard
+   * (paths as in ROUTE_ACCESS_CONFIG, e.g. 'kassa' or 'productie-info/Cloos').
+   */
+  canAccessRoute(path: string): boolean {
+    const entry = ROUTE_ACCESS_CONFIG.find((e) => e.path === path);
+    if (!entry || entry.access === 'public') return true;
+    if (this.isGlobalAdmin) return true;
+    if (entry.access === 'logged-in') return this.isLoggedIn();
+    return this.userHasAnyRole(entry.access);
+  }
 
   /**
    * Check if the user has access to any sidenav content

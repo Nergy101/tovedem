@@ -256,6 +256,14 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(getRequiredRoles('commissie-sinterklaas'))],
   },
   {
+    path: 'lees-commissie',
+    loadComponent: () =>
+      import('./pages/members/lees-commissie/lees-commissie.component').then(
+        (m) => m.LeesCommissieComponent,
+      ),
+    canActivate: [loggedInGuard(getRequiredRoles('lees-commissie'))],
+  },
+  {
     path: 'galerij',
     loadComponent: () =>
       import('./pages/members/galerij/galerij.component').then(

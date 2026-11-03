@@ -1664,6 +1664,51 @@ html.lightMode .toast-container .toast-message {
   color: #111111 !important;
 }
 
+// ─── Rondleiding (driver.js) ───
+.driver-popover.tovedem-rondleiding {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-surface-container-high);
+  border-radius: vars.$border-radius-lg;
+  max-width: 340px;
+
+  .driver-popover-title {
+    font-size: 1.1rem;
+    font-weight: vars.$font-weight-semibold;
+  }
+
+  .driver-popover-description,
+  .driver-popover-progress-text {
+    color: var(--mat-sys-on-surface-variant) !important;
+  }
+
+  .driver-popover-footer button {
+    text-shadow: none;
+    border-radius: vars.$border-radius-sm;
+  }
+
+  .driver-popover-next-btn {
+    background-color: var(--mat-sys-primary);
+    border-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary) !important;
+  }
+
+  .tovedem-rondleiding-overslaan {
+    background: transparent;
+    border-color: transparent;
+    text-decoration: underline;
+  }
+
+  .driver-popover-arrow-side-left.driver-popover-arrow { border-left-color: var(--mat-sys-surface-container-high); }
+  .driver-popover-arrow-side-right.driver-popover-arrow { border-right-color: var(--mat-sys-surface-container-high); }
+  .driver-popover-arrow-side-top.driver-popover-arrow { border-top-color: var(--mat-sys-surface-container-high); }
+  .driver-popover-arrow-side-bottom.driver-popover-arrow { border-bottom-color: var(--mat-sys-surface-container-high); }
+}
+
+html.darkMode .driver-popover.tovedem-rondleiding .driver-popover-footer button:not(.driver-popover-next-btn) {
+  background-color: var(--mat-sys-surface-container);
+  border-color: var(--mat-sys-outline-variant);
+}
+
 // ─── Accessibility: prefers-reduced-motion ───
 @media (prefers-reduced-motion: reduce) {
   *,

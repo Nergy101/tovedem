@@ -31,10 +31,17 @@ import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { SeoService } from '../../../shared/services/seo.service';
 import { DateTimeService } from '../../../shared/services/datetime.service';
 import { jsPDF } from 'jspdf';
+import { autoTable } from 'jspdf-autotable';
 
 interface CustomName {
   name: string;
   quantity: number;
+}
+
+export interface OpmerkingOverzichtRegel {
+  naam: string;
+  aantal: number;
+  opmerking: string;
 }
 
 @Component({
@@ -104,6 +111,38 @@ export class PrintenComponent implements OnInit {
       const status = this.getVerificationStatus(reservering);
       return status === 'verified';
     });
+  });
+
+  // Overzicht voor de laatste PDF-pagina: gecontroleerde vrienden met tickets
+  // voor de gekozen dag die een opmerking bij hun reservering hebben gezet
+  opmerkingenOverzicht = computed<OpmerkingOverzichtRegel[]>(() => {
+    const selectedDay = this.selectedDay();
+
+    return this.printableReserveringen()
+      .filter((reservering) => {
+        const aantal =
+          selectedDay === 'datum1'
+            ? reservering.datum_tijd_1_aantal
+            : reservering.datum_tijd_2_aantal;
+        return (
+          reservering.is_vriend_van_tovedem &&
+          aantal > 0 &&
+          !!reservering.opmerking?.trim()
+        );
+      })
+      .sort(
+        (a, b) =>
+          (a.achternaam || '').localeCompare(b.achternaam || '', 'nl') ||
+          (a.voornaam || '').localeCompare(b.voornaam || '', 'nl')
+      )
+      .map((reservering) => ({
+        naam: this.getReserveringTicketName(reservering),
+        aantal:
+          selectedDay === 'datum1'
+            ? reservering.datum_tijd_1_aantal
+            : reservering.datum_tijd_2_aantal,
+        opmerking: reservering.opmerking.trim(),
+      }));
   });
 
   // Check if there are any orange flags (partial verification)
@@ -776,6 +815,60 @@ export class PrintenComponent implements OnInit {
         for (let i = 0; i < amount; i++) {
           addTicket(personName);
         }
+      }
+
+      // Laatste pagina(s): overzicht van vrienden met een opmerking, zonder stoelkaartjes
+      const overzicht = this.opmerkingenOverzicht();
+      if (overzicht.length > 0) {
+        if (ticketIndex > 0) {
+          doc.addPage();
+        }
+
+        const marge = 15;
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('Vrienden met een opmerking', marge, 20);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        const subtitel = [voorstellingTitel, voorstellingDatum]
+          .filter(Boolean)
+          .join(' - ');
+        if (subtitel) {
+          doc.text(subtitel, marge, 27);
+        }
+        doc.setTextColor(0, 0, 0);
+
+        autoTable(doc, {
+          startY: subtitel ? 32 : 26,
+          margin: { left: marge, right: marge, top: marge, bottom: marge },
+          head: [['Naam', 'Tickets', 'Opmerking']],
+          body: overzicht.map((regel) => [
+            regel.naam,
+            String(regel.aantal),
+            regel.opmerking,
+          ]),
+          theme: 'grid',
+          styles: {
+            font: 'helvetica',
+            fontSize: 10,
+            cellPadding: 2.5,
+            valign: 'top',
+            overflow: 'linebreak',
+          },
+          headStyles: {
+            fillColor: [235, 235, 235],
+            textColor: [0, 0, 0],
+            fontStyle: 'bold',
+          },
+          columnStyles: {
+            0: { cellWidth: 50 },
+            1: { cellWidth: 18, halign: 'center' },
+            2: { cellWidth: 'auto' },
+          },
+        });
       }
 
       // Save the PDF

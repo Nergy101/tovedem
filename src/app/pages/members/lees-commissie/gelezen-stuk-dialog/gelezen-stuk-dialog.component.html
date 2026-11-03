@@ -1,0 +1,208 @@
+<div class="dialog-kop">
+  <h2 mat-dialog-title>
+    {{ isUpdate ? "Gelezen stuk aanpassen" : "Gelezen stuk toevoegen" }}
+  </h2>
+  <button mat-icon-button aria-label="Sluiten" tabindex="-1" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form mat-dialog-content class="dialog-inhoud" (ngSubmit)="opslaan()">
+  <h3 class="groep-titel">Het stuk</h3>
+  <div class="velden-rij">
+    <mat-form-field class="breed">
+      <mat-label>Titel</mat-label>
+      <input
+        matInput
+        name="titel"
+        required
+        [ngModel]="titel()"
+        (ngModelChange)="titel.set($event)"
+      />
+      <mat-error>Titel is verplicht</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Auteur</mat-label>
+      <input
+        matInput
+        name="auteur"
+        [ngModel]="auteur()"
+        (ngModelChange)="auteur.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Genre</mat-label>
+      <mat-select
+        name="genre"
+        [ngModel]="genre()"
+        (ngModelChange)="genre.set($event)"
+      >
+        @for (g of genres; track g) {
+          <mat-option [value]="g">{{ g }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <h3 class="groep-titel">Spelers en opzet</h3>
+  <div class="velden-rij">
+    <mat-form-field>
+      <mat-label>Mannenrollen</mat-label>
+      <mat-icon matPrefix>man</mat-icon>
+      <input
+        matInput
+        type="number"
+        min="0"
+        name="aantalMannen"
+        [ngModel]="aantalMannen()"
+        (ngModelChange)="aantalMannen.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Vrouwenrollen</mat-label>
+      <mat-icon matPrefix>woman</mat-icon>
+      <input
+        matInput
+        type="number"
+        min="0"
+        name="aantalVrouwen"
+        [ngModel]="aantalVrouwen()"
+        (ngModelChange)="aantalVrouwen.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Vrij te verdelen</mat-label>
+      <mat-icon matPrefix>wc</mat-icon>
+      <input
+        matInput
+        type="number"
+        min="0"
+        name="aantalVrij"
+        [ngModel]="aantalVrij()"
+        (ngModelChange)="aantalVrij.set($event)"
+      />
+      <mat-hint>Man óf vrouw</mat-hint>
+    </mat-form-field>
+  </div>
+  <p class="totaal-spelers">
+    <mat-icon>groups</mat-icon>
+    Totaal: <strong>{{ aantalSpelers() }}</strong>
+    {{ aantalSpelers() === 1 ? "speler" : "spelers" }}
+  </p>
+  <div class="velden-rij">
+    <mat-form-field>
+      <mat-label>Aantal bedrijven</mat-label>
+      <input
+        matInput
+        type="number"
+        min="1"
+        name="aantalBedrijven"
+        [ngModel]="aantalBedrijven()"
+        (ngModelChange)="aantalBedrijven.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Speelduur (minuten)</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        step="5"
+        name="duurMinuten"
+        [ngModel]="duurMinuten()"
+        (ngModelChange)="duurMinuten.set($event)"
+      />
+    </mat-form-field>
+  </div>
+  <div class="doelgroepen">
+    <span class="veld-label">Geschikt voor</span>
+    @for (d of doelgroepen; track d.waarde) {
+      <mat-checkbox
+        [checked]="geschiktVoor().includes(d.waarde)"
+        (change)="toggleDoelgroep(d.waarde, $event.checked)"
+        >{{ d.label }}</mat-checkbox
+      >
+    }
+  </div>
+
+  <h3 class="groep-titel">Beoordeling</h3>
+  <div class="beoordeling">
+    <div>
+      <span class="veld-label">Waardering</span>
+      <app-sterren-beoordeling [(waarde)]="sterren" />
+    </div>
+    <div>
+      <span class="veld-label">Advies</span>
+      <mat-button-toggle-group
+        name="advies"
+        [value]="advies()"
+        (change)="advies.set($event.value)"
+        aria-label="Advies van de lezer"
+      >
+        <mat-button-toggle value="aanrader">
+          <mat-icon>thumb_up</mat-icon> Aanrader
+        </mat-button-toggle>
+        <mat-button-toggle value="misschien">
+          <mat-icon>help</mat-icon> Misschien
+        </mat-button-toggle>
+        <mat-button-toggle value="afrader">
+          <mat-icon>thumb_down</mat-icon> Afrader
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+  <mat-form-field class="volle-breedte">
+    <mat-label>Korte samenvatting</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      name="samenvatting"
+      [ngModel]="samenvatting()"
+      (ngModelChange)="samenvatting.set($event)"
+      placeholder="Waar gaat het stuk over?"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field class="volle-breedte">
+    <mat-label>Opmerkingen voor de commissie</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      name="opmerkingen"
+      [ngModel]="opmerkingen()"
+      (ngModelChange)="opmerkingen.set($event)"
+      placeholder="Sterke en zwakke punten, decor, rollen die opvallen..."
+    ></textarea>
+  </mat-form-field>
+  <div class="velden-rij">
+    <mat-form-field>
+      <mat-label>Gelezen door</mat-label>
+      <input
+        matInput
+        name="gelezenDoor"
+        [ngModel]="gelezenDoor()"
+        (ngModelChange)="gelezenDoor.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Gelezen op</mat-label>
+      <input
+        matInput
+        type="date"
+        name="gelezenOp"
+        [ngModel]="gelezenOp()"
+        (ngModelChange)="gelezenOp.set($event)"
+      />
+    </mat-form-field>
+  </div>
+</form>
+
+<div mat-dialog-actions class="dialog-acties">
+  @if (foutmelding(); as melding) {
+    <span class="foutmelding">{{ melding }}</span>
+  }
+  <button mat-button mat-dialog-close>Annuleren</button>
+  <button mat-flat-button [disabled]="!!foutmelding()" (click)="opslaan()">
+    <mat-icon>save</mat-icon>
+    Opslaan
+  </button>
+</div>

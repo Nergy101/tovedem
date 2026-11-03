@@ -5,6 +5,8 @@ import { Injectable, signal } from '@angular/core';
 })
 export class SideDrawerService {
   isOpen = signal(true);
+  /** Tijdens een rondleiding door de sidebar worden alle secties uitgeklapt. */
+  rondleidingActief = signal(false);
 
   constructor() {
     const sideDrawerOpen = localStorage.getItem('sideDrawerOpen');

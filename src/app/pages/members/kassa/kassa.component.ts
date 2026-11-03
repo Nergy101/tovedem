@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, tap } from 'rxjs';
+import { debounceTime, filter, firstValueFrom, tap } from 'rxjs';
 import { LosseVerkoop } from '../../../models/domain/losse-verkoop.model';
 import { Reservering } from '../../../models/domain/reservering.model';
 import { Sponsor } from '../../../models/domain/sponsor.model';
@@ -28,6 +28,14 @@ import { VerificatieMatchDialogComponent } from '../beheer-reserveringen/verific
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { VerificationService } from '../../../shared/services/verification.service';
+import { RondleidingService } from '../../../shared/services/rondleiding.service';
+import {
+  KASSA_RONDLEIDING_ID,
+  getKassaRondleidingStappen,
+  maakVoorbeeldLosseVerkoop,
+  maakVoorbeeldReserveringen,
+  maakVoorbeeldVoorstelling,
+} from './kassa-rondleiding';
 import {
   findVoorstellingenForToday,
   getVoorstellingDagForDate,
@@ -36,6 +44,7 @@ import {
 import { lastValueFrom } from 'rxjs';
 import { AmsterdamDatePipe } from '../../../shared/pipes/amsterdam-date.pipe';
 import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+
 
 @Component({
   selector: 'app-kassa',
@@ -62,6 +71,7 @@ import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skel
 export class KassaComponent implements OnInit {
   loading = signal(false);
   searching = signal(false);
+  searching$ = toObservable(this.searching);
   client = inject(PocketbaseService);
   dialog = inject(MatDialog);
   toastr = inject(ToastrService);
@@ -69,6 +79,12 @@ export class KassaComponent implements OnInit {
   titleService = inject(Title);
   verificationService = inject(VerificationService);
   route = inject(ActivatedRoute);
+  rondleidingService = inject(RondleidingService);
+
+  /** True zolang de rondleiding loopt; dan wordt er niets opgeslagen. */
+  rondleidingActief = signal(false);
+  /** True als de rondleiding voorbeeldgegevens toont. */
+  rondleidingVoorbeeld = signal(false);
 
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
@@ -234,6 +250,8 @@ export class KassaComponent implements OnInit {
         this.filterReserveringen();
         this.searching.set(false);
       });
+
+    inject(DestroyRef).onDestroy(() => this.rondleidingService.stop());
   }
 
   async ngOnInit(): Promise<void> {
@@ -298,7 +316,118 @@ export class KassaComponent implements OnInit {
       this.toastr.error('Fout bij het laden van gegevens');
     } finally {
       this.loading.set(false);
+      // In finally, zodat de rondleiding ook start als er vandaag geen voorstelling is
+      void this.startRondleidingBijEersteBezoek();
     }
+  }
+
+  private async startRondleidingBijEersteBezoek(): Promise<void> {
+    if (this.rondleidingService.isGezien(KASSA_RONDLEIDING_ID)) return;
+
+    // Wacht tot de reserveringentabel niet meer als skeleton getoond wordt
+    await firstValueFrom(this.searching$.pipe(filter((searching) => !searching)));
+    await this.startRondleiding();
+  }
+
+  /**
+   * Start de rondleiding. Is er vandaag geen voorstelling, dan wordt de eerstvolgende
+   * geselecteerd; ontbreken er gegevens, dan worden voorbeeldgegevens getoond (alleen
+   * in de browser). Na afloop wordt de pagina teruggezet zoals hij was.
+   */
+  async startRondleiding(): Promise<void> {
+    if (this.rondleidingActief()) return;
+    this.rondleidingActief.set(true);
+
+    const vorigeStand = {
+      voorstellingenVoorVandaag: this.voorstellingenVoorVandaag(),
+      selectedVoorstelling: this.selectedVoorstelling(),
+      selectedDag: this.selectedDag(),
+      reserveringen: this.reserveringen(),
+      losseVerkoop: this.losseVerkoop(),
+      searchTerm: this.searchTerm(),
+      aanwezigFilter: this.aanwezigFilter(),
+    };
+
+    let toekomstigeVoorstelling: string | null = null;
+    let voorbeeldGegevens = false;
+
+    try {
+      const heeftVoorstellingVandaag = this.voorstellingenVoorVandaag().some(
+        (v) => this.isVoorstellingToday(v)
+      );
+
+      if (!heeftVoorstellingVandaag && !this.selectedVoorstelling()) {
+        const eerstvolgende = this.vindEerstvolgendeVoorstelling();
+        if (eerstvolgende) {
+          const { voorstelling, datum, dag } = eerstvolgende;
+          toekomstigeVoorstelling = voorstelling.titel;
+          this.selectedVoorstelling.set(voorstelling);
+          this.selectedDag.set(dag);
+          this.voorstellingenVoorVandaag.set([voorstelling]);
+          await this.loadReserveringenVoorVoorstelling(voorstelling, datum, dag);
+          await this.loadLosseVerkoop();
+        }
+      }
+
+      let voorstelling = this.selectedVoorstelling();
+      if (!voorstelling) {
+        voorstelling = maakVoorbeeldVoorstelling();
+        voorbeeldGegevens = true;
+        this.selectedVoorstelling.set(voorstelling);
+        this.selectedDag.set('datum1');
+        this.voorstellingenVoorVandaag.set([voorstelling]);
+      }
+      if (this.reserveringen().length === 0) {
+        voorbeeldGegevens = true;
+        this.reserveringen.set(
+          maakVoorbeeldReserveringen(voorstelling, this.selectedDag())
+        );
+      }
+      if (this.losseVerkoopOfSelectedVoorstellingDag().length === 0) {
+        voorbeeldGegevens = true;
+        this.losseVerkoop.update((items) => [
+          ...items,
+          ...maakVoorbeeldLosseVerkoop(voorstelling, this.selectedDag()),
+        ]);
+      }
+    } catch (error) {
+      console.error('Error preparing rondleiding:', error);
+    }
+
+    // Filters leeg, zodat de tabel met alle rijen zichtbaar is
+    this.searchTerm.set('');
+    this.aanwezigFilter.set('alle');
+    this.filterReserveringen();
+    this.rondleidingVoorbeeld.set(voorbeeldGegevens);
+
+    // Eén tick wachten zodat de tabel en kaarten gerenderd zijn
+    await new Promise((resolve) => setTimeout(resolve));
+
+    this.rondleidingService.start(
+      KASSA_RONDLEIDING_ID,
+      getKassaRondleidingStappen({ toekomstigeVoorstelling, voorbeeldGegevens }),
+      {
+        onAfgesloten: () => {
+          this.voorstellingenVoorVandaag.set(vorigeStand.voorstellingenVoorVandaag);
+          this.selectedVoorstelling.set(vorigeStand.selectedVoorstelling);
+          this.selectedDag.set(vorigeStand.selectedDag);
+          this.reserveringen.set(vorigeStand.reserveringen);
+          this.losseVerkoop.set(vorigeStand.losseVerkoop);
+          this.searchTerm.set(vorigeStand.searchTerm);
+          this.aanwezigFilter.set(vorigeStand.aanwezigFilter);
+          this.filterReserveringen();
+          this.rondleidingVoorbeeld.set(false);
+          this.rondleidingActief.set(false);
+        },
+      }
+    );
+  }
+
+  /** Tijdens de rondleiding mag er niets naar de database; toont dan een melding. */
+  private geblokkeerdDoorRondleiding(): boolean {
+    if (!this.rondleidingActief()) return false;
+    this.toastr.info('Rond eerst de rondleiding af of sla hem over');
+    return true;
   }
 
   async loadReserveringenVoorVandaag(): Promise<void> {
@@ -359,6 +488,37 @@ export class KassaComponent implements OnInit {
   }
 
   async selectEerstvolgendeVoorstelling(): Promise<void> {
+    if (this.geblokkeerdDoorRondleiding()) return;
+
+    const eerstvolgende = this.vindEerstvolgendeVoorstelling();
+    if (!eerstvolgende) {
+      this.toastr.info('Geen aankomende voorstellingen gevonden');
+      return;
+    }
+    const { voorstelling, datum, dag } = eerstvolgende;
+
+    this.selectedVoorstelling.set(voorstelling);
+    this.selectedDag.set(dag);
+    this.voorstellingenVoorVandaag.set([voorstelling]);
+
+    // Load reserveringen for this voorstelling and specific dag
+    await this.loadReserveringenVoorVoorstelling(voorstelling, datum, dag);
+
+    // Load losse verkoop for selected voorstelling
+    await this.loadLosseVerkoop();
+
+    this.toastr.success(
+      `Eerstvolgende voorstelling geselecteerd: ${voorstelling.titel} (${
+        dag === 'datum1' ? 'datum 1' : 'datum 2'
+      })`
+    );
+  }
+
+  vindEerstvolgendeVoorstelling(): {
+    voorstelling: Voorstelling;
+    datum: Date;
+    dag: 'datum1' | 'datum2';
+  } | null {
     const vandaag = new Date();
     const alleVoorstellingen = this.voorstellingen();
 
@@ -395,29 +555,14 @@ export class KassaComponent implements OnInit {
     }
 
     if (!eerstvolgendeVoorstelling || !eerstvolgendeDatum) {
-      this.toastr.info('Geen aankomende voorstellingen gevonden');
-      return;
+      return null;
     }
 
-    this.selectedVoorstelling.set(eerstvolgendeVoorstelling);
-    this.selectedDag.set(geselecteerdeDag);
-    this.voorstellingenVoorVandaag.set([eerstvolgendeVoorstelling]);
-
-    // Load reserveringen for this voorstelling and specific dag
-    await this.loadReserveringenVoorVoorstelling(
-      eerstvolgendeVoorstelling,
-      eerstvolgendeDatum,
-      geselecteerdeDag
-    );
-
-    // Load losse verkoop for selected voorstelling
-    await this.loadLosseVerkoop();
-
-    this.toastr.success(
-      `Eerstvolgende voorstelling geselecteerd: ${
-        eerstvolgendeVoorstelling.titel
-      } (${geselecteerdeDag === 'datum1' ? 'datum 1' : 'datum 2'})`
-    );
+    return {
+      voorstelling: eerstvolgendeVoorstelling,
+      datum: eerstvolgendeDatum,
+      dag: geselecteerdeDag,
+    };
   }
 
   async loadReserveringenVoorVoorstelling(
@@ -512,6 +657,7 @@ export class KassaComponent implements OnInit {
   }
 
   onCheckboxChange(event: { reservering: Reservering; dag: 1 | 2 }): void {
+    if (this.geblokkeerdDoorRondleiding()) return;
     const { reservering, dag } = event;
     if (dag === 1) {
       reservering.aanwezig_datum_1 = !reservering.aanwezig_datum_1;
@@ -530,6 +676,7 @@ export class KassaComponent implements OnInit {
   }
 
   async openEditDialog(reservering: Reservering): Promise<void> {
+    if (this.geblokkeerdDoorRondleiding()) return;
     const dialogData = {
       reservering,
       voorstelling: this.selectedVoorstelling(),
@@ -556,6 +703,7 @@ export class KassaComponent implements OnInit {
   }
 
   async openVerificatieDialog(reservering: Reservering): Promise<void> {
+    if (this.geblokkeerdDoorRondleiding()) return;
     const { status } = this.verificationService.checkVerificationStatus(
       reservering,
       this.sponsors()
@@ -687,6 +835,7 @@ export class KassaComponent implements OnInit {
   }
 
   async addLosseVerkoop(): Promise<void> {
+    if (this.geblokkeerdDoorRondleiding()) return;
     const selectedVoorstelling = this.selectedVoorstelling();
 
     if (!selectedVoorstelling) return;
@@ -707,6 +856,7 @@ export class KassaComponent implements OnInit {
   }
 
   async deleteLosseVerkoop(losseVerkoopToDelete: LosseVerkoop): Promise<void> {
+    if (this.geblokkeerdDoorRondleiding()) return;
     const dialogRef = this.dialog.open(ConfirmatieDialogComponent, {
       data: {
         title: 'Losse verkoop verwijderen',

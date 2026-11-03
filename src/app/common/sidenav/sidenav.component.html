@@ -4,10 +4,12 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
+    } @if (authService.canAccessRoute('productie-info/Tovedem')) {
     <mat-expansion-panel
+      data-rondleiding="sectie-productie-info"
       style="width: 100%"
       [class.section-active]="isSectionActive(['/productie-info'])"
-      [expanded]="panelState['productie-info']"
+      [expanded]="panelState['productie-info'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('productie-info', true)"
       (closed)="setPanelState('productie-info', false)"
     >
@@ -19,6 +21,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="productie-info-Tovedem"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -32,6 +35,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="productie-info-Cloos"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -45,6 +49,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="productie-info-Mejotos"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -63,11 +68,12 @@
     </div>
     } @if (authService.canAccessCommissiesSection()) {
     <mat-expansion-panel
+      data-rondleiding="sectie-commissies"
       style="width: 100%"
       [class.section-active]="
-        isSectionActive(['/commissie-sinterklaas', '/beheer-nieuws'])
+        isSectionActive(['/commissie-sinterklaas', '/lees-commissie', '/beheer-nieuws'])
       "
-      [expanded]="panelState['commissies']"
+      [expanded]="panelState['commissies'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('commissies', true)"
       (closed)="setPanelState('commissies', false)"
     >
@@ -80,6 +86,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="commissie-sinterklaas"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -96,11 +103,12 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="lees-commissie"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
-            routerLink="/beheer-voorstellingen"
+            routerLink="/lees-commissie"
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <span>Lees Commissie</span> <mat-icon>auto_stories</mat-icon>
@@ -112,6 +120,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-nieuws"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -129,8 +138,9 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if (authService.canAccessBeheerSection()) {
+    } @if (hasBeheerItems()) {
     <mat-expansion-panel
+      data-rondleiding="sectie-beheer"
       style="width: 100%"
       [class.section-active]="
         isSectionActive([
@@ -148,7 +158,7 @@
           '/beheer-nieuwsbrief'
         ])
       "
-      [expanded]="panelState['beheer']"
+      [expanded]="panelState['beheer'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('beheer', true)"
       (closed)="setPanelState('beheer', false)"
     >
@@ -157,11 +167,11 @@
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <ul>
-        @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
-        authService.isGlobalAdmin) {
+        @if (authService.canAccessRoute('beheer-voorstellingen')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-voorstellingen"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -172,11 +182,11 @@
             <span>Voorstellingen</span> <mat-icon>curtains</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
-        'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('beheer-reserveringen')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-reserveringen"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -187,11 +197,11 @@
             <span>Reserveringen</span> <mat-icon>payments</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa']) ||
-        authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('kassa')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="kassa"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -202,11 +212,11 @@
             <span>De Kassa</span> <mat-icon>point_of_sale</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur', 'kassa',
-        'commissie', 'lid', 'bezoeker']) || authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('printen')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="printen"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -217,11 +227,11 @@
             <span>Printen</span> <mat-icon>print</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
-        authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('beheer-leden')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-leden"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -232,11 +242,11 @@
             <span>Leden</span> <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
-        authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('beheer-nieuwe-leden')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-nieuwe-leden"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -250,6 +260,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-vrienden"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -263,6 +274,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-contact"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -273,11 +285,11 @@
             <span>Contact Berichten</span> <mat-icon>mail</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
-        authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('beheer-sponsoren')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-sponsoren"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -288,11 +300,11 @@
             <span>Sponsoren</span> <mat-icon>favorite</mat-icon>
           </button>
         </li>
-        } @if (authService.userHasAnyRole(['admin', 'bestuur']) ||
-        authService.isGlobalAdmin) {
+        } @if (authService.canAccessRoute('beheer-mails')) {
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-mails"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -306,6 +318,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="beheer-mail-lijst"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -324,9 +337,10 @@
     </div>
     } @if (authService.canAccessGalerij()) {
     <mat-expansion-panel
+      data-rondleiding="sectie-galerij"
       style="width: 100%"
       [class.section-active]="isSectionActive(['/galerij'])"
-      [expanded]="panelState['galerij']"
+      [expanded]="panelState['galerij'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('galerij', true)"
       (closed)="setPanelState('galerij', false)"
     >
@@ -338,6 +352,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="galerij"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -356,8 +371,9 @@
     </div>
     } @if (authService.isGlobalAdmin) {
     <mat-expansion-panel
+      data-rondleiding="sectie-developers"
       style="width: 100%"
-      [expanded]="panelState['developers']"
+      [expanded]="panelState['developers'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('developers', true)"
       (closed)="setPanelState('developers', false)"
     >
@@ -369,6 +385,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="developers-rol-overzicht"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -382,6 +399,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="admin"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -393,6 +411,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="mailjet"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
@@ -404,6 +423,7 @@
         <li>
           <button
             mat-raised-button
+            data-rondleiding="zoho"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"

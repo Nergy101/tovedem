@@ -62,7 +62,23 @@ export class SidenavComponent implements OnInit {
     }
   }
 
+  /** True als de gebruiker minstens één pagina uit de Beheer-sectie mag openen. */
+  hasBeheerItems(): boolean {
+    return [
+      'beheer-voorstellingen',
+      'beheer-reserveringen',
+      'kassa',
+      'printen',
+      'beheer-leden',
+      'beheer-nieuwe-leden',
+      'beheer-sponsoren',
+      'beheer-mails',
+    ].some((path) => this.authService.canAccessRoute(path));
+  }
+
   setPanelState(key: string, expanded: boolean): void {
+    // Tijdens de rondleiding worden alle panelen tijdelijk uitgeklapt; dat niet onthouden
+    if (this.sideDrawerService.rondleidingActief()) return;
     this.panelState[key] = expanded;
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.panelState));
   }

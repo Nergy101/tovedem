@@ -1,0 +1,102 @@
+@use "../../../../../variables.scss" as *;
+
+.dialog-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: $spacing-2;
+
+  h2 {
+    margin-bottom: 0;
+  }
+}
+
+.dialog-inhoud {
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+}
+
+.groep-titel {
+  margin: $spacing-4 0 $spacing-3;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wider;
+  opacity: 0.7;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.velden-rij {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 $spacing-4;
+
+  mat-form-field {
+    flex: 1 1 180px;
+  }
+
+  .breed {
+    flex: 2 1 280px;
+  }
+}
+
+.volle-breedte {
+  width: 100%;
+}
+
+.totaal-spelers {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin: 0 0 $spacing-4;
+}
+
+.veld-label {
+  display: block;
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-1;
+  opacity: 0.75;
+}
+
+.doelgroepen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-2 $spacing-4;
+
+  .veld-label {
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.beoordeling {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-4 $spacing-8;
+  margin-bottom: $spacing-4;
+
+  mat-button-toggle mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+  }
+}
+
+.dialog-acties {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+}
+
+.foutmelding {
+  margin-right: auto;
+  font-size: $font-size-sm;
+  color: var(--mat-sys-error) !important;
+}
