@@ -264,3 +264,30 @@ html.lightMode {
 
 /* Note: Print styles for PDF generation using jsPDF */
 
+
+.opmerkingen-overzicht {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 3px dashed var(--mat-sys-outline-variant);
+
+  h3 {
+    margin-bottom: 0.25em;
+  }
+
+  .opmerkingen-subtitel {
+    margin-bottom: 1em;
+    opacity: 0.75;
+  }
+
+  .table {
+    margin-bottom: 0;
+  }
+
+  td {
+    vertical-align: top;
+    white-space: pre-line;
+  }
+}

@@ -1,0 +1,238 @@
+<div class="lees-pagina">
+  <header class="pagina-kop">
+    <div>
+      <p class="display-1 mb-0">Lees Commissie</p>
+      <p class="pagina-intro">
+        Houd bij welke toneelstukken gelezen zijn, hoe ze beoordeeld worden en
+        voor welke groep ze geschikt zijn.
+      </p>
+    </div>
+    <button mat-flat-button (click)="openStukDialog()">
+      <mat-icon>add</mat-icon>
+      Stuk toevoegen
+    </button>
+  </header>
+
+  <div class="dummy-melding" role="note">
+    <mat-icon>science</mat-icon>
+    <span>
+      <strong>Voorbeeldpagina.</strong> Ingevulde stukken worden voorlopig
+      alleen in deze browser bewaard en zijn niet zichtbaar voor andere leden.
+    </span>
+  </div>
+
+  <!-- Kerncijfers -->
+  <section class="statistieken" aria-label="Kerncijfers">
+    <div class="statistiek">
+      <mat-icon>menu_book</mat-icon>
+      <div>
+        <span class="statistiek-waarde">{{ aantalGelezen() }}</span>
+        <span class="statistiek-label">stukken gelezen</span>
+      </div>
+    </div>
+    <div class="statistiek">
+      <mat-icon>star</mat-icon>
+      <div>
+        <span class="statistiek-waarde">{{
+          gemiddeldeSterren().toFixed(1).replace(".", ",")
+        }}</span>
+        <span class="statistiek-label">gemiddelde waardering</span>
+      </div>
+    </div>
+    <div class="statistiek">
+      <mat-icon>thumb_up</mat-icon>
+      <div>
+        <span class="statistiek-waarde">{{ aantalAanraders() }}</span>
+        <span class="statistiek-label">aanraders</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="filters" aria-label="Filters">
+    <mat-form-field class="zoekveld" subscriptSizing="dynamic">
+      <mat-label>Zoek op titel, auteur of genre</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        [ngModel]="zoekterm()"
+        (ngModelChange)="zoekterm.set($event)"
+      />
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Groep</mat-label>
+      <mat-select
+        [value]="doelgroepFilter()"
+        (selectionChange)="doelgroepFilter.set($event.value)"
+      >
+        <mat-option value="alle">Alle groepen</mat-option>
+        @for (d of doelgroepen; track d.waarde) {
+          <mat-option [value]="d.waarde">{{ d.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Aantal spelers</mat-label>
+      <mat-select
+        [value]="spelersFilter()"
+        (selectionChange)="spelersFilter.set($event.value)"
+      >
+        <mat-option value="alle">Alle</mat-option>
+        <mat-option value="klein">1 – 4 spelers</mat-option>
+        <mat-option value="middel">5 – 8 spelers</mat-option>
+        <mat-option value="groot">9 of meer</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Advies</mat-label>
+      <mat-select
+        [value]="adviesFilter()"
+        (selectionChange)="adviesFilter.set($event.value)"
+      >
+        <mat-option value="alle">Alle</mat-option>
+        <mat-option value="aanrader">Aanrader</mat-option>
+        <mat-option value="misschien">Misschien</mat-option>
+        <mat-option value="afrader">Afrader</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Sorteren op</mat-label>
+      <mat-select
+        [value]="sortering()"
+        (selectionChange)="sortering.set($event.value)"
+      >
+        <mat-option value="nieuwste">Laatst gelezen</mat-option>
+        <mat-option value="sterren">Hoogste waardering</mat-option>
+        <mat-option value="titel">Titel (A-Z)</mat-option>
+        <mat-option value="spelers">Minste spelers</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <!-- Overzicht -->
+  @if (loading()) {
+    <app-skeleton-group type="card-grid" [count]="3" />
+  } @else if (stukken().length === 0) {
+    <app-empty-state
+      icon="menu_book"
+      title="Nog geen stukken gelezen"
+      description="Voeg het eerste gelezen toneelstuk toe met je beoordeling."
+      actionLabel="Stuk toevoegen"
+      (actionClick)="openStukDialog()"
+    />
+  } @else if (gefilterdeStukken().length === 0) {
+    <app-empty-state
+      icon="filter_alt_off"
+      title="Geen stukken gevonden"
+      description="Er zijn geen gelezen stukken die aan de filters voldoen."
+      actionLabel="Filters wissen"
+      actionIcon="close"
+      (actionClick)="wisFilters()"
+    />
+  } @else {
+    @if (heeftFilters()) {
+      <p class="resultaat-telling">
+        {{ gefilterdeStukken().length }} van {{ stukken().length }} stukken
+      </p>
+    }
+    <div class="stukken-grid">
+      @for (stuk of gefilterdeStukken(); track stuk.id) {
+        <article class="stuk-kaart" [class]="'advies-' + stuk.advies">
+          <div class="stuk-kop">
+            <div class="stuk-titels">
+              <h2 class="stuk-titel">{{ stuk.titel }}</h2>
+              <span class="stuk-auteur">
+                {{ stuk.auteur || "Onbekende auteur" }}
+                @if (stuk.genre) {
+                  · {{ stuk.genre }}
+                }
+              </span>
+            </div>
+            <span class="advies-label">
+              <mat-icon inline>{{ adviesLabels[stuk.advies].icon }}</mat-icon>
+              {{ adviesLabels[stuk.advies].label }}
+            </span>
+          </div>
+
+          <app-sterren-beoordeling [waarde]="stuk.sterren" [alleenLezen]="true" />
+
+          <ul class="stuk-feiten">
+            <li matTooltip="Totaal aantal spelers">
+              <mat-icon>groups</mat-icon>
+              {{ stuk.aantal_spelers }}
+              {{ stuk.aantal_spelers === 1 ? "speler" : "spelers" }}
+            </li>
+            <li
+              matTooltip="Mannenrollen / vrouwenrollen / vrij te verdelen"
+            >
+              <mat-icon>wc</mat-icon>
+              {{ stuk.aantal_mannen }} m · {{ stuk.aantal_vrouwen }} v
+              @if (stuk.aantal_vrij > 0) {
+                · {{ stuk.aantal_vrij }} vrij
+              }
+            </li>
+            @if (stuk.duur_minuten) {
+              <li matTooltip="Speelduur">
+                <mat-icon>schedule</mat-icon>
+                {{ stuk.duur_minuten }} min
+              </li>
+            }
+            @if (stuk.aantal_bedrijven) {
+              <li matTooltip="Aantal bedrijven">
+                <mat-icon>theater_comedy</mat-icon>
+                {{ stuk.aantal_bedrijven }}
+                {{ stuk.aantal_bedrijven === 1 ? "bedrijf" : "bedrijven" }}
+              </li>
+            }
+          </ul>
+
+          @if (stuk.geschikt_voor.length > 0) {
+            <div class="doelgroep-labels">
+              @for (d of stuk.geschikt_voor; track d) {
+                <span class="doelgroep-label">{{ getDoelgroepLabel(d) }}</span>
+              }
+            </div>
+          }
+
+          @if (stuk.samenvatting) {
+            <p class="stuk-samenvatting">{{ stuk.samenvatting }}</p>
+          }
+          @if (stuk.opmerkingen) {
+            <blockquote class="stuk-opmerkingen">
+              <mat-icon inline>format_quote</mat-icon>
+              {{ stuk.opmerkingen }}
+            </blockquote>
+          }
+
+          <footer class="stuk-voet">
+            <span class="stuk-lezer">
+              Gelezen
+              @if (stuk.gelezen_door) {
+                door <strong>{{ stuk.gelezen_door }}</strong>
+              }
+              op {{ stuk.gelezen_op | amsterdamDate: "d LLLL yyyy" }}
+            </span>
+            <span class="stuk-acties">
+              <button
+                mat-icon-button
+                (click)="openStukDialog(stuk)"
+                aria-label="Bewerken"
+                matTooltip="Bewerken"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="verwijderStuk(stuk)"
+                aria-label="Verwijderen"
+                matTooltip="Verwijderen"
+              >
+                <mat-icon color="warn">delete</mat-icon>
+              </button>
+            </span>
+          </footer>
+        </article>
+      }
+    </div>
+  }
+</div>

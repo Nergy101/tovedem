@@ -475,6 +475,36 @@
           </div>
         </div>
         } }
+
+        <!-- Laatste pagina: overzicht vrienden met opmerking -->
+        @if (opmerkingenOverzicht().length > 0) {
+        <div class="opmerkingen-overzicht">
+          <h3>Laatste pagina: vrienden met een opmerking</h3>
+          @if (selectedVoorstelling()?.titel) {
+          <p class="opmerkingen-subtitel">
+            {{ selectedVoorstelling()!.titel }} - {{ getVoorstellingDatum() }}
+          </p>
+          }
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Naam</th>
+                <th scope="col" class="text-center">Tickets</th>
+                <th scope="col">Opmerking</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (regel of opmerkingenOverzicht(); track $index) {
+              <tr>
+                <td>{{ regel.naam }}</td>
+                <td class="text-center">{{ regel.aantal }}</td>
+                <td>{{ regel.opmerking }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
       </div>
     </div>
   </div>

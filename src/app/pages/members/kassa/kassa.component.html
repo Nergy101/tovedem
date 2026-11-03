@@ -3,6 +3,7 @@
     <div class="d-flex align-items-center">
       <p class="display-1 mb-0">De Kassa</p>
       <button
+        id="kassa-info-knop"
         mat-stroked-button
         class="ms-3 info-button"
         (click)="openInformatieDialog()"
@@ -11,10 +12,22 @@
         <mat-icon>info</mat-icon>
         <span class="ms-2">Klik hier voor info</span>
       </button>
+      <button
+        id="kassa-rondleiding-knop"
+        mat-stroked-button
+        class="ms-2 info-button"
+        (click)="startRondleiding()"
+        [disabled]="loading() || rondleidingActief()"
+        aria-label="Rondleiding door De Kassa starten"
+      >
+        <mat-icon>tour</mat-icon>
+        <span class="ms-2">Rondleiding</span>
+      </button>
     </div>
     @if (selectedVoorstelling()) {
     <div class="mt-1">
       <a
+        id="kassa-reserveringen-link"
         mat-button
         [routerLink]="['/beheer-reserveringen']"
         [queryParams]="{ voorstellingId: selectedVoorstelling()!.id }"
@@ -28,12 +41,21 @@
 </div>
 
 <div class="container">
+  @if (rondleidingVoorbeeld()) {
+  <div class="rondleiding-voorbeeld-melding" role="note">
+    <mat-icon>science</mat-icon>
+    <span
+      ><strong>Voorbeeldgegevens voor de rondleiding.</strong> Deze worden niet
+      opgeslagen en verdwijnen na de rondleiding.</span
+    >
+  </div>
+  }
   @if (loading()) {
   <app-skeleton-group type="card-grid" [count]="2" />
   } @else if (voorstellingenVoorVandaag().length === 0) {
   <div class="row">
     <div class="col-12">
-      <mat-card appearance="outlined" class="mb-3 kassa-card">
+      <mat-card id="kassa-voorstelling" appearance="outlined" class="mb-3 kassa-card">
         <mat-card-header>
           <div class="w-100 d-flex flex-column">
             <h2 class="mb-3">Er zijn vandaag geen voorstellingen.</h2>
@@ -42,6 +64,7 @@
               <button
                 mat-stroked-button
                 color="primary"
+                class="kassa-eerstvolgende-knop"
                 (click)="selectEerstvolgendeVoorstelling()"
                 [disabled]="loading()"
               >
@@ -58,7 +81,7 @@
   } @else {
   <div class="row">
     <div class="col-12">
-      <mat-card appearance="outlined" class="mb-3 kassa-card">
+      <mat-card id="kassa-voorstelling" appearance="outlined" class="mb-3 kassa-card">
         <mat-card-header>
           <div class="w-100 d-flex flex-column">
             <div class="d-flex align-items-center mb-3">
@@ -125,6 +148,7 @@
               <button
                 mat-stroked-button
                 color="primary"
+                class="kassa-eerstvolgende-knop"
                 (click)="selectEerstvolgendeVoorstelling()"
                 [disabled]="loading()"
               >
@@ -148,7 +172,7 @@
             <div
               class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3"
             >
-              <mat-form-field class="flex-grow-1">
+              <mat-form-field id="kassa-zoeken" class="flex-grow-1">
                 <mat-label>Zoek op naam of email</mat-label>
                 <input
                   matInput
@@ -173,6 +197,7 @@
           </div>
           <div class="">
             <mat-button-toggle-group
+              id="kassa-aanwezig-filter"
               [value]="aanwezigFilter()"
               (change)="onAanwezigFilterChange($event.value)"
               aria-label="Filter op aanwezigheid"
@@ -189,6 +214,7 @@
               extended
               color="primary"
               (click)="addLosseVerkoop()"
+              id="kassa-losse-verkoop-knop"
               class="losse-verkoop-btn mx-3"
             >
               <mat-icon>add_circle</mat-icon>
@@ -202,7 +228,7 @@
 
     @if (filteredReserveringen().length > 0) {
     <div class="col-12">
-      <mat-card appearance="outlined">
+      <mat-card id="kassa-reserveringen" appearance="outlined">
         @if (searching()) {
         <app-skeleton-group type="table" [count]="5" />
         } @else {
@@ -242,7 +268,7 @@
     </div>
     } @if (selectedVoorstelling() && hasKassaAccess()) {
     <div class="col-12 pt-2">
-      <mat-card appearance="outlined">
+      <mat-card id="kassa-losse-verkoop" appearance="outlined">
         <mat-card-header>
           <h2>
             Losse verkoop
@@ -304,7 +330,7 @@
     </div>
     } @if (selectedVoorstelling() && reserveringen().length > 0) {
     <div class="col-12 pt-2">
-      <mat-card appearance="outlined">
+      <mat-card id="kassa-bezetting" appearance="outlined">
         <div
           class="d-flex flex-column align-items-center justify-content-center"
         >

@@ -417,6 +417,57 @@ describe('PrintenComponent', () => {
     });
   });
 
+  describe('opmerkingen overzicht', () => {
+    const vriend = (overrides: Partial<Reservering> = {}): Reservering =>
+      makeReservering({
+        is_vriend_van_tovedem: true,
+        is_lid_van_vereniging: false,
+        verificatie_status: 'verified',
+        opmerking: 'Graag aan het gangpad',
+        ...overrides,
+      });
+
+    beforeEach(() => {
+      component.sponsors.set([makeSponsor()]);
+    });
+
+    it('lists verified vrienden with tickets for the day and a comment', () => {
+      component.reserveringenFromVoorstelling.set([
+        vriend({ id: 'r1', voornaam: 'piet', achternaam: 'de vries' }),
+      ]);
+
+      expect(component.opmerkingenOverzicht()).toEqual([
+        { naam: 'Piet De Vries', aantal: 2, opmerking: 'Graag aan het gangpad' },
+      ]);
+    });
+
+    it('leaves out reserveringen that miss one of the conditions', () => {
+      component.reserveringenFromVoorstelling.set([
+        vriend({ id: 'geen-opmerking', opmerking: '   ' }),
+        vriend({ id: 'niet-gecontroleerd', verificatie_status: 'unverified' }),
+        vriend({ id: 'alleen-lid', is_vriend_van_tovedem: false, is_lid_van_vereniging: true }),
+        vriend({ id: 'andere-dag', datum_tijd_1_aantal: 0, datum_tijd_2_aantal: 3 }),
+      ]);
+
+      expect(component.opmerkingenOverzicht()).toEqual([]);
+    });
+
+    it('uses the ticket count of the selected day and sorts on surname', () => {
+      component.selectedDay.set('datum2');
+      component.reserveringenFromVoorstelling.set([
+        vriend({ id: 'r1', achternaam: 'Zwart', datum_tijd_2_aantal: 1 }),
+        vriend({ id: 'r2', achternaam: 'Bakker', datum_tijd_2_aantal: 4 }),
+      ]);
+
+      expect(
+        component.opmerkingenOverzicht().map((r) => [r.naam, r.aantal]),
+      ).toEqual([
+        ['Jan Bakker', 4],
+        ['Jan Zwart', 1],
+      ]);
+    });
+  });
+
   it('builds a list of the requested length', () => {
     expect(component.createListOfAmountOfItems(0).length).toBe(0);
     expect(component.createListOfAmountOfItems(4).length).toBe(4);

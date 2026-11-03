@@ -1,28 +1,323 @@
+@use "../../../../variables.scss" as *;
+
 :host {
   display: block;
   box-sizing: border-box;
   max-width: 100%;
   overflow-x: hidden;
-  padding: 4em;
+  padding: $spacing-8 $spacing-4;
 
   @media (max-width: 768px) {
-    padding: 0;
+    padding: $spacing-4 $spacing-4;
   }
 }
 
-.container {
-  max-width: 100%;
-  overflow-x: hidden;
+.welkom-pagina {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+// ─── Begroeting ───
+.welkom-hero {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-6;
+  padding: $spacing-6 $spacing-8;
+  border-radius: $border-radius-2xl;
+  background: linear-gradient(
+    135deg,
+    var(--mat-sys-primary-container),
+    var(--mat-sys-surface-container-low)
+  );
+  border: 1px solid var(--mat-sys-outline-variant);
 
   @media (max-width: 768px) {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: $spacing-5;
+    gap: $spacing-4;
   }
+}
+
+.welkom-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: $border-radius-full;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: 768px) {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.welkom-hero-tekst {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.welkom-datum {
+  margin: 0 0 $spacing-1;
+  font-size: $font-size-sm;
+  text-transform: capitalize;
+  opacity: 0.75;
 }
 
 .welkom-titel {
+  margin: 0 0 $spacing-3;
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  overflow-wrap: anywhere;
+
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: $font-size-2xl;
+  }
+}
+
+.welkom-hero-acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    button {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+.uitlog-knop {
+  color: var(--mat-sys-error) !important;
+
+  mat-icon {
+    color: var(--mat-sys-error) !important;
+  }
+}
+
+// ─── Secties ───
+.sectie-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-4;
+  margin-bottom: $spacing-4;
+
+  .sectie-titel {
+    margin-bottom: 0;
+  }
+}
+
+.sectie-titel {
+  margin: 0 0 $spacing-4;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+}
+
+.leeg-bericht {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-6;
+  border-radius: $border-radius-xl;
+  border: 1px dashed var(--mat-sys-outline-variant);
+  opacity: 0.85;
+}
+
+// ─── Snel naar ───
+.snelkoppelingen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: $spacing-3;
+}
+
+.snelkoppeling {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  padding: $spacing-4;
+  border-radius: $border-radius-xl;
+  background-color: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  text-decoration: none;
+  transition: transform $transition-base $ease-out,
+    box-shadow $transition-base $ease-out,
+    border-color $transition-base $ease-out;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--mat-sys-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    .snelkoppeling-pijl {
+      transform: translateX(3px);
+    }
+  }
+}
+
+.snelkoppeling-icoon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: $border-radius-lg;
+  background-color: var(--mat-sys-primary);
+
+  mat-icon {
+    color: var(--mat-sys-on-primary) !important;
+  }
+}
+
+.snelkoppeling-tekst {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.snelkoppeling-titel {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-base;
+}
+
+.snelkoppeling-omschrijving {
+  font-size: $font-size-sm;
+  opacity: 0.75;
+}
+
+.snelkoppeling-pijl {
+  opacity: 0.6;
+  transition: transform $transition-base $ease-out;
+}
+
+// ─── Laatste nieuws ───
+.nieuws-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-4;
+  align-items: start;
+}
+
+.nieuws-item {
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+  background-color: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+
+  &.uitgeklapt {
+    grid-column: 1 / -1;
+
+    @media (min-width: 769px) {
+      flex-direction: row;
+
+      .nieuws-afbeelding {
+        width: 40%;
+        height: auto;
+        max-height: 420px;
+      }
+    }
+  }
+}
+
+.nieuws-afbeelding {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.nieuws-body {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  padding: $spacing-4 $spacing-5;
+  flex: 1;
+  min-width: 0;
+}
+
+.nieuws-datum {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wider;
+  opacity: 0.7;
+}
+
+.nieuws-titel {
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+}
+
+.nieuws-samenvatting {
+  margin: 0;
+  line-height: $line-height-normal;
+  opacity: 0.85;
+}
+
+.nieuws-inhoud {
+  line-height: $line-height-normal;
+  overflow-wrap: anywhere;
+
+  ::ng-deep img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.nieuws-toggle {
+  align-self: flex-start;
+  margin-left: -$spacing-3;
+}
+
+// ─── Reserveringen ───
+.reserveringen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-4;
+  margin-bottom: $spacing-4;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reservering-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius-xl;
+
+  mat-card-content {
+    flex-grow: 1;
+  }
+
+  mat-card-actions {
+    margin-top: auto;
+  }
+}
+
+// ─── Gegevens ───
+.gegevens-panel {
+  border-radius: $border-radius-xl !important;
+
+  mat-panel-title {
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -36,57 +331,4 @@ pre {
 mat-expansion-panel {
   width: auto;
   max-width: 100%;
-}
-
-.action-card {
-  @media (max-width: 768px) {
-    mat-card-title {
-      font-size: 0.8rem;
-    }
-  }
-}
-
-.action-card {
-  color: var(--mat-sys-primary);
-  padding: 0.5rem;
-  border-radius: 1em;
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-
-  &:hover {
-    color: white;
-    cursor: pointer;
-    background-color: var(--mat-sys-primary);
-    transform: translateY(-4px);
-  }
-
-  .actions {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
-}
-
-.reserveringen-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.reservering-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  mat-card-content {
-    flex-grow: 1;
-  }
-
-  mat-card-actions {
-    margin-top: auto;
-  }
 }
