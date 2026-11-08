@@ -34,9 +34,8 @@
               <th scope="col">Onderwerp</th>
               <th scope="col">Bericht</th>
               <th scope="col">Aangemaakt</th>
-              @if (authService.isGlobalAdmin) {
+              <th scope="col">Status</th>
               <th></th>
-              }
             </tr>
           </thead>
           <tbody>
@@ -61,8 +60,30 @@
                 }
               </td>
               <td>{{ formatDate(verzoek.created) }}</td>
-              @if (authService.isGlobalAdmin) {
               <td>
+                @if (isGeaccepteerd(verzoek)) {
+                <span
+                  class="status-badge geaccepteerd"
+                  matTooltip="Staat op de sponsorenlijst"
+                  >Geaccepteerd</span
+                >
+                } @else {
+                <span class="status-badge nieuw">Nieuw</span>
+                }
+              </td>
+              <td class="acties">
+                @if (!isGeaccepteerd(verzoek)) {
+                <button
+                  mat-flat-button
+                  (click)="accepteer(verzoek)"
+                  [disabled]="loading()"
+                  matTooltip="Toevoegen aan de sponsorenlijst"
+                >
+                  <mat-icon>how_to_reg</mat-icon>
+                  Accepteren
+                </button>
+                }
+                @if (authService.isGlobalAdmin) {
                 <button
                   mat-icon-button
                   (click)="delete(verzoek.id)"
@@ -71,13 +92,13 @@
                 >
                   <mat-icon color="warn">delete</mat-icon>
                 </button>
+                }
               </td>
-              }
             </tr>
             } @empty {
             <tr>
               <td
-                [attr.colspan]="authService.isGlobalAdmin ? 6 : 5"
+                colspan="7"
                 style="text-align: center; padding: 2em"
               >
                 Geen aanmeldingen gevonden

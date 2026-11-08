@@ -63,10 +63,17 @@ export class SponsorCreateEditDialogComponent implements OnInit {
     return !!this.data?.existingSponsor;
   }
 
+  /** True als de dialog geopend is vanuit een vriend-aanmelding die geaccepteerd wordt. */
+  get isAcceptatie(): boolean {
+    return !this.isUpdate && !!this.data?.prefill;
+  }
+
   async ngOnInit(): Promise<void> {
     if (this.data?.existingSponsor) {
       const existing = this.data.existingSponsor;
       this.sponsor = { ...existing };
+    } else if (this.data?.prefill) {
+      this.sponsor = { ...this.sponsor, ...this.data.prefill };
     }
   }
 

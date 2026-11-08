@@ -590,3 +590,19 @@ input[type="number"] {
     }
   }
 }
+
+.vriend-herkend {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0 0 0 0.75em;
+  font-size: 0.85rem;
+  color: var(--mat-sys-primary);
+
+  mat-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}

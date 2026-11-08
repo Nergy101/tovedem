@@ -7,6 +7,7 @@ import {
   effect,
   inject,
   signal,
+  untracked,
 } from '@angular/core';
 import {
   FormField,
@@ -133,6 +134,22 @@ export class ReserverenComponent implements OnInit {
   });
 
   saving = signal(false);
+
+  /** True als "vriend van Tovedem" automatisch is aangevinkt omdat de bezoeker op de sponsorenlijst staat. */
+  vriendHerkend = signal(false);
+  private laatsteSponsorCheck = '';
+  private sponsorCheckVolgnummer = 0;
+
+  // Controleer na het invullen van naam en e-mail of de bezoeker op de sponsorenlijst staat
+  private sponsorCheckEffect = effect(() => {
+    const { name, surname, email, vriendVanTovedem } = this.reserveringModel();
+    const emailGeldig = this.reserveringForm.email().valid();
+    untracked(() => {
+      // Zelf uitgevinkt: dan is het vinkje niet meer automatisch gezet
+      if (!vriendVanTovedem) this.vriendHerkend.set(false);
+      void this.controleerSponsor(name, surname, email, emailGeldig);
+    });
+  });
 
   // Reservation totals from API (privacy-safe - only numbers)
   totalPeopleDate1 = signal(0);
@@ -428,6 +445,60 @@ export class ReserverenComponent implements OnInit {
       // Fetch reservation totals (privacy-safe API endpoint)
       await this.loadReservationTotals();
     }
+  }
+
+  private async controleerSponsor(
+    voornaam: string,
+    achternaam: string,
+    email: string,
+    emailGeldig: boolean
+  ): Promise<void> {
+    const sleutel = [voornaam, achternaam, email]
+      .map((x) => (x ?? '').trim().toLowerCase())
+      .join('|');
+    if (sleutel === this.laatsteSponsorCheck) return;
+    this.laatsteSponsorCheck = sleutel;
+    const volgnummer = ++this.sponsorCheckVolgnummer;
+
+    if (!voornaam?.trim() || !achternaam?.trim() || !emailGeldig) {
+      this.trekHerkendVinkjeIn();
+      return;
+    }
+
+    try {
+      const { match } = await this.client.directClient.send<{
+        match: boolean;
+      }>('/api/tovedem/sponsoren/check', {
+        method: 'POST',
+        body: { voornaam, achternaam, email },
+        requestKey: null,
+      });
+      // Intussen zijn de gegevens weer veranderd: dit antwoord is verouderd
+      if (volgnummer !== this.sponsorCheckVolgnummer) return;
+
+      if (!match) {
+        this.trekHerkendVinkjeIn();
+      } else if (!this.reserveringModel().vriendVanTovedem) {
+        this.reserveringModel.update((model) => ({
+          ...model,
+          vriendVanTovedem: true,
+        }));
+        this.vriendHerkend.set(true);
+      }
+    } catch (error) {
+      // Niet blokkerend: de bezoeker kan het vinkje altijd zelf zetten
+      console.error('Error checking sponsorenlijst:', error);
+    }
+  }
+
+  /** Haalt het vinkje alleen weg als wij het automatisch gezet hebben. */
+  private trekHerkendVinkjeIn(): void {
+    if (!this.vriendHerkend()) return;
+    this.vriendHerkend.set(false);
+    this.reserveringModel.update((model) => ({
+      ...model,
+      vriendVanTovedem: false,
+    }));
   }
 
   async loadReservationTotals(): Promise<void> {

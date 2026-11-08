@@ -556,6 +556,12 @@
                       Ben je vriend van Tovedem?
                     </span>
                   </mat-checkbox>
+                  @if (vriendHerkend() && reserveringModel().vriendVanTovedem) {
+                  <p class="vriend-herkend" role="status">
+                    <mat-icon aria-hidden="true">verified</mat-icon>
+                    Je staat op onze lijst van vrienden van Tovedem, dus we hebben dit al voor je aangevinkt.
+                  </p>
+                  }
                   <mat-checkbox
                     [formField]="reserveringForm.lidVanTovedemMejotos"
                     color="primary"

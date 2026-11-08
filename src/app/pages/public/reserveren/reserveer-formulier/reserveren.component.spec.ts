@@ -13,6 +13,7 @@ describe('ReserverenComponent', () => {
   let component: ReserverenComponent;
   let fixture: ComponentFixture<ReserverenComponent>;
   let clientCreateSpy: jasmine.Spy;
+  let sponsorCheckSpy: jasmine.Spy;
   let routerNavigateSpy: jasmine.Spy;
   let originalFetch: typeof fetch;
 
@@ -20,8 +21,12 @@ describe('ReserverenComponent', () => {
     clientCreateSpy = jasmine
       .createSpy('create')
       .and.returnValue(Promise.resolve({ id: 'fake-reservering-id' } as Reservering));
+    sponsorCheckSpy = jasmine
+      .createSpy('send')
+      .and.returnValue(Promise.resolve({ match: false }));
     const clientMock = {
       create: clientCreateSpy,
+      directClient: { send: sponsorCheckSpy },
       getOne: jasmine.createSpy('getOne').and.returnValue(
         Promise.resolve({
           id: 'v1',
@@ -69,6 +74,66 @@ describe('ReserverenComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('sponsorenlijst controle', () => {
+    const vulGegevensIn = async (
+      gegevens: Partial<{ name: string; surname: string; email: string; vriendVanTovedem: boolean }>
+    ): Promise<void> => {
+      component.reserveringModel.update((model) => ({
+        ...model,
+        email2: gegevens.email ?? model.email,
+        ...gegevens,
+      }));
+      TestBed.tick();
+      await fixture.whenStable();
+    };
+
+    it('vinkt vriend van Tovedem aan als de bezoeker op de sponsorenlijst staat', async () => {
+      sponsorCheckSpy.and.returnValue(Promise.resolve({ match: true }));
+
+      await vulGegevensIn({ name: 'Jan', surname: 'Jansen', email: 'jan@example.com' });
+
+      expect(sponsorCheckSpy).toHaveBeenCalledWith(
+        '/api/tovedem/sponsoren/check',
+        jasmine.objectContaining({
+          method: 'POST',
+          body: { voornaam: 'Jan', achternaam: 'Jansen', email: 'jan@example.com' },
+        })
+      );
+      expect(component.reserveringModel().vriendVanTovedem).toBeTrue();
+      expect(component.vriendHerkend()).toBeTrue();
+    });
+
+    it('controleert niet zolang de gegevens onvolledig zijn', async () => {
+      await vulGegevensIn({ name: 'Jan', surname: '', email: 'jan@example.com' });
+
+      expect(sponsorCheckSpy).not.toHaveBeenCalled();
+    });
+
+    it('haalt een automatisch gezet vinkje weg als de gegevens niet meer overeenkomen', async () => {
+      sponsorCheckSpy.and.returnValue(Promise.resolve({ match: true }));
+      await vulGegevensIn({ name: 'Jan', surname: 'Jansen', email: 'jan@example.com' });
+
+      sponsorCheckSpy.and.returnValue(Promise.resolve({ match: false }));
+      await vulGegevensIn({ email: 'piet@example.com' });
+
+      expect(component.reserveringModel().vriendVanTovedem).toBeFalse();
+      expect(component.vriendHerkend()).toBeFalse();
+    });
+
+    it('laat een zelf gezet vinkje staan als er geen match is', async () => {
+      await vulGegevensIn({
+        name: 'Jan',
+        surname: 'Jansen',
+        email: 'jan@example.com',
+        vriendVanTovedem: true,
+      });
+
+      expect(sponsorCheckSpy).toHaveBeenCalled();
+      expect(component.reserveringModel().vriendVanTovedem).toBeTrue();
+      expect(component.vriendHerkend()).toBeFalse();
+    });
   });
 
   it('should not call create when form is invalid (no voorstellingId)', async () => {

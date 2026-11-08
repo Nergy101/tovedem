@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -20,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Title } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom, debounceTime, tap } from 'rxjs';
+import { Sponsor } from '../../../models/domain/sponsor.model';
 import { VriendVerzoek } from '../../../models/domain/vriend-verzoek.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
@@ -28,6 +30,8 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { BerichtViewDialogComponent } from '../beheer-nieuwe-leden/bericht-view-dialog/bericht-view-dialog.component';
 import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
 import { MailOntvangersKnopComponent } from '../../../shared/components/mail-ontvangers-knop/mail-ontvangers-knop.component';
+import { VerificationService } from '../../../shared/services/verification.service';
+import { SponsorCreateEditDialogComponent } from '../beheer-sponsoren/sponsor-create-edit-dialog/sponsor-create-edit-dialog.component';
 
 @Component({
   selector: 'app-beheer-vrienden',
@@ -51,6 +55,23 @@ import { MailOntvangersKnopComponent } from '../../../shared/components/mail-ont
 export class BeheerVriendenComponent implements OnInit {
   loading = signal(false);
   verzoeken: WritableSignal<VriendVerzoek[] | null> = signal(null);
+  sponsors = signal<Sponsor[]>([]);
+
+  /** E-mailadressen en volledige namen die al op de sponsorenlijst staan. */
+  private bekendeSponsors = computed(() => {
+    const emails = new Set<string>();
+    const namen = new Set<string>();
+    for (const sponsor of this.sponsors()) {
+      const email = this.verificationService.normalize(sponsor.email);
+      if (email) emails.add(email);
+      namen.add(
+        this.verificationService.normalize(
+          `${sponsor.voornaam} ${sponsor.achternaam}`
+        )
+      );
+    }
+    return { emails, namen };
+  });
 
   client = inject(PocketbaseService);
   authService = inject(AuthService);
@@ -58,6 +79,7 @@ export class BeheerVriendenComponent implements OnInit {
   toastr = inject(ToastrService);
   themeService = inject(ThemeService);
   titleService = inject(Title);
+  verificationService = inject(VerificationService);
 
   searching = signal(false);
   searchTerm = signal('');
@@ -79,7 +101,55 @@ export class BeheerVriendenComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadVerzoeken();
+    await Promise.all([this.loadVerzoeken(), this.loadSponsors()]);
+  }
+
+  private async loadSponsors(): Promise<void> {
+    try {
+      this.sponsors.set(
+        await this.client.directClient.collection('sponsoren').getFullList()
+      );
+    } catch (error) {
+      console.error('Error loading sponsoren:', error);
+      this.toastr.error('Fout bij het laden van de sponsorenlijst');
+    }
+  }
+
+  /** Een aanmelding is geaccepteerd als e-mail of naam al op de sponsorenlijst staat. */
+  isGeaccepteerd(verzoek: VriendVerzoek): boolean {
+    const { emails, namen } = this.bekendeSponsors();
+    const email = this.verificationService.normalize(verzoek.email);
+    if (email && emails.has(email)) return true;
+    return namen.has(
+      this.verificationService.normalize(verzoek.name).replace(/\s+/g, ' ')
+    );
+  }
+
+  async accepteer(verzoek: VriendVerzoek): Promise<void> {
+    const [voornaam, ...rest] = (verzoek.name || '').trim().split(/\s+/);
+    const dialogRef = this.dialog.open(SponsorCreateEditDialogComponent, {
+      data: {
+        existingSponsor: null,
+        prefill: {
+          voornaam: voornaam ?? '',
+          achternaam: rest.join(' '),
+          email: (verzoek.email || '').trim(),
+          type: 'vriend',
+        },
+      },
+      hasBackdrop: true,
+      minWidth: '50vw',
+    });
+
+    const created: Sponsor | undefined = await lastValueFrom(
+      dialogRef.afterClosed()
+    );
+    if (!created) return;
+
+    this.sponsors.update((sponsors) => [...sponsors, created]);
+    this.toastr.success(
+      `${created.voornaam} ${created.achternaam} is toegevoegd aan de sponsorenlijst.`
+    );
   }
 
   private async loadVerzoeken(searchTerm?: string): Promise<void> {

@@ -1,6 +1,12 @@
 <div class="container header">
   <h2 mat-dialog-title class="display-4">
-    {{ isUpdate ? "Sponsor Aanpassen" : "Sponsor Aanmaken" }}
+    {{
+      isUpdate
+        ? "Sponsor Aanpassen"
+        : isAcceptatie
+          ? "Vriend Accepteren"
+          : "Sponsor Aanmaken"
+    }}
   </h2>
   <button
     mat-icon-button
@@ -14,6 +20,13 @@
 
 <div mat-dialog-content class="container p-4">
   <div class="row">
+    @if (isAcceptatie) {
+    <p class="acceptatie-uitleg">
+      Controleer de gegevens en voeg de vriend toe aan de sponsorenlijst.
+      Reserveringen worden gecontroleerd op een exacte match van voornaam,
+      achternaam en e-mailadres, dus zorg dat deze kloppen.
+    </p>
+    }
     <form #sponsorForm="ngForm">
       <div class="row">
         <mat-form-field class="col-md-6 col-12">
@@ -101,7 +114,13 @@
             [disabled]="loading() || !formIsValid()"
             (click)="submit()"
           >
-            {{ isUpdate ? "Aanpassen" : "Aanmaken" }}
+            {{
+              isUpdate
+                ? "Aanpassen"
+                : isAcceptatie
+                  ? "Toevoegen aan sponsorenlijst"
+                  : "Aanmaken"
+            }}
           </button>
         </div>
       </div>

@@ -25,6 +25,30 @@
   }
 }
 
+.acties {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2em 0.75em;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+
+  &.nieuw {
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+
+  &.geaccepteerd {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+}
+
 html.darkMode .table {
   thead {
     background-color: var(--mat-sys-surface-container) !important;
