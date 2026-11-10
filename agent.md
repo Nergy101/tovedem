@@ -167,6 +167,23 @@ Always use `PocketbaseService` methods:
 3. **Lint**: `npm run lint`
 4. **Test**: `npm run test`
 
+## Secrets & Security (mandatory)
+
+This repo is protected against accidental secret commits by **gitleaks**:
+
+- `npm run secrets:scan` — scan the full working tree/history for secrets
+- `npm run secrets:scan:staged` — scan only staged changes
+- `npm run secrets:install` — install the local git hooks (idempotent)
+- CI also runs a gitleaks scan on every push/PR (`.github/workflows/secrets-scan.yml`)
+- The pre-commit hook (`scripts/git-hooks/pre-commit`) blocks any commit whose staged changes contain a real secret
+
+**Agent duties:**
+
+1. **Auto-install hooks**: if `.git/hooks/pre-commit` is missing or does not contain the `tovedem-secrets-hook` marker, run `npm run secrets:install` yourself before doing any git work. Do not ask the user first.
+2. **Before committing**: run `npm run secrets:scan:staged`. If it fails, remove the secret from the staged changes (never commit it, never "fix" it by allowlisting a real value).
+3. **Never commit real credentials.** Config/secrets belong in gitignored `.env` files (see `.gitignore`); use `.env.example` with placeholder values for documentation.
+4. If gitleaks is not installed on the machine, install it (`brew install gitleaks`) or tell the user to, since the hook fails closed without it.
+
 ## Docker
 
 - `Dockerfile` - Production build

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# tovedem-secrets-hook
+# Pre-commit hook: blocks commits that contain real secrets (gitleaks).
+# Installed by scripts/install-git-hooks.sh (npm run secrets:install).
+set -euo pipefail
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed; cannot verify staged changes." >&2
+  echo "Install it with: brew install gitleaks   (or see https://github.com/gitleaks/gitleaks)" >&2
+  echo "Then re-run:    npm run secrets:install" >&2
+  exit 1
+fi
+
+# Scan only the staged changes; --redact keeps secret values out of the output.
+gitleaks protect --staged --redact --config .gitleaks.toml
+
+# Chain to a pre-existing local hook, if the installer preserved one.
+PREVIOUS_HOOK="$(git rev-parse --git-path hooks)/pre-commit.pre-tovedem"
+if [ -x "$PREVIOUS_HOOK" ]; then
+  exec "$PREVIOUS_HOOK" "$@"
+fi

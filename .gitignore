@@ -44,3 +44,8 @@ Thumbs.db
 
 # Inloggegevens voor scripts/import-galerij.mjs
 .env.import
+
+# Secrets: never commit real credentials or env files
+.env
+.env.*
+!.env.example

@@ -11,6 +11,9 @@
     "test": "ng test --no-watch --no-progress --browsers ChromeHeadless",
     "test:ui": "ng test --browsers Chrome",
     "test:pb": "node --test pb_hooks/__tests__/*.test.js",
+    "secrets:install": "bash scripts/install-git-hooks.sh",
+    "secrets:scan": "gitleaks detect --redact --config .gitleaks.toml",
+    "secrets:scan:staged": "gitleaks protect --staged --redact --config .gitleaks.toml",
     "import:galerij": "node scripts/import-galerij.mjs",
     "lint": "ng lint"
   },

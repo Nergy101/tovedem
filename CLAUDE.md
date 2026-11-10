@@ -13,7 +13,17 @@ npm run lint           # ESLint on TS and HTML
 npm run test           # Headless Jasmine/Karma tests
 npm run test:ui        # Tests in Chrome UI
 npm run test:pb        # Test PocketBase hooks (Node.js test runner)
+npm run secrets:install    # Install git hooks (pre-commit secret scan) — idempotent
+npm run secrets:scan       # gitleaks scan of the repo
+npm run secrets:scan:staged # gitleaks scan of staged changes only
 ```
+
+## Secrets & Security
+
+- Never commit real passwords, tokens or API keys. Use gitignored `.env` files; document placeholders in `.env.example`.
+- A gitleaks pre-commit hook blocks commits containing real secrets. **If `.git/hooks/pre-commit` is missing or lacks the `tovedem-secrets-hook` marker, run `npm run secrets:install` automatically** — don't ask first.
+- Before committing, run `npm run secrets:scan:staged`; if it fails, remove the secret from the commit.
+- CI runs a gitleaks scan on every push/PR (`.github/workflows/secrets-scan.yml`).
 
 ## Architecture
 

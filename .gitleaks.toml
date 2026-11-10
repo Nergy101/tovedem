@@ -1,0 +1,61 @@
+# Gitleaks configuration for Tovedem.
+# Used by: npm run secrets:scan, npm run secrets:scan:staged,
+# the pre-commit hook (scripts/git-hooks/pre-commit) and CI
+# (.github/workflows/secrets-scan.yml).
+
+title = "Tovedem gitleaks config"
+
+# Start from gitleaks' full default ruleset and only add allowlists below.
+# Without this, a custom config REPLACES all default rules and scans nothing.
+[extend]
+useDefault = true
+
+# Paths that never contain real secrets.
+[allowlist]
+  description = "Generated, vendored or test content"
+  paths = [
+    '''(^|/)node_modules/''',
+    '''(^|/)dist/''',
+    '''(^|/)\.angular/''',
+    '''(^|/)coverage/''',
+    '''package-lock\.json$''',
+    '''pb_hooks/__tests__/''',
+  ]
+  # PB_PASSWORD was committed in .gitignore by accident in this commit; it was
+  # rotated and removed in 872313b ("chore: verwijder inloggegevens uit
+  # .gitignore"). Allowlisted so history scans stay green; the value is invalid.
+  commits = [
+    "2912d0a0a20b87a5651c51dcfcb63df9e287c71e",
+  ]
+  # Specific known false positives of the tovedem-env-credential rule:
+  # - Dutch placeholder 'wachtwoord' (means 'password') in error.service.ts
+  # - string concatenation with the recaptchaSecret variable in recaptcha.pb.js
+  regexes = [
+    '''(?i)wachtwoord''',
+    '''recaptchaSecret \+''',
+  ]
+
+# Known false positives in this repo (placeholders, examples, docs).
+# Add entries here only with a comment explaining why the value is not a real secret.
+# NOTE: keep this list minimal — regex allowlists weaken detection for real secrets.
+
+# The default generic-api-key rule only captures [0-9a-zA-Z\-_.=], so passwords
+# containing other special characters (!, &, @, #, ...) are missed. This rule
+# catches credential assignments either env-style (KEY=VALUE, any characters)
+# or as a quoted string (KEY: "VALUE"), while ignoring code like
+# `token: this.fileToken()`.
+[[rules]]
+  id = "tovedem-env-credential"
+  description = "Credential assignment: env-style KEY=VALUE or quoted KEY: \"VALUE\""
+  regex = '''(?i)(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)(?:[ \t]*=[ \t]*["'][^"'\n]{8,}["']|=[ \t]*["']?[^\s"']{8,}|:[ \t]*["'][^"'\n]{8,}["'])'''
+  keywords = [
+    "password",
+    "passwd",
+    "pwd",
+    "secret",
+    "token",
+    "api_key",
+    "apikey",
+    "access_key",
+  ]
+  entropy = 3.0
