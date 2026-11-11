@@ -138,32 +138,24 @@
     <div style="width: 100%">
       <mat-divider class="divider"></mat-divider>
     </div>
-    } @if (hasBeheerItems()) {
+    } @if (hasVoorstellingenItems()) {
     <mat-expansion-panel
-      data-rondleiding="sectie-beheer"
+      data-rondleiding="sectie-voorstellingen"
       style="width: 100%"
       [class.section-active]="
         isSectionActive([
           '/beheer-voorstellingen',
           '/beheer-reserveringen',
           '/kassa',
-          '/printen',
-          '/beheer-leden',
-          '/beheer-nieuwe-leden',
-          '/beheer-vrienden',
-          '/beheer-contact',
-          '/beheer-sponsoren',
-          '/beheer-mails',
-          '/beheer-mail-lijst',
-          '/beheer-nieuwsbrief'
+          '/printen'
         ])
       "
-      [expanded]="panelState['beheer'] || sideDrawerService.rondleidingActief()"
-      (opened)="setPanelState('beheer', true)"
-      (closed)="setPanelState('beheer', false)"
+      [expanded]="panelState['voorstellingen'] || sideDrawerService.rondleidingActief()"
+      (opened)="setPanelState('voorstellingen', true)"
+      (closed)="setPanelState('voorstellingen', false)"
     >
       <mat-expansion-panel-header>
-        <mat-panel-title> Beheer </mat-panel-title>
+        <mat-panel-title> Voorstellingen </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
       <ul>
@@ -177,12 +169,13 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/beheer-voorstellingen"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Voorstellingen</span> <mat-icon>curtains</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('beheer-reserveringen')) {
+        }
+        @if (authService.canAccessRoute('beheer-reserveringen')) {
         <li>
           <button
             mat-raised-button
@@ -192,12 +185,13 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/beheer-reserveringen"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Reserveringen</span> <mat-icon>payments</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('kassa')) {
+        }
+        @if (authService.canAccessRoute('kassa')) {
         <li>
           <button
             mat-raised-button
@@ -207,12 +201,13 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/kassa"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>De Kassa</span> <mat-icon>point_of_sale</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('printen')) {
+        }
+        @if (authService.canAccessRoute('printen')) {
         <li>
           <button
             mat-raised-button
@@ -222,12 +217,43 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/printen"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Printen</span> <mat-icon>print</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('beheer-leden')) {
+        }
+      </ul>
+    </mat-expansion-panel>
+    <div style="width: 100%">
+      <mat-divider class="divider"></mat-divider>
+    </div>
+    } @if (hasBeheerItems()) {
+    <mat-expansion-panel
+      data-rondleiding="sectie-beheer"
+      style="width: 100%"
+      [class.section-active]="
+        isSectionActive([
+          '/beheer-leden',
+          '/beheer-nieuwe-leden',
+          '/beheer-sponsoren',
+          '/beheer-vrienden',
+          '/beheer-mails',
+          '/beheer-mail-lijst',
+          '/beheer-nieuwsbrief',
+          '/beheer-contact'
+        ])
+      "
+      [expanded]="panelState['beheer'] || sideDrawerService.rondleidingActief()"
+      (opened)="setPanelState('beheer', true)"
+      (closed)="setPanelState('beheer', false)"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title> Beheer </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ul>
+        @if (authService.canAccessRoute('beheer-leden')) {
         <li>
           <button
             mat-raised-button
@@ -237,55 +263,13 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/beheer-leden"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Leden</span> <mat-icon>diversity_3</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('beheer-nieuwe-leden')) {
-        <li>
-          <button
-            mat-raised-button
-            data-rondleiding="beheer-nieuwe-leden"
-            class="nav-link flex-grow-1"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/beheer-nieuwe-leden"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <span>Leden Aanmeldingen</span> <mat-icon>person_add</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-raised-button
-            data-rondleiding="beheer-vrienden"
-            class="nav-link flex-grow-1"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/beheer-vrienden"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <span>Vrienden Aanmeldingen</span> <mat-icon>favorite</mat-icon>
-          </button>
-        </li>
-        <li>
-          <button
-            mat-raised-button
-            data-rondleiding="beheer-contact"
-            class="nav-link flex-grow-1"
-            data-bs-toggle="collapse"
-            data-bs-target=".navbar-collapse.show"
-            routerLinkActive="active"
-            routerLink="/beheer-contact"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <span>Contact Berichten</span> <mat-icon>mail</mat-icon>
-          </button>
-        </li>
-        } @if (authService.canAccessRoute('beheer-sponsoren')) {
+        }
+        @if (authService.canAccessRoute('beheer-sponsoren')) {
         <li>
           <button
             mat-raised-button
@@ -295,12 +279,13 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/beheer-sponsoren"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Sponsoren</span> <mat-icon>favorite</mat-icon>
           </button>
         </li>
-        } @if (authService.canAccessRoute('beheer-mails')) {
+        }
+        @if (authService.canAccessRoute('beheer-mails')) {
         <li>
           <button
             mat-raised-button
@@ -310,23 +295,25 @@
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
             routerLink="/beheer-mails"
-            [routerLinkActiveOptions]="{ exact: true }"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
             <span>Emails</span> <mat-icon>mail</mat-icon>
           </button>
         </li>
+        }
+        @if (authService.canAccessRoute('beheer-contact')) {
         <li>
           <button
             mat-raised-button
-            data-rondleiding="beheer-mail-lijst"
+            data-rondleiding="beheer-contact"
             class="nav-link flex-grow-1"
             data-bs-toggle="collapse"
             data-bs-target=".navbar-collapse.show"
             routerLinkActive="active"
-            routerLink="/beheer-mail-lijst"
-            [routerLinkActiveOptions]="{ exact: true }"
+            routerLink="/beheer-contact"
+            [routerLinkActiveOptions]="{ exact: false }"
           >
-            <span>Mail lijst</span> <mat-icon>contact_mail</mat-icon>
+            <span>Contact berichten</span> <mat-icon>forum</mat-icon>
           </button>
         </li>
         }

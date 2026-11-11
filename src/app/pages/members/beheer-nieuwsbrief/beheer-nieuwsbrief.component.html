@@ -61,21 +61,25 @@
         </div>
       }
 
+      <div class="blok-lijst" cdkDropList [cdkDropListData]="blokken()" (cdkDropListDropped)="blokNeergezet($event)">
       @for (blok of blokken(); track blok.id; let i = $index) {
-        <div class="blok-wrapper" [class.blok-actief]="actieveBlokIndex() === i">
+        <div class="blok-wrapper" cdkDrag cdkDragLockAxis="y" [class.blok-actief]="actieveBlokId() === blok.id">
+
+          <div class="blok-placeholder" *cdkDragPlaceholder></div>
 
           <!-- Blok header -->
           <div
             class="blok-header"
             role="button"
             tabindex="0"
-            (click)="toggleBlok(i)"
-            (keydown.enter)="toggleBlok(i)"
-            (keydown.space)="toggleBlok(i)"
+            (click)="toggleBlok(blok)"
+            (keydown.enter)="toggleBlok(blok)"
+            (keydown.space)="toggleBlok(blok)"
           >
+            <mat-icon class="blok-sleep" cdkDragHandle matTooltip="Sleep om te verplaatsen" (click)="$event.stopPropagation()">drag_indicator</mat-icon>
             <mat-icon class="blok-type-icon">{{ blokIcons[blok.type] }}</mat-icon>
             <span class="blok-type-label">{{ blokLabels[blok.type] }}</span>
-            <span class="blok-preview-text">{{ blok.titel || blok.tekst || blok.event_titel || blok.knop_label || '' | slice:0:50 }}</span>
+            <span class="blok-preview-text">{{ blokSamenvatting(blok) | slice:0:50 }}</span>
             <div class="blok-actions">
               <button mat-icon-button matTooltip="Omhoog" [disabled]="i === 0" (click)="$event.stopPropagation(); verplaatsOmhoog(i)">
                 <mat-icon>keyboard_arrow_up</mat-icon>
@@ -90,8 +94,26 @@
           </div>
 
           <!-- Blok velden (ingeklapt/uitgeklapt) -->
-          @if (actieveBlokIndex() === i) {
+          @if (actieveBlokId() === blok.id) {
             <div class="blok-fields">
+
+              @if (blok.type !== 'scheidingslijn') {
+                <div class="uitlijning">
+                  <span class="uitlijning-label">Uitlijning</span>
+                  <mat-button-toggle-group
+                    hideSingleSelectionIndicator
+                    aria-label="Uitlijning"
+                    [value]="uitlijningVan(blok)"
+                    (change)="updateBlok(i, 'uitlijning', $event.value)"
+                  >
+                    @for (optie of uitlijningOpties; track optie.waarde) {
+                      <mat-button-toggle [value]="optie.waarde" [matTooltip]="optie.label" [attr.aria-label]="optie.label">
+                        <mat-icon>{{ optie.icoon }}</mat-icon>
+                      </mat-button-toggle>
+                    }
+                  </mat-button-toggle-group>
+                </div>
+              }
 
               @switch (blok.type) {
 
@@ -114,8 +136,25 @@
                 }
 
                 @case ('afbeelding') {
+                  <div class="afbeelding-bron">
+                    <button mat-stroked-button type="button" [disabled]="uploadendBlokId() === blok.id" (click)="kiesUitGalerij(i)">
+                      <mat-icon>photo_library</mat-icon>
+                      Kies uit galerij
+                    </button>
+                    <button mat-stroked-button type="button" [disabled]="uploadendBlokId() === blok.id" (click)="bestandKiezer.click()">
+                      <mat-icon>upload</mat-icon>
+                      Uploaden
+                    </button>
+                    <input #bestandKiezer type="file" accept="image/png,image/jpeg,image/webp" hidden (change)="uploadAfbeelding(i, $event)" />
+                    @if (uploadendBlokId() === blok.id) {
+                      <mat-spinner diameter="22"></mat-spinner>
+                    }
+                  </div>
+                  @if (blok.afbeelding_url) {
+                    <img class="afbeelding-voorbeeld" [src]="blok.afbeelding_url" [alt]="blok.afbeelding_alt || ''" />
+                  }
                   <mat-form-field class="w-100">
-                    <mat-label>Afbeelding URL</mat-label>
+                    <mat-label>Of plak een afbeelding URL</mat-label>
                     <input matInput [ngModel]="blok.afbeelding_url" (ngModelChange)="updateBlok(i, 'afbeelding_url', $event)" placeholder="https://..." />
                   </mat-form-field>
                   <mat-form-field class="w-100">
@@ -163,6 +202,34 @@
                   </div>
                 }
 
+                @case ('voorstelling') {
+                  <mat-form-field class="w-100">
+                    <mat-label>Voorstelling</mat-label>
+                    <mat-select [value]="blok.voorstelling_id" (selectionChange)="kiesVoorstelling(i, $event.value)">
+                      @for (v of voorstellingen(); track v.id) {
+                        <mat-option [value]="v.id">{{ v.titel }} ({{ v.datum_tijd_1 | date: 'MMM yyyy' }})</mat-option>
+                      } @empty {
+                        <mat-option disabled>Geen voorstellingen gevonden</mat-option>
+                      }
+                    </mat-select>
+                    <mat-hint>Titel, afbeelding, speeldata en een reserveerknop komen er altijd in.</mat-hint>
+                  </mat-form-field>
+
+                  @if (blok.voorstelling_id) {
+                    <div class="voorstelling-opties">
+                      <span class="uitlijning-label">Ook tonen</span>
+                      <mat-checkbox [checked]="!!blok.toon_ondertitel" [disabled]="!blok.voorstelling_ondertitel" (change)="updateBlok(i, 'toon_ondertitel', $event.checked)">Subtekst</mat-checkbox>
+                      <mat-checkbox [checked]="!!blok.toon_omschrijving" [disabled]="!blok.voorstelling_omschrijving" (change)="updateBlok(i, 'toon_omschrijving', $event.checked)">Omschrijving</mat-checkbox>
+                      <mat-checkbox [checked]="!!blok.toon_prijs" [disabled]="blok.voorstelling_prijs === null || blok.voorstelling_prijs === undefined" (change)="updateBlok(i, 'toon_prijs', $event.checked)">Prijs</mat-checkbox>
+                      <mat-checkbox [checked]="!!blok.toon_regie" [disabled]="!blok.voorstelling_regie" (change)="updateBlok(i, 'toon_regie', $event.checked)">Regisseur</mat-checkbox>
+                    </div>
+                    <p class="voorstelling-info">
+                      <mat-icon>info</mat-icon>
+                      De gegevens worden overgenomen op het moment dat je de voorstelling kiest. Is de voorstelling daarna aangepast? Kies hem dan opnieuw.
+                    </p>
+                  }
+                }
+
                 @case ('scheidingslijn') {
                   <p class="text-muted fst-italic" style="padding:0.5rem 0;">Scheidingslijn — geen instellingen</p>
                 }
@@ -185,6 +252,7 @@
 
         </div>
       }
+      </div>
 
       <!-- Blok toevoegen -->
       <div class="add-blok-bar">

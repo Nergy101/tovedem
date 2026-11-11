@@ -3,9 +3,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClientResponseError } from 'pocketbase';
 import { lastValueFrom } from 'rxjs';
@@ -39,7 +39,7 @@ const ROL_KLEUREN = 8;
     MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatTabsModule,
+    MatExpansionModule,
     MatTooltipModule,
   ],
   templateUrl: './draaiboek.component.html',
@@ -104,6 +104,23 @@ export class DraaiboekComponent implements OnInit {
     );
   }
 
+  /**
+   * Een regel zonder eigen tijd valt onder het tijdstip erboven en wordt ingesprongen getoond.
+   * Is (door het rolfilter) de regel erboven verborgen, dan staat hij zelfstandig.
+   */
+  isSubonderdeel(regels: TijdlijnRegel[], index: number): boolean {
+    return !regels[index].tijd && !this.toonTijd(regels, index);
+  }
+
+  /** Bijv. "15:00 – 22:45": eerste en laatste tijd van de dag. */
+  tijdvak(dag: DraaiboekDag): string {
+    const tijden = dag.items.map((item) => item.tijd).filter(Boolean);
+    if (tijden.length === 0) return '';
+    const eerste = tijden[0];
+    const laatste = tijden[tijden.length - 1];
+    return eerste === laatste ? eerste : `${eerste} – ${laatste}`;
+  }
+
   aantalTaken(dag: DraaiboekDag): number {
     const rol = this.geselecteerdeRol();
     return rol ? dag.items.filter((item) => item.door.includes(rol)).length : 0;
@@ -111,6 +128,12 @@ export class DraaiboekComponent implements OnInit {
 
   selecteerRol(rol: string): void {
     this.geselecteerdeRol.update((huidig) => (huidig === rol ? null : rol));
+    // De rollen staan onder het tijdschema: spring terug naar boven om het resultaat te zien
+    if (this.geselecteerdeRol()) {
+      document
+        .getElementById('draaiboek-dagverloop')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   /** Vaste kleur per rol, zodat een rol overal dezelfde kleur heeft. */

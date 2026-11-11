@@ -1,0 +1,43 @@
+<h2 mat-dialog-title class="kiezer-titel">
+  @if (gekozenFolder(); as folder) {
+  <button mat-icon-button aria-label="Terug naar albums" (click)="gekozenFolder.set(null)">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  {{ folder.naam }}
+  } @else {
+  Kies een foto uit de galerij
+  }
+</h2>
+
+<mat-dialog-content class="kiezer-inhoud">
+  @if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+  } @else if (fout()) {
+  <p class="melding">De galerij kon niet geladen worden.</p>
+  } @else if (gekozenFolder()) {
+  <p class="melding">Klik op een foto om hem in de nieuwsbrief te gebruiken.</p>
+  <div class="raster">
+    @for (bestand of fotos(); track bestand) {
+    <button type="button" class="foto" (click)="kies(bestand)" [attr.aria-label]="'Kies foto ' + ($index + 1)">
+      <img [src]="fotoUrl(gekozenFolder()!, bestand)" alt="" loading="lazy" />
+    </button>
+    }
+  </div>
+  } @else {
+  <div class="raster albums">
+    @for (folder of folders(); track folder.id) {
+    <button type="button" class="album" (click)="gekozenFolder.set(folder)">
+      <img [src]="omslag(folder)" alt="" loading="lazy" />
+      <span class="album-naam">{{ folder.naam }}</span>
+      <span class="album-info">{{ folder.jaar }} · {{ aantalFotos(folder) }} foto's</span>
+    </button>
+    } @empty {
+    <p class="melding">Er staan nog geen foto's in de galerij.</p>
+    }
+  </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuleren</button>
+</mat-dialog-actions>

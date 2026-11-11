@@ -36,23 +36,8 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
     access: 'logged-in',
   },
   {
-    path: 'beheer-nieuwe-leden',
-    label: 'Beheer nieuwe leden',
-    access: ['admin', 'bestuur'],
-  },
-  {
     path: 'beheer-contact',
     label: 'Beheer contact berichten',
-    access: ['admin', 'bestuur'],
-  },
-  {
-    path: 'beheer-vrienden',
-    label: 'Beheer vrienden van Tovedem',
-    access: ['admin', 'bestuur'],
-  },
-  {
-    path: 'beheer-mail-lijst',
-    label: 'Beheer mail lijst',
     access: ['admin', 'bestuur'],
   },
   {
@@ -76,16 +61,24 @@ export const ROUTE_ACCESS_CONFIG: RouteAccessEntry[] = [
     label: 'Beheer voorstellingen',
     access: ['admin', 'bestuur'],
   },
-  { path: 'beheer-leden', label: 'Beheer leden', access: ['admin', 'bestuur'] },
+  {
+    path: 'beheer-leden',
+    label: 'Beheer leden (+ aanmeldingen)',
+    access: ['admin', 'bestuur'],
+  },
   {
     path: 'beheer-spelers',
     label: 'Beheer spelers',
     access: ['admin', 'bestuur'],
   },
-  { path: 'beheer-mails', label: 'Beheer mails', access: ['admin', 'bestuur'] },
+  {
+    path: 'beheer-mails',
+    label: 'Beheer mails (+ mail lijst)',
+    access: ['admin', 'bestuur'],
+  },
   {
     path: 'beheer-sponsoren',
-    label: 'Beheer sponsoren',
+    label: 'Beheer sponsoren (+ vriend aanmeldingen)',
     access: ['admin', 'bestuur'],
   },
   {

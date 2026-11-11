@@ -46,6 +46,7 @@ export class SidenavComponent implements OnInit {
   panelState: Record<string, boolean> = {
     'productie-info': true,
     'commissies': true,
+    'voorstellingen': true,
     'beheer': true,
     'galerij': true,
     'developers': true,
@@ -62,17 +63,23 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  /** True als de gebruiker minstens één pagina uit de Beheer-sectie mag openen. */
-  hasBeheerItems(): boolean {
+  /** True als de gebruiker minstens één pagina uit de Voorstellingen-sectie mag openen. */
+  hasVoorstellingenItems(): boolean {
     return [
       'beheer-voorstellingen',
       'beheer-reserveringen',
       'kassa',
       'printen',
+    ].some((path) => this.authService.canAccessRoute(path));
+  }
+
+  /** True als de gebruiker minstens één pagina uit de Beheer-sectie mag openen. */
+  hasBeheerItems(): boolean {
+    return [
       'beheer-leden',
-      'beheer-nieuwe-leden',
       'beheer-sponsoren',
       'beheer-mails',
+      'beheer-contact',
     ].some((path) => this.authService.canAccessRoute(path));
   }
 

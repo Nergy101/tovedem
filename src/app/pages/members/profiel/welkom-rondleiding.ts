@@ -111,7 +111,14 @@ export function getWelkomRondleidingStappen(
       side: 'right',
     },
 
-    // Beheer
+    // Voorstellingen
+    {
+      element: sidebar('sectie-voorstellingen'),
+      titel: 'Voorstellingen',
+      tekst:
+        'Alles rond de voorstellingen zelf: van het aanmaken van een voorstelling tot de kassa op de speeldag.',
+      side: 'right',
+    },
     {
       element: sidebar('beheer-voorstellingen'),
       titel: 'Voorstellingen',
@@ -137,53 +144,43 @@ export function getWelkomRondleidingStappen(
       element: sidebar('printen'),
       titel: 'Printen',
       tekst:
-        'Maak een PDF met "Gereserveerd voor"-kaartjes voor de stoelen in de zaal, op basis van de reserveringen van een voorstelling.',
+        'Maak een PDF met "Gereserveerd voor"-kaartjes voor de stoelen in de zaal, op basis van de reserveringen van een voorstelling, plus een overzicht van vrienden met een opmerking.',
+      side: 'right',
+    },
+
+    // Beheer
+    {
+      element: sidebar('sectie-beheer'),
+      titel: 'Beheer',
+      tekst:
+        'Leden, sponsoren, mails en berichten. Pagina\'s die bij elkaar horen staan samen op één pagina met <strong>tabbladen</strong> bovenaan.',
       side: 'right',
     },
     {
       element: sidebar('beheer-leden'),
       titel: 'Leden',
       tekst:
-        'Beheer alle accounts: rollen en groep toewijzen, en bepalen bij welke voorstellingen iemand foto\'s in de galerij mag zien.',
-      side: 'right',
-    },
-    {
-      element: sidebar('beheer-nieuwe-leden'),
-      titel: 'Leden aanmeldingen',
-      tekst:
-        'Aanmeldingen via het "Lid worden"-formulier. Bekijk het bericht, zet de status op geverifieerd en koppel de aanmelding aan een account.',
-      side: 'right',
-    },
-    {
-      element: sidebar('beheer-vrienden'),
-      titel: 'Vrienden aanmeldingen',
-      tekst: 'Aanmeldingen van mensen die Vriend van Tovedem willen worden.',
-      side: 'right',
-    },
-    {
-      element: sidebar('beheer-contact'),
-      titel: 'Contact berichten',
-      tekst: 'Alle berichten die via het contactformulier op de website binnenkomen.',
+        'Tabblad <strong>Leden</strong>: alle accounts beheren, rollen en groep toewijzen en bepalen bij welke voorstellingen iemand foto\'s in de galerij mag zien.<br><br>Tabblad <strong>Aanmeldingen</strong>: aanmeldingen via het "Lid worden"-formulier. Bekijk het bericht, zet de status op geverifieerd en koppel de aanmelding aan een account.',
       side: 'right',
     },
     {
       element: sidebar('beheer-sponsoren'),
       titel: 'Sponsoren',
       tekst:
-        'Sponsoren, donateurs en vrienden toevoegen, bewerken of in één keer importeren. Deze lijst wordt aan de kassa gebruikt om te controleren of iemand vriend of lid is.',
+        'Tabblad <strong>Sponsoren</strong>: sponsoren, donateurs en vrienden toevoegen, bewerken of in één keer importeren. Met deze lijst worden reserveringen gecontroleerd op vriend of lid.<br><br>Tabblad <strong>Vriend aanmeldingen</strong>: nieuwe aanmeldingen als Vriend van Tovedem. Met <strong>Accepteren</strong> zet je iemand direct op de sponsorenlijst.',
       side: 'right',
     },
     {
       element: sidebar('beheer-mails'),
       titel: 'Emails',
       tekst:
-        'Bewerk de teksten van de automatische mails, verstuur bevestigingsmails opnieuw en stel nieuwsbrieven op en verstuur ze.',
+        'Tabblad <strong>Emails</strong>: bevestigingsmails opnieuw versturen, nieuwsbrieven opstellen en versturen en de mailstatistieken bekijken.<br><br>Tabblad <strong>Mail lijst</strong>: iedereen die zich heeft aangemeld voor de nieuwsbrief, per groep.',
       side: 'right',
     },
     {
-      element: sidebar('beheer-mail-lijst'),
-      titel: 'Mail lijst',
-      tekst: 'Iedereen die zich heeft aangemeld voor de nieuwsbrief, per groep.',
+      element: sidebar('beheer-contact'),
+      titel: 'Contact berichten',
+      tekst: 'Alle berichten die via het contactformulier op de website binnenkomen.',
       side: 'right',
     },
 
