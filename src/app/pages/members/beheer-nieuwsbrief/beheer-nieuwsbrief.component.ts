@@ -10,7 +10,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +30,10 @@ import {
   BLOK_LABELS,
   NieuwsbriefBlok,
   NieuwsbriefBlokType,
+  NieuwsbriefUitlijning,
+  uitlijningVan,
 } from '../../../models/domain/nieuwsbrief-blok.model';
+import { Voorstelling } from '../../../models/domain/voorstelling.model';
 import {
   Nieuwsbrief,
   NieuwsbriefDoelgroep,
@@ -37,6 +43,15 @@ import { ConfirmatieDialogComponent } from '../../../shared/components/confirmat
 import { PocketbaseService } from '../../../shared/services/pocketbase.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skeleton-group.component';
+import { DateTimeService } from '../../../shared/services/datetime.service';
+import {
+  GalerijAfbeeldingDialogComponent,
+  GekozenGalerijAfbeelding,
+} from './galerij-afbeelding-dialog/galerij-afbeelding-dialog.component';
+import { SITE_URL, genereerNieuwsbriefHtml } from './nieuwsbrief-html';
+
+/** Maximale breedte van een afbeelding in de mail (x2 voor scherpe schermen). */
+const AFBEELDING_THUMB = '1200x0';
 
 @Component({
   selector: 'app-beheer-nieuwsbrief',
@@ -44,7 +59,10 @@ import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skel
     CommonModule,
     FormsModule,
     MatIconModule,
+    DragDropModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    MatCheckboxModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -66,6 +84,7 @@ export class BeheerNieuwsbriefComponent implements OnInit {
   router = inject(Router);
   toastr = inject(ToastrService);
   titleService = inject(Title);
+  dateTimeService = inject(DateTimeService);
 
   loading = signal(false);
   saving = signal(false);
@@ -77,18 +96,29 @@ export class BeheerNieuwsbriefComponent implements OnInit {
   status = signal<NieuwsbriefStatus>('concept');
 
   blokken = signal<NieuwsbriefBlok[]>([]);
-  actieveBlokIndex = signal<number | null>(null);
+  actieveBlokId = signal<string | null>(null);
+  /** Blok waarvoor nu een afbeelding geupload wordt. */
+  uploadendBlokId = signal<string | null>(null);
+
+  voorstellingen = signal<Voorstelling[]>([]);
 
   readonly blokTypes: NieuwsbriefBlokType[] = [
     'koptekst',
     'alinea',
     'afbeelding',
     'evenement',
+    'voorstelling',
     'scheidingslijn',
     'knop',
   ];
   readonly blokLabels = BLOK_LABELS;
   readonly blokIcons = BLOK_ICONS;
+  readonly uitlijningVan = uitlijningVan;
+  readonly uitlijningOpties: { waarde: NieuwsbriefUitlijning; icoon: string; label: string }[] = [
+    { waarde: 'links', icoon: 'format_align_left', label: 'Links uitlijnen' },
+    { waarde: 'midden', icoon: 'format_align_center', label: 'Centreren' },
+    { waarde: 'rechts', icoon: 'format_align_right', label: 'Rechts uitlijnen' },
+  ];
 
   readonly doelgroepOpties: { value: NieuwsbriefDoelgroep; label: string }[] = [
     { value: 'iedereen', label: 'Iedereen' },
@@ -105,8 +135,24 @@ export class BeheerNieuwsbriefComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.titleService.setTitle('Tovedem - Nieuwsbrief opstellen');
+    void this.laadVoorstellingen();
     if (!this.isNieuw) {
       await this.laadNieuwsbrief();
+    }
+  }
+
+  private async laadVoorstellingen(): Promise<void> {
+    try {
+      this.voorstellingen.set(
+        await this.client.directClient
+          .collection('voorstellingen')
+          .getFullList<Voorstelling>({
+            sort: '-datum_tijd_1',
+            filter: 'gearchiveerd != true',
+          })
+      );
+    } catch (error) {
+      console.error('Error loading voorstellingen:', error);
     }
   }
 
@@ -135,46 +181,185 @@ export class BeheerNieuwsbriefComponent implements OnInit {
 
   voegBlokToe(type: NieuwsbriefBlokType): void {
     const blok: NieuwsbriefBlok = { id: crypto.randomUUID(), type };
+    if (type === 'voorstelling') {
+      blok.toon_ondertitel = true;
+      blok.toon_omschrijving = false;
+      blok.toon_prijs = true;
+      blok.toon_regie = false;
+    }
     this.blokken.update((b) => [...b, blok]);
-    this.actieveBlokIndex.set(this.blokken().length - 1);
+    this.actieveBlokId.set(blok.id);
   }
 
   verwijderBlok(index: number): void {
+    const blok = this.blokken()[index];
     this.blokken.update((b) => b.filter((_, i) => i !== index));
-    if (this.actieveBlokIndex() === index) {
-      this.actieveBlokIndex.set(null);
+    if (blok && this.actieveBlokId() === blok.id) {
+      this.actieveBlokId.set(null);
     }
   }
 
   verplaatsOmhoog(index: number): void {
-    if (index === 0) return;
-    this.blokken.update((b) => {
-      const arr = [...b];
-      [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
-      return arr;
-    });
-    this.actieveBlokIndex.set(index - 1);
+    this.verplaats(index, index - 1);
   }
 
   verplaatsOmlaag(index: number): void {
-    if (index === this.blokken().length - 1) return;
-    this.blokken.update((b) => {
-      const arr = [...b];
-      [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-      return arr;
-    });
-    this.actieveBlokIndex.set(index + 1);
+    this.verplaats(index, index + 1);
   }
 
-  updateBlok(index: number, veld: keyof NieuwsbriefBlok, waarde: string): void {
+  /** Slepen en neerzetten in de lijst met blokken. */
+  blokNeergezet(event: CdkDragDrop<NieuwsbriefBlok[]>): void {
+    this.verplaats(event.previousIndex, event.currentIndex);
+  }
+
+  private verplaats(van: number, naar: number): void {
+    if (van === naar || naar < 0 || naar >= this.blokken().length) return;
+    this.blokken.update((b) => {
+      const arr = [...b];
+      moveItemInArray(arr, van, naar);
+      return arr;
+    });
+  }
+
+  updateBlok<K extends keyof NieuwsbriefBlok>(
+    index: number,
+    veld: K,
+    waarde: NieuwsbriefBlok[K]
+  ): void {
     this.blokken.update((b) =>
       b.map((blok, i) => (i === index ? { ...blok, [veld]: waarde } : blok))
     );
   }
 
-  toggleBlok(index: number): void {
-    this.actieveBlokIndex.set(
-      this.actieveBlokIndex() === index ? null : index
+  toggleBlok(blok: NieuwsbriefBlok): void {
+    this.actieveBlokId.set(this.actieveBlokId() === blok.id ? null : blok.id);
+  }
+
+  blokSamenvatting(blok: NieuwsbriefBlok): string {
+    return (
+      blok.titel ||
+      blok.tekst ||
+      blok.event_titel ||
+      blok.voorstelling_titel ||
+      blok.knop_label ||
+      blok.afbeelding_alt ||
+      ''
+    );
+  }
+
+  // ── Voorstelling ─────────────────────────────────────────────────────────
+
+  kiesVoorstelling(index: number, voorstellingId: string): void {
+    const voorstelling = this.voorstellingen().find((v) => v.id === voorstellingId);
+    if (!voorstelling) return;
+
+    const datums = [voorstelling.datum_tijd_1, voorstelling.datum_tijd_2]
+      .filter((datum): datum is string => !!datum)
+      .map(
+        (datum) =>
+          `${this.dateTimeService.formatFullDateWithWeekday(datum)} · ${this.dateTimeService.formatTime(datum)} uur`
+      );
+
+    this.blokken.update((b) =>
+      b.map((blok, i) =>
+        i === index
+          ? {
+              ...blok,
+              voorstelling_id: voorstelling.id,
+              voorstelling_titel: voorstelling.titel,
+              voorstelling_ondertitel: voorstelling.ondertitel ?? '',
+              voorstelling_omschrijving: voorstelling.omschrijving ?? '',
+              voorstelling_regie: voorstelling.regie ?? '',
+              voorstelling_prijs: voorstelling.prijs_per_kaartje ?? null,
+              voorstelling_afbeelding_url: voorstelling.afbeelding
+                ? this.client.directClient.files.getURL(voorstelling, voorstelling.afbeelding, {
+                    thumb: AFBEELDING_THUMB,
+                  })
+                : '',
+              voorstelling_datums: datums,
+              voorstelling_reserveer_url: `${SITE_URL}/reserveren?voorstellingId=${voorstelling.id}`,
+            }
+          : blok
+      )
+    );
+  }
+
+  // ── Afbeeldingen ─────────────────────────────────────────────────────────
+
+  async kiesUitGalerij(index: number): Promise<void> {
+    const dialogRef = this.dialog.open<
+      GalerijAfbeeldingDialogComponent,
+      void,
+      GekozenGalerijAfbeelding
+    >(GalerijAfbeeldingDialogComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+    });
+    const gekozen = await lastValueFrom(dialogRef.afterClosed());
+    if (!gekozen) return;
+
+    const blok = this.blokken()[index];
+    this.uploadendBlokId.set(blok.id);
+    try {
+      // Galerijfoto's zijn afgeschermd: ontvangers van de mail kunnen ze niet openen.
+      // Daarom wordt een (verkleinde) kopie openbaar opgeslagen in `afbeeldingen`.
+      const token = await this.client.getFileToken();
+      const response = await fetch(
+        this.client.directClient.files.getURL(gekozen.folder, gekozen.bestand, {
+          token,
+          thumb: AFBEELDING_THUMB,
+        })
+      );
+      if (!response.ok) throw new Error(`Download mislukt (${response.status})`);
+      const url = await this.zetAfbeeldingOnline(await response.blob());
+      this.updateBlokById(blok.id, {
+        afbeelding_url: url,
+        afbeelding_alt: blok.afbeelding_alt || gekozen.folder.naam,
+      });
+      this.toastr.success('Foto uit de galerij toegevoegd');
+    } catch (error) {
+      console.error('Error copying galerij foto:', error);
+      this.toastr.error('De foto kon niet voor de nieuwsbrief opgeslagen worden');
+    } finally {
+      this.uploadendBlokId.set(null);
+    }
+  }
+
+  async uploadAfbeelding(index: number, event: Event): Promise<void> {
+    const invoer = event.target as HTMLInputElement;
+    const bestand = invoer.files?.[0];
+    invoer.value = '';
+    if (!bestand) return;
+
+    const blok = this.blokken()[index];
+    this.uploadendBlokId.set(blok.id);
+    try {
+      const url = await this.zetAfbeeldingOnline(bestand);
+      this.updateBlokById(blok.id, { afbeelding_url: url });
+      this.toastr.success('Afbeelding geüpload');
+    } catch (error) {
+      console.error('Error uploading afbeelding:', error);
+      this.toastr.error('Uploaden mislukt. Is de afbeelding kleiner dan 5 MB?');
+    } finally {
+      this.uploadendBlokId.set(null);
+    }
+  }
+
+  /** Slaat een afbeelding openbaar op en geeft de URL terug die in de mail gebruikt kan worden. */
+  private async zetAfbeeldingOnline(afbeelding: Blob): Promise<string> {
+    const extensie =
+      afbeelding.type === 'image/png' ? 'png' : afbeelding.type === 'image/webp' ? 'webp' : 'jpg';
+    // Korte bestandsnaam: PocketBase voegt zelf een unieke code toe
+    const formData = new FormData();
+    formData.append('bestand', afbeelding, `nieuwsbrief.${extensie}`);
+    const record = await this.client.directClient.collection('afbeeldingen').create(formData);
+    return this.client.directClient.files.getURL(record, record['bestand']);
+  }
+
+  private updateBlokById(id: string, wijzigingen: Partial<NieuwsbriefBlok>): void {
+    this.blokken.update((b) =>
+      b.map((blok) => (blok.id === id ? { ...blok, ...wijzigingen } : blok))
     );
   }
 
@@ -258,67 +443,12 @@ export class BeheerNieuwsbriefComponent implements OnInit {
   // ── HTML generation ──────────────────────────────────────────────────────
 
   genereerEmailHtml(): string {
-    const blocksHtml = this.blokken().map((b) => this.renderBlok(b)).join('\n');
-    return `<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>${this.titel() || 'Nieuwsbrief'}</title>
-</head>
-<body style="margin:0;padding:20px 0;background:#f4f4f4;font-family:Arial,Helvetica,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.12);">
-${blocksHtml}
-    <div style="background:#f9f9f9;padding:16px 24px;text-align:center;font-size:12px;color:#999;border-top:1px solid #eee;">
-      <p style="margin:0;">© Tovedem &nbsp;|&nbsp; <a href="#" style="color:#7db3e8;text-decoration:none;">Uitschrijven</a></p>
-    </div>
-  </div>
-</body>
-</html>`;
-  }
-
-  private renderBlok(b: NieuwsbriefBlok): string {
-    switch (b.type) {
-      case 'koptekst':
-        return `    <div style="background:#7db3e8;color:#fff;padding:28px 24px;text-align:center;">
-      <h1 style="margin:0;font-size:26px;font-weight:700;">${b.titel || 'Koptekst'}</h1>
-      ${b.ondertitel ? `<p style="margin:6px 0 0;font-size:15px;opacity:0.9;">${b.ondertitel}</p>` : ''}
-    </div>`;
-
-      case 'alinea':
-        return `    <div style="padding:20px 24px;">
-      <p style="margin:0;line-height:1.7;color:#333;font-size:15px;">${(b.tekst || '').replace(/\n/g, '<br>')}</p>
-    </div>`;
-
-      case 'afbeelding':
-        return b.afbeelding_url
-          ? `    <div style="padding:16px 24px;text-align:center;">
-      <img src="${b.afbeelding_url}" alt="${b.afbeelding_alt || ''}" style="max-width:100%;border-radius:6px;display:block;margin:0 auto;">
-      ${b.onderschrift ? `<p style="margin:8px 0 0;font-size:13px;color:#888;">${b.onderschrift}</p>` : ''}
-    </div>`
-          : '';
-
-      case 'evenement':
-        return `    <div style="margin:12px 24px;padding:16px 20px;border-left:4px solid #7db3e8;background:#f0f6ff;border-radius:0 6px 6px 0;">
-      <h3 style="margin:0 0 10px;color:#1a5fa8;font-size:17px;">${b.event_titel || 'Evenement'}</h3>
-      ${b.event_datum ? `<p style="margin:4px 0;color:#555;font-size:14px;">📅 ${b.event_datum}</p>` : ''}
-      ${b.event_locatie ? `<p style="margin:4px 0;color:#555;font-size:14px;">📍 ${b.event_locatie}</p>` : ''}
-      ${b.event_prijs ? `<p style="margin:4px 0;color:#555;font-size:14px;">💶 ${b.event_prijs}</p>` : ''}
-      ${b.event_link ? `<a href="${b.event_link}" style="display:inline-block;margin-top:10px;background:#7db3e8;color:#fff;padding:8px 16px;border-radius:4px;text-decoration:none;font-size:14px;font-weight:600;">Meer info →</a>` : ''}
-    </div>`;
-
-      case 'scheidingslijn':
-        return `    <div style="padding:4px 24px;"><hr style="border:none;border-top:1px solid #e8e8e8;margin:0;"></div>`;
-
-      case 'knop':
-        return b.knop_url && b.knop_label
-          ? `    <div style="padding:16px 24px;text-align:center;">
-      <a href="${b.knop_url}" style="display:inline-block;background:#7db3e8;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-size:16px;font-weight:700;">${b.knop_label}</a>
-    </div>`
-          : '';
-
-      default:
-        return '';
-    }
+    return genereerNieuwsbriefHtml(this.blokken(), {
+      titel: this.titel(),
+      datumLabel: new Intl.DateTimeFormat('nl-NL', {
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date()),
+    });
   }
 }

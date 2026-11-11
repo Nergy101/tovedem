@@ -152,3 +152,79 @@
   border: none;
   display: block;
 }
+
+// ── Slepen ──
+.blok-sleep {
+  cursor: grab;
+  color: var(--mat-sys-on-surface-variant);
+  flex-shrink: 0;
+}
+
+.blok-placeholder {
+  min-height: 52px;
+  margin-bottom: 0.75rem;
+  border: 2px dashed var(--mat-sys-primary);
+  border-radius: 8px;
+  background-color: var(--mat-sys-primary-container);
+  opacity: 0.6;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cdk-drag-animating,
+.blok-lijst.cdk-drop-list-dragging .blok-wrapper:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// ── Uitlijning en opties ──
+.uitlijning,
+.voorstelling-opties {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.uitlijning-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.voorstelling-info {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// ── Afbeelding ──
+.afbeelding-bron {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.afbeelding-voorbeeld {
+  display: block;
+  max-width: 100%;
+  max-height: 220px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  object-fit: contain;
+}

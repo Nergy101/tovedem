@@ -1,5 +1,30 @@
+@use "sass:list";
+
 :host {
   display: block;
+
+  // Kaarten en tijdregels: wit vlak met donkere tekst in light, donker vlak met lichte tekst in dark
+  --kaart-bg: #ffffff;
+  --kaart-tekst: #1f2937;
+  --kaart-tekst-zacht: #4b5563;
+  --kaart-schaduw: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --kaart-schaduw-hover: 0 4px 10px rgba(0, 0, 0, 0.12);
+  --belangrijk: #dc2626;
+  --melding-bg: #e3eefb;
+  --melding-rand: #7db3e8;
+  --melding-tekst: #1f2937;
+}
+
+:host-context(html.darkMode) {
+  --kaart-bg: #262b33;
+  --kaart-tekst: #eef1f5;
+  --kaart-tekst-zacht: #b7bfca;
+  --kaart-schaduw: 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --kaart-schaduw-hover: 0 4px 12px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --belangrijk: #f87171;
+  --melding-bg: #1c3550;
+  --melding-rand: #7db3e8;
+  --melding-tekst: #e6effa;
 }
 
 .draaiboek {
@@ -34,9 +59,14 @@
   padding: 1rem;
   margin-bottom: 1.5rem;
   border-radius: 0.75rem;
-  border-left: 4px solid var(--mat-sys-tertiary);
-  background-color: var(--mat-sys-tertiary-container);
-  color: var(--mat-sys-on-tertiary-container);
+  border-left: 4px solid var(--melding-rand);
+  background-color: var(--melding-bg);
+
+  // Ook de kinderen expliciet: het dark theme maakt anders alle tekst wit
+  &,
+  * {
+    color: var(--melding-tekst);
+  }
 
   mat-icon {
     flex-shrink: 0;
@@ -60,11 +90,6 @@
   margin-bottom: 0.75rem;
 }
 
-// Witte vlakken met donkere tekst voor rollen en tijdregels
-$kaart-bg: #ffffff;
-$kaart-tekst: #1f2937;
-$kaart-tekst-zacht: #4b5563;
-
 // Rol kleuren (achtergrond / tekst) - werken in licht en donker thema
 $rol-kleuren: (
   0: (#dbeafe, #1e3a8a),
@@ -77,10 +102,29 @@ $rol-kleuren: (
   7: (#e0e7ff, #312e81),
 );
 
+// Dezelfde kleuren, maar donker vlak met lichte tekst voor het dark theme
+$rol-kleuren-donker: (
+  0: (#1e3a5f, #bfdbfe),
+  1: (#14432a, #bbf7d0),
+  2: (#4a3410, #fde68a),
+  3: (#4c1d36, #fbcfe8),
+  4: (#34245f, #ddd6fe),
+  5: (#123e4a, #a5f3fc),
+  6: (#4a2512, #fed7aa),
+  7: (#262a5c, #c7d2fe),
+);
+
 @each $index, $kleuren in $rol-kleuren {
   .rol-kleur-#{$index} {
-    --rol-bg: #{nth($kleuren, 1)};
-    --rol-fg: #{nth($kleuren, 2)};
+    --rol-bg: #{list.nth($kleuren, 1)};
+    --rol-fg: #{list.nth($kleuren, 2)};
+  }
+}
+
+@each $index, $kleuren in $rol-kleuren-donker {
+  :host-context(html.darkMode) .rol-kleur-#{$index} {
+    --rol-bg: #{list.nth($kleuren, 1)};
+    --rol-fg: #{list.nth($kleuren, 2)};
   }
 }
 
@@ -100,9 +144,9 @@ $rol-kleuren: (
   border: 2px solid transparent;
   border-left: 6px solid var(--rol-fg);
   // Wit vlak met vaste donkere tekst: goed leesbaar in licht en donker thema
-  background-color: $kaart-bg;
-  color: $kaart-tekst;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  background-color: var(--kaart-bg);
+  color: var(--kaart-tekst);
+  box-shadow: var(--kaart-schaduw);
   cursor: pointer;
   transition:
     transform 0.15s,
@@ -111,7 +155,7 @@ $rol-kleuren: (
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--kaart-schaduw-hover);
   }
 
   &:focus-visible {
@@ -125,13 +169,19 @@ $rol-kleuren: (
     color: var(--rol-fg);
   }
 
+  // Expliciete tekstkleuren: het dark theme maakt anders alle tekst wit (zie styles.scss)
   .rol-naam {
     font-weight: 600;
+    color: var(--kaart-tekst);
+  }
+
+  &.geselecteerd .rol-naam {
+    color: var(--rol-fg);
   }
 
   .rol-omschrijving {
     font-size: 0.875rem;
-    color: $kaart-tekst-zacht;
+    color: var(--kaart-tekst-zacht);
     line-height: 1.4;
   }
 
@@ -149,8 +199,12 @@ $rol-kleuren: (
   padding: 0.5rem 0.75rem;
   margin-bottom: 0.5rem;
   border-radius: 0.5rem;
-  background-color: var(--mat-sys-secondary-container);
-  color: var(--mat-sys-on-secondary-container);
+  background-color: var(--melding-bg);
+
+  span,
+  strong {
+    color: var(--melding-tekst);
+  }
 }
 
 // Dagen als uitklapbare blokken aan één doorlopende lijn
@@ -286,14 +340,14 @@ $dag-nummer: 2.25rem;
     justify-self: start;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: $kaart-tekst;
+    color: var(--kaart-tekst);
     margin-top: 0.35rem;
 
     &.zichtbaar {
       padding: 0.15rem 0.5rem;
       border-radius: 0.4rem;
-      background-color: $kaart-bg;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      background-color: var(--kaart-bg);
+      box-shadow: var(--kaart-schaduw);
     }
   }
 
@@ -323,9 +377,9 @@ $dag-nummer: 2.25rem;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     border-left: 4px solid transparent;
-    background-color: $kaart-bg;
-    color: $kaart-tekst;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    background-color: var(--kaart-bg);
+    color: var(--kaart-tekst);
+    box-shadow: var(--kaart-schaduw);
   }
 
   // Subonderdeel: valt onder het tijdstip erboven, ingesprongen met een verbindingshaakje
@@ -359,12 +413,16 @@ $dag-nummer: 2.25rem;
     }
   }
 
+  .actie {
+    color: var(--kaart-tekst);
+  }
+
   &.belangrijk .actie {
     font-weight: 600;
   }
 
   &.belangrijk .inhoud {
-    border-left-color: #dc2626;
+    border-left-color: var(--belangrijk);
   }
 
   .door {
@@ -376,7 +434,7 @@ $dag-nummer: 2.25rem;
   .notitie {
     font-size: 0.875rem;
     font-style: italic;
-    color: $kaart-tekst-zacht;
+    color: var(--kaart-tekst-zacht);
   }
 }
 
