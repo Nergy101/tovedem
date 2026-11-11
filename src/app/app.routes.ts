@@ -32,6 +32,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'wachtwoord-vergeten',
+    loadComponent: () =>
+      import(
+        './pages/public/wachtwoord-vergeten/wachtwoord-vergeten.component'
+      ).then((m) => m.WachtwoordVergetenComponent),
+  },
+  {
+    path: 'wachtwoord-reset',
+    loadComponent: () =>
+      import('./pages/public/wachtwoord-reset/wachtwoord-reset.component').then(
+        (m) => m.WachtwoordResetComponent,
+      ),
+  },
+  {
     path: 'groep/Tovedem',
     loadComponent: () =>
       import('./pages/public/groep/groep.component').then(

@@ -1,0 +1,93 @@
+<div
+  class="container d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-xl-6 col-12">
+      <mat-card class="flex flex-grow-1">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title> Wachtwoord vergeten? </mat-card-title>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content class="mt-2 row gap-4">
+          @if (emailVerzonden()) {
+          <div
+            class="col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center"
+            role="status"
+          >
+            <mat-icon aria-hidden="true" color="primary">mark_email_read</mat-icon>
+            <p class="text-center">
+              Als dit e-mailadres bij ons bekend is, ontvang je binnen enkele
+              minuten een e-mail met een link om je wachtwoord opnieuw in te
+              stellen.
+            </p>
+            <a [routerLink]="['/login']" mat-stroked-button color="accent" class="w-100">
+              Terug naar login
+            </a>
+          </div>
+          } @else {
+          <form
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2"
+            (submit)="verstuurResetMail(); $event.preventDefault()"
+          >
+            <p>
+              Vul het e-mailadres in waarmee je account is aangemaakt. Je
+              ontvangt een e-mail met een link om je wachtwoord opnieuw in te
+              stellen.
+            </p>
+            <mat-form-field>
+              <mat-label>E-mail</mat-label>
+              <input
+                matInput
+                type="email"
+                autocomplete="email"
+                [formField]="wachtwoordVergetenForm.email"
+              />
+              @if (wachtwoordVergetenForm.email().touched() &&
+              wachtwoordVergetenForm.email().invalid()) {
+              <mat-error>{{
+                wachtwoordVergetenForm.email().errors().map((e) => e.message).join(', ').trim()
+              }}</mat-error>
+              }
+            </mat-form-field>
+            @if (errorMessage()) {
+            <div
+              class="login-error"
+              role="alert"
+              aria-live="assertive"
+              style="color: #f44336"
+            >
+              <mat-icon aria-hidden="true">error</mat-icon>
+              <span>{{ errorMessage() }}</span>
+            </div>
+            }
+            <mat-card-actions>
+              <button
+                class="flex-grow-1"
+                type="submit"
+                color="primary"
+                mat-flat-button
+                [disabled]="!wachtwoordVergetenForm().valid() || loading()"
+              >
+                Verstuur reset-link
+              </button>
+            </mat-card-actions>
+          </form>
+          <div
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center"
+          >
+            <p>Weet je je wachtwoord weer?</p>
+            <a
+              [routerLink]="['/login']"
+              mat-stroked-button
+              color="accent"
+              class="w-100"
+              >Terug naar login</a
+            >
+          </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

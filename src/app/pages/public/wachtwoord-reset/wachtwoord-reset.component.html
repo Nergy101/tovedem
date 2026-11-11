@@ -1,0 +1,134 @@
+<div
+  class="container d-flex align-items-center justify-content-center min-vh-100"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-xl-6 col-12">
+      <mat-card class="flex flex-grow-1">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title> Nieuw wachtwoord instellen </mat-card-title>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content class="mt-2 row gap-4">
+          @if (tokenMissing()) {
+          <div
+            class="col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center"
+            role="alert"
+          >
+            <mat-icon aria-hidden="true" style="color: #f44336">error</mat-icon>
+            <p class="text-center">
+              Deze reset-link is ongeldig of verlopen. Vraag een nieuwe link
+              aan.
+            </p>
+            <a
+              [routerLink]="['/wachtwoord-vergeten']"
+              mat-stroked-button
+              color="accent"
+              class="w-100"
+              >Nieuwe link aanvragen</a
+            >
+          </div>
+          } @else {
+          <form
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2"
+            (submit)="resetWachtwoord(); $event.preventDefault()"
+          >
+            <mat-form-field>
+              <mat-label>Nieuw wachtwoord</mat-label>
+              <input
+                matInput
+                [type]="hidePassword() ? 'password' : 'text'"
+                autocomplete="new-password"
+                [formField]="resetForm.password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePassword.set(!hidePassword())"
+                [attr.aria-label]="
+                  'Wachtwoord ' + (hidePassword() ? 'tonen' : 'verbergen')
+                "
+              >
+                <mat-icon>{{
+                  hidePassword() ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              @if (resetForm.password().touched() && resetForm.password().invalid()) {
+              <mat-error>{{
+                resetForm.password().errors().map((e) => e.message).join(', ').trim()
+              }}</mat-error>
+              } @else {
+              <mat-hint>Minimaal 8 tekens</mat-hint>
+              }
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Bevestig nieuw wachtwoord</mat-label>
+              <input
+                matInput
+                [type]="hidePasswordConfirm() ? 'password' : 'text'"
+                autocomplete="new-password"
+                [formField]="resetForm.passwordConfirm"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="hidePasswordConfirm.set(!hidePasswordConfirm())"
+                [attr.aria-label]="
+                  'Wachtwoord bevestigen ' +
+                  (hidePasswordConfirm() ? 'tonen' : 'verbergen')
+                "
+              >
+                <mat-icon>{{
+                  hidePasswordConfirm() ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              @if (resetForm.passwordConfirm().touched() &&
+              resetForm.passwordConfirm().invalid()) {
+              <mat-error>{{
+                resetForm.passwordConfirm().errors().map((e) => e.message).join(', ').trim()
+              }}</mat-error>
+              }
+            </mat-form-field>
+            @if (resetError()) {
+            <div
+              class="login-error"
+              role="alert"
+              aria-live="assertive"
+              style="color: #f44336"
+            >
+              <mat-icon aria-hidden="true">error</mat-icon>
+              <span>{{ resetError() }}</span>
+            </div>
+            }
+            <mat-card-actions>
+              <button
+                class="flex-grow-1"
+                type="submit"
+                color="primary"
+                mat-flat-button
+                [disabled]="!resetForm().valid() || loading()"
+              >
+                Wachtwoord opslaan
+              </button>
+            </mat-card-actions>
+          </form>
+          <div
+            class="col-md-6 col-12 w-100 d-flex flex-column gap-2 align-items-center justify-content-center"
+          >
+            <p>Weet je je wachtwoord weer?</p>
+            <a
+              [routerLink]="['/login']"
+              mat-stroked-button
+              color="accent"
+              class="w-100"
+              >Terug naar login</a
+            >
+          </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
