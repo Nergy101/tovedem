@@ -153,20 +153,98 @@ $rol-kleuren: (
   color: var(--mat-sys-on-secondary-container);
 }
 
+// Dagen als uitklapbare blokken aan één doorlopende lijn
+$dag-rail: 3rem;
+$dag-nummer: 2.25rem;
+
+.dagen-tijdlijn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: $dag-rail;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: calc(#{$dag-nummer} / 2 - 1px);
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background-color: var(--mat-sys-primary);
+    opacity: 0.4;
+  }
+}
+
+.dag {
+  position: relative;
+}
+
+.dag-nummer {
+  position: absolute;
+  z-index: 1;
+  left: -$dag-rail;
+  top: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $dag-nummer;
+  height: $dag-nummer;
+  border-radius: 50%;
+  font-weight: 700;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  box-shadow: 0 0 0 4px var(--mat-sys-surface);
+}
+
+.dag-paneel {
+  border-radius: 0.75rem !important;
+
+  .mat-expansion-panel-header {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  mat-panel-description {
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}
+
 .dag-label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 1.2;
+  line-height: 1.25;
+
+  .dag-naam {
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
 
   small {
-    font-size: 0.75rem;
-    opacity: 0.7;
+    font-size: 0.8rem;
+    opacity: 0.75;
+  }
+}
+
+.dag-tijdvak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
   }
 }
 
 .taak-teller {
-  margin-left: 0.5rem;
   min-width: 1.5rem;
   padding: 0 0.4rem;
   border-radius: 1rem;
@@ -178,8 +256,8 @@ $rol-kleuren: (
 
 .tijdlijn {
   list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 0 0 0.5rem;
 }
 
 .tijdlijn-item {
@@ -250,6 +328,37 @@ $rol-kleuren: (
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   }
 
+  // Subonderdeel: valt onder het tijdstip erboven, ingesprongen met een verbindingshaakje
+  &.sub {
+    .punt {
+      width: 0.5rem;
+      height: 0.5rem;
+      margin-top: 0.5rem;
+      background-color: var(--mat-sys-surface);
+      border: 2px solid var(--mat-sys-outline);
+    }
+
+    .inhoud {
+      position: relative;
+      margin-left: 1.75rem;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      font-size: 0.95rem;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -1.5rem;
+        top: -0.85rem;
+        width: 1.25rem;
+        height: 1.85rem;
+        border-left: 2px solid var(--mat-sys-outline-variant);
+        border-bottom: 2px solid var(--mat-sys-outline-variant);
+        border-bottom-left-radius: 0.5rem;
+      }
+    }
+  }
+
   &.belangrijk .actie {
     font-weight: 600;
   }
@@ -304,6 +413,34 @@ $rol-kleuren: (
 }
 
 @media (max-width: 576px) {
+  .dagen-tijdlijn {
+    padding-left: 2.25rem;
+
+    &::before {
+      left: calc(1.75rem / 2 - 1px);
+    }
+  }
+
+  .dag-nummer {
+    left: -2.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.85rem;
+  }
+
+  .dag-paneel mat-panel-description {
+    display: none;
+  }
+
+  .tijdlijn-item.sub .inhoud {
+    margin-left: 1rem;
+
+    &::before {
+      left: -0.85rem;
+      width: 0.7rem;
+    }
+  }
+
   .tijdlijn-item {
     grid-template-columns: 3.25rem 1.25rem 1fr;
 

@@ -1,4 +1,6 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+import type { BeheerTabblad } from './pages/members/beheer-tabbladen/beheer-tabbladen.component';
 import { getRequiredRoles } from './shared/constants/route-access.config';
 import { globalAdminGuard, loggedInGuard } from './shared/guards/auth.guards';
 
@@ -154,10 +156,33 @@ export const routes: Routes = [
   {
     path: 'beheer-leden',
     loadComponent: () =>
-      import('./pages/members/beheer-leden/beheer-leden.component').then(
-        (m) => m.BeheerLedenComponent,
+      import('./pages/members/beheer-tabbladen/beheer-tabbladen.component').then(
+        (m) => m.BeheerTabbladenComponent,
       ),
     canActivate: [loggedInGuard(getRequiredRoles('beheer-leden'))],
+    data: {
+      titel: 'Leden',
+      tabbladen: [
+      {
+        id: 'leden',
+        label: 'Leden',
+        icon: 'diversity_3',
+        laad: () =>
+          import('./pages/members/beheer-leden/beheer-leden.component').then(
+            (m) => m.BeheerLedenComponent,
+          ),
+      },
+      {
+        id: 'aanmeldingen',
+        label: 'Aanmeldingen',
+        icon: 'person_add',
+        laad: () =>
+          import('./pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component').then(
+            (m) => m.BeheerNieuweLedenComponent,
+          ),
+      },
+      ] satisfies BeheerTabblad[],
+    },
   },
   {
     path: 'beheer-spelers',
@@ -170,26 +195,72 @@ export const routes: Routes = [
   {
     path: 'beheer-mails',
     loadComponent: () =>
-      import('./pages/members/beheer-mails/beheer-mails.component').then(
-        (m) => m.BeheerMailsComponent,
+      import('./pages/members/beheer-tabbladen/beheer-tabbladen.component').then(
+        (m) => m.BeheerTabbladenComponent,
       ),
     canActivate: [loggedInGuard(getRequiredRoles('beheer-mails'))],
+    data: {
+      titel: 'Emails',
+      tabbladen: [
+      {
+        id: 'emails',
+        label: 'Emails',
+        icon: 'mail',
+        laad: () =>
+          import('./pages/members/beheer-mails/beheer-mails.component').then(
+            (m) => m.BeheerMailsComponent,
+          ),
+      },
+      {
+        id: 'mail-lijst',
+        label: 'Mail lijst',
+        icon: 'contact_mail',
+        laad: () =>
+          import('./pages/members/beheer-mail-lijst/beheer-mail-lijst.component').then(
+            (m) => m.BeheerMailLijstComponent,
+          ),
+      },
+      ] satisfies BeheerTabblad[],
+    },
   },
   {
     path: 'beheer-sponsoren',
     loadComponent: () =>
-      import('./pages/members/beheer-sponsoren/beheer-sponsoren.component').then(
-        (m) => m.BeheerSponsorenComponent,
+      import('./pages/members/beheer-tabbladen/beheer-tabbladen.component').then(
+        (m) => m.BeheerTabbladenComponent,
       ),
     canActivate: [loggedInGuard(getRequiredRoles('beheer-sponsoren'))],
+    data: {
+      titel: 'Sponsoren',
+      tabbladen: [
+      {
+        id: 'sponsoren',
+        label: 'Sponsoren',
+        icon: 'favorite',
+        laad: () =>
+          import('./pages/members/beheer-sponsoren/beheer-sponsoren.component').then(
+            (m) => m.BeheerSponsorenComponent,
+          ),
+      },
+      {
+        id: 'aanmeldingen',
+        label: 'Vriend aanmeldingen',
+        icon: 'how_to_reg',
+        laad: () =>
+          import('./pages/members/beheer-vrienden/beheer-vrienden.component').then(
+            (m) => m.BeheerVriendenComponent,
+          ),
+      },
+      ] satisfies BeheerTabblad[],
+    },
   },
   {
+    // Samengevoegd met /beheer-leden; oude links (bijv. in mails) blijven werken
     path: 'beheer-nieuwe-leden',
-    loadComponent: () =>
-      import('./pages/members/beheer-nieuwe-leden/beheer-nieuwe-leden.component').then(
-        (m) => m.BeheerNieuweLedenComponent,
-      ),
-    canActivate: [loggedInGuard(getRequiredRoles('beheer-nieuwe-leden'))],
+    redirectTo: () =>
+      inject(Router).createUrlTree(['/beheer-leden'], {
+        queryParams: { tab: 'aanmeldingen' },
+      }),
   },
   {
     path: 'beheer-contact',
@@ -200,20 +271,20 @@ export const routes: Routes = [
     canActivate: [loggedInGuard(getRequiredRoles('beheer-contact'))],
   },
   {
+    // Samengevoegd met /beheer-sponsoren; oude links (bijv. in mails) blijven werken
     path: 'beheer-vrienden',
-    loadComponent: () =>
-      import('./pages/members/beheer-vrienden/beheer-vrienden.component').then(
-        (m) => m.BeheerVriendenComponent,
-      ),
-    canActivate: [loggedInGuard(getRequiredRoles('beheer-vrienden'))],
+    redirectTo: () =>
+      inject(Router).createUrlTree(['/beheer-sponsoren'], {
+        queryParams: { tab: 'aanmeldingen' },
+      }),
   },
   {
+    // Samengevoegd met /beheer-mails; oude links (bijv. in mails) blijven werken
     path: 'beheer-mail-lijst',
-    loadComponent: () =>
-      import('./pages/members/beheer-mail-lijst/beheer-mail-lijst.component').then(
-        (m) => m.BeheerMailLijstComponent,
-      ),
-    canActivate: [loggedInGuard(getRequiredRoles('beheer-mail-lijst'))],
+    redirectTo: () =>
+      inject(Router).createUrlTree(['/beheer-mails'], {
+        queryParams: { tab: 'mail-lijst' },
+      }),
   },
   {
     path: 'beheer-nieuwsbrief/:id',

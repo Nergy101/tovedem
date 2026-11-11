@@ -1,0 +1,23 @@
+.beheer-tabbladen {
+  margin-top: 0.5rem;
+}
+
+.tab-icon {
+  margin-right: 0.4rem;
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+// De samengevoegde pagina's hebben elk een eigen grote titel; die staat nu al boven de tabbladen
+.beheer-tabblad-inhoud ::ng-deep {
+  > * > .container.mt-4 {
+    margin-top: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .display-1 {
+    display: none;
+  }
+}

@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <div class="container">
+    <div class="row">
+      <p class="display-1 mb-2">{{ titel() }}</p>
+    </div>
+
+    <mat-tab-group
+      class="beheer-tabbladen"
+      animationDuration="200ms"
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      [selectedIndex]="geselecteerdeIndex()"
+      (selectedIndexChange)="kiesTabblad($event)"
+    >
+      @for (tab of tabbladen(); track tab.id) {
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+          {{ tab.label }}
+        </ng-template>
+        <ng-template matTabContent>
+          @if (componenten()[tab.id]; as component) {
+          <div class="beheer-tabblad-inhoud">
+            <ng-container *ngComponentOutlet="component" />
+          </div>
+          } @else {
+          <mat-progress-bar mode="indeterminate" />
+          }
+        </ng-template>
+      </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
+</div>
