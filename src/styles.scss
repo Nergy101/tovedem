@@ -81,6 +81,12 @@ html.darkMode {
   --mat-sys-surface-container: #343b49;
   --mat-sys-surface-container-high: #3e4656;
 
+  // Force near-white text tokens in dark mode (the palette's neutral-90 gray
+  // is too dim); Material components read these for their text color.
+  --mat-sys-on-background: #ffffff;
+  --mat-sys-on-surface: #ffffff;
+  --mat-sys-on-surface-variant: #d6d8de;
+
   --app-text: #ffffff;
   --app-text-muted: #d6d8de;
   --app-card-bg: #242a36;
