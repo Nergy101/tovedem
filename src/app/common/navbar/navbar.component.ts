@@ -61,6 +61,32 @@ export class NavbarComponent {
   }
 
   /**
+   * Close the collapsible navigation menu when clicking outside of it
+   */
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: MouseEvent): void {
+    const collapse = document.getElementById('navbarNav');
+    if (!collapse?.classList.contains('show')) return;
+
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('#navbarNav') || target?.closest('.navbar-toggler')) {
+      return;
+    }
+
+    const bootstrapCollapse = (
+      window as unknown as {
+        bootstrap?: { Collapse?: { getInstance(el: HTMLElement): { hide(): void } | null } };
+      }
+    ).bootstrap?.Collapse;
+    const instance = bootstrapCollapse?.getInstance(collapse);
+    if (instance) {
+      instance.hide();
+    } else {
+      collapse.classList.remove('show');
+    }
+  }
+
+  /**
    * Handle keyboard navigation in the navbar
    */
   @HostListener('keydown', ['$event'])

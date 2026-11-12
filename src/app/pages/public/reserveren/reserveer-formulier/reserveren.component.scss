@@ -1,3 +1,5 @@
+@use "../../../../../variables.scss" as *;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -225,10 +227,28 @@ input[type="number"] {
   justify-content: center;
   width: 100%;
 
-  button {
+  .terug-knop {
     position: absolute;
     left: 0;
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+    min-height: 44px;
+    padding: 0 $spacing-4;
+    border: 1px solid var(--app-border);
+    border-radius: $border-radius-md;
+    color: var(--app-text);
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+
+    mat-icon {
+      color: var(--app-text);
+    }
+
+    &:hover {
+      background-color: rgba(125, 179, 232, 0.15);
+    }
   }
 
   h2 {
@@ -244,7 +264,7 @@ input[type="number"] {
     align-items: flex-start;
     gap: 0.75rem;
 
-    button {
+    .terug-knop {
       position: static;
     }
 

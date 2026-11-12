@@ -151,8 +151,8 @@ html.lightMode {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: blur(4px);
-    -webkit-filter: blur(4px);
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
     transform: translateZ(0);
     will-change: transform;
     z-index: -1;
