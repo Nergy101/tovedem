@@ -178,9 +178,12 @@ body.lightMode {
 
 // Base text color inherits from body; no universal selectors needed.
 
-// Links: theme-aware with WCAG-AA contrast
-html.lightMode a,
-html.lightMode a[href] {
+// Links: theme-aware with WCAG-AA contrast.
+// :where() keeps specificity at element level so component-scoped link styles
+// (e.g. the navbar's `a { color: var(--mat-sys-on-background) }`) win and nav
+// texts stay white in dark mode instead of turning link-blue.
+:where(html.lightMode) a,
+:where(html.lightMode) a[href] {
   color: var(--app-link);
 
   &:hover {
@@ -192,8 +195,8 @@ html.lightMode a[href] {
   }
 }
 
-html.darkMode a,
-html.darkMode a[href] {
+:where(html.darkMode) a,
+:where(html.darkMode) a[href] {
   color: var(--app-link);
 
   &:hover {
@@ -203,6 +206,14 @@ html.darkMode a[href] {
   &:visited {
     color: var(--app-link);
   }
+}
+
+// Plain (non-colored) Material buttons and icon buttons: white text/icons in
+// dark mode. Material defaults these to primary / on-surface-variant (gray).
+// mat-icon inherits currentColor, so icons follow the button color.
+html.darkMode .mat-mdc-button:not([color]),
+html.darkMode .mat-mdc-icon-button:not([color]) {
+  color: var(--app-text);
 }
 
 a {
@@ -800,6 +811,9 @@ body > ngx-material-timepicker-container,
 }
 
 .divider {
+  // Blue accent: set the divider's own color token (wins over the gray
+  // outline-variant fallback) plus the border shorthand for good measure.
+  --mat-divider-color: var(--mat-sys-primary);
   border-width: 2px;
   border-color: var(--mat-sys-primary);
   margin: vars.$spacing-4 0;
