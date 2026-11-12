@@ -74,19 +74,19 @@ html.darkMode {
     )
   );
 
-  --mat-sys-background: #0f1218;
-  --mat-sys-surface: #0f1218;
-  --mat-sys-surface-container-lowest: #1a1d24;
-  --mat-sys-surface-container-low: #1f2229;
-  --mat-sys-surface-container: #25282f;
-  --mat-sys-surface-container-high: #2b2e35;
+  --mat-sys-background: #1b202b;
+  --mat-sys-surface: #1b202b;
+  --mat-sys-surface-container-lowest: #242a36;
+  --mat-sys-surface-container-low: #2b313e;
+  --mat-sys-surface-container: #343b49;
+  --mat-sys-surface-container-high: #3e4656;
 
   --app-text: #ffffff;
-  --app-text-muted: #c7c9d1;
-  --app-card-bg: #1a1d24;
-  --app-surface-raised: #1f2229;
-  --app-border: rgba(125, 179, 232, 0.15);
-  --app-link: #a8c8f0; // 10.88:1 on #0f1218 (WCAG AA)
+  --app-text-muted: #d6d8de;
+  --app-card-bg: #242a36;
+  --app-surface-raised: #2b313e;
+  --app-border: rgba(125, 179, 232, 0.22);
+  --app-link: #a8c8f0; // ~9:1 on #1b202b (WCAG AA)
   --app-link-hover: #d4e3f8;
   --app-error: #ffb4ab;
   --app-toast-success: #81c784;
@@ -101,7 +101,7 @@ html.darkMode {
   --mdc-outlined-text-field-focus-label-text-color: #7db3e8;
   --mdc-outlined-text-field-hover-outline-color: rgba(125, 179, 232, 0.55);
 
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
   color: var(--app-text);
 
   body {
@@ -116,7 +116,7 @@ body {
 }
 
 html.darkMode {
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
   transition: background-color vars.$transition-base vars.$ease-out;
 }
 
@@ -162,7 +162,7 @@ body.lightMode {
 
 body.darkMode {
   color: var(--app-text);
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
 }
 
 body.lightMode {
@@ -853,7 +853,7 @@ body > ngx-material-timepicker-container,
 .toast-container .toast-info    { border-left-color: var(--app-toast-info); }
 
 html.darkMode .toast-container .ngx-toastr {
-  background-color: rgba(30, 35, 46, 0.94);
+  background-color: rgba(36, 42, 54, 0.94);
   border-color: rgba(255, 255, 255, 0.07);
   color: var(--app-text);
 }

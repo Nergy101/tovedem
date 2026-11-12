@@ -200,7 +200,7 @@ html.darkMode .printable .ticket-content .voorstelling-info-bottom {
   font-size: 14pt;
   margin: 3mm 0 0 0;
   font-weight: 400;
-  color: #666;
+  color: var(--app-text-muted);
 }
 
 /* Reserveringen list styling */

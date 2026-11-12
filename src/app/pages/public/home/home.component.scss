@@ -123,6 +123,7 @@ h2 {
   align-items: center;
   justify-content: center;
   background-color: var(--mat-sys-surface);
+  border: 1px solid var(--app-border);
   max-width: fit-content;
   padding: $spacing-4 $spacing-6;
   border-radius: $border-radius-xl;
@@ -141,6 +142,11 @@ h2 {
   @media (max-width: 768px) {
     padding: $spacing-3 $spacing-4;
   }
+}
+
+// In dark mode the logo plate stays light so the dark logo stays readable
+:host-context(html.darkMode) .logo-card {
+  background-color: #eaf1fc;
 }
 
 .logo-image {

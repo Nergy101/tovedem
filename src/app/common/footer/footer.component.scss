@@ -90,7 +90,7 @@
 
 // Dark theme privacy section
 :host-context(html.darkMode) .privacy {
-  background-color: #0a0d12;
+  background-color: var(--mat-sys-surface-container-low);
   color: #d4d6da;
   border-top: 1px solid rgba(125, 179, 232, 0.1);
 
