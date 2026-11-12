@@ -19,6 +19,9 @@
 // overridden at runtime anymore (see ThemeService).
 
 html.lightMode {
+  // Required so Material's light-dark() tokens resolve to the light values
+  color-scheme: light;
+
   @include mat.theme(
     (
       color: $primary-palette,
@@ -65,6 +68,9 @@ html.lightMode {
 }
 
 html.darkMode {
+  // Required so Material's light-dark() tokens resolve to the dark values
+  color-scheme: dark;
+
   @include mat.theme(
     (
       color: $primary-palette-dark,
