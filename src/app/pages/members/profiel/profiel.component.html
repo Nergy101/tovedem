@@ -32,12 +32,12 @@
       @if (authService.hasAccessToSidenav()) {
         @if (sideDrawerService.isOpen()) {
           <button type="button" mat-stroked-button (click)="closeSideDrawer()">
-            <mat-icon>left_panel_close</mat-icon>
+            <mat-icon>close</mat-icon>
             Zijmenu sluiten
           </button>
         } @else {
           <button type="button" mat-flat-button (click)="openSideDrawer()">
-            <mat-icon>left_panel_open</mat-icon>
+            <mat-icon>menu_open</mat-icon>
             Zijmenu openen
           </button>
         }
