@@ -584,6 +584,19 @@ html.lightMode select {
   }
 }
 
+// Material form fields use a floating label, so a visible placeholder would
+// overlap it — hide placeholders inside mat-form-field only. Native inputs
+// above keep their visible, muted placeholders.
+.mat-mdc-form-field {
+  input::placeholder,
+  textarea::placeholder,
+  .mat-mdc-input-element::placeholder,
+  .mdc-text-field__input::placeholder {
+    color: transparent;
+    opacity: 0;
+  }
+}
+
 html.darkMode select,
 html.lightMode select {
   border: 1px solid var(--app-border);
