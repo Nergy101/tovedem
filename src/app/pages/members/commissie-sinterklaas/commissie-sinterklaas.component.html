@@ -6,7 +6,7 @@
       <div class="col-12 d-flex justify-content-between align-items-center">
         <p class="display-1 mb-0">Sinterklaas verzoeken</p>
         <div class="d-flex align-items-center gap-2">
-          <button mat-flat-button color="primary" (click)="createVerzoek()">
+          <button type="button" mat-flat-button color="primary" (click)="createVerzoek()">
             <mat-icon>add</mat-icon>
             Nieuw verzoek
           </button>
@@ -91,22 +91,22 @@
                   {{ item.status }}
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="updateStatus(item, 'nieuw')">
+                  <button type="button" mat-menu-item (click)="updateStatus(item, 'nieuw')">
                     nieuw
                   </button>
-                  <button
+                  <button type="button"
                     mat-menu-item
                     (click)="updateStatus(item, 'inbehandeling')"
                   >
                     in behandeling
                   </button>
-                  <button
+                  <button type="button"
                     mat-menu-item
                     (click)="updateStatus(item, 'ingepland')"
                   >
                     ingepland
                   </button>
-                  <button
+                  <button type="button"
                     mat-menu-item
                     (click)="updateStatus(item, 'afgerond')"
                   >
@@ -116,7 +116,7 @@
               </td>
               <td>{{ item.plannedDate }}</td>
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="editVerzoek(item)"
                   color="primary"
@@ -127,7 +127,7 @@
               </td>
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button mat-icon-button (click)="delete(item.id)" aria-label="Verwijderen">
+                <button type="button" mat-icon-button (click)="delete(item.id)" aria-label="Verwijderen">
                   <mat-icon color="warn">delete</mat-icon>
                 </button>
               </td>

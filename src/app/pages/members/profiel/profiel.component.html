@@ -20,7 +20,7 @@
       }
     </div>
     <div class="welkom-hero-acties">
-      <button
+      <button type="button"
         id="welkom-rondleiding-knop"
         mat-stroked-button
         (click)="startRondleiding()"
@@ -31,18 +31,18 @@
       </button>
       @if (authService.hasAccessToSidenav()) {
         @if (sideDrawerService.isOpen()) {
-          <button mat-stroked-button (click)="closeSideDrawer()">
+          <button type="button" mat-stroked-button (click)="closeSideDrawer()">
             <mat-icon>left_panel_close</mat-icon>
             Zijmenu sluiten
           </button>
         } @else {
-          <button mat-flat-button (click)="openSideDrawer()">
+          <button type="button" mat-flat-button (click)="openSideDrawer()">
             <mat-icon>left_panel_open</mat-icon>
             Zijmenu openen
           </button>
         }
       }
-      <button mat-button class="uitlog-knop" (click)="logout()">
+      <button type="button" mat-button class="uitlog-knop" (click)="logout()">
         <mat-icon>logout</mat-icon>
         Log uit
       </button>
@@ -116,7 +116,7 @@
                   {{ getNieuwsSamenvatting(item) }}
                 </p>
               }
-              <button
+              <button type="button"
                 mat-button
                 class="nieuws-toggle"
                 (click)="toggleNieuws(item)"
@@ -183,7 +183,7 @@
               </mat-card-content>
               @if (reservering.guid) {
                 <mat-card-actions>
-                  <button
+                  <button type="button"
                     mat-flat-button
                     (click)="
                       navigateTo(

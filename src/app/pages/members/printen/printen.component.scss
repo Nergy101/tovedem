@@ -138,7 +138,7 @@ html.darkMode .printable .ticket-content .voorstelling-info-bottom {
   page-break-inside: avoid;
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
-  background-color: white;
+  background-color: var(--mat-sys-surface);
 }
 
 /* When visible for PDF generation, use pixel-based sizing */
@@ -290,4 +290,18 @@ html.lightMode {
     vertical-align: top;
     white-space: pre-line;
   }
+}
+
+.warning-box {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color: #1a1d24;
+}
+
+.warning-box {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color: #1a1d24;
 }

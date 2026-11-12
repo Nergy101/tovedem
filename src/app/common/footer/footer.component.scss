@@ -18,15 +18,15 @@
 
 // Dark theme links section
 :host-context(html.darkMode) .links {
-  background-color: #0f1218;
-  color: #e8e9eb;
+  background-color: var(--mat-sys-background);
+  color: var(--app-text-muted);
   border-top: 1px solid rgba(125, 179, 232, 0.1);
 }
 
 // Light theme links section
 :host-context(html.lightMode) .links {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--mat-sys-surface);
+  color: var(--app-text);
   border-top: 1px solid rgba(125, 179, 232, 0.3);
 }
 
@@ -61,7 +61,7 @@
 }
 
 .version-label {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   opacity: 0.5;
   white-space: nowrap;
 }
@@ -140,7 +140,7 @@
 
 // Light theme privacy section
 :host-context(html.lightMode) .privacy {
-  background-color: #f5f9fe;
+  background-color: var(--mat-sys-surface-container-lowest);
   color: #1a1d24;
   border-top: 1px solid rgba(125, 179, 232, 0.3);
 
@@ -223,12 +223,12 @@ img {
 
 // Dark theme sponsors section
 :host-context(html.darkMode) .sponsors {
-  background-color: #1a1d24;
+  background-color: var(--app-card-bg);
 }
 
 // Light theme sponsors section
 :host-context(html.lightMode) .sponsors {
-  background-color: #ffffff;
+  background-color: var(--mat-sys-surface);
 }
 
 .sponsor-image {
@@ -321,10 +321,10 @@ ul {
 :host-context(html.darkMode) ul {
   li {
     a {
-      color: #e8e9eb;
+      color: var(--app-text-muted);
 
       &:visited {
-        color: #e8e9eb;
+        color: var(--app-text-muted);
       }
     }
 
@@ -342,10 +342,10 @@ ul {
 :host-context(html.lightMode) ul {
   li {
     a {
-      color: #000000;
+      color: var(--app-text);
 
       &:visited {
-        color: #000000;
+        color: var(--app-text);
       }
     }
 

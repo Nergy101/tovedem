@@ -96,7 +96,7 @@
 
 // Dark theme preview
 :host-context(html.darkMode) .preview-container {
-  background-color: #1a1d24;
+  background-color: var(--app-card-bg);
   border-color: rgba(125, 179, 232, 0.3);
 
   .file-info {
@@ -106,11 +106,11 @@
 
 // Light theme preview
 :host-context(html.lightMode) .preview-container {
-  background-color: #eaf1fc;
+  background-color: var(--mat-sys-surface-container-low);
   border-color: rgba(125, 179, 232, 0.5);
 
   .file-info {
-    color: #000000;
+    color: var(--app-text);
   }
 }
 

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="kiezer-titel">
   @if (gekozenFolder(); as folder) {
-  <button mat-icon-button aria-label="Terug naar albums" (click)="gekozenFolder.set(null)">
+  <button type="button" mat-icon-button aria-label="Terug naar albums" (click)="gekozenFolder.set(null)">
     <mat-icon>arrow_back</mat-icon>
   </button>
   {{ folder.naam }}

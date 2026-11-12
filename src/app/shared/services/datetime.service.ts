@@ -296,14 +296,14 @@ export class DateTimeService {
    * Format for "MMM d, yyyy [HH:mm]" pattern used in beheer tables.
    *
    * @param utcString - ISO datetime string from PocketBase (UTC)
-   * @returns Formatted string like "jan. 10, 2026 [19:30]"
+   * @returns Formatted string like "jan 10, 2026 [19:30]" (Dutch locale)
    */
   formatTableDateTime(utcString: string | null | undefined): string {
     const dt = this.toAmsterdamTime(utcString);
     if (!dt) return '';
 
-    // Use English locale for MMM format to match previous behavior
-    const datePart = dt.setLocale('en').toFormat('LLL d, yyyy');
+    // Dutch locale so month abbreviations match the rest of the UI
+    const datePart = dt.setLocale('nl').toFormat('LLL d, yyyy');
     const timePart = dt.toFormat('HH:mm');
     return `${datePart} [${timePart}]`;
   }

@@ -18,11 +18,11 @@
       @if (loading()) {
         <div class="nieuws-section">
           <mat-divider class="divider mb-4"></mat-divider>
-          <h2 class="text-center" style="font-size: x-large">Het Nieuws</h2>
+          <h2 class="text-center">Het Nieuws</h2>
           <app-skeleton-group type="news-card" [count]="1" />
         </div>
         <div class="voorstellingen section pt-4">
-          <h2 class="text-center" style="font-size: x-large">
+          <h2 class="text-center">
             Aankomende voorstellingen
           </h2>
           <mat-divider class="divider mb-4"></mat-divider>
@@ -32,7 +32,7 @@
         @if (nieuwsToPublish().length > 0) {
           <div class="nieuws-section">
             <mat-divider class="divider mb-4"></mat-divider>
-            <h2 class="text-center" style="font-size: x-large">Het Nieuws</h2>
+            <h2 class="text-center">Het Nieuws</h2>
             <mat-tab-group mat-stretch-tabs class="mat-elevation-z3" [class.single-item]="nieuwsToPublish().length <= 1" [disablePagination]="nieuwsToPublish().length <= 1">
               @for (nieuws of nieuwsToPublish(); track $index) {
                 <mat-tab [label]="getNieuwsLabel(nieuws)">
@@ -43,7 +43,7 @@
           </div>
         }
         <div class="voorstellingen section pt-4">
-          <h2 class="text-center" style="font-size: x-large">
+          <h2 class="text-center">
             Aankomende voorstellingen
           </h2>
           <mat-divider class="divider mb-4"></mat-divider>

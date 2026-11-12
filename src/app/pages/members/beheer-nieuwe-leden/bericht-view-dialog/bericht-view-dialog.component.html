@@ -1,6 +1,6 @@
 <div class="container header">
   <h2 mat-dialog-title class="display-6">Bericht van {{ naam }}</h2>
-  <button
+  <button type="button"
     mat-icon-button
     aria-label="Sluiten"
     tabindex="-1"
@@ -37,6 +37,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
-  <button mat-flat-button color="primary" (click)="close()">Sluiten</button>
+  <button type="button" mat-flat-button color="primary" (click)="close()">Sluiten</button>
 </mat-dialog-actions>
 

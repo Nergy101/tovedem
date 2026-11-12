@@ -46,13 +46,13 @@
               <td>{{ verzoek.subject }}</td>
               <td>
                 @if (verzoek.message && verzoek.message.length > 0) {
-                <button
+                <button type="button"
                   mat-button
                   class="bericht-button"
                   (click)="openBerichtDialog(verzoek)"
                   [matTooltip]="'Klik om volledig bericht te bekijken'"
                 >
-                  <mat-icon [style.color]="'#000'">chat_bubble_outline</mat-icon>
+                  <mat-icon>chat_bubble_outline</mat-icon>
                   <span>Bekijken</span>
                 </button>
                 } @else {
@@ -73,7 +73,7 @@
               </td>
               <td class="acties">
                 @if (!isGeaccepteerd(verzoek)) {
-                <button
+                <button type="button"
                   mat-flat-button
                   (click)="accepteer(verzoek)"
                   [disabled]="loading()"
@@ -84,7 +84,7 @@
                 </button>
                 }
                 @if (authService.isGlobalAdmin) {
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="delete(verzoek.id)"
                   [disabled]="loading()"

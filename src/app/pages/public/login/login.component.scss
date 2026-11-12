@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #f44336;
+  color: var(--app-error);
 
   mat-icon {
     flex-shrink: 0;
@@ -26,4 +26,8 @@
 .wachtwoord-vergeten-link {
   align-self: center;
   font-size: 0.875rem;
+}
+
+.error-text {
+  color: var(--app-error);
 }

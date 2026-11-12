@@ -64,7 +64,7 @@
 <div mat-dialog-actions align="end">
   <span class="aantal">{{ aantalGeselecteerd() }} geselecteerd</span>
   <button mat-button mat-dialog-close [disabled]="saving()">Annuleren</button>
-  <button
+  <button type="button"
     mat-flat-button
     color="primary"
     [disabled]="loading() || saving()"

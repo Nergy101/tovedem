@@ -96,7 +96,7 @@ img {
 
     .action-label {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.875rem;
       line-height: 1.1;
     }
 
@@ -112,7 +112,7 @@ img {
   ::ng-deep .actions,
   ::ng-deep mat-dialog-actions.actions,
   ::ng-deep mat-dialog-actions {
-    background-color: #1a1d24 !important;
+    background-color: var(--app-card-bg) !important;
     background: #1a1d24 !important;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5) !important;
 
@@ -127,7 +127,7 @@ img {
   .actions,
   ::ng-deep .actions,
   ::ng-deep mat-dialog-actions.actions {
-    background-color: #ffffff !important;
+    background-color: var(--mat-sys-surface) !important;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
   }
 }
@@ -171,7 +171,7 @@ img {
     .mat-mdc-button,
     button[mat-button],
     .mat-mdc-button-base {
-      color: #000000;
+      color: var(--app-text);
       font-weight: 500;
       border: 2px solid rgba(125, 179, 232, 0.5) !important;
       border-radius: 4px;
@@ -180,12 +180,12 @@ img {
       .mdc-button__label,
       .mat-mdc-button-persistent-ripple,
       .mat-ripple-element {
-        color: #000000;
+        color: var(--app-text);
       }
 
       mat-icon,
       .mat-icon {
-        color: #000000;
+        color: var(--app-text);
       }
 
       &:hover {

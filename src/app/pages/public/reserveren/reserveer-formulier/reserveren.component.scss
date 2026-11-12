@@ -132,7 +132,7 @@ input[type="number"] {
   background-color: rgba(244, 67, 54, 0.1);
   border-left: 4px solid #f44336;
   border-radius: 4px;
-  color: #f44336;
+  color: var(--app-error);
   font-size: 0.875rem;
 }
 
@@ -317,7 +317,7 @@ input[type="number"] {
 
 .opgevoerd-door {
   @media (max-width: 600px) {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     font-weight: normal;
   }
 }
@@ -395,7 +395,7 @@ input[type="number"] {
 }
 
 .step-label {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 500;
   text-align: center;
   opacity: 0.6;
@@ -423,7 +423,7 @@ input[type="number"] {
 
 @media (max-width: 600px) {
   .step-label {
-    font-size: 0.7rem;
+    font-size: 0.875rem;
   }
 
   .step-connector {
@@ -537,7 +537,7 @@ input[type="number"] {
   top: 0.75rem;
   right: 0.75rem;
   min-height: 36px;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 
   mat-icon {
     font-size: 1rem;
@@ -596,7 +596,7 @@ input[type="number"] {
   align-items: center;
   gap: 0.5em;
   margin: 0 0 0 0.75em;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--mat-sys-primary);
 
   mat-icon {
