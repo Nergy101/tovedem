@@ -100,7 +100,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (gebruiker of gebruikers(); track $index) {
+            @for (gebruiker of pagedGebruikers(); track gebruiker.id) {
             <tr
               class="klikbaar"
               [class.active]="isHuidigeGebruiker(gebruiker.id)"
@@ -195,6 +195,14 @@
             }
           </tbody>
         </table>
+        <mat-paginator
+          [length]="sortedGebruikers().length"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[10, 25, 50]"
+          (page)="onPageChange($event)"
+          aria-label="Paginering ledenlijst"
+        ></mat-paginator>
       </mat-card>
       } @placeholder {
       <app-skeleton-group type="table" [count]="5" />
