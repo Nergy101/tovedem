@@ -62,7 +62,8 @@ html.lightMode {
   color: var(--app-text);
 
   body {
-    background-color: var(--mat-sys-background);
+    // Transparent so the pattern ::before on <html> stays visible
+    background-color: transparent;
     color: var(--app-text);
   }
 }
