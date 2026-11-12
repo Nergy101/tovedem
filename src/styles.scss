@@ -235,9 +235,10 @@ html.lightMode .text-secondary {
   color: var(--app-text-muted);
 }
 
-// Typography hierarchy — colors inherit from the theme tokens
-html.darkMode,
-html.lightMode {
+// Typography hierarchy — colors inherit from the theme tokens.
+// :where() keeps specificity at element level so Bootstrap utility classes
+// (e.g. .display-1 with its light weight and large size) always win.
+:where(html.darkMode, html.lightMode) {
   h1,
   .h1 {
     font-size: vars.$font-size-4xl;
