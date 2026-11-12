@@ -33,6 +33,10 @@ export class ThemeService {
     const htmlElement = document.documentElement;
     const body = document.body;
 
+    // Keep Bootstrap 5.3 components (tables, cards, modals, dropdowns,
+    // form controls) in sync with the theme via its data-bs-theme attribute.
+    htmlElement.setAttribute('data-bs-theme', theme);
+
     if (theme === 'dark') {
       htmlElement.classList.add('darkMode');
       htmlElement.classList.remove('lightMode');

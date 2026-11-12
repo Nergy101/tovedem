@@ -107,6 +107,28 @@ html.darkMode {
   --app-toast-warning: #ffcc80;
   --app-toast-info: #a8c8f0;
 
+  // Bootstrap 5.3 component tokens (tables, cards, modals, dropdowns,
+  // form controls). Component-scoped `html.darkMode ...` rules never match
+  // (emulated encapsulation appends the content attribute to `html`), so
+  // these must live in this global stylesheet.
+  --bs-body-color: var(--app-text);
+  --bs-body-bg: var(--mat-sys-background);
+  --bs-border-color: var(--app-border);
+  --bs-secondary-color: var(--app-text-muted);
+  --bs-tertiary-bg: var(--app-surface-raised);
+
+  .table {
+    --bs-table-color: var(--app-text);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--app-border);
+    --bs-table-striped-color: var(--app-text);
+    --bs-table-striped-bg: rgba(125, 179, 232, 0.08);
+    --bs-table-active-color: var(--app-text);
+    --bs-table-active-bg: rgba(125, 179, 232, 0.16);
+    --bs-table-hover-color: var(--app-text);
+    --bs-table-hover-bg: rgba(125, 179, 232, 0.14);
+  }
+
   // Form field outline appearance
   --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3);
   --mdc-outlined-text-field-focus-outline-color: #7db3e8;
