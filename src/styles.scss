@@ -675,6 +675,28 @@ html.darkMode .table {
   --bs-table-hover-bg: var(--app-surface-raised);
 }
 
+// Explicit cell-level dark rules so table rows can never fall back to
+// Bootstrap's light --bs-body-bg, regardless of var resolution order.
+html.darkMode .table,
+html.darkMode .table > :not(caption) > * > * {
+  background-color: transparent;
+  color: var(--app-text);
+}
+
+html.darkMode .table > :not(caption) > * > * {
+  border-bottom-color: var(--app-border);
+  box-shadow: none;
+}
+
+html.darkMode .table thead th {
+  color: var(--app-text);
+  border-bottom-color: var(--app-border);
+}
+
+html.darkMode .table tbody tr:hover > * {
+  box-shadow: inset 0 0 0 9999px rgba(125, 179, 232, 0.14);
+}
+
 html.lightMode .table {
   --bs-table-color: var(--app-text);
   --bs-table-border-color: var(--app-border);
