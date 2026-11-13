@@ -10,7 +10,7 @@
       <h2>{{ draaiboek.titel }}</h2>
     </div>
     @if (kanBewerken()) {
-    <button mat-flat-button color="primary" (click)="bewerken()">
+    <button type="button" mat-flat-button color="primary" (click)="bewerken()">
       <mat-icon>edit</mat-icon>
       Bewerken
     </button>
@@ -45,7 +45,7 @@
     <span>
       Alleen taken voor <strong>{{ geselecteerdeRol() }}</strong>
     </span>
-    <button mat-button (click)="geselecteerdeRol.set(null)">
+    <button type="button" mat-button (click)="geselecteerdeRol.set(null)">
       <mat-icon>close</mat-icon>
       Alles tonen
     </button>

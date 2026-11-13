@@ -12,60 +12,16 @@
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
-// Dark theme - professional minimalistic blue pastel
-html.darkMode {
-  @include mat.theme(
-    (
-      color: $primary-palette-dark,
-      typography: "Roboto",
-      density: 0,
-      theme-type: dark,
-    )
-  );
+// ─── Theme tokens ───────────────────────────────────────────────────────────
+// Single source of truth for app-level colors. Component styles should use
+// these var(--app-*) tokens instead of hardcoded hex values.
+// Material's own --mat-sys-* tokens are set by mat.theme() below and are NOT
+// overridden at runtime anymore (see ThemeService).
 
-  // Professional blue pastel dark theme colors
-  --mat-sys-background: #0f1218;
-  --mat-sys-surface-container-lowest: #1a1d24;
-  --mat-sys-surface-container-low: #1f2229;
-  --mat-sys-surface-container: #25282f;
-  --mat-sys-surface-container-high: #2b2e35;
-  --mat-sys-surface: #0f1218;
-
-  // Override Material Design on-primary colors to ensure white text on blue backgrounds
-  --mat-sys-on-primary: #ffffff;
-  --mat-sys-on-primary-container: #ffffff;
-
-  // CRITICAL: Force ALL text colors to white for dark mode readability
-  --mat-sys-on-background: #ffffff !important;
-  --mat-sys-on-surface: #ffffff !important;
-  --mat-sys-on-surface-variant: #e8e9eb !important;
-  --mat-sys-on-surface-container: #ffffff !important;
-  --mat-sys-on-surface-container-low: #ffffff !important;
-  --mat-sys-on-surface-container-high: #ffffff !important;
-  --mat-sys-on-surface-container-lowest: #ffffff !important;
-
-  // Form field outline appearance colors
-  --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3) !important;
-  --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
-  --mdc-outlined-text-field-label-text-color: rgba(
-    232,
-    233,
-    235,
-    0.7
-  ) !important;
-  --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
-
-  background-color: #0f1218;
-  color: #ffffff !important;
-
-  body {
-    background-color: var(--mat-sys-background);
-    color: #ffffff !important;
-  }
-}
-
-// Light theme - white backgrounds, black text, same blue accents
 html.lightMode {
+  // Required so Material's light-dark() tokens resolve to the light values
+  color-scheme: light;
+
   @include mat.theme(
     (
       color: $primary-palette,
@@ -75,37 +31,117 @@ html.lightMode {
     )
   );
 
-  // Light theme colors - white backgrounds, black text
   --mat-sys-background: #ffffff;
+  --mat-sys-surface: #ffffff;
   --mat-sys-surface-container-lowest: #f5f9fe;
   --mat-sys-surface-container-low: #eaf1fc;
   --mat-sys-surface-container: #d4e3f8;
   --mat-sys-surface-container-high: #a8c8f0;
-  --mat-sys-surface: #ffffff;
 
-  // Text colors for light theme - black/dark text
-  --mat-sys-on-primary: #ffffff;
-  --mat-sys-on-primary-container: #001d35;
-  --mat-sys-on-background: #000000 !important;
-  --mat-sys-on-surface: #000000 !important;
-  --mat-sys-on-surface-variant: #1a1d24 !important;
-  --mat-sys-on-surface-container: #000000 !important;
-  --mat-sys-on-surface-container-low: #000000 !important;
-  --mat-sys-on-surface-container-high: #000000 !important;
-  --mat-sys-on-surface-container-lowest: #000000 !important;
+  --app-text: #1a1d24;
+  --app-text-muted: #4a5568;
+  --app-card-bg: #ffffff;
+  --app-surface-raised: #f5f9fe;
+  --app-border: rgba(125, 179, 232, 0.4);
+  --app-link: #1a5c96; // 6.96:1 on white (WCAG AA)
+  --app-link-hover: #003d66; // 11.29:1 on white
+  --app-error: #ba1a1a;
+  --app-toast-success: #2e7d32;
+  --app-toast-error: #ba1a1a;
+  --app-toast-warning: #b26a00;
+  --app-toast-info: #005e93;
 
-  // Form field outline appearance colors for light theme
-  --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.5) !important;
-  --mdc-outlined-text-field-focus-outline-color: #7db3e8 !important;
-  --mdc-outlined-text-field-label-text-color: rgba(0, 0, 0, 0.6) !important;
-  --mdc-outlined-text-field-focus-label-text-color: #7db3e8 !important;
+  // Form field outline appearance
+  --mdc-outlined-text-field-outline-color: rgba(26, 92, 150, 0.45);
+  --mdc-outlined-text-field-focus-outline-color: #1a5c96;
+  --mdc-outlined-text-field-label-text-color: rgba(26, 29, 36, 0.65);
+  --mdc-outlined-text-field-focus-label-text-color: #1a5c96;
+  --mdc-outlined-text-field-hover-outline-color: rgba(26, 92, 150, 0.7);
 
   background-color: #ffffff;
-  // color: #000000;
+  color: var(--app-text);
+
+  body {
+    // Transparent so the pattern ::before on <html> stays visible
+    background-color: transparent;
+    color: var(--app-text);
+  }
+}
+
+html.darkMode {
+  // Required so Material's light-dark() tokens resolve to the dark values
+  color-scheme: dark;
+
+  @include mat.theme(
+    (
+      color: $primary-palette-dark,
+      typography: "Roboto",
+      density: 0,
+      theme-type: dark,
+    )
+  );
+
+  --mat-sys-background: #1b202b;
+  --mat-sys-surface: #1b202b;
+  --mat-sys-surface-container-lowest: #242a36;
+  --mat-sys-surface-container-low: #2b313e;
+  --mat-sys-surface-container: #343b49;
+  --mat-sys-surface-container-high: #3e4656;
+
+  // Force near-white text tokens in dark mode (the palette's neutral-90 gray
+  // is too dim); Material components read these for their text color.
+  --mat-sys-on-background: #ffffff;
+  --mat-sys-on-surface: #ffffff;
+  --mat-sys-on-surface-variant: #d6d8de;
+
+  --app-text: #ffffff;
+  --app-text-muted: #d6d8de;
+  --app-card-bg: #242a36;
+  --app-surface-raised: #2b313e;
+  --app-border: rgba(125, 179, 232, 0.22);
+  --app-link: #a8c8f0; // ~9:1 on #1b202b (WCAG AA)
+  --app-link-hover: #d4e3f8;
+  --app-error: #ffb4ab;
+  --app-toast-success: #81c784;
+  --app-toast-error: #ff8a80;
+  --app-toast-warning: #ffcc80;
+  --app-toast-info: #a8c8f0;
+
+  // Bootstrap 5.3 component tokens (tables, cards, modals, dropdowns,
+  // form controls). Component-scoped `html.darkMode ...` rules never match
+  // (emulated encapsulation appends the content attribute to `html`), so
+  // these must live in this global stylesheet.
+  --bs-body-color: var(--app-text);
+  --bs-body-bg: var(--mat-sys-background);
+  --bs-border-color: var(--app-border);
+  --bs-secondary-color: var(--app-text-muted);
+  --bs-tertiary-bg: var(--app-surface-raised);
+
+  .table {
+    --bs-table-color: var(--app-text);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--app-border);
+    --bs-table-striped-color: var(--app-text);
+    --bs-table-striped-bg: rgba(125, 179, 232, 0.08);
+    --bs-table-active-color: var(--app-text);
+    --bs-table-active-bg: rgba(125, 179, 232, 0.16);
+    --bs-table-hover-color: var(--app-text);
+    --bs-table-hover-bg: rgba(125, 179, 232, 0.14);
+  }
+
+  // Form field outline appearance
+  --mdc-outlined-text-field-outline-color: rgba(125, 179, 232, 0.3);
+  --mdc-outlined-text-field-focus-outline-color: #7db3e8;
+  --mdc-outlined-text-field-label-text-color: rgba(232, 233, 235, 0.7);
+  --mdc-outlined-text-field-focus-label-text-color: #7db3e8;
+  --mdc-outlined-text-field-hover-outline-color: rgba(125, 179, 232, 0.55);
+
+  background-color: var(--mat-sys-background);
+  color: var(--app-text);
 
   body {
     background-color: var(--mat-sys-background);
-    // color: #000000;
+    color: var(--app-text);
   }
 }
 
@@ -115,7 +151,7 @@ body {
 }
 
 html.darkMode {
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
   transition: background-color vars.$transition-base vars.$ease-out;
 }
 
@@ -137,8 +173,8 @@ html.lightMode {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: blur(4px);
-    -webkit-filter: blur(4px);
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
     transform: translateZ(0);
     will-change: transform;
     z-index: -1;
@@ -146,299 +182,163 @@ html.lightMode {
   }
 }
 
-body.darkMode {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  display: flex;
-  font-size: vars.$font-size-base;
-  line-height: vars.$line-height-normal;
-  color: #ffffff !important;
-  background-color: #0f1218;
-  transition: background-color vars.$transition-base vars.$ease-out,
-    color vars.$transition-base vars.$ease-out;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+body.darkMode,
 body.lightMode {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   display: flex;
   font-size: vars.$font-size-base;
   line-height: vars.$line-height-normal;
-  color: #000000;
-  background-color: transparent !important;
   transition: background-color vars.$transition-base vars.$ease-out,
     color vars.$transition-base vars.$ease-out;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-// AGGRESSIVE GLOBAL RULE: Force ALL text to white for dark mode (with specific exceptions)
-// Target all text-containing elements specifically
-html.darkMode *,
-html.darkMode *::before,
-html.darkMode *::after {
-  color: #ffffff;
+body.darkMode {
+  color: var(--app-text);
+  background-color: var(--mat-sys-background);
 }
 
-// Light mode: Force ALL text to black
-html.lightMode *,
-html.lightMode *::before,
-html.lightMode *::after {
-  color: #000000;
+body.lightMode {
+  color: var(--app-text);
+  background-color: transparent;
 }
 
-// Exceptions for specific elements that should NOT be forced
-img,
-svg,
-canvas,
-video,
-iframe,
-input[type="image"],
-.mat-mdc-icon-button[color="primary"] mat-icon,
-.mat-mdc-button[color="primary"] mat-icon,
-.mat-mdc-raised-button[color="primary"] mat-icon {
-  color: inherit !important;
-}
+// Base text color inherits from body; no universal selectors needed.
 
-// Ensure links are visible (primary color) - override the universal selector
-a[href],
-a {
-  color: var(--mat-sys-primary) !important;
+// Links: theme-aware with WCAG-AA contrast.
+// :where() keeps specificity at element level so component-scoped link styles
+// (e.g. the navbar's `a { color: var(--mat-sys-on-background) }`) win and nav
+// texts stay white in dark mode instead of turning link-blue.
+:where(html.lightMode) a,
+:where(html.lightMode) a[href] {
+  color: var(--app-link);
 
   &:hover {
-    color: var(--mat-sys-primary-container) !important;
+    color: var(--app-link-hover);
   }
 
   &:visited {
-    color: var(--mat-sys-primary) !important;
+    color: var(--app-link);
   }
 }
 
-// Override Bootstrap text utility classes
-html.darkMode .text-dark,
-html.darkMode .text-black {
-  color: #ffffff !important;
+:where(html.darkMode) a,
+:where(html.darkMode) a[href] {
+  color: var(--app-link);
+
+  &:hover {
+    color: var(--app-link-hover);
+  }
+
+  &:visited {
+    color: var(--app-link);
+  }
 }
 
-html.lightMode .text-dark,
-html.lightMode .text-black {
-  color: #000000;
-}
-
-html.darkMode .text-muted,
-html.darkMode .text-secondary {
-  color: #e8e9eb !important;
-}
-
-html.lightMode .text-muted,
-html.lightMode .text-secondary {
-  color: #666666 !important;
-}
-
-// Bootstrap display classes
-html.darkMode .display-1,
-html.darkMode .display-2,
-html.darkMode .display-3,
-html.darkMode .display-4,
-html.darkMode .display-5,
-html.darkMode .display-6 {
-  color: #ffffff !important;
-}
-
-html.lightMode .display-1,
-html.lightMode .display-2,
-html.lightMode .display-3,
-html.lightMode .display-4,
-html.lightMode .display-5,
-html.lightMode .display-6 {
-  color: #000000;
-}
-
-// Typography hierarchy - Dark theme white text
-html.darkMode h1,
-html.darkMode .h1 {
-  font-size: vars.$font-size-4xl;
-  font-weight: vars.$font-weight-bold;
-  line-height: vars.$line-height-tight;
-  letter-spacing: vars.$letter-spacing-tight;
-  margin-bottom: vars.$spacing-6;
-  color: #ffffff !important;
-}
-
-html.lightMode h1,
-html.lightMode .h1 {
-  font-size: vars.$font-size-4xl;
-  font-weight: vars.$font-weight-bold;
-  line-height: vars.$line-height-tight;
-  letter-spacing: vars.$letter-spacing-tight;
-  margin-bottom: vars.$spacing-6;
-  color: #000000;
-}
-
-html.darkMode h2,
-html.darkMode .h2 {
-  font-size: vars.$font-size-3xl;
-  font-weight: vars.$font-weight-semibold;
-  line-height: vars.$line-height-tight;
-  letter-spacing: vars.$letter-spacing-normal;
-  margin-bottom: vars.$spacing-5;
-  color: #ffffff !important;
-}
-
-html.lightMode h2,
-html.lightMode .h2 {
-  font-size: vars.$font-size-3xl;
-  font-weight: vars.$font-weight-semibold;
-  line-height: vars.$line-height-tight;
-  letter-spacing: vars.$letter-spacing-normal;
-  margin-bottom: vars.$spacing-5;
-  color: #000000;
-}
-
-html.darkMode h3,
-html.darkMode .h3 {
-  font-size: vars.$font-size-2xl;
-  font-weight: vars.$font-weight-semibold;
-  line-height: vars.$line-height-normal;
-  letter-spacing: vars.$letter-spacing-normal;
-  margin-bottom: vars.$spacing-4;
-  color: #ffffff !important;
-}
-
-html.lightMode h3,
-html.lightMode .h3 {
-  font-size: vars.$font-size-2xl;
-  font-weight: vars.$font-weight-semibold;
-  line-height: vars.$line-height-normal;
-  letter-spacing: vars.$letter-spacing-normal;
-  margin-bottom: vars.$spacing-4;
-  color: #000000;
-}
-
-html.darkMode h4,
-html.darkMode .h4 {
-  font-size: vars.$font-size-xl;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-3;
-  color: #ffffff !important;
-}
-
-html.lightMode h4,
-html.lightMode .h4 {
-  font-size: vars.$font-size-xl;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-3;
-  color: #000000;
-}
-
-html.darkMode h5,
-html.darkMode .h5 {
-  font-size: vars.$font-size-lg;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-2;
-  color: #ffffff !important;
-}
-
-html.lightMode h5,
-html.lightMode .h5 {
-  font-size: vars.$font-size-lg;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-2;
-  color: #000000;
-}
-
-html.darkMode h6,
-html.darkMode .h6 {
-  font-size: vars.$font-size-base;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-2;
-  color: #ffffff !important;
-}
-
-html.lightMode h6,
-html.lightMode .h6 {
-  font-size: vars.$font-size-base;
-  font-weight: vars.$font-weight-medium;
-  line-height: vars.$line-height-normal;
-  margin-bottom: vars.$spacing-2;
-  color: #000000;
-}
-
-html.darkMode p {
-  margin-bottom: vars.$spacing-4;
-  line-height: vars.$line-height-relaxed;
-  color: #ffffff !important;
-}
-
-html.lightMode p {
-  margin-bottom: vars.$spacing-4;
-  line-height: vars.$line-height-relaxed;
-  color: #000000;
-}
-
-// Force all text elements to white (dark) or black (light)
-html.darkMode span,
-html.darkMode div,
-html.darkMode li,
-html.darkMode ul,
-html.darkMode ol,
-html.darkMode td,
-html.darkMode th,
-html.darkMode label,
-html.darkMode strong,
-html.darkMode em,
-html.darkMode b,
-html.darkMode i,
-html.darkMode blockquote,
-html.darkMode pre,
-html.darkMode code {
-  color: #ffffff !important;
-}
-
-html.lightMode span,
-html.lightMode div,
-html.lightMode li,
-html.lightMode ul,
-html.lightMode ol,
-html.lightMode td,
-html.lightMode th,
-html.lightMode label,
-html.lightMode strong,
-html.lightMode em,
-html.lightMode b,
-html.lightMode i,
-html.lightMode blockquote,
-html.lightMode pre,
-html.lightMode code {
-  color: #000000;
+// Plain (non-colored) Material buttons and icon buttons: white text/icons in
+// dark mode. Material defaults these to primary / on-surface-variant (gray).
+// mat-icon inherits currentColor, so icons follow the button color.
+html.darkMode .mat-mdc-button:not([color]),
+html.darkMode .mat-mdc-icon-button:not([color]) {
+  color: var(--app-text);
 }
 
 a {
-  color: var(--mat-sys-primary);
   text-decoration: none;
   transition: color vars.$transition-base vars.$ease-out;
 
   &:hover {
-    color: var(--mat-sys-primary-container);
     text-decoration: underline;
-  }
-
-  &:visited {
-    color: var(--mat-sys-primary);
   }
 
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 3px;
     border-radius: vars.$border-radius-sm;
-    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.3);
+  }
+}
+
+// Bootstrap text utility classes follow the theme
+html.darkMode .text-dark,
+html.darkMode .text-black {
+  color: var(--app-text);
+}
+
+html.lightMode .text-dark,
+html.lightMode .text-black {
+  color: var(--app-text);
+}
+
+html.darkMode .text-muted,
+html.darkMode .text-secondary {
+  color: var(--app-text-muted);
+}
+
+html.lightMode .text-muted,
+html.lightMode .text-secondary {
+  color: var(--app-text-muted);
+}
+
+// Typography hierarchy — colors inherit from the theme tokens.
+// :where() keeps specificity at element level so Bootstrap utility classes
+// (e.g. .display-1 with its light weight and large size) always win.
+:where(html.darkMode, html.lightMode) {
+  h1,
+  .h1 {
+    font-size: vars.$font-size-4xl;
+    font-weight: vars.$font-weight-bold;
+    line-height: vars.$line-height-tight;
+    letter-spacing: vars.$letter-spacing-tight;
+    margin-bottom: vars.$spacing-6;
+  }
+
+  h2,
+  .h2 {
+    font-size: vars.$font-size-3xl;
+    font-weight: vars.$font-weight-semibold;
+    line-height: vars.$line-height-tight;
+    letter-spacing: vars.$letter-spacing-normal;
+    margin-bottom: vars.$spacing-5;
+  }
+
+  h3,
+  .h3 {
+    font-size: vars.$font-size-2xl;
+    font-weight: vars.$font-weight-semibold;
+    line-height: vars.$line-height-normal;
+    letter-spacing: vars.$letter-spacing-normal;
+    margin-bottom: vars.$spacing-4;
+  }
+
+  h4,
+  .h4 {
+    font-size: vars.$font-size-xl;
+    font-weight: vars.$font-weight-medium;
+    line-height: vars.$line-height-normal;
+    margin-bottom: vars.$spacing-3;
+  }
+
+  h5,
+  .h5 {
+    font-size: vars.$font-size-lg;
+    font-weight: vars.$font-weight-medium;
+    line-height: vars.$line-height-normal;
+    margin-bottom: vars.$spacing-2;
+  }
+
+  h6,
+  .h6 {
+    font-size: vars.$font-size-base;
+    font-weight: vars.$font-weight-medium;
+    line-height: vars.$line-height-normal;
+    margin-bottom: vars.$spacing-2;
+  }
+
+  p {
+    margin-bottom: vars.$spacing-4;
+    line-height: vars.$line-height-relaxed;
   }
 }
 
@@ -455,7 +355,7 @@ a {
   align-items: center;
 }
 
-// Button utilities
+// Button base
 button {
   transition: background-color vars.$transition-base vars.$ease-out,
     color vars.$transition-base vars.$ease-out,
@@ -465,7 +365,6 @@ button {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 3px;
     border-radius: vars.$border-radius-sm;
-    box-shadow: 0 0 0 3px rgba(var(--mat-sys-primary-rgb, 125, 179, 232), 0.3);
   }
 
   &:focus:not(:focus-visible) {
@@ -473,15 +372,13 @@ button {
   }
 }
 
-// Enhanced focus indicators for all interactive elements
-// Ensure visible focus indicators for keyboard navigation (accessibility)
+// Visible focus indicators for keyboard navigation (accessibility)
 *:focus-visible {
-  outline: 1px solid var(--mat-sys-primary);
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: 2px;
   border-radius: vars.$border-radius-sm;
-  box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.3);
 }
 
-// Remove focus outline for mouse users (only show for keyboard)
 *:focus:not(:focus-visible) {
   outline: none;
 }
@@ -493,52 +390,24 @@ select {
     outline: 3px solid var(--mat-sys-primary);
     outline-offset: 2px;
     border-radius: vars.$border-radius-sm;
-    box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.2);
   }
 }
 
 mat-checkbox,
-mat-radio-button {
-  &:focus-visible {
-    outline: 3px solid var(--mat-sys-primary);
-    outline-offset: 2px;
-    border-radius: vars.$border-radius-sm;
-  }
-}
-
-// Focus indicators for Material components
+mat-radio-button,
 .mat-mdc-button,
 .mat-mdc-raised-button,
 .mat-mdc-flat-button,
-.mat-mdc-fab {
-  &:focus-visible {
-    outline: 3px solid var(--mat-sys-primary);
-    outline-offset: 2px;
-    border-radius: vars.$border-radius-sm;
-  }
-}
-
-// Focus indicators for links
-a {
-  &:focus-visible {
-    outline: 3px solid var(--mat-sys-primary);
-    outline-offset: 3px;
-    border-radius: vars.$border-radius-sm;
-    box-shadow: 0 0 0 3px rgba(125, 179, 232, 0.3);
-  }
-}
-
-// Focus indicators for menu items
+.mat-mdc-fab,
 .mat-mdc-menu-item,
 .mat-mdc-list-item {
   &:focus-visible {
     outline: 3px solid var(--mat-sys-primary);
-    outline-offset: -2px;
+    outline-offset: 2px;
     border-radius: vars.$border-radius-sm;
   }
 }
 
-// Ensure skip links are visible when focused
 .skip-to-content {
   &:focus-visible {
     top: 0;
@@ -548,86 +417,85 @@ a {
   }
 }
 
-// Form field improvements - ensure outline appearance
-mat-form-field {
-  // Force outline appearance for all form fields
-  .mat-mdc-form-field-focus-overlay {
-    background-color: transparent !important;
-  }
+// Primary buttons: Material already maps color="primary" to
+// --mat-sys-primary bg + --mat-sys-on-primary text, which is WCAG-AA in both
+// themes (#005e93/white in light, #a8c8f0/#002d4d in dark). Only shape here.
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: vars.$border-radius-md;
 
-  &.mat-focused {
-    .mat-mdc-form-field-outline-thick {
-      color: #7db3e8 !important; // Primary blue when focused
-    }
+  &:hover {
+    box-shadow: 0 4px 8px rgba(29, 125, 179, 0.2);
   }
 }
 
-// Card improvements - minimalistic theater aesthetic
-html.darkMode mat-card {
+// Cards
+html.darkMode mat-card,
+html.darkMode .mat-mdc-card {
+  background-color: var(--app-card-bg);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
+  border-radius: vars.$border-radius-lg;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   transition: box-shadow vars.$transition-base vars.$ease-out,
     border-color vars.$transition-base vars.$ease-out,
     background-color vars.$transition-base vars.$ease-out;
-  background-color: #1a1d24 !important;
-  border: 1px solid rgba(125, 179, 232, 0.1);
-  border-radius: vars.$border-radius-lg;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 
   &:hover {
     box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
   }
 }
 
-html.lightMode mat-card {
+html.lightMode mat-card,
+html.lightMode .mat-mdc-card {
+  background-color: var(--app-card-bg);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
+  border-radius: vars.$border-radius-lg;
+  box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
   transition: box-shadow vars.$transition-base vars.$ease-out,
     border-color vars.$transition-base vars.$ease-out,
     background-color vars.$transition-base vars.$ease-out;
-  background-color: #eaf1fc !important;
-  border: 1px solid rgba(125, 179, 232, 0.4);
-  border-radius: vars.$border-radius-lg;
-  box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
 
   &:hover {
     box-shadow: 0 12px 40px 0 rgba(125, 179, 232, 0.2);
   }
 }
 
-// Container improvements - ensure containers use theme-aware backgrounds
 .container,
 .container-fluid {
   background-color: transparent;
 }
 
-// Add bottom spacing to containers to prevent overlap with footer
 .container.mat-elevation-z2 {
   margin-bottom: vars.$spacing-12;
 
-  @media (max-width: 768px) {
+  @media (max-width: vars.$bp-md) {
     margin-bottom: vars.$spacing-8;
   }
 }
 
-// Form containers in light theme - add subtle card-like background
+// Form containers
 html.lightMode form,
 html.lightMode .contact-form,
 html.lightMode .reservation-form,
 html.lightMode .sinterklaas-form,
 html.lightMode .lid-worden-form,
 html.lightMode .vriend-worden-form {
-  background-color: #f5f9fe;
+  background-color: var(--app-surface-raised);
   padding: vars.$spacing-4;
   margin-bottom: vars.$spacing-12;
   border-radius: vars.$border-radius-lg;
-  border: 1px solid rgba(125, 179, 232, 0.3);
+  border: 1px solid var(--app-border);
   transition: background-color vars.$transition-base vars.$ease-out,
     border-color vars.$transition-base vars.$ease-out;
 
-  @media (max-width: 768px) {
+  @media (max-width: vars.$bp-md) {
     padding: vars.$spacing-3;
     margin-bottom: vars.$spacing-8;
   }
 }
 
-// Form containers in dark theme - add bottom margin
 html.darkMode form,
 html.darkMode .contact-form,
 html.darkMode .reservation-form,
@@ -636,742 +504,116 @@ html.darkMode .lid-worden-form,
 html.darkMode .vriend-worden-form {
   margin-bottom: vars.$spacing-12;
 
-  @media (max-width: 768px) {
+  @media (max-width: vars.$bp-md) {
     margin-bottom: vars.$spacing-8;
   }
 }
 
-// Ensure all Material components use theme colors
-html.darkMode .mat-mdc-card {
-  background-color: #1a1d24 !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(125, 179, 232, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-
-  * {
-    color: #ffffff !important;
-  }
-
-  &:hover {
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+// Material form fields — theme-aware via tokens set in the theme blocks above
+mat-form-field {
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
   }
 }
 
-html.lightMode .mat-mdc-card {
-  background-color: #ffffff !important;
-  color: #000000;
-  border: 1px solid rgba(125, 179, 232, 0.4);
-  box-shadow: 0 8px 32px 0 rgba(125, 179, 232, 0.15);
-
-  &:hover {
-    box-shadow: 0 12px 40px 0 rgba(125, 179, 232, 0.2);
-  }
-}
-
-// Force Material list items to theme colors
-html.darkMode mat-list-item,
-html.darkMode mat-list-item * {
-  color: #ffffff !important;
-}
-
-html.lightMode mat-list-item,
-html.lightMode mat-list-item * {
-  color: #000000;
-}
-
-// Force Material dialog content to theme colors
-html.darkMode mat-dialog-container,
-html.darkMode mat-dialog-container * {
-  color: #ffffff !important;
-}
-
-html.lightMode mat-dialog-container,
-html.lightMode mat-dialog-container * {
-  color: #000000;
-}
-
-// Style dialog close buttons in header
-html.darkMode mat-dialog-container .header button[mat-icon-button],
-html.darkMode mat-dialog-container .header .mat-mdc-icon-button {
-  color: #ffffff !important;
-
-  mat-icon,
-  .mat-icon {
-    color: #ffffff !important;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.3) !important;
-
-    mat-icon,
-    .mat-icon {
-      color: #ffffff !important;
-    }
-  }
-}
-
-html.lightMode mat-dialog-container .header button[mat-icon-button],
-html.lightMode mat-dialog-container .header .mat-mdc-icon-button {
-  color: #000000;
-
-  mat-icon,
-  .mat-icon {
-    color: #000000;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.2) !important;
-
-    mat-icon,
-    .mat-icon {
-      color: #000000;
-    }
-  }
-}
-
-// Ensure dialog container background is transparent for image preview
-html.darkMode mat-dialog-container {
-  background-color: transparent !important;
-  background: transparent !important;
-}
-
-// Image preview dialog - dark theme actions bar
-html.darkMode mat-dialog-container .actions,
-html.darkMode mat-dialog-container mat-dialog-actions.actions,
-html.darkMode mat-dialog-container mat-dialog-actions,
-html.darkMode .cdk-overlay-container mat-dialog-container .actions,
-html.darkMode .cdk-overlay-container mat-dialog-container mat-dialog-actions {
-  background-color: #1a1d24 !important;
-  background: #1a1d24 !important;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5) !important;
-
-  &::before {
-    background-color: #1a1d24 !important;
-    background: #1a1d24 !important;
-  }
-
-  * {
-    background-color: transparent !important;
-  }
-}
-
-// Image preview dialog - light theme actions bar
-html.lightMode mat-dialog-container .actions,
-html.lightMode mat-dialog-container mat-dialog-actions.actions {
-  background-color: #ffffff !important;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2) !important;
-}
-
-// Image preview dialog - dark theme buttons
-html.darkMode mat-dialog-container .actions button,
-html.darkMode mat-dialog-container .actions .mat-mdc-button,
-html.darkMode mat-dialog-container .actions button[mat-button] {
-  color: #ffffff !important;
-  font-weight: 500;
-  border: 2px solid rgba(125, 179, 232, 0.5) !important;
-  border-radius: 4px;
-  background-color: transparent !important;
-
-  .mdc-button__label {
-    color: #ffffff !important;
-  }
-
-  mat-icon,
-  .mat-icon {
-    color: #ffffff !important;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.2) !important;
-    border-color: #7db3e8 !important;
-  }
-}
-
-// Image preview dialog - light theme buttons
-html.lightMode mat-dialog-container .actions button,
-html.lightMode mat-dialog-container .actions .mat-mdc-button,
-html.lightMode mat-dialog-container .actions button[mat-button] {
-  color: #000000;
-  font-weight: 500;
-  border: 2px solid rgba(125, 179, 232, 0.5) !important;
-  border-radius: 4px;
-  background-color: transparent !important;
-
-  .mdc-button__label {
-    color: #000000;
-  }
-
-  mat-icon,
-  .mat-icon {
-    color: #000000;
-  }
-
-  &:hover {
-    background-color: rgba(125, 179, 232, 0.1) !important;
-    border-color: #7db3e8 !important;
-  }
-}
-
-// Force Material tab labels to theme colors
-html.darkMode mat-tab-label,
-html.darkMode mat-tab-label * {
-  color: #ffffff !important;
-}
-
-html.lightMode mat-tab-label,
-html.lightMode mat-tab-label * {
-  color: #000000;
-}
-
-// Make tab labels smaller on mobile
-@media (max-width: 768px) {
-  html.lightMode .mat-mdc-tab-label,
-  html.darkMode .mat-mdc-tab-label {
-    min-width: auto !important;
-    padding: 0 0.5rem !important;
-    font-size: 0.75rem !important;
-  }
-}
-
-// Ensure Material tabs have solid backgrounds
-html.lightMode mat-tab-group {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-mdc-tab-group {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-mdc-tab-header {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-mdc-tab-body-wrapper {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-mdc-tab-body {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-mdc-tab-body-content {
-  background-color: #eaf1fc !important;
-}
-
-// Ensure sections have solid backgrounds
-html.lightMode .section {
-  background-color: #eaf1fc !important;
-}
-
-html.darkMode .section {
-  background-color: #1a1d24 !important;
-}
-
-// Force Material expansion panel to theme colors
-html.darkMode mat-expansion-panel,
-html.darkMode mat-expansion-panel * {
-  color: #ffffff !important;
-}
-
-html.lightMode mat-expansion-panel,
-html.lightMode mat-expansion-panel * {
-  color: #000000;
-}
-
-// Ensure Material expansion panels have solid backgrounds
-html.lightMode mat-expansion-panel {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-expansion-panel-body {
-  background-color: #eaf1fc !important;
-}
-
-// Force Material menu to theme colors
-html.darkMode mat-menu,
-html.darkMode .mat-mdc-menu-panel,
-html.darkMode .mat-mdc-menu-panel * {
-  color: #ffffff !important;
-}
-
-html.lightMode mat-menu,
-html.lightMode .mat-mdc-menu-panel,
-html.lightMode .mat-mdc-menu-panel * {
-  color: #000000;
-}
-
-// Force Material tooltip to theme colors
-html.darkMode mat-tooltip,
-html.darkMode .mat-mdc-tooltip {
-  color: #ffffff !important;
-}
-
-html.darkMode .mat-mdc-tooltip__surface,
-html.darkMode .mdc-tooltip__surface {
-  background-color: rgba(0, 0, 0, 0.9) !important;
-  color: #ffffff !important;
-  --mdc-plain-tooltip-container-color: rgba(0, 0, 0, 0.9) !important;
-  --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
-}
-
-html.lightMode mat-tooltip,
-html.lightMode .mat-mdc-tooltip {
-  color: #000000;
-}
-
-html.lightMode .mat-mdc-tooltip__surface,
-html.lightMode .mdc-tooltip__surface {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  color: #000000;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
-  --mdc-plain-tooltip-supporting-text-color: #000000;
-}
-
-// Also target the overlay container
-html.lightMode .cdk-overlay-container .mat-mdc-tooltip,
-html.lightMode .cdk-overlay-container .mdc-tooltip {
-  --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95) !important;
-  --mdc-plain-tooltip-supporting-text-color: #000000;
-}
-
-html.darkMode .cdk-overlay-container .mat-mdc-tooltip,
-html.darkMode .cdk-overlay-container .mdc-tooltip {
-  --mdc-plain-tooltip-container-color: rgba(0, 0, 0, 0.9) !important;
-  --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
-}
-
-// Force snackbar colors to match the active theme inside the overlay container
-html.lightMode .mat-mdc-snack-bar-container,
-html.lightMode .cdk-overlay-container .mat-mdc-snack-bar-container {
-  --mdc-snackbar-container-color: #f5f9fe !important;
-  --mdc-snackbar-supporting-text-color: #000000 !important;
-  --mat-snack-bar-button-color: #005e93 !important;
-
-  .mat-mdc-snackbar-surface {
-    border: 1px solid rgba(125, 179, 232, 0.4);
-    box-shadow: 0 8px 24px rgba(125, 179, 232, 0.18);
-  }
-
-  .mdc-button__label,
-  .mat-mdc-button,
-  .mat-mdc-snack-bar-label,
-  .mat-mdc-snack-bar-label * {
-    color: #000000 !important;
-  }
-}
-
-html.darkMode .mat-mdc-snack-bar-container,
-html.darkMode .cdk-overlay-container .mat-mdc-snack-bar-container {
-  --mdc-snackbar-container-color: #1a1d24 !important;
-  --mdc-snackbar-supporting-text-color: #ffffff !important;
-  --mat-snack-bar-button-color: #7db3e8 !important;
-}
-
-// Button styling for theater aesthetic
-.mat-mdc-raised-button,
-.mat-mdc-flat-button {
-  border-radius: vars.$border-radius-md;
-  transition: box-shadow vars.$transition-base vars.$ease-out;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(29, 125, 179, 0.2);
-  }
-
-  // Ensure primary buttons have white text
-  &[color="primary"] {
-    color: var(--mat-sys-on-primary) !important;
-
-    .mat-mdc-button-persistent-ripple {
-      color: var(--mat-sys-on-primary);
-    }
-  }
-}
-
-// Ensure all Material buttons with primary color use white text
-.mat-mdc-button[color="primary"],
-.mat-mdc-raised-button[color="primary"],
-.mat-mdc-flat-button[color="primary"],
-.mat-mdc-fab[color="primary"] {
-  color: var(--mat-sys-on-primary) !important;
-
-  .mdc-button__label {
-    color: var(--mat-sys-on-primary) !important;
-  }
-
-  mat-icon {
-    color: var(--mat-sys-on-primary) !important;
-  }
-}
-
-// Global rule: Any element with primary background must have white/light text
-[style*="background-color: var(--mat-sys-primary)"],
-[style*="background-color: #7db3e8"],
-[class*="primary"][style*="background"],
-.primary-color,
-[class*="bg-primary"] {
-  color: var(--mat-sys-on-primary) !important;
-
-  * {
-    color: var(--mat-sys-on-primary) !important;
-  }
-
-  mat-icon {
-    color: var(--mat-sys-on-primary) !important;
-  }
-}
-
-// Ensure all primary buttons use the primary blue color (#7db3e8)
-button[mat-flat-button][color="primary"],
-button[mat-raised-button][color="primary"],
-button[mat-fab][color="primary"],
-.mat-mdc-raised-button[color="primary"],
-.mat-mdc-flat-button[color="primary"],
-.mat-mdc-fab[color="primary"] {
-  background-color: #7db3e8 !important;
-  color: #ffffff !important;
-
-  &:hover:not(:disabled) {
-    background-color: #6aa3d8 !important;
-  }
-
-  &:disabled {
-    background-color: rgba(125, 179, 232, 0.3) !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-  }
-
-  mat-icon {
-    color: #ffffff !important;
-  }
-}
-
-// Form fields - Outline style with theme-aware backgrounds and blue borders
 html.darkMode .mat-mdc-form-field {
-  // Ensure consistent dark background for all form field types
-  .mat-mdc-text-field-wrapper {
-    background-color: #1a1d24 !important;
+  .mat-mdc-text-field-wrapper,
+  .mat-mdc-text-field-wrapper.mdc-text-field--filled,
+  .mat-mdc-form-field-textarea-control {
+    background-color: var(--app-card-bg);
     border-radius: vars.$border-radius-md;
   }
 
-  // For fill appearance (if used), ensure dark background
-  .mat-mdc-text-field-wrapper.mdc-text-field--filled {
-    background-color: #1a1d24 !important;
-  }
-
-  // For outline appearance - blue border styling
-  .mdc-notched-outline {
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: rgba(
-        125,
-        179,
-        232,
-        0.3
-      ) !important; // Light blue border when not focused
-      border-width: 1px !important;
-    }
-  }
-
-  // Focused state - brighter blue border
-  &.mat-focused,
-  &.mdc-text-field--focused {
-    .mdc-notched-outline {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: #7db3e8 !important; // Primary blue when focused
-        border-width: 2px !important;
-      }
-    }
-  }
-
-  // Legacy outline support (for older Material versions)
-  .mat-mdc-form-field-outline {
-    color: rgba(
-      125,
-      179,
-      232,
-      0.3
-    ) !important; // Light blue border when not focused
-  }
-
-  .mat-mdc-form-field-outline-thick {
-    color: rgba(125, 179, 232, 0.5) !important; // Medium blue border
-    border-width: 2px !important;
-  }
-
-  &.mat-focused {
-    .mat-mdc-form-field-outline-thick {
-      color: #7db3e8 !important; // Primary blue when focused
-      border-width: 2px !important;
-    }
-  }
-
-  .mat-mdc-form-field-focus-overlay {
-    background-color: transparent !important;
-  }
-
-  // Ensure form field text is readable
   .mat-mdc-input-element,
-  .mat-mdc-form-field-input-control input,
-  .mat-mdc-form-field-textarea-control textarea,
   .mdc-text-field__input {
-    color: #ffffff !important;
-
-    // Hide placeholders in Material form fields - Material handles labels instead
-    &::placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &::-webkit-input-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &::-moz-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &:-ms-input-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
+    color: var(--app-text);
+    caret-color: var(--mat-sys-primary);
   }
 
-  // Label styling - Material's standard label behavior
   .mat-mdc-form-field-label,
   .mdc-floating-label {
-    color: rgba(
-      232,
-      233,
-      235,
-      0.7
-    ) !important; // Light gray label when inside field
+    color: var(--app-text-muted);
 
-    // Label when floating above (when field has value or is focused)
     &.mdc-floating-label--float-above {
-      color: #7db3e8 !important; // Blue label when floating
+      color: var(--mat-sys-primary);
     }
   }
 
-  // Ensure label floats correctly when focused
-  &.mat-focused {
-    .mat-mdc-form-field-label,
-    .mdc-floating-label {
-      color: #7db3e8 !important; // Blue label when focused
-    }
+  &.mat-focused .mat-mdc-form-field-label,
+  &.mat-form-field-should-float .mdc-floating-label {
+    color: var(--mat-sys-primary);
   }
 
-  // Label color when field has value
-  &.mat-form-field-should-float {
-    .mat-mdc-form-field-label,
-    .mdc-floating-label {
-      color: #7db3e8 !important; // Blue label when field has value
-    }
-  }
-
-  // Hint text
   .mat-mdc-form-field-hint {
-    color: rgba(232, 233, 235, 0.6) !important; // Light gray hint
+    color: var(--app-text-muted);
   }
 
-  // Error text
   .mat-mdc-form-field-error {
-    color: var(--mat-sys-error) !important;
+    color: var(--mat-sys-error);
   }
 
-  // Select dropdown styling
   .mat-mdc-select-value {
-    color: #ffffff !important;
+    color: var(--app-text);
   }
 
   .mat-mdc-select-arrow {
-    color: rgba(232, 233, 235, 0.7) !important;
-  }
-
-  // Textarea specific styling
-  .mat-mdc-form-field-textarea-control {
-    background-color: #1a1d24 !important;
-    border-radius: vars.$border-radius-md;
+    color: var(--app-text-muted);
   }
 }
 
 html.lightMode .mat-mdc-form-field {
-  // Ensure consistent light blue background for all form field types
-  .mat-mdc-text-field-wrapper {
-    background-color: #eaf1fc !important;
+  .mat-mdc-text-field-wrapper,
+  .mat-mdc-text-field-wrapper.mdc-text-field--filled,
+  .mat-mdc-form-field-textarea-control {
+    background-color: var(--mat-sys-surface-container-low);
     border-radius: vars.$border-radius-md;
   }
 
-  // For fill appearance (if used), ensure light blue background
-  .mat-mdc-text-field-wrapper.mdc-text-field--filled {
-    background-color: #eaf1fc !important;
-  }
-
-  // For outline appearance - blue border styling
-  .mdc-notched-outline {
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: rgba(
-        125,
-        179,
-        232,
-        0.5
-      ) !important; // Light blue border when not focused
-      border-width: 1px !important;
-    }
-  }
-
-  // Focused state - brighter blue border
-  &.mat-focused,
-  &.mdc-text-field--focused {
-    .mdc-notched-outline {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: #7db3e8 !important; // Primary blue when focused
-        border-width: 2px !important;
-      }
-    }
-  }
-
-  // Legacy outline support (for older Material versions)
-  .mat-mdc-form-field-outline {
-    color: rgba(
-      125,
-      179,
-      232,
-      0.5
-    ) !important; // Light blue border when not focused
-  }
-
-  .mat-mdc-form-field-outline-thick {
-    color: rgba(125, 179, 232, 0.7) !important; // Medium blue border
-    border-width: 2px !important;
-  }
-
-  &.mat-focused {
-    .mat-mdc-form-field-outline-thick {
-      color: #7db3e8 !important; // Primary blue when focused
-      border-width: 2px !important;
-    }
-  }
-
-  .mat-mdc-form-field-focus-overlay {
-    background-color: transparent !important;
-  }
-
-  // Ensure form field text is readable
   .mat-mdc-input-element,
-  .mat-mdc-form-field-input-control input,
-  .mat-mdc-form-field-textarea-control textarea,
   .mdc-text-field__input {
-    color: #000000;
-
-    // Hide placeholders in Material form fields - Material handles labels instead
-    &::placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &::-webkit-input-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &::-moz-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
-
-    &:-ms-input-placeholder {
-      opacity: 0 !important;
-      color: transparent !important;
-    }
+    color: var(--app-text);
   }
 
-  // Label styling - Material's standard label behavior
   .mat-mdc-form-field-label,
   .mdc-floating-label {
-    color: rgba(0, 0, 0, 0.6) !important; // Dark gray label when inside field
+    color: var(--app-text-muted);
 
-    // Label when floating above (when field has value or is focused)
     &.mdc-floating-label--float-above {
-      color: #7db3e8 !important; // Blue label when floating
+      color: var(--mat-sys-primary);
     }
   }
 
-  // Ensure label floats correctly when focused
-  &.mat-focused {
-    .mat-mdc-form-field-label,
-    .mdc-floating-label {
-      color: #7db3e8 !important; // Blue label when focused
-    }
+  &.mat-focused .mat-mdc-form-field-label,
+  &.mat-form-field-should-float .mdc-floating-label {
+    color: var(--mat-sys-primary);
   }
 
-  // Label color when field has value
-  &.mat-form-field-should-float {
-    .mat-mdc-form-field-label,
-    .mdc-floating-label {
-      color: #7db3e8 !important; // Blue label when field has value
-    }
-  }
-
-  // Hint text
   .mat-mdc-form-field-hint {
-    color: rgba(0, 0, 0, 0.5) !important; // Dark gray hint
+    color: var(--app-text-muted);
   }
 
-  // Error text
   .mat-mdc-form-field-error {
-    color: var(--mat-sys-error) !important;
+    color: var(--mat-sys-error);
   }
 
-  // Select dropdown styling
   .mat-mdc-select-value {
-    color: #000000;
+    color: var(--app-text);
   }
 
   .mat-mdc-select-arrow {
-    color: rgba(0, 0, 0, 0.6) !important;
-  }
-
-  // Textarea specific styling
-  .mat-mdc-form-field-textarea-control {
-    background-color: #eaf1fc !important;
-    border-radius: vars.$border-radius-md;
+    color: var(--app-text-muted);
   }
 }
 
-// Force all input, textarea, select elements to theme colors
+// Native inputs — visible, muted placeholders (hint text, not hidden)
 html.darkMode input,
 html.darkMode textarea,
 html.darkMode select {
-  color: #ffffff !important;
-  background-color: #1a1d24 !important;
+  color: var(--app-text);
+  background-color: var(--app-card-bg);
 
-  // Light placeholder text
   &::placeholder {
-    color: rgba(232, 233, 235, 0.6) !important;
-    opacity: 1;
-  }
-
-  &::-webkit-input-placeholder {
-    color: rgba(232, 233, 235, 0.6) !important;
-    opacity: 1;
-  }
-
-  &::-moz-placeholder {
-    color: rgba(232, 233, 235, 0.6) !important;
-    opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    color: rgba(232, 233, 235, 0.6) !important;
+    color: var(--app-text-muted);
     opacity: 1;
   }
 }
@@ -1379,153 +621,213 @@ html.darkMode select {
 html.lightMode input,
 html.lightMode textarea,
 html.lightMode select {
-  color: #000000;
-  background-color: #eaf1fc !important;
+  color: var(--app-text);
+  background-color: var(--mat-sys-surface-container-low);
 
-  // Dark placeholder text
   &::placeholder {
-    color: rgba(0, 0, 0, 0.5) !important;
-    opacity: 1;
-  }
-
-  &::-webkit-input-placeholder {
-    color: rgba(0, 0, 0, 0.5) !important;
-    opacity: 1;
-  }
-
-  &::-moz-placeholder {
-    color: rgba(0, 0, 0, 0.5) !important;
-    opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    color: rgba(0, 0, 0, 0.5) !important;
+    color: var(--app-text-muted);
     opacity: 1;
   }
 }
 
-// Ensure select elements have consistent styling
-html.darkMode select {
-  border: 1px solid rgba(125, 179, 232, 0.3) !important;
-  border-radius: vars.$border-radius-md;
-  padding: vars.$spacing-2 vars.$spacing-3;
-
-  &:focus {
-    border-color: #7db3e8 !important;
-    outline: none;
+// Material form fields use a floating label, so a visible placeholder would
+// overlap it — hide placeholders inside mat-form-field only. Native inputs
+// above keep their visible, muted placeholders.
+.mat-mdc-form-field {
+  input::placeholder,
+  textarea::placeholder,
+  .mat-mdc-input-element::placeholder,
+  .mdc-text-field__input::placeholder {
+    color: transparent;
+    opacity: 0;
   }
 }
 
+html.darkMode select,
 html.lightMode select {
-  border: 1px solid rgba(125, 179, 232, 0.5) !important;
+  border: 1px solid var(--app-border);
   border-radius: vars.$border-radius-md;
   padding: vars.$spacing-2 vars.$spacing-3;
 
   &:focus {
-    border-color: #7db3e8 !important;
+    border-color: var(--mat-sys-primary);
     outline: none;
   }
 }
 
-// Force dynamic HTML content (innerHTML) to theme colors
+// Dynamic HTML content (innerHTML) inherits theme colors
 html.darkMode [innerHTML],
-html.darkMode [innerHTML] *,
-html.darkMode div[innerHTML],
-html.darkMode div[innerHTML] * {
-  color: #ffffff !important;
-
-  p,
-  div,
-  span,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  li,
-  ul,
-  ol,
-  td,
-  th,
-  strong,
-  em,
-  b,
-  i,
-  a,
-  blockquote {
-    color: #ffffff !important;
-  }
+html.darkMode div[innerHTML] {
+  color: var(--app-text);
 }
 
 html.lightMode [innerHTML],
-html.lightMode [innerHTML] *,
-html.lightMode div[innerHTML],
-html.lightMode div[innerHTML] * {
-  color: #000000;
+html.lightMode div[innerHTML] {
+  color: var(--app-text);
+}
 
-  p,
-  div,
-  span,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  li,
-  ul,
-  ol,
-  td,
-  th,
-  strong,
-  em,
-  b,
-  i,
-  a,
-  blockquote {
-    color: #000000;
+// Bootstrap tables
+html.darkMode .table {
+  --bs-table-color: var(--app-text);
+  --bs-table-bg: var(--app-card-bg);
+  --bs-table-border-color: var(--app-border);
+  --bs-table-striped-bg: var(--app-surface-raised);
+  --bs-table-hover-bg: var(--app-surface-raised);
+}
+
+// Explicit cell-level dark rules so table rows can never fall back to
+// Bootstrap's light --bs-body-bg, regardless of var resolution order.
+html.darkMode .table,
+html.darkMode .table > :not(caption) > * > * {
+  background-color: transparent;
+  color: var(--app-text);
+}
+
+html.darkMode .table > :not(caption) > * > * {
+  border-bottom-color: var(--app-border);
+  box-shadow: none;
+}
+
+html.darkMode .table thead th {
+  color: var(--app-text);
+  border-bottom-color: var(--app-border);
+}
+
+html.darkMode .table tbody tr:hover > * {
+  box-shadow: inset 0 0 0 9999px rgba(125, 179, 232, 0.14);
+}
+
+html.lightMode .table {
+  --bs-table-color: var(--app-text);
+  --bs-table-border-color: var(--app-border);
+}
+
+// Material lists, dialogs, menus, tabs, expansion panels
+html.darkMode mat-list-item,
+html.darkMode mat-dialog-container,
+html.darkMode .mat-mdc-menu-panel,
+html.darkMode mat-tab-label,
+html.darkMode mat-expansion-panel {
+  color: var(--app-text);
+}
+
+html.lightMode mat-list-item,
+html.lightMode mat-dialog-container,
+html.lightMode .mat-mdc-menu-panel,
+html.lightMode mat-tab-label,
+html.lightMode mat-expansion-panel {
+  color: var(--app-text);
+}
+
+html.darkMode mat-dialog-container {
+  background-color: transparent;
+}
+
+// Dialog header close buttons
+html.darkMode mat-dialog-container .header button[mat-icon-button] {
+  color: var(--app-text);
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.3);
   }
 }
 
-// Force Bootstrap table text to theme colors
-html.darkMode .table,
-html.darkMode .table td,
-html.darkMode .table th,
-html.darkMode .table-dark,
-html.darkMode .table-dark td,
-html.darkMode .table-dark th {
-  color: #ffffff !important;
-  background-color: #1a1d24 !important;
+html.lightMode mat-dialog-container .header button[mat-icon-button] {
+  color: var(--app-text);
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2);
+  }
 }
 
-html.lightMode .table,
-html.lightMode .table td,
-html.lightMode .table th,
-html.lightMode .table-dark,
-html.lightMode .table-dark td,
-html.lightMode .table-dark th {
-  color: #000000;
+// Image preview dialog actions bar
+html.darkMode mat-dialog-container .actions,
+html.darkMode mat-dialog-container mat-dialog-actions {
+  background-color: var(--app-card-bg);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
 }
 
-// Utility classes
+html.lightMode mat-dialog-container .actions,
+html.lightMode mat-dialog-container mat-dialog-actions.actions {
+  background-color: #ffffff;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+}
+
+html.darkMode mat-dialog-container .actions button,
+html.lightMode mat-dialog-container .actions button {
+  border: 2px solid var(--app-border);
+  border-radius: 4px;
+  background-color: transparent;
+
+  &:hover {
+    background-color: rgba(125, 179, 232, 0.2);
+    border-color: var(--mat-sys-primary);
+  }
+}
+
+// Tab labels on mobile
+@media (max-width: vars.$bp-md) {
+  .mat-mdc-tab-label {
+    min-width: auto;
+    padding: 0 0.5rem;
+    font-size: vars.$font-size-xs;
+  }
+}
+
+// Solid backgrounds for tabs / sections / expansion panels
+html.lightMode mat-tab-group,
+html.lightMode .mat-mdc-tab-group,
+html.lightMode .mat-mdc-tab-header,
+html.lightMode .mat-mdc-tab-body-wrapper,
+html.lightMode .mat-mdc-tab-body,
+html.lightMode .mat-mdc-tab-body-content,
+html.lightMode .section,
+html.lightMode mat-expansion-panel,
+html.lightMode .mat-expansion-panel-body {
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+html.darkMode .section {
+  background-color: var(--app-card-bg);
+}
+
+// Tooltips
+html.darkMode .mat-mdc-tooltip__surface,
+html.darkMode .mdc-tooltip__surface {
+  --mdc-plain-tooltip-container-color: rgba(0, 0, 0, 0.9);
+  --mdc-plain-tooltip-supporting-text-color: #ffffff;
+}
+
+html.lightMode .mat-mdc-tooltip__surface,
+html.lightMode .mdc-tooltip__surface {
+  --mdc-plain-tooltip-container-color: rgba(255, 255, 255, 0.95);
+  --mdc-plain-tooltip-supporting-text-color: #1a1d24;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// Snackbars
+html.lightMode .mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--app-surface-raised);
+  --mdc-snackbar-supporting-text-color: var(--app-text);
+  --mat-snack-bar-button-color: #005e93;
+
+  .mat-mdc-snackbar-surface {
+    border: 1px solid var(--app-border);
+    box-shadow: 0 8px 24px rgba(125, 179, 232, 0.18);
+  }
+}
+
+html.darkMode .mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--app-card-bg);
+  --mdc-snackbar-supporting-text-color: var(--app-text);
+  --mat-snack-bar-button-color: #a8c8f0;
+}
+
+// Elevation helpers
 .mat-elevation-z3 {
   padding: vars.$spacing-2;
   border-radius: vars.$border-radius-xl;
   transition: box-shadow vars.$transition-base vars.$ease-out;
-}
-
-// Ensure elevation classes have solid backgrounds in light mode
-html.lightMode .mat-elevation-z3 {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-elevation-z2 {
-  background-color: #eaf1fc !important;
-}
-
-html.lightMode .mat-elevation-z1 {
-  background-color: #eaf1fc !important;
 }
 
 .mat-elevation-z2 {
@@ -1540,131 +842,147 @@ html.lightMode .mat-elevation-z1 {
   transition: box-shadow vars.$transition-base vars.$ease-out;
 }
 
-.timepicker-overlay {
-  z-index: 10000000 !important;
+html.lightMode .mat-elevation-z3,
+html.lightMode .mat-elevation-z2,
+html.lightMode .mat-elevation-z1 {
+  background-color: var(--mat-sys-surface-container-low);
 }
 
+.timepicker-overlay,
 .timepicker-backdrop-overlay {
-  z-index: 10000000 !important;
+  z-index: 10000000;
 }
 
-body > ngx-material-timepicker-container {
-  --dial-background-color: $primary-color !important;
-  --button-color: $primary-color !important;
-  --dial-editable-active-color: $primary-color !important;
-  --clock-hand-color: $primary-color !important;
-}
-
+body > ngx-material-timepicker-container,
 .timepicker__header {
-  --dial-background-color: $primary-color !important;
-  --button-color: $primary-color !important;
-  --dial-editable-active-color: $primary-color !important;
-  --clock-hand-color: $primary-color !important;
+  --dial-background-color: var(--mat-sys-primary);
+  --button-color: var(--mat-sys-primary);
+  --dial-editable-active-color: var(--mat-sys-primary);
+  --clock-hand-color: var(--mat-sys-primary);
 }
 
 .divider {
-  border-width: 2px !important;
-  border-color: var(--mat-sys-primary) !important;
+  // Blue accent: set the divider's own color token (wins over the gray
+  // outline-variant fallback) plus the border shorthand for good measure.
+  --mat-divider-color: var(--mat-sys-primary);
+  border-width: 2px;
+  border-color: var(--mat-sys-primary);
   margin: vars.$spacing-4 0;
   transition: border-color vars.$transition-base vars.$ease-out;
 }
 
 .table-width {
-  @media (max-width: 768px) {
-    width: 100vw;
+  @media (max-width: vars.$bp-md) {
+    width: 100%;
   }
 }
 
 // ─── Toast overrides ────────────────────────────────────────────────────────
 
-$toast-success: #4caf50;
-$toast-error:   #f44336;
-$toast-warning: #ff9800;
-$toast-info:    #7db3e8;
-
 .toast-container .ngx-toastr {
-  border-radius: 12px !important;
-  padding: 14px 16px 14px 20px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
-  border: 1px solid transparent !important;
-  border-left-width: 4px !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2px !important;
-  width: min(22rem, calc(100vw - 2rem)) !important;
-  background-image: none !important; // remove default icons
+  border-radius: 12px;
+  padding: 14px 16px 14px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  border: 1px solid transparent;
+  border-left-width: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  width: min(22rem, calc(100vw - 2rem));
+  background-image: none; // remove default icons
 
   &:hover {
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
   }
 }
 
 .toast-container .toast-title {
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 2px !important;
+  font-size: vars.$font-size-base;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 
 .toast-container .toast-message {
-  font-size: 0.85rem !important;
-  opacity: 0.9 !important;
+  font-size: vars.$font-size-base;
+  opacity: 0.9;
 }
 
 .toast-container .toast-close-button {
-  font-size: 1.1rem !important;
-  font-weight: 300 !important;
-  opacity: 0.5 !important;
-  top: 10px !important;
-  right: 12px !important;
+  font-size: 1.1rem;
+  font-weight: 300;
+  opacity: 0.5;
+  top: 10px;
+  right: 12px;
 
   &:hover {
-    opacity: 1 !important;
+    opacity: 1;
   }
 }
 
-// Type-specific border colours (theme-independent)
-.toast-container .toast-success { border-left-color: $toast-success !important; }
-.toast-container .toast-error   { border-left-color: $toast-error   !important; }
-.toast-container .toast-warning { border-left-color: $toast-warning !important; }
-.toast-container .toast-info    { border-left-color: $toast-info    !important; }
+.toast-container .toast-success { border-left-color: var(--app-toast-success); }
+.toast-container .toast-error   { border-left-color: var(--app-toast-error); }
+.toast-container .toast-warning { border-left-color: var(--app-toast-warning); }
+.toast-container .toast-info    { border-left-color: var(--app-toast-info); }
 
-// Dark mode
 html.darkMode .toast-container .ngx-toastr {
-  background-color: rgba(30, 35, 46, 0.94) !important;
-  border-color: rgba(255, 255, 255, 0.07) !important;
-  color: #ffffff !important;
+  background-color: rgba(36, 42, 54, 0.94);
+  border-color: rgba(255, 255, 255, 0.07);
+  color: var(--app-text);
 }
 
-html.darkMode .toast-container .toast-success { border-left-color: $toast-success !important; }
-html.darkMode .toast-container .toast-error   { border-left-color: $toast-error   !important; }
-html.darkMode .toast-container .toast-warning { border-left-color: $toast-warning !important; }
-html.darkMode .toast-container .toast-info    { border-left-color: $toast-info    !important; }
+html.lightMode .toast-container .ngx-toastr {
+  background-color: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 0, 0, 0.07);
+  color: var(--app-text);
+}
 
 html.darkMode .toast-container .toast-title,
-html.darkMode .toast-container .toast-message {
-  color: #ffffff !important;
-}
-
-// Light mode
-html.lightMode .toast-container .ngx-toastr {
-  background-color: rgba(255, 255, 255, 0.97) !important;
-  border-color: rgba(0, 0, 0, 0.07) !important;
-  color: #111111 !important;
-}
-
-html.lightMode .toast-container .toast-success { border-left-color: $toast-success !important; }
-html.lightMode .toast-container .toast-error   { border-left-color: $toast-error   !important; }
-html.lightMode .toast-container .toast-warning { border-left-color: $toast-warning !important; }
-html.lightMode .toast-container .toast-info    { border-left-color: $toast-info    !important; }
-
+html.darkMode .toast-container .toast-message,
 html.lightMode .toast-container .toast-title,
 html.lightMode .toast-container .toast-message {
-  color: #111111 !important;
+  color: var(--app-text);
 }
 
-// ─── Rondleiding (driver.js) ───
+// ─── Quill editor (newsletter / mail) ──────────────────────────────────────
+
+html.darkMode {
+  .ql-toolbar.ql-snow {
+    background-color: var(--app-surface-raised);
+    border-color: var(--app-border);
+
+    .ql-stroke {
+      stroke: var(--app-text);
+    }
+
+    .ql-fill {
+      fill: var(--app-text);
+    }
+
+    .ql-picker {
+      color: var(--app-text);
+    }
+
+    .ql-picker-options {
+      background-color: var(--app-surface-raised);
+      border-color: var(--app-border);
+    }
+  }
+
+  .ql-container.ql-snow {
+    background-color: var(--app-card-bg);
+    border-color: var(--app-border);
+  }
+
+  .ql-editor {
+    color: var(--app-text);
+
+    &.ql-blank::before {
+      color: var(--app-text-muted);
+    }
+  }
+}
+
+// ─── Rondleiding (driver.js) ────────────────────────────────────────────────
+
 .driver-popover.tovedem-rondleiding {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--mat-sys-surface-container-high);
@@ -1678,7 +996,7 @@ html.lightMode .toast-container .toast-message {
 
   .driver-popover-description,
   .driver-popover-progress-text {
-    color: var(--mat-sys-on-surface-variant) !important;
+    color: var(--mat-sys-on-surface-variant);
   }
 
   .driver-popover-footer button {
@@ -1689,7 +1007,7 @@ html.lightMode .toast-container .toast-message {
   .driver-popover-next-btn {
     background-color: var(--mat-sys-primary);
     border-color: var(--mat-sys-primary);
-    color: var(--mat-sys-on-primary) !important;
+    color: var(--mat-sys-on-primary);
   }
 
   .tovedem-rondleiding-overslaan {

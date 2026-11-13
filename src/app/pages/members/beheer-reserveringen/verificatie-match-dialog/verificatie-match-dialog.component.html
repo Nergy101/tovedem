@@ -40,7 +40,7 @@
           <div>Type: {{ sponsor.type }}</div>
           <div>Email: {{ sponsor.email }}</div>
         </div>
-        <button
+        <button type="button"
           mat-flat-button
           color="primary"
           (click)="approve(sponsor)"
@@ -61,18 +61,18 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   @if (currentStatus === 'verified_no_membership') {
-  <button mat-flat-button color="primary" (click)="confirmVriend()">
+  <button type="button" mat-flat-button color="primary" (click)="confirmVriend()">
     <mat-icon>check_circle</mat-icon>
     Vriend bevestigen
   </button>
   } @if (hasManualVerification) {
-  <button mat-button (click)="reset()" color="accent">
+  <button type="button" mat-button (click)="reset()" color="accent">
     <mat-icon>refresh</mat-icon>
     Reset (automatisch berekenen)
   </button>
   }
-  <button mat-button (click)="cancel()">Annuleren</button>
-  <button mat-flat-button color="warn" (click)="reject()">
+  <button type="button" mat-button (click)="cancel()">Annuleren</button>
+  <button type="button" mat-flat-button color="warn" (click)="reject()">
     <mat-icon>close</mat-icon>
     Afkeuren
   </button>

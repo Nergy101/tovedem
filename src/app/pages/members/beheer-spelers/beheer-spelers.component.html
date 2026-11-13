@@ -57,7 +57,7 @@
               <td>{{ speler.naam }}</td>
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="updateSpeler(speler)"
                   [disabled]="loading()"
@@ -65,7 +65,7 @@
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="delete(speler.id)"
                   [disabled]="loading()"

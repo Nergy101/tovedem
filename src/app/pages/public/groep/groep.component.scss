@@ -97,40 +97,40 @@ html.lightMode {
     margin-bottom: 2em;
 
     * {
-      color: #000000;
+      color: var(--app-text);
     }
 
     .display-1 {
-      color: #000000;
+      color: var(--app-text);
       font-weight: $font-weight-bold;
     }
 
     h2 {
-      color: #000000;
+      color: var(--app-text);
       font-weight: $font-weight-semibold;
     }
   }
 
   .container {
-    color: #000000;
+    color: var(--app-text);
 
     * {
-      color: #000000;
+      color: var(--app-text);
     }
 
     .display-1 {
-      color: #000000;
+      color: var(--app-text);
     }
 
     .display-6 {
-      color: #000000;
+      color: var(--app-text);
     }
 
     // Force innerHTML content to black
     div[innerHTML],
     [innerHTML],
     div[innerHTML] * {
-      color: #000000;
+      color: var(--app-text);
 
       p,
       div,
@@ -152,11 +152,11 @@ html.lightMode {
       i,
       a,
       blockquote {
-        color: #000000;
+        color: var(--app-text);
       }
 
       * {
-        color: #000000;
+        color: var(--app-text);
       }
     }
   }
@@ -212,11 +212,11 @@ html.lightMode {
   .carousel-item {
     .carousel-caption {
       h5 {
-        color: #000000;
+        color: var(--app-text);
       }
 
       p {
-        color: #000000;
+        color: var(--app-text);
       }
     }
   }
@@ -258,13 +258,13 @@ html.darkMode {
 html.lightMode {
   mat-list {
     mat-list-item {
-      color: #000000;
+      color: var(--app-text);
 
       span {
-        color: #000000;
+        color: var(--app-text);
 
         i {
-          color: #000000;
+          color: var(--app-text);
         }
       }
     }

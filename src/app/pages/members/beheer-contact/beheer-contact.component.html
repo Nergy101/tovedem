@@ -47,7 +47,7 @@
               <td>{{ verzoek.subject }}</td>
               <td>
                 @if (verzoek.message && verzoek.message.length > 0) {
-                <button
+                <button type="button"
                   mat-button
                   class="bericht-button"
                   (click)="openBerichtDialog(verzoek)"
@@ -63,7 +63,7 @@
               <td>{{ formatDate(verzoek.created) }}</td>
               @if (authService.isGlobalAdmin) {
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="delete(verzoek.id)"
                   [disabled]="loading()"

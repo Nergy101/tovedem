@@ -2,7 +2,7 @@
   <div class="row">
     <div class="d-flex align-items-center">
       <p class="display-1 mb-0">De Kassa</p>
-      <button
+      <button type="button"
         id="kassa-info-knop"
         mat-stroked-button
         class="ms-3 info-button"
@@ -12,7 +12,7 @@
         <mat-icon>info</mat-icon>
         <span class="ms-2">Klik hier voor info</span>
       </button>
-      <button
+      <button type="button"
         id="kassa-rondleiding-knop"
         mat-stroked-button
         class="ms-2 info-button"
@@ -61,7 +61,7 @@
             <h2 class="mb-3">Er zijn vandaag geen voorstellingen.</h2>
             @if (hasKassaAccess()) {
             <div class="pt-3 border-top">
-              <button
+              <button type="button"
                 mat-stroked-button
                 color="primary"
                 class="kassa-eerstvolgende-knop"
@@ -145,7 +145,7 @@
             </div>
             @if (hasKassaAccess() && shouldShowEerstvolgendeButton()) {
             <div class="pt-3 border-top">
-              <button
+              <button type="button"
                 mat-stroked-button
                 color="primary"
                 class="kassa-eerstvolgende-knop"
@@ -181,7 +181,7 @@
                   placeholder="Voornaam, achternaam of email"
                 />
                 @if (searchTerm()) {
-                <button
+                <button type="button"
                   matPrefix
                   mat-icon-button
                   aria-label="Zoekopdracht wissen"
@@ -209,7 +209,7 @@
               <mat-button-toggle value="aanwezig">Aanwezig</mat-button-toggle>
             </mat-button-toggle-group>
             @if (selectedVoorstelling() && hasKassaAccess()) {
-            <button
+            <button type="button"
               mat-fab
               extended
               color="primary"
@@ -310,7 +310,7 @@
                     }})
                   </td>
                   <td class="d-flex justify-content-end">
-                    <button mat-icon-button (click)="deleteLosseVerkoop(item)" aria-label="Verwijderen">
+                    <button type="button" mat-icon-button (click)="deleteLosseVerkoop(item)" aria-label="Verwijderen">
                       <mat-icon color="warn">delete</mat-icon>
                     </button>
                   </td>
@@ -321,7 +321,7 @@
           </div>
         </mat-card-content>
         <mat-card-actions class="d-flex justify-content-end">
-          <button mat-fab extended color="primary" (click)="addLosseVerkoop()">
+          <button type="button" mat-fab extended color="primary" (click)="addLosseVerkoop()">
             <mat-icon>add_circle</mat-icon>
             Toevoegen
           </button>

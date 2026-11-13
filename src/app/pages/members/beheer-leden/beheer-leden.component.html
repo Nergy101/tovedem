@@ -56,7 +56,7 @@
 
     @if (!!authService.isGlobalAdmin) {
     <div class="row">
-      <button mat-fab extended color="primary" (click)="openCreateDialog()">
+      <button type="button" mat-fab extended color="primary" (click)="openCreateDialog()">
         <mat-icon>add_circle</mat-icon>
         Aanmaken
       </button>
@@ -100,7 +100,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (gebruiker of gebruikers(); track $index) {
+            @for (gebruiker of pagedGebruikers(); track gebruiker.id) {
             <tr
               class="klikbaar"
               [class.active]="isHuidigeGebruiker(gebruiker.id)"
@@ -129,7 +129,7 @@
                   {{ gebruiker.expand.rollen[0].rol }}
                 </p>
                 } @else if ((gebruiker.expand?.rollen?.length || 0) > 0) {
-                <button
+                <button type="button"
                   mat-button
                   [matMenuTriggerFor]="menu"
                   (click)="$event.stopPropagation()"
@@ -170,7 +170,7 @@
 
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="$event.stopPropagation(); openEditDialog(gebruiker)"
                   [disabled]="loading()"
@@ -181,7 +181,7 @@
                 </button>
               </td>
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="$event.stopPropagation(); delete(gebruiker.id)"
                   [disabled]="loading()"
@@ -195,6 +195,14 @@
             }
           </tbody>
         </table>
+        <mat-paginator
+          [length]="sortedGebruikers().length"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[10, 25, 50]"
+          (page)="onPageChange($event)"
+          aria-label="Paginering ledenlijst"
+        ></mat-paginator>
       </mat-card>
       } @placeholder {
       <app-skeleton-group type="table" [count]="5" />

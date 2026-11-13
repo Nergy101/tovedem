@@ -8,7 +8,7 @@
 
   <!-- Toolbar -->
   <div class="builder-toolbar">
-    <button mat-icon-button matTooltip="Terug naar mails" (click)="terug()">
+    <button type="button" aria-label="Terug" mat-icon-button matTooltip="Terug naar mails" (click)="terug()">
       <mat-icon>arrow_back</mat-icon>
     </button>
 
@@ -28,18 +28,18 @@
 
     <div class="toolbar-spacer"></div>
 
-    <button mat-stroked-button (click)="view.set(view() === 'editor' ? 'preview' : 'editor')">
+    <button type="button" mat-stroked-button (click)="view.set(view() === 'editor' ? 'preview' : 'editor')">
       <mat-icon>{{ view() === 'editor' ? 'visibility' : 'edit' }}</mat-icon>
       {{ view() === 'editor' ? 'Voorbeeld' : 'Bewerken' }}
     </button>
 
-    <button mat-stroked-button [disabled]="saving()" (click)="opslaan()">
+    <button type="button" mat-stroked-button [disabled]="saving()" (click)="opslaan()">
       @if (saving()) { <mat-spinner diameter="18" class="btn-spinner"></mat-spinner> }
       @else { <mat-icon>save</mat-icon> }
       Opslaan
     </button>
 
-    <button mat-flat-button color="primary" [disabled]="verzendend() || saving()" (click)="versturen()">
+    <button type="button" mat-flat-button color="primary" [disabled]="verzendend() || saving()" (click)="versturen()">
       @if (verzendend()) { <mat-spinner diameter="18" class="btn-spinner"></mat-spinner> }
       @else { <mat-icon>send</mat-icon> }
       Versturen
@@ -81,13 +81,13 @@
             <span class="blok-type-label">{{ blokLabels[blok.type] }}</span>
             <span class="blok-preview-text">{{ blokSamenvatting(blok) | slice:0:50 }}</span>
             <div class="blok-actions">
-              <button mat-icon-button matTooltip="Omhoog" [disabled]="i === 0" (click)="$event.stopPropagation(); verplaatsOmhoog(i)">
+              <button type="button" aria-label="Actie" mat-icon-button matTooltip="Omhoog" [disabled]="i === 0" (click)="$event.stopPropagation(); verplaatsOmhoog(i)">
                 <mat-icon>keyboard_arrow_up</mat-icon>
               </button>
-              <button mat-icon-button matTooltip="Omlaag" [disabled]="i === blokken().length - 1" (click)="$event.stopPropagation(); verplaatsOmlaag(i)">
+              <button type="button" aria-label="Actie" mat-icon-button matTooltip="Omlaag" [disabled]="i === blokken().length - 1" (click)="$event.stopPropagation(); verplaatsOmlaag(i)">
                 <mat-icon>keyboard_arrow_down</mat-icon>
               </button>
-              <button mat-icon-button matTooltip="Verwijderen" (click)="$event.stopPropagation(); verwijderBlok(i)">
+              <button type="button" aria-label="Verwijderen" mat-icon-button matTooltip="Verwijderen" (click)="$event.stopPropagation(); verwijderBlok(i)">
                 <mat-icon color="warn">delete</mat-icon>
               </button>
             </div>
@@ -262,7 +262,7 @@
         </button>
         <mat-menu #blokMenu="matMenu">
           @for (type of blokTypes; track type) {
-            <button mat-menu-item (click)="voegBlokToe(type)">
+            <button type="button" mat-menu-item (click)="voegBlokToe(type)">
               <mat-icon>{{ blokIcons[type] }}</mat-icon>
               <span>{{ blokLabels[type] }}</span>
             </button>

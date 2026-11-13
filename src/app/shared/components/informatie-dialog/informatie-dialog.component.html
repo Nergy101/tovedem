@@ -1,6 +1,6 @@
 <div class="container header">
   <h2 mat-dialog-title class="display-6">{{ title }}</h2>
-  <button
+  <button type="button"
     mat-icon-button
     aria-label="Sluiten"
     tabindex="-1"
@@ -16,8 +16,8 @@
 
 <mat-dialog-actions align="end" class="px-4 pb-3">
   @if (showArchiveButton) {
-    <button mat-flat-button (click)="archive()" style="background-color: #ff9800; color: white;">Archiveren</button>
+    <button type="button" mat-flat-button (click)="archive()" class="archive-button">Archiveren</button>
   }
-  <button mat-flat-button color="primary" (click)="close()">Sluiten</button>
+  <button type="button" mat-flat-button color="primary" (click)="close()">Sluiten</button>
 </mat-dialog-actions>
 

@@ -37,7 +37,7 @@
         <mat-card-header>
           <mat-card-title>
             <div class="title-row">
-              <button mat-stroked-button (click)="location.back()">
+              <button type="button" mat-stroked-button class="terug-knop" (click)="location.back()">
                 <mat-icon>arrow_back</mat-icon>
                 Terug
               </button>
@@ -733,7 +733,7 @@
                   Terug
                 </button>
                 <span class="flex-spacer"></span>
-                <button
+                <button type="button"
                   color="primary"
                   class="reserveer-button"
                   style="min-height: 48px"

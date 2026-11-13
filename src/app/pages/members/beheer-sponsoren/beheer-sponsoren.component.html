@@ -6,7 +6,7 @@
 
     @if (!!authService.isGlobalAdmin) {
     <div class="row">
-      <button mat-fab extended color="primary" (click)="openCreateDialog()">
+      <button type="button" mat-fab extended color="primary" (click)="openCreateDialog()">
         <mat-icon>add_circle</mat-icon>
         Aanmaken
       </button>
@@ -17,7 +17,7 @@
         style="display: none"
         #fileInput
       />
-      <button
+      <button type="button"
         mat-fab
         extended
         color="accent"
@@ -72,7 +72,7 @@
 
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="openEditDialog(sponsor)"
                   [disabled]="loading()"
@@ -83,7 +83,7 @@
                 </button>
               </td>
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="delete(sponsor.id)"
                   [disabled]="loading()"

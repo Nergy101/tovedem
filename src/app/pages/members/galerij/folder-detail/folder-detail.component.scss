@@ -5,7 +5,7 @@
 }
 
 .download-progress-label {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   margin-bottom: 4px;
   opacity: 0.7;
 }
@@ -90,7 +90,7 @@
     z-index: 2;
     min-width: 1.5rem;
     padding: 2px 6px;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.2;
     text-align: center;
@@ -144,10 +144,10 @@ html.darkMode .grid mat-card mat-card-actions button[mat-icon-button] {
 }
 
 html.lightMode .grid mat-card mat-card-actions button[mat-icon-button] {
-  color: #000000;
+  color: var(--app-text);
 
   mat-icon {
-    color: #000000;
+    color: var(--app-text);
   }
 
   &:hover {

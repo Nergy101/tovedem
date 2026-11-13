@@ -1,14 +1,23 @@
 //global variable list
 
 //color list
-$primary-color: #7db3e8; // Soft pastel blue - theater theme
+// NOTE: theming is owned by the Material 3 palettes in tovedem-theme-m3.scss.
+// --mat-sys-primary resolves to #005e93 (light) / #a8c8f0 (dark), both WCAG-AA.
+$primary-color: #005e93; // Accessible blue - theater theme (light theme primary)
 $secondary-color: #54575f; // Muted blue-gray for theater aesthetic
+
+// Breakpoint tokens — use these instead of raw px values in @media queries
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1290px;
 
 // Design System Variables
 
 // Typography Scale
-$font-size-xs: 0.75rem;    // 12px
-$font-size-sm: 0.875rem;  // 14px
+// Floor is 14px: no user-facing text smaller than that.
+$font-size-xs: 0.875rem;   // 14px
+$font-size-sm: 0.9375rem;  // 15px
 $font-size-base: 1rem;    // 16px
 $font-size-lg: 1.125rem;  // 18px
 $font-size-xl: 1.25rem;   // 20px
@@ -67,9 +76,3 @@ $transition-slower: 0.5s;
 $ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 $ease-out: cubic-bezier(0, 0, 0.2, 1);
 $ease-in: cubic-bezier(0.4, 0, 1, 1);
-
-// Color Variables (for hard-coded colors that need theme-aware alternatives)
-// These will be replaced with Material theme variables in components
-$color-dark-blue: #0103B8;  // Will use var(--mat-sys-primary) instead
-$color-accent-red: #B80301; // Will use var(--mat-sys-error) or tertiary instead
-$color-dark-gray: #232323;  // Will use var(--mat-sys-surface-container-lowest) instead
