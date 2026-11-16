@@ -98,13 +98,13 @@
 
   .blok-type-label {
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     min-width: 90px;
   }
 
   .blok-preview-text {
     flex: 1;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     opacity: 0.6;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -191,7 +191,7 @@
 }
 
 .uitlijning-label {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--mat-sys-on-surface-variant);
 }
@@ -200,7 +200,7 @@
   display: flex;
   gap: 0.5rem;
   align-items: flex-start;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--mat-sys-on-surface-variant);
 
   mat-icon {

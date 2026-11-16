@@ -45,7 +45,7 @@
 
   .overline {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--mat-sys-primary);
@@ -279,7 +279,7 @@ $dag-nummer: 2.25rem;
   }
 
   small {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     opacity: 0.75;
   }
 }
@@ -302,7 +302,7 @@ $dag-nummer: 2.25rem;
   min-width: 1.5rem;
   padding: 0 0.4rem;
   border-radius: 1rem;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   text-align: center;
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
@@ -442,7 +442,7 @@ $dag-nummer: 2.25rem;
   display: inline-block;
   padding: 0.1rem 0.6rem;
   border-radius: 1rem;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 500;
   background-color: var(--rol-bg, var(--mat-sys-surface-container-high));
   color: var(--rol-fg, var(--mat-sys-on-surface));
@@ -483,7 +483,7 @@ $dag-nummer: 2.25rem;
     left: -2.25rem;
     width: 1.75rem;
     height: 1.75rem;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
   }
 
   .dag-paneel mat-panel-description {

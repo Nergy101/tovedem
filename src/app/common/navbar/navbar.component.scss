@@ -3,7 +3,7 @@
 :host {
   flex: 1;
   display: flex;
-  max-width: 100vw;
+  max-width: 100%;
 }
 
 nav {
@@ -145,7 +145,7 @@ a {
 }
 
 .navbar-brand {
-  background-color: #ffffff;
+  background-color: var(--mat-sys-surface);
   padding: $spacing-1 $spacing-2 $spacing-1 $spacing-4;
   border-radius: $border-radius-md;
   display: inline-flex;
@@ -313,4 +313,9 @@ mat-icon {
   border-radius: $border-radius-lg !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
 }

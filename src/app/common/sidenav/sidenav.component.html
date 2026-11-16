@@ -1,13 +1,13 @@
 <div class="links-container">
   <ul class="links navbar-nav nav-pills nav-fill">
     @if (authService.hasAccessToSidenav()) {
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.canAccessRoute('productie-info/Tovedem')) {
     <mat-expansion-panel
       data-rondleiding="sectie-productie-info"
-      style="width: 100%"
+      class="full-width"
       [class.section-active]="isSectionActive(['/productie-info'])"
       [expanded]="panelState['productie-info'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('productie-info', true)"
@@ -63,13 +63,13 @@
       </ul>
     </mat-expansion-panel>
 
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.canAccessCommissiesSection()) {
     <mat-expansion-panel
       data-rondleiding="sectie-commissies"
-      style="width: 100%"
+      class="full-width"
       [class.section-active]="
         isSectionActive(['/commissie-sinterklaas', '/lees-commissie', '/beheer-nieuws'])
       "
@@ -135,13 +135,13 @@
       }
     </mat-expansion-panel>
 
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (hasVoorstellingenItems()) {
     <mat-expansion-panel
       data-rondleiding="sectie-voorstellingen"
-      style="width: 100%"
+      class="full-width"
       [class.section-active]="
         isSectionActive([
           '/beheer-voorstellingen',
@@ -225,13 +225,13 @@
         }
       </ul>
     </mat-expansion-panel>
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (hasBeheerItems()) {
     <mat-expansion-panel
       data-rondleiding="sectie-beheer"
-      style="width: 100%"
+      class="full-width"
       [class.section-active]="
         isSectionActive([
           '/beheer-leden',
@@ -319,13 +319,13 @@
         }
       </ul>
     </mat-expansion-panel>
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.canAccessGalerij()) {
     <mat-expansion-panel
       data-rondleiding="sectie-galerij"
-      style="width: 100%"
+      class="full-width"
       [class.section-active]="isSectionActive(['/galerij'])"
       [expanded]="panelState['galerij'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('galerij', true)"
@@ -353,13 +353,13 @@
       </ul>
     </mat-expansion-panel>
 
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     } @if (authService.isGlobalAdmin) {
     <mat-expansion-panel
       data-rondleiding="sectie-developers"
-      style="width: 100%"
+      class="full-width"
       [expanded]="panelState['developers'] || sideDrawerService.rondleidingActief()"
       (opened)="setPanelState('developers', true)"
       (closed)="setPanelState('developers', false)"
@@ -384,7 +384,7 @@
           </button>
         </li>
         <li>
-          <button
+          <button type="button"
             mat-raised-button
             data-rondleiding="admin"
             class="nav-link flex-grow-1"
@@ -396,7 +396,7 @@
           </button>
         </li>
         <li>
-          <button
+          <button type="button"
             mat-raised-button
             data-rondleiding="mailjet"
             class="nav-link flex-grow-1"
@@ -408,7 +408,7 @@
           </button>
         </li>
         <li>
-          <button
+          <button type="button"
             mat-raised-button
             data-rondleiding="zoho"
             class="nav-link flex-grow-1"
@@ -422,7 +422,7 @@
       </ul>
     </mat-expansion-panel>
 
-    <div style="width: 100%">
+    <div class="full-width">
       <mat-divider class="divider"></mat-divider>
     </div>
     }

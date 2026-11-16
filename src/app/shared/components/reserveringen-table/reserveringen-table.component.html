@@ -42,13 +42,13 @@
         <td>{{ item.email }}</td>
         <td>
           @if (item.opmerking && item.opmerking.length > 0) {
-          <button
+          <button type="button"
             mat-button
             class="opmerking-button"
             (click)="onOpmerkingClick(item)"
             [matTooltip]="'Klik om opmerking te bekijken'"
           >
-            <mat-icon [style.color]="'#000'">chat_bubble_outline</mat-icon>
+            <mat-icon>chat_bubble_outline</mat-icon>
             <span>Bekijken</span>
           </button>
           } @else {
@@ -121,7 +121,7 @@
         </td>
         } @if (showEditButton()) {
         <td class="d-flex justify-content-end">
-          <button mat-icon-button (click)="onEditClick(item)" aria-label="Bewerken">
+          <button type="button" mat-icon-button (click)="onEditClick(item)" aria-label="Bewerken">
             <mat-icon>edit</mat-icon>
           </button>
         </td>

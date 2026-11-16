@@ -101,7 +101,7 @@
                   {{ aantalGeselecteerd() }}
                   {{ aantalGeselecteerd() === 1 ? 'reservering' : 'reserveringen' }} geselecteerd
                 </span>
-                <button
+                <button type="button"
                   mat-raised-button
                   color="primary"
                   [disabled]="aantalGeselecteerd() === 0 || verzendendMails()"
@@ -165,14 +165,14 @@
                             {{ getMailStatus(mailTemplate.status) }}
                           </button>
                           <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'concept')">Concept</button>
-                            <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'inprogress')">In Progress</button>
-                            <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'done')">Done</button>
-                            <button mat-menu-item (click)="updateMailStatus(mailTemplate, 'verified')">Verified</button>
+                            <button type="button" mat-menu-item (click)="updateMailStatus(mailTemplate, 'concept')">Concept</button>
+                            <button type="button" mat-menu-item (click)="updateMailStatus(mailTemplate, 'inprogress')">In Progress</button>
+                            <button type="button" mat-menu-item (click)="updateMailStatus(mailTemplate, 'done')">Done</button>
+                            <button type="button" mat-menu-item (click)="updateMailStatus(mailTemplate, 'verified')">Verified</button>
                           </mat-menu>
                         </td>
                         <td>
-                          <button
+                          <button type="button"
                             mat-icon-button
                             (click)="openEditDialog(mailTemplate)"
                             [disabled]="loading()"
@@ -209,7 +209,7 @@
         <div class="tab-content">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="mb-0">Nieuwsbrieven</h3>
-            <button mat-flat-button color="primary" (click)="nieuwsbriefOpstellen()">
+            <button type="button" mat-flat-button color="primary" (click)="nieuwsbriefOpstellen()">
               <mat-icon>add</mat-icon>
               Nieuwe nieuwsbrief opstellen
             </button>
@@ -239,11 +239,11 @@
                     <td>{{ nw.created | amsterdamDate:'dd-MM-yyyy' }}</td>
                     <td class="actions-nowrap">
                       @if (nw.status !== 'verzonden') {
-                        <button mat-icon-button matTooltip="Bewerken" (click)="nieuwsbriefBewerken(nw)">
+                        <button type="button" aria-label="Bewerken" mat-icon-button matTooltip="Bewerken" (click)="nieuwsbriefBewerken(nw)">
                           <mat-icon>edit</mat-icon>
                         </button>
                       }
-                      <button mat-icon-button matTooltip="Verwijderen" (click)="nieuwsbriefVerwijderen(nw)">
+                      <button type="button" aria-label="Verwijderen" mat-icon-button matTooltip="Verwijderen" (click)="nieuwsbriefVerwijderen(nw)">
                         <mat-icon color="warn">delete</mat-icon>
                       </button>
                     </td>

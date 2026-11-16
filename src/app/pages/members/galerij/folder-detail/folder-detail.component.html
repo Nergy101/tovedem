@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row align-items-center mb-4 gy-2">
       <div class="col-auto">
-        <button
+        <button type="button"
           mat-icon-button
           (click)="goBack()"
           aria-label="Terug naar galerij"
@@ -20,7 +20,7 @@
       </div>
       @if (canDeleteAlbum()) {
         <div class="col-12 col-md-auto">
-          <button
+          <button type="button"
             mat-stroked-button
             color="warn"
             (click)="deleteAlbum()"
@@ -37,7 +37,7 @@
       <div class="row my-4 align-items-center gy-2">
         @if (canUpload()) {
           <div class="col-auto">
-            <button mat-fab extended color="primary" (click)="openUploadDialog()">
+            <button type="button" mat-fab extended color="primary" (click)="openUploadDialog()">
               <mat-icon>add_circle</mat-icon>
               Foto's toevoegen
             </button>
@@ -45,7 +45,7 @@
         }
         @if (fotos().length > 0) {
           <div class="col-auto">
-            <button mat-fab extended color="primary" (click)="downloadAllAsZip()" [disabled]="downloadingZip()">
+            <button type="button" mat-fab extended color="primary" (click)="downloadAllAsZip()" [disabled]="downloadingZip()">
               @if (downloadingZip()) {
                 <mat-spinner diameter="18" class="button-spinner"></mat-spinner>
               } @else {
@@ -93,7 +93,7 @@
             <mat-icon class="empty-icon">photo_library</mat-icon>
             <p>Nog geen foto's in deze folder</p>
             @if (canUpload()) {
-              <button
+              <button type="button"
                 mat-stroked-button
                 color="primary"
                 (click)="openUploadDialog()"
@@ -129,14 +129,14 @@
             />
                 </div>
                 <mat-card-actions>
-                  <button
+                  <button type="button"
                     mat-icon-button
                     (click)="openPhoto(photo)"
                     aria-label="Bekijk foto in volledig scherm"
                   >
                     <mat-icon aria-hidden="true">open_in_full</mat-icon>
                   </button>
-                  <button
+                  <button type="button"
                     mat-icon-button
                     (click)="downloadPhoto(photo)"
                     aria-label="Foto downloaden"
@@ -144,7 +144,7 @@
                     <mat-icon aria-hidden="true">download</mat-icon>
                   </button>
                   @if (canDelete()) {
-                    <button
+                    <button type="button"
                       mat-icon-button
                       (click)="deletePhoto(photo)"
                       aria-label="Verwijder foto"

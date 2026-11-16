@@ -20,13 +20,13 @@ img {
   left: 0;
   right: 0;
   z-index: 1100;
-  background-color: #ffffff;
+  background-color: var(--mat-sys-surface);
   padding: 1rem;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
 }
 
 button {
-  color: #000000;
+  color: var(--app-text);
   font-weight: 500;
   border: 2px solid #000000 !important;
   border-radius: 4px;

@@ -8,21 +8,21 @@
   </mat-dialog-content>
   @if(!loading()){
   <mat-dialog-actions class="d-flex justify-content-between actions">
-    <button mat-button (click)="onLeftArrowDown()" aria-label="Vorige afbeelding">
+    <button type="button" mat-button (click)="onLeftArrowDown()" aria-label="Vorige afbeelding">
       <mat-icon aria-hidden="true">arrow_back</mat-icon> Vorige - pijltjes toets naar links
     </button>
 
     <div>
-      <button mat-button mat-dialog-close (click)="onEscapeDown()" aria-label="Sluit afbeelding weergave">
+      <button type="button" mat-button mat-dialog-close (click)="onEscapeDown()" aria-label="Sluit afbeelding weergave">
         <mat-icon aria-hidden="true">close</mat-icon> Sluiten - escape toets
       </button>
-      <button mat-button (click)="onEnterDown()" aria-label="Open afbeelding in nieuw tabblad">
+      <button type="button" mat-button (click)="onEnterDown()" aria-label="Open afbeelding in nieuw tabblad">
         <mat-icon aria-hidden="true">aspect_ratio</mat-icon> Openen - enter toets (+ctrl in
         achtergrond)
       </button>
     </div>
 
-    <button mat-button (click)="onRightArrowDown()" aria-label="Volgende afbeelding">
+    <button type="button" mat-button (click)="onRightArrowDown()" aria-label="Volgende afbeelding">
       Volgende - pijltjes toets naar rechts
       <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
     </button>

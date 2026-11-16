@@ -7,7 +7,7 @@
     } @else {
     <div class="disabled-overlay">
       <p>Een afbeelding is al geselecteerd</p>
-      <button mat-stroked-button (click)="removeFile()" color="warn">
+      <button type="button" mat-stroked-button (click)="removeFile()" color="warn">
         <mat-icon>delete</mat-icon>
         Verwijder afbeelding
       </button>
@@ -19,7 +19,7 @@
     <div class="preview-container">
       <div class="preview-header">
         <h4>Preview</h4>
-        <button
+        <button type="button"
           mat-icon-button
           (click)="removeFile()"
           color="warn"

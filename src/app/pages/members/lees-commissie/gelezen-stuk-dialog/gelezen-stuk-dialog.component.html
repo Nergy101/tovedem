@@ -201,7 +201,7 @@
     <span class="foutmelding">{{ melding }}</span>
   }
   <button mat-button mat-dialog-close>Annuleren</button>
-  <button mat-flat-button [disabled]="!!foutmelding()" (click)="opslaan()">
+  <button type="button" mat-flat-button [disabled]="!!foutmelding()" (click)="opslaan()">
     <mat-icon>save</mat-icon>
     Opslaan
   </button>

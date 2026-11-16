@@ -31,7 +31,7 @@
 
 // Dark theme backgrounds
 :host-context(html.darkMode) {
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
 
   ::ng-deep {
     mat-drawer-container {
@@ -39,14 +39,14 @@
       display: flex;
       flex-flow: column nowrap;
       min-height: 100vh;
-      background-color: #0f1218;
+      background-color: var(--mat-sys-background);
     }
 
     .mat-drawer-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background-color: #0f1218;
+      background-color: var(--mat-sys-background);
     }
   }
 }
@@ -94,14 +94,14 @@
 
 // Dark theme router content
 :host-context(html.darkMode) .router-content {
-  background-color: #0f1218;
-  color: #e8e9eb;
+  background-color: var(--mat-sys-background);
+  color: var(--app-text-muted);
 }
 
 // Light theme router content
 :host-context(html.lightMode) .router-content {
   background-color: transparent;
-  color: #000000;
+  color: var(--app-text);
 }
 
 header {
@@ -167,12 +167,12 @@ footer {
 
 // Dark theme drawer content
 :host-context(html.darkMode) .drawer-content {
-  background-color: #0f1218;
+  background-color: var(--mat-sys-background);
 }
 
 // Light theme drawer content
 :host-context(html.lightMode) .drawer-content {
-  background-color: #fff;
+  background-color: var(--mat-sys-surface);
 }
 
 mat-icon {

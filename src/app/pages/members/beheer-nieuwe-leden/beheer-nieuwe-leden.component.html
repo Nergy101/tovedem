@@ -44,13 +44,13 @@
               <td>{{ lid.email }}</td>
               <td>
                 @if (lid.bericht && lid.bericht.length > 0) {
-                <button
+                <button type="button"
                   mat-button
                   class="bericht-button"
                   (click)="openBerichtDialog(lid)"
                   [matTooltip]="'Klik om volledig bericht te bekijken'"
                 >
-                  <mat-icon [style.color]="'#000'"
+                  <mat-icon
                     >chat_bubble_outline</mat-icon
                   >
                   <span>Bekijken</span>
@@ -75,7 +75,7 @@
 
               @if (!!authService.isGlobalAdmin) {
               <td>
-                <button
+                <button type="button"
                   mat-icon-button
                   (click)="delete(lid.id)"
                   [disabled]="loading()"

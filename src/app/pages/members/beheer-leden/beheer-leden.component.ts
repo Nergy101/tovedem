@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -14,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Title } from '@angular/platform-browser';
@@ -38,6 +40,7 @@ import { SkeletonGroupComponent } from '../../../shared/components/skeleton/skel
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatCardModule,
@@ -61,6 +64,30 @@ export class BeheerLedenComponent implements OnInit {
   searching = signal(false);
   searchTerm = signal('');
   searchTerm$ = toObservable(this.searchTerm);
+
+  pageIndex = signal(0);
+  pageSize = signal(10);
+
+  /** Gebruikers gesorteerd op Naam, daarna op Email. */
+  sortedGebruikers = computed(() => {
+    const lijst = this.gebruikers() ?? [];
+    return [...lijst].sort(
+      (a, b) =>
+        (a.name ?? '').localeCompare(b.name ?? '', 'nl') ||
+        (a.email ?? '').localeCompare(b.email ?? '', 'nl')
+    );
+  });
+
+  /** Huidige pagina van de gesorteerde lijst. */
+  pagedGebruikers = computed(() => {
+    const start = this.pageIndex() * this.pageSize();
+    return this.sortedGebruikers().slice(start, start + this.pageSize());
+  });
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+  }
 
   constructor() {
     this.titleService.setTitle('Tovedem - Beheer - Leden');
@@ -92,6 +119,7 @@ export class BeheerLedenComponent implements OnInit {
           );
         }
 
+        this.pageIndex.set(0);
         this.searching.set(false);
       });
   }

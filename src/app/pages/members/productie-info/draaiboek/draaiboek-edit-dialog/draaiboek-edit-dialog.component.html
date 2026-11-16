@@ -1,6 +1,6 @@
 <div class="header">
   <h2 mat-dialog-title>Draaiboek bewerken</h2>
-  <button mat-icon-button aria-label="Sluiten" (click)="annuleren()">
+  <button type="button" mat-icon-button aria-label="Sluiten" (click)="annuleren()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -60,7 +60,7 @@
                 <input matInput [(ngModel)]="dag.omschrijving" />
               </mat-form-field>
               <div class="knoppen">
-                <button
+                <button type="button" aria-label="Actie"
                   mat-icon-button
                   matTooltip="Dag omhoog"
                   [disabled]="eersteDag"
@@ -68,7 +68,7 @@
                 >
                   <mat-icon>arrow_upward</mat-icon>
                 </button>
-                <button
+                <button type="button" aria-label="Actie"
                   mat-icon-button
                   matTooltip="Dag omlaag"
                   [disabled]="laatsteDag"
@@ -76,7 +76,7 @@
                 >
                   <mat-icon>arrow_downward</mat-icon>
                 </button>
-                <button
+                <button type="button" aria-label="Verwijderen"
                   mat-icon-button
                   matTooltip="Dag verwijderen"
                   (click)="verwijder(inhoud.dagen, d)"
@@ -119,7 +119,7 @@
                 </mat-form-field>
                 <mat-checkbox [(ngModel)]="item.belangrijk">Belangrijk</mat-checkbox>
                 <div class="knoppen">
-                  <button
+                  <button type="button" aria-label="Actie"
                     mat-icon-button
                     matTooltip="Omhoog"
                     [disabled]="eerste"
@@ -127,7 +127,7 @@
                   >
                     <mat-icon>arrow_upward</mat-icon>
                   </button>
-                  <button
+                  <button type="button" aria-label="Actie"
                     mat-icon-button
                     matTooltip="Omlaag"
                     [disabled]="laatste"
@@ -135,14 +135,14 @@
                   >
                     <mat-icon>arrow_downward</mat-icon>
                   </button>
-                  <button
+                  <button type="button" aria-label="Toevoegen"
                     mat-icon-button
                     matTooltip="Regel eronder invoegen"
                     (click)="itemToevoegen(dag, i)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
-                  <button
+                  <button type="button" aria-label="Verwijderen"
                     mat-icon-button
                     matTooltip="Regel verwijderen"
                     (click)="verwijder(dag.items, i)"
@@ -155,11 +155,11 @@
             </div>
 
             <div class="acties">
-              <button mat-stroked-button (click)="itemToevoegen(dag)">
+              <button type="button" mat-stroked-button (click)="itemToevoegen(dag)">
                 <mat-icon>add</mat-icon>
                 Regel toevoegen
               </button>
-              <button mat-button (click)="sorteerOpTijd(dag)">
+              <button type="button" mat-button (click)="sorteerOpTijd(dag)">
                 <mat-icon>sort</mat-icon>
                 Sorteer op tijd
               </button>
@@ -167,7 +167,7 @@
           </mat-expansion-panel>
           }
         </mat-accordion>
-        <button mat-stroked-button class="mt-3" (click)="dagToevoegen()">
+        <button type="button" mat-stroked-button class="mt-3" (click)="dagToevoegen()">
           <mat-icon>add</mat-icon>
           Dag toevoegen
         </button>
@@ -196,7 +196,7 @@
             <input matInput [(ngModel)]="rol.omschrijving" />
           </mat-form-field>
           <div class="knoppen">
-            <button
+            <button type="button" aria-label="Actie"
               mat-icon-button
               matTooltip="Omhoog"
               [disabled]="eerste"
@@ -204,7 +204,7 @@
             >
               <mat-icon>arrow_upward</mat-icon>
             </button>
-            <button
+            <button type="button" aria-label="Actie"
               mat-icon-button
               matTooltip="Omlaag"
               [disabled]="laatste"
@@ -212,7 +212,7 @@
             >
               <mat-icon>arrow_downward</mat-icon>
             </button>
-            <button
+            <button type="button" aria-label="Verwijderen"
               mat-icon-button
               matTooltip="Rol verwijderen"
               (click)="verwijder(inhoud.rollen, r)"
@@ -222,7 +222,7 @@
           </div>
         </div>
         }
-        <button mat-stroked-button (click)="rolToevoegen()">
+        <button type="button" mat-stroked-button (click)="rolToevoegen()">
           <mat-icon>add</mat-icon>
           Rol toevoegen
         </button>
@@ -242,7 +242,7 @@
               <input matInput [(ngModel)]="sectie.titel" />
             </mat-form-field>
             <div class="knoppen">
-              <button
+              <button type="button" aria-label="Actie"
                 mat-icon-button
                 matTooltip="Omhoog"
                 [disabled]="eerste"
@@ -250,7 +250,7 @@
               >
                 <mat-icon>arrow_upward</mat-icon>
               </button>
-              <button
+              <button type="button" aria-label="Actie"
                 mat-icon-button
                 matTooltip="Omlaag"
                 [disabled]="laatste"
@@ -258,7 +258,7 @@
               >
                 <mat-icon>arrow_downward</mat-icon>
               </button>
-              <button
+              <button type="button" aria-label="Verwijderen"
                 mat-icon-button
                 matTooltip="Onderdeel verwijderen"
                 (click)="verwijder(inhoud.secties, s)"
@@ -278,7 +278,7 @@
           </mat-form-field>
         </div>
         }
-        <button mat-stroked-button (click)="sectieToevoegen()">
+        <button type="button" mat-stroked-button (click)="sectieToevoegen()">
           <mat-icon>add</mat-icon>
           Onderdeel toevoegen
         </button>
@@ -288,13 +288,13 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="standaardHerstellen()" [disabled]="saving()">
+  <button type="button" mat-button (click)="standaardHerstellen()" [disabled]="saving()">
     <mat-icon>restore</mat-icon>
     Standaard herstellen
   </button>
   <span class="spacer"></span>
-  <button mat-button (click)="annuleren()" [disabled]="saving()">Annuleren</button>
-  <button
+  <button type="button" mat-button (click)="annuleren()" [disabled]="saving()">Annuleren</button>
+  <button type="button"
     mat-flat-button
     color="primary"
     (click)="opslaan()"

@@ -84,7 +84,7 @@
                   <td>{{ formatDate(c.created) }}</td>
                   @if (authService.isGlobalAdmin) {
                     <td class="actions-col">
-                      <button
+                      <button type="button" aria-label="Actie"
                         mat-icon-button
                         [matTooltip]="c.actief ? 'Uitschrijven' : 'Inschrijven'"
                         (click)="toggleActief(c)"
@@ -93,7 +93,7 @@
                           {{ c.actief ? 'notifications_active' : 'notifications_off' }}
                         </mat-icon>
                       </button>
-                      <button
+                      <button type="button" aria-label="Verwijderen"
                         mat-icon-button
                         matTooltip="Verwijderen"
                         (click)="verwijder(c.id)"
